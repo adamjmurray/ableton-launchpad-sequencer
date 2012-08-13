@@ -13,17 +13,6 @@ this.Launchpad = class({
     }
   },
 
-  _notify: function(eventName, args) {
-    log(eventName + " : " + args);
-    var callbacks = this.callbacks[eventName];
-    if(callbacks) {
-      for(var i=0,l=callbacks.length;i<l;i++) {
-        // I am pretty sure "this" is wrong!
-        callbacks[i].apply(this,args);
-      }
-    }
-  },
-
   notein: function(pitch,velocity) {
     var x = pitch % 16,
         y = Math.floor(pitch / 16),
@@ -31,7 +20,7 @@ this.Launchpad = class({
         eventType = (velocity > 0) ? 'Down' : 'Up';
 
     if(x > 7) {
-      this._notify('track'+eventType, [y]);
+      this._notify('scene'+eventType, [y]);
     } else {
       this._notify('grid'+eventType, [x,y,gridIndex]);      
     }
@@ -42,33 +31,40 @@ this.Launchpad = class({
         eventType = (value > 0) ? 'Down' : 'Up';
 
     if(index < 4) {
-      this._notify('screen'+eventType, [index]);      
+      this._notify('arrow'+eventType, [index]);      
     } 
     else {
       index -= 4;
       this._notify('mode'+eventType, [index]);      
     }
   },
-
-  _clip: function(value,low,high) {
-    if(value===null || value===undefined || isNaN(value) || value < low) value = low;
-    if(value > high) value = high;
-    return value;
-  },
-  
-  ctlout: function(cc,val) {
-    outlet(0,'ctl',cc,val);
-  },
-  
-  noteout: function(note,velocity) {
-    outlet(0,'note',note,velocity);
+    
+  grid: function(x,y,color) {
+    if(x >= 0 && x <= 7 && y >=0 && y <= 7) {
+      c = this._color(color);
+      this._noteout(16*y + x, c);  
+    }
   },
 
-  gridButton: function(x,y,color) {
-    x = this._clip(x,0,8);
-    y = this._clip(y,0,7);
-    c = this._color(color);
-    this.noteout(16*y + x, c);  
+  scene: function(index,color) {
+    if(index >= 0 && index <= 7) {
+      c = this._color(color);
+      this._noteout(16*index + 8, c);  
+    }
+  },
+
+  arrow: function(index,color) {
+    if(index >= 0 && index <= 3) {
+      c = this._color(color);
+      this._ctlout(104+index, c);    
+    }
+  },
+
+  mode: function(index,color) {
+    if(index >= 0 && index <= 3) {
+      c = this._color(color);
+      this._ctlout(108+index, c);    
+    }
   },
   
   allOn: function(brightness) {
@@ -77,11 +73,20 @@ this.Launchpad = class({
     // (0=off, 125=low, 126=med, 127=high)
     var b = this._clip(brightness,0,3);
     if(b > 0) b += 124; 
-    this.ctlout(0,b);
+    this._ctlout(0,b);
   },
     
   allOff: function() {
-    this.ctlout(0,0);
+    this._ctlout(0,0);
+  },
+
+  //-------------------------------------------------------------
+  // private
+
+  _clip: function(value,low,high) {
+    if(value===null || value===undefined || isNaN(value) || value < low) value = low;
+    if(value > high) value = high;
+    return value;
   },
 
   _color: function(color) {
@@ -112,7 +117,7 @@ this.Launchpad = class({
       }    
     }
     else if(typeof(color)==="boolean") { 
-      g = color ? 3 : 0;
+      g = color ? 2 : 0;
       r = 0;
     }
     else {
@@ -123,6 +128,25 @@ this.Launchpad = class({
     g = this._clip(g,0,3);
     r = this._clip(r,0,3);
     return 16*g + r;
+  },
+
+  _notify: function(eventName, args) {
+    // log(eventName + " : " + args);
+    var callbacks = this.callbacks[eventName];
+    if(callbacks) {
+      for(var i=0,l=callbacks.length;i<l;i++) {
+        // I am pretty sure "this" is wrong!
+        callbacks[i].apply(this,args);
+      }
+    }
+  },
+
+  _noteout: function(note,velocity) {
+    outlet(0,'note',note,velocity);
+  },
+
+  _ctlout: function(cc,val) {
+    outlet(0,'ctl',cc,val);
   }
 
 });
