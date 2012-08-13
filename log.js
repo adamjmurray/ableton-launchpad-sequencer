@@ -1,1 +1,0 @@
-this.log=function(msg){post(msg+'\n');};

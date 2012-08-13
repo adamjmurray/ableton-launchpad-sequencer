@@ -72,12 +72,13 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-25",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 97.0, 298.0, 50.0, 18.0 ],
-					"text" : "ctl 0 0"
+					"patching_rect" : [ 97.0, 298.0, 50.0, 31.0 ],
+					"text" : "note 40 0"
 				}
 
 			}
@@ -91,9 +92,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 318.5, 231.0, 50.0, 31.0 ],
-					"presentation_rect" : [ 389.0, 385.0, 0.0, 0.0 ],
-					"text" : "ctlin 107 0"
+					"patching_rect" : [ 350.5, 236.5, 50.0, 31.0 ],
+					"text" : "notein 40 0"
 				}
 
 			}
@@ -174,13 +174,13 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 172.0, 242.0, 72.0, 20.0 ],
+					"patching_rect" : [ 172.0, 242.0, 149.0, 20.0 ],
 					"saved_object_attributes" : 					{
-						"filename" : "require.js",
+						"filename" : "launchpad-sequencer.js",
 						"parameter_enable" : 0
 					}
 ,
-					"text" : "js require.js"
+					"text" : "js launchpad-sequencer.js"
 				}
 
 			}
@@ -327,7 +327,7 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "require.js",
+				"name" : "launchpad-sequencer.js",
 				"bootpath" : "/Users/adam/workspace/maxmsp/js_experiments",
 				"patcherrelativepath" : "",
 				"type" : "TEXT",

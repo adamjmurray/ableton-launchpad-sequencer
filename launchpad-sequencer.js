@@ -1,8 +1,9 @@
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n);}
-include('log.js');
 include('class.js');
 include('launchpad.js');
 include('sequencer.js');
+
+log=function(msg){post(msg+'\n');};
 //==========================================================================
 
 lp = new Launchpad();
