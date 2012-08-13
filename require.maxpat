@@ -93,7 +93,7 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 318.5, 231.0, 50.0, 31.0 ],
 					"presentation_rect" : [ 389.0, 385.0, 0.0, 0.0 ],
-					"text" : "ctl 108 0"
+					"text" : "ctlin 107 0"
 				}
 
 			}

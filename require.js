@@ -5,7 +5,7 @@ require('class.js');
 require('launchpad.js');
 
 
-lp = new Launchpad
+lp = new Launchpad;
 
 function notein(pitch,velocity) {
   lp.notein(pitch,velocity);
@@ -16,16 +16,21 @@ function ctlin(cc,val) {
 }
 
 lp.on('screenUp', function(screenIndex) {
-  log("screen ^  " + screenIndex)
-  this.allOff();
+  lp.allOff();
 });
 
 lp.on('modeDown', function(screenIndex) {
-  log("mode V " + screenIndex)
-  this.allOn();
+  lp.allOn();
 });
 
 
+lp.on('gridDown', function(x,y) {
+  this.gridButton(x,y,3);
+});
+
+lp.on('gridUp', function(x,y) {
+  this.gridButton(x,y);
+});
 
 
 
