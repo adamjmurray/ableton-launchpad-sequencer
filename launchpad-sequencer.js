@@ -6,37 +6,34 @@ include('sequencer.js');
 log=function(msg){post(msg+'\n');};
 //==========================================================================
 
-lp = new Launchpad();
-lp.allOff();
+launchpad = new Launchpad();
+launchpad.allOff();
 
-seq = new Sequencer(lp,0);
+seq = new Sequencer(launchpad,0);
 
 function notein(pitch,velocity) {
-  lp.notein(pitch,velocity);
+  launchpad.notein(pitch,velocity);
 }
 
 function ctlin(cc,val) {
-  lp.ctlin(cc,val);  
+  launchpad.ctlin(cc,val);  
 }
 
 function toggleGrid(x,y,stepIndex) {
   var oldValue = seq.get(stepIndex);
   var newValue = 3 - oldValue;
   seq.set(stepIndex,newValue);
-  lp.grid(x,y,newValue);
+  launchpad.grid(x,y,newValue);
 }
 
-lp.on('gridDown', toggleGrid);
-// lp.on('gridUp', toggleGrid);
+launchpad.on('gridDown', toggleGrid);
+// launchpad.on('gridUp', toggleGrid);
 
-lp.on('sceneDown', function(i) { lp.scene(i,[0,3])});
-lp.on('sceneUp', function(i) { lp.scene(i)});
+launchpad.on('rightDown', function(i) { launchpad.right(i,[0,3])});
+launchpad.on('rightUp', function(i) { launchpad.right(i)});
 
-lp.on('arrowDown', function(i) { lp.arrow(i,[2,3])});
-lp.on('arrowUp', function(i) { lp.arrow(i)});
-
-lp.on('modeDown', function(i) { lp.mode(i,[3,2])});
-lp.on('modeUp', function(i) { lp.mode(i)});
+launchpad.on('topDown', function(i) { launchpad.top(i,[2,2])});
+launchpad.on('topUp', function(i) { launchpad.top(i)});
 
 
 //==========================================================================

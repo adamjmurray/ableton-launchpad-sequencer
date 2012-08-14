@@ -13,29 +13,29 @@ this.Launchpad = class({
     }
   },
 
+  ctlin: function(cc,value) {
+    var index = (cc-104),
+        eventType = (value > 0) ? 'Down' : 'Up';
+    this._notify('top'+eventType, [index]);      
+  },
+
   notein: function(pitch,velocity) {
     var x = pitch % 16,
         y = Math.floor(pitch / 16),
-        gridIndex = x + y*8,
         eventType = (velocity > 0) ? 'Down' : 'Up';
-
     if(x > 7) {
-      this._notify('scene'+eventType, [y]);
+      this._notify('right'+eventType, [y]);
     } else {
+      var gridIndex = x + y*8;
       this._notify('grid'+eventType, [x,y,gridIndex]);      
     }
   },
 
-  ctlin: function(cc,value) {
-    var index = (cc-104),
-        eventType = (value > 0) ? 'Down' : 'Up';
 
-    if(index < 4) {
-      this._notify('arrow'+eventType, [index]);      
-    } 
-    else {
-      index -= 4;
-      this._notify('mode'+eventType, [index]);      
+  top: function(index,color) {
+    if(index >= 0 && index <= 7) {
+      c = this._color(color);
+      this._ctlout(104+index, c);    
     }
   },
     
@@ -46,24 +46,10 @@ this.Launchpad = class({
     }
   },
 
-  scene: function(index,color) {
+  right: function(index,color) {
     if(index >= 0 && index <= 7) {
       c = this._color(color);
       this._noteout(16*index + 8, c);  
-    }
-  },
-
-  arrow: function(index,color) {
-    if(index >= 0 && index <= 3) {
-      c = this._color(color);
-      this._ctlout(104+index, c);    
-    }
-  },
-
-  mode: function(index,color) {
-    if(index >= 0 && index <= 3) {
-      c = this._color(color);
-      this._ctlout(108+index, c);    
     }
   },
   

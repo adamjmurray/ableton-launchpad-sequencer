@@ -7,7 +7,7 @@
 			"revision" : 7
 		}
 ,
-		"rect" : [ 25.0, 69.0, 640.0, 480.0 ],
+		"rect" : [ 299.0, 252.0, 640.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -72,13 +72,12 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-25",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 97.0, 298.0, 50.0, 31.0 ],
-					"text" : "note 40 0"
+					"patching_rect" : [ 97.0, 298.0, 52.0, 18.0 ],
+					"text" : "ctl 0 0"
 				}
 
 			}
@@ -93,7 +92,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 350.5, 236.5, 50.0, 31.0 ],
-					"text" : "notein 40 0"
+					"text" : "ctlin 107 0"
 				}
 
 			}
