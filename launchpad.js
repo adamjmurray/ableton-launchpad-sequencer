@@ -4,12 +4,15 @@ this.Launchpad = class({
     this.callbacks = {};
   },
 
-  on: function(eventName,callback) {
-    var callbacks = this.callbacks[eventName];
-    if(callbacks) {
-      callbacks.push(callback);
-    } else {
-      callbacks = this.callbacks[eventName] = [callback];
+  on: function(evt,callback) {
+    var valid = /^((top)|(grid)|(right))((Up)|(Down))$/;
+    if(valid.test(evt)) {
+      var callbacks = this.callbacks[evt];
+      if(callbacks) {
+        callbacks.push(callback);
+      } else {
+        this.callbacks[evt] = [callback];
+      }
     }
   },
 
@@ -30,7 +33,6 @@ this.Launchpad = class({
       this._notify('grid'+eventType, [x,y,gridIndex]);      
     }
   },
-
 
   top: function(index,color) {
     if(index >= 0 && index <= 7) {

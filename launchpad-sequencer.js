@@ -2,6 +2,7 @@ function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++
 include('class.js');
 include('launchpad.js');
 include('sequencer.js');
+include('controller.js');
 
 log=function(msg){post(msg+'\n');};
 //==========================================================================
@@ -9,6 +10,7 @@ log=function(msg){post(msg+'\n');};
 launchpad = new Launchpad();
 launchpad.allOff();
 
+ctl = new Controller(launchpad);
 seq = new Sequencer(launchpad,0);
 
 function notein(pitch,velocity) {
@@ -27,13 +29,6 @@ function toggleGrid(x,y,stepIndex) {
 }
 
 launchpad.on('gridDown', toggleGrid);
-// launchpad.on('gridUp', toggleGrid);
-
-launchpad.on('rightDown', function(i) { launchpad.right(i,[0,3])});
-launchpad.on('rightUp', function(i) { launchpad.right(i)});
-
-launchpad.on('topDown', function(i) { launchpad.top(i,[2,2])});
-launchpad.on('topUp', function(i) { launchpad.top(i)});
 
 
 //==========================================================================
