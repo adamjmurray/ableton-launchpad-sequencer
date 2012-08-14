@@ -6,6 +6,7 @@ this.Controller = class({
     this.launchpad = launchpad;
     this.track = 0;
     this.color = null;
+    this.colorValue = 0;
     this.colorTopIndex = 4;
     this.pattern = 0;
 
@@ -33,12 +34,8 @@ this.Controller = class({
       else {
         this.launchpad.top(this.colorTopIndex);
         this.colorTopIndex = index;
-        switch(index) {
-          case 4: this.color = 'g'; break;
-          case 5: this.color = 'y'; break;
-          case 6: this.color = 'o'; break;
-          case 7: this.color = 'r'; break;
-        }
+        this.stepValue = index-3;
+        this.color = this._colorFor(this.stepValue);
         this.launchpad.top(index,this.color);
       }
     }        
@@ -55,11 +52,24 @@ this.Controller = class({
   gridPressed: function(x,y) {
     var step = x + y*8;
     var seq = this.sequencer;
-    log("Step pressed: " + step);
     var oldValue = seq.get(step);
-    var newValue = 3 - oldValue;
+    var newValue = this.stepValue;
+    var color = this.color;
+    if(newValue == oldValue) {
+      newValue = color = 0;
+    }
     seq.set(step,newValue);
-    launchpad.grid(x,y,newValue);
+    this.launchpad.grid(x,y,color);
+  },
+
+  _colorFor: function(value) {
+    switch(value) {
+      case 1: return 'g';
+      case 2: return 'y';
+      case 3: return 'o';
+      case 4: return 'r';
+      default: return 0;
+    }
   }
 
 });
