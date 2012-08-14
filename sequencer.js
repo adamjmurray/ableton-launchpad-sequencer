@@ -1,20 +1,20 @@
 this.Sequencer = class({
 
-  init: function(launchpad,defaultValue) {
-    this._launchpad = launchpad;    
+  init: function(defaultValue) {
+    if(defaultValue===undefined || defaultValue===null) defaultValue=0;
     var seq = [];
     for(var i=0;i<64;i++) seq.push(defaultValue);
-    this._sequence = seq;
+    this.sequence = seq;
   },
 
   get: function(index) {
-    var seq = this._sequence;
+    var seq = this.sequence;
     return seq[index % seq.length];
   },
 
   set: function(index,value) {
     if(index >=0 && index <=64) {
-      this._sequence[index] = value;
+      this.sequence[index] = value;
     }    
   }
 

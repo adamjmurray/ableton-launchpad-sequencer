@@ -29,8 +29,7 @@ this.Launchpad = class({
     if(x > 7) {
       this._notify('right'+eventType, [y]);
     } else {
-      var gridIndex = x + y*8;
-      this._notify('grid'+eventType, [x,y,gridIndex]);      
+      this._notify('grid'+eventType, [x,y]);      
     }
   },
 

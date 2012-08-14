@@ -1,21 +1,26 @@
 this.Controller = class({
 
   init: function(launchpad) {
+    launchpad.allOff();
+
     this.launchpad = launchpad;
     this.track = 0;
     this.color = null;
     this.colorTopIndex = 4;
     this.pattern = 0;
 
-    var self = this;
-    launchpad.on('topDown', function(index) { 
-      self.topPressed(index);
-    });
+    this.sequencer = new Sequencer();
 
-    launchpad.on('rightDown', function(index) { 
-      self.rightPressed(index);
+    var call = this;
+    launchpad.on('topDown', function(index) {
+      call.topPressed(index);
     });
-
+    launchpad.on('rightDown', function(index) {
+      call.rightPressed(index); 
+    });
+    launchpad.on('gridDown', function(x,y) {
+      call.gridPressed(x,y);
+    });
   },
 
   topPressed: function(index) {
@@ -45,6 +50,16 @@ this.Controller = class({
       this.pattern = index;
       this.launchpad.right(index,[2,0]);
     }
+  },
+
+  gridPressed: function(x,y) {
+    var step = x + y*8;
+    var seq = this.sequencer;
+    log("Step pressed: " + step);
+    var oldValue = seq.get(step);
+    var newValue = 3 - oldValue;
+    seq.set(step,newValue);
+    launchpad.grid(x,y,newValue);
   }
 
 });

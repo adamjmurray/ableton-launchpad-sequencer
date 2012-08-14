@@ -5,13 +5,11 @@ include('sequencer.js');
 include('controller.js');
 
 log=function(msg){post(msg+'\n');};
+
 //==========================================================================
 
 launchpad = new Launchpad();
-launchpad.allOff();
-
-ctl = new Controller(launchpad);
-seq = new Sequencer(launchpad,0);
+new Controller(launchpad);
 
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
@@ -21,15 +19,6 @@ function ctlin(cc,val) {
   launchpad.ctlin(cc,val);  
 }
 
-function toggleGrid(x,y,stepIndex) {
-  var oldValue = seq.get(stepIndex);
-  var newValue = 3 - oldValue;
-  seq.set(stepIndex,newValue);
-  launchpad.grid(x,y,newValue);
-}
-
-launchpad.on('gridDown', toggleGrid);
-
-
 //==========================================================================
+
 log('\nrefreshed '+(new Date()).toString());
