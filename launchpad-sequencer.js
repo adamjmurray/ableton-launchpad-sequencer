@@ -9,7 +9,7 @@ log=function(msg){post(msg+'\n');};
 //==========================================================================
 
 launchpad = new Launchpad();
-new Controller(launchpad);
+controller = new Controller(launchpad);
 
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
@@ -19,6 +19,12 @@ function ctlin(cc,val) {
   launchpad.ctlin(cc,val);  
 }
 
+function bang() {
+  launchpad.allOff();    
+  controller.selectTrack(0);
+  controller.selectPattern(0);
+  controller.selectValue(1);
+}
 //==========================================================================
 
 log('\nrefreshed '+(new Date()).toString());

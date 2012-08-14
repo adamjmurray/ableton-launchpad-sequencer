@@ -6,7 +6,6 @@ this.Controller = class({
 
 
   init: function(launchpad) {
-    launchpad.allOff();
     this.launchpad = launchpad;
     
     var sequencers = [];
@@ -24,10 +23,6 @@ this.Controller = class({
     });
     launchpad.on('rightDown', function(idx){ call.selectPattern(idx); });
     launchpad.on( 'gridDown', function(x,y){ call.setGridValue( x,y); });
-
-    this.selectTrack(0);
-    this.selectPattern(0);
-    this.selectValue(1);
   },
 
 
