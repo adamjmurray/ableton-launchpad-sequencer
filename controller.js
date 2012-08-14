@@ -17,11 +17,15 @@ this.Controller = class({
       call.pressTop(index);
     });
     launchpad.on('rightDown', function(index) {
-      call.pressRight(index); 
+      call.selectPattern(index); 
     });
     launchpad.on('gridDown', function(x,y) {
       call.pressGrid(x,y);
     });
+
+    this.selectTrack(0);
+    this.selectPattern(0);
+    this.selectValue(1);
   },
 
   pressTop: function(index) {
@@ -29,14 +33,6 @@ this.Controller = class({
       this.selectTrack(index);
     } else {
       this.selectValue(index-3);
-    }
-  },
-
-  pressRight: function(index) {
-    if(index >= 0 && index <= 7) {
-      this.launchpad.right(this.pattern);
-      this.pattern = index;
-      this.launchpad.right(index,[2,0]);
     }
   },
 
@@ -65,6 +61,14 @@ this.Controller = class({
       this.value = value;
       this.color = this.colorFor(value);
       if(value !== 0) this.launchpad.top(value+3, this.color);
+    }
+  },
+
+  selectPattern: function(index) {
+    if(index >= 0 && index <= 7) {
+      this.launchpad.right(this.pattern);
+      this.pattern = index;
+      this.launchpad.right(index,[2,0]);
     }
   },
 
