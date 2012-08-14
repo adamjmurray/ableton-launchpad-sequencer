@@ -14,13 +14,14 @@ this.Controller = class({
 
     var call = this;
     launchpad.on('topDown', function(index) {
-      call.pressTop(index);
+      if(index <= 3) call.selectTrack(index);
+      else call.selectValue(index-3);      
     });
     launchpad.on('rightDown', function(index) {
       call.selectPattern(index); 
     });
     launchpad.on('gridDown', function(x,y) {
-      call.pressGrid(x,y);
+      call.setGridValue(x,y);
     });
 
     this.selectTrack(0);
@@ -28,15 +29,7 @@ this.Controller = class({
     this.selectValue(1);
   },
 
-  pressTop: function(index) {
-    if(index <= 3) {
-      this.selectTrack(index);
-    } else {
-      this.selectValue(index-3);
-    }
-  },
-
-  pressGrid: function(x,y) {
+  setGridValue: function(x,y) {
     var step = x + y*8;
     var color = this.color;    
     var seq = this.sequencer;
