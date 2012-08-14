@@ -37,7 +37,7 @@ this.Controller = class({
   setGridValue: function(x,y) {
     var step = x + y*8;
     var color = this.color;    
-    var sequencer = this.sequencers[0][0];
+    var sequencer = this.sequencer;
     var newValue = this.value;    
     if(newValue === sequencer.get(step)) newValue = color = 0;
     sequencer.set(step, newValue);
@@ -49,6 +49,7 @@ this.Controller = class({
       this.launchpad.top(this.track);
       this.track = index;
       this.launchpad.top(index,'a');
+      this.selectSequencer(index,this.pattern);
     }
   },
 
@@ -66,6 +67,18 @@ this.Controller = class({
       this.launchpad.right(this.pattern);
       this.pattern = index;
       this.launchpad.right(index,[2,0]);
+      this.selectSequencer(this.track,index);
+    }
+  },
+
+  selectSequencer: function(track,pattern) {
+    var sequencer = this.sequencer = this.sequencers[track][pattern];
+    if(!sequencer) return;
+    for(var x=0;x<8;x++) {
+      for(var y=0;y<8;y++) {
+        var step = x + y*8;
+        this.launchpad.grid(x,y, this._colorFor(sequencer.get(step)));
+      }
     }
   },
 
