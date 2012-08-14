@@ -67,9 +67,11 @@ this.Launchpad = class({
     this._ctlout(0,0);
   },
 
-  //-------------------------------------------------------------
+
+  //==============================================================================
   // private
 
+  
   _clip: function(value,low,high) {
     if(value===null || value===undefined || isNaN(value) || value < low) value = low;
     if(value > high) value = high;

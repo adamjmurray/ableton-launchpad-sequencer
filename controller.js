@@ -1,43 +1,47 @@
 this.Controller = class({
 
+  PATTERNS: 8,
+
+  TRACKS: 4,
+
+
   init: function(launchpad) {
     launchpad.allOff();
-
     this.launchpad = launchpad;
-    this.track = 0;
-    this.color = null;
-    this.colorValue = 0;
-    this.colorTopIndex = 4;
-    this.pattern = 0;
-
-    this.sequencer = new Sequencer();
+    
+    var sequencers = [];
+    for(var t=0;t<this.TRACKS;t++) {
+      var track = [];
+      for(var p=0;p<this.PATTERNS;p++) track.push(new Sequencer());            
+      sequencers.push(track);      
+    }
+    this.sequencers = sequencers;
 
     var call = this;
     launchpad.on('topDown', function(index) {
       if(index <= 3) call.selectTrack(index);
       else call.selectValue(index-3);      
     });
-    launchpad.on('rightDown', function(index) {
-      call.selectPattern(index); 
-    });
-    launchpad.on('gridDown', function(x,y) {
-      call.setGridValue(x,y);
-    });
+    launchpad.on('rightDown', function(idx){ call.selectPattern(idx); });
+    launchpad.on( 'gridDown', function(x,y){ call.setGridValue( x,y); });
 
     this.selectTrack(0);
     this.selectPattern(0);
     this.selectValue(1);
   },
 
+
+  //==============================================================================
+  
+
   setGridValue: function(x,y) {
     var step = x + y*8;
     var color = this.color;    
-    var seq = this.sequencer;
-    var oldValue = seq.get(step);
+    var sequencer = this.sequencers[0][0];
     var newValue = this.value;    
-    if(newValue === oldValue) newValue = color = 0;
-    seq.set(step,newValue);
-    this.launchpad.grid(x,y,color);
+    if(newValue === sequencer.get(step)) newValue = color = 0;
+    sequencer.set(step, newValue);
+    this.launchpad.grid(x,y, color);
   },
 
   selectTrack: function(index) {
@@ -52,7 +56,7 @@ this.Controller = class({
     if(value >= 0 && value <= 4) { 
       if(this.value !== 0) this.launchpad.top(this.value+3);    
       this.value = value;
-      this.color = this.colorFor(value);
+      this.color = this._colorFor(value);
       if(value !== 0) this.launchpad.top(value+3, this.color);
     }
   },
@@ -65,7 +69,12 @@ this.Controller = class({
     }
   },
 
-  colorFor: function(value) {
+
+  //==============================================================================
+  // private
+
+
+  _colorFor: function(value) {
     switch(value) {
       case 1: return 'g';
       case 2: return 'y';
