@@ -19,8 +19,14 @@ function ctlin(cc,val) {
   launchpad.ctlin(cc,val);  
 }
 
+function pulse(bars,beats,units) {
+  // assume 4/4 with 1/16 note pulses
+  var stepIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
+  controller.setStepIndex(stepIndex);
+}
+
 function bang() {
-  launchpad.allOff();    
+  launchpad.allOff();
   controller.selectTrack(0);
   controller.selectPattern(0);
   controller.selectValue(1);

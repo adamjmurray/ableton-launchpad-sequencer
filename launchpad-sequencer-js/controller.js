@@ -5,14 +5,15 @@ this.Controller = Class.define({
   TRACKS: 4,
 
   GRID_COLORS:[
-    0,
+    Launchpad.color(0,0), // off
     Launchpad.color(3,0), // green
     Launchpad.color(3,2), // yellow
     Launchpad.color(2,3), // orange
     Launchpad.color(0,3)  // red
   ],
 
-  TRACK_COLOR: Launchpad.color(1,1),
+  STEP_COLOR: Launchpad.color(1,1), // color for current sequencer step, regardless of value
+  TRACK_COLOR: Launchpad.color(0,2),
   PATTERN_COLOR: Launchpad.color(2,0),
 
   init: function(launchpad) {
@@ -20,6 +21,7 @@ this.Controller = Class.define({
     this.track = 0;
     this.pattern = 0;
     this.value = 0;
+    this.stepIndex = -1;
     
     var sequencers = [];
     for(var t=0;t<this.TRACKS;t++) {
@@ -87,6 +89,20 @@ this.Controller = Class.define({
         this.launchpad.grid(x,y, this.GRID_COLORS[sequencer.get(step)]);
       }
     }
+  },
+
+  setStepIndex: function(stepIndex) {
+    var sequencer = this.sequencer,
+        oldStepIndex = this.stepIndex,
+        oldX = oldStepIndex % 8,
+        oldY = Math.floor(oldStepIndex/8) % 8,
+        x = stepIndex % 8,
+        y = Math.floor(stepIndex/8) % 8;
+
+    if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[sequencer.get(oldStepIndex)]);
+
+    this.stepIndex = stepIndex;
+    this.launchpad.grid(x,y, this.STEP_COLOR);
   },
 
 
