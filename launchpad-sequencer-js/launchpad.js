@@ -1,4 +1,4 @@
-this.Launchpad = class({
+this.Launchpad = Class.define({
 
   init: function() {
     this.callbacks = {};

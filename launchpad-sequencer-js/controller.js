@@ -1,4 +1,4 @@
-this.Controller = class({
+this.Controller = Class.define({
 
   PATTERNS: 8,
 

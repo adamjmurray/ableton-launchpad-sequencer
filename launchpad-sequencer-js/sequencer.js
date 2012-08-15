@@ -1,4 +1,4 @@
-this.Sequencer = class({
+this.Sequencer = Class.define({
 
   init: function(defaultValue) {
     if(defaultValue===undefined || defaultValue===null) defaultValue=0;

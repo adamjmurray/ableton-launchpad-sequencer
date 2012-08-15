@@ -1,6 +1,8 @@
-this.class = function(d) {
-  var c = d.init || function(){};
-  // TODO: support multiple arguments, for inheritence/mixin
-  for(var p in d) c.prototype[p] = d[p];
-  return c;
-}
+this.Class = {
+  define: function(definition) {
+    var constructor = definition.init || function(){};
+    // TODO: support multiple arguments, for inheritence/mixin
+    for(var property in definition) constructor.prototype[property] = definition[property];
+    return constructor;
+  }
+};
