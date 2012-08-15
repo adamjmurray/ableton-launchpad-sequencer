@@ -16,7 +16,11 @@ function notein(pitch,velocity) {
 }
 
 function ctlin(cc,val) {
-  launchpad.ctlin(cc,val);  
+  if(cc === 123) {
+    stop();
+  } else {
+    launchpad.ctlin(cc,val);
+  }
 }
 
 function pulse(bars,beats,units) {
@@ -25,13 +29,21 @@ function pulse(bars,beats,units) {
   controller.setStepIndex(stepIndex);
 }
 
+function stop() {
+  controller.setStepIndex(-1);
+}
+
+/**
+ * Initialize
+ */
 function bang() {
   launchpad.allOff();
   controller.selectTrack(0);
   controller.selectPattern(0);
   controller.selectValue(1);
 }
-//==========================================================================
 
+//==========================================================================
+// TODO: comment out when not developing
 log('\nrefreshed '+(new Date()).toString());
 bang();

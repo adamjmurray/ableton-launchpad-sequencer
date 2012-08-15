@@ -102,7 +102,7 @@ this.Controller = Class.define({
     if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[sequencer.get(oldStepIndex)]);
 
     this.stepIndex = stepIndex;
-    this.launchpad.grid(x,y, this.STEP_COLOR);
+    if(stepIndex >= 0) this.launchpad.grid(x,y, this.STEP_COLOR);
   },
 
 
