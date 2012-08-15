@@ -13,7 +13,7 @@ this.Controller = Class.define({
   ],
 
   STEP_COLOR: Launchpad.color(1,1), // color for current sequencer step, regardless of value
-  TRACK_COLOR: Launchpad.color(0,2),
+  TRACK_COLOR: Launchpad.color(1,2),
   PATTERN_COLOR: Launchpad.color(2,0),
 
   init: function(launchpad) {
@@ -43,7 +43,12 @@ this.Controller = Class.define({
 
 
   //==============================================================================
-  
+
+  reset: function() {
+    this.setStepIndex(-1);
+    this.selectTrack(this.track);
+    outlet(2,'reset');
+  },
 
   setGridValue: function(x,y) {
     var step = x + y*8;
@@ -101,8 +106,20 @@ this.Controller = Class.define({
 
     if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[sequencer.get(oldStepIndex)]);
 
-    this.stepIndex = stepIndex;
-    if(stepIndex >= 0) this.launchpad.grid(x,y, this.STEP_COLOR);
+    if(this.stepIndex !== stepIndex) {
+      this.stepIndex = stepIndex;
+      if(stepIndex >= 0) {
+        this.launchpad.grid(x,y, this.STEP_COLOR);
+        for(var t=0;t<this.TRACKS;t++) {
+          for(var p=0;p<this.PATTERNS;p++) {
+            var step = this.sequencers[t][p].get(stepIndex);
+            if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
+              outlet(1,t,p,step);
+            }
+          }
+        }
+      }
+    }
   },
 
 

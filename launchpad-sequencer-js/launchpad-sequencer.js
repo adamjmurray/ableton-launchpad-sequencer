@@ -1,3 +1,5 @@
+outlets = 3;
+
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n);}
 include('class.js');
 include('launchpad.js');
@@ -16,8 +18,10 @@ function notein(pitch,velocity) {
 }
 
 function ctlin(cc,val) {
-  if(cc === 123) {
-    stop();
+  if(cc === 123) { // All notes off. Live sends this when the transport is stopped
+    // Live also sends all-notes-off to all connected MIDI devices, which resets the Launchpad,
+    // so we need to restore the state:
+    controller.reset();
   } else {
     launchpad.ctlin(cc,val);
   }
@@ -27,10 +31,6 @@ function pulse(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
   var stepIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
   controller.setStepIndex(stepIndex);
-}
-
-function stop() {
-  controller.setStepIndex(-1);
 }
 
 /**
