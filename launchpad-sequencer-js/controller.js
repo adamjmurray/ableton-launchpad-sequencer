@@ -47,7 +47,6 @@ this.Controller = Class.define({
   reset: function() {
     this.setStepIndex(-1);
     this.selectTrack(this.track);
-    outlet(2,'reset');
   },
 
   setGridValue: function(x,y) {
@@ -64,7 +63,7 @@ this.Controller = Class.define({
       this.launchpad.top(this.track, 0);
       this.track = index;
       this.launchpad.top(index, this.TRACK_COLOR);
-      this.selectSequencer(index,this.pattern);
+      this.drawSequence(index,this.pattern);
     }
   },
 
@@ -81,11 +80,11 @@ this.Controller = Class.define({
       this.launchpad.right(this.pattern, 0);
       this.pattern = index;
       this.launchpad.right(index, this.PATTERN_COLOR);
-      this.selectSequencer(this.track,index);
+      this.drawSequence(this.track,index);
     }
   },
 
-  selectSequencer: function(track,pattern) {
+  drawSequence: function(track,pattern) {
     var sequencer = this.sequencer = this.sequencers[track][pattern];
     if(!sequencer) return;
     for(var x=0;x<8;x++) {
@@ -122,18 +121,29 @@ this.Controller = Class.define({
     }
   },
 
+  /**
+   * @param track the track index
+   * @param pattern the pattern index
+   * @param sequence an array of sequence values
+   */
+  setPattern: function(track, pattern, sequence) {
+    if(track >= 0 && track <= 7 && pattern >= 0 && pattern <= 7 && sequence.length===64) {
+      this.sequencers[track][pattern].sequence = sequence;
+      if(track === this.track && pattern === this.pattern) {
+        this.drawSequence(track,pattern);
+      }
+    }
+  },
 
-  //==============================================================================
-  // private
-
-
-  _colorFor: function(value) {
-    switch(value) {
-      case 1: return 'g';
-      case 2: return 'y';
-      case 3: return 'o';
-      case 4: return 'r';
-      default: return 0;
+  /**
+   * Given an output function(trackIndex, patternIndex, sequenceValues)
+   * output the state of the sequencing application.
+   */
+  writeState: function(output) {
+    for(var t = 0, ts = this.TRACKS; t < ts; t++) {
+      for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
+        output(t, p, this.sequencers[t][p].sequence);
+      }
     }
   }
 
