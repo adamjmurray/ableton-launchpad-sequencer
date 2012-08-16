@@ -18,19 +18,18 @@ this.Controller = Class.define({
 
   init: function(launchpad) {
     this.launchpad = launchpad;
-    this.track = 0;
-    this.pattern = 0;
+    this.track = 0; // selected track index
+    this.pattern = 0; // selected pattern index
     this.value = 0;
     this.stepIndex = -1;
     
-    var sequencers = [];
+    this.patterns = [];
     for(var t=0;t<this.TRACKS;t++) {
       var track = [];
-      for(var p=0;p<this.PATTERNS;p++) track.push(new Sequencer());            
-      sequencers.push(track);      
+      for(var p=0;p<this.PATTERNS;p++) track.push(new Pattern());
+      this.patterns.push(track);
     }
-    this.sequencers = sequencers;
-    this.sequencer = sequencers[0][0];
+    this._updateSelectedPattern();
 
     var call = this;
     launchpad.on('topDown', function(index) {
@@ -51,10 +50,12 @@ this.Controller = Class.define({
 
   setGridValue: function(x,y) {
     var step = x + y*8;
-    var sequencer = this.sequencer;
+    var selectedPattern = this.selectedPattern;
     var newValue = this.value;    
-    if(newValue === sequencer.get(step)) newValue = 0;
-    sequencer.set(step, newValue);
+
+    if(newValue === selectedPattern.get(step)) newValue = 0; // toggle off
+    selectedPattern.setStep(step, newValue);
+
     this.launchpad.grid(x,y, this.GRID_COLORS[newValue]);
   },
 
@@ -63,7 +64,8 @@ this.Controller = Class.define({
       this.launchpad.top(this.track, 0);
       this.track = index;
       this.launchpad.top(index, this.TRACK_COLOR);
-      this.drawSequence(index,this.pattern);
+      this._updateSelectedPattern();
+      this.drawPattern(index, this.pattern);
     }
   },
 
@@ -80,38 +82,39 @@ this.Controller = Class.define({
       this.launchpad.right(this.pattern, 0);
       this.pattern = index;
       this.launchpad.right(index, this.PATTERN_COLOR);
-      this.drawSequence(this.track,index);
+      this._updateSelectedPattern();
+      this.drawPattern(this.track, index);
     }
   },
 
-  drawSequence: function(track,pattern) {
-    var sequencer = this.sequencer = this.sequencers[track][pattern];
-    if(!sequencer) return;
+  drawPattern: function(track,pattern) {
+    var pattern = this.patterns[track][pattern];
+    if(!pattern) return;
     for(var x=0;x<8;x++) {
       for(var y=0;y<8;y++) {
         var step = x + y*8;
-        this.launchpad.grid(x,y, this.GRID_COLORS[sequencer.get(step)]);
+        this.launchpad.grid(x,y, this.GRID_COLORS[pattern.get(step)]);
       }
     }
   },
 
   setStepIndex: function(stepIndex) {
-    var sequencer = this.sequencer,
+    var selectedPattern = this.selectedPattern,
         oldStepIndex = this.stepIndex,
         oldX = oldStepIndex % 8,
         oldY = Math.floor(oldStepIndex/8) % 8,
         x = stepIndex % 8,
         y = Math.floor(stepIndex/8) % 8;
 
-    if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[sequencer.get(oldStepIndex)]);
+    if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[selectedPattern.get(oldStepIndex)]);
 
     if(this.stepIndex !== stepIndex) {
       this.stepIndex = stepIndex;
       if(stepIndex >= 0) {
         this.launchpad.grid(x,y, this.STEP_COLOR);
-        for(var t=0;t<this.TRACKS;t++) {
-          for(var p=0;p<this.PATTERNS;p++) {
-            var step = this.sequencers[t][p].get(stepIndex);
+        for(var t = 0, ts = this.TRACKS; t < ts; t++) {
+          for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
+            var step = this.patterns[t][p].get(stepIndex);
             if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
               outlet(1,t,p,step);
             }
@@ -128,9 +131,9 @@ this.Controller = Class.define({
    */
   setPattern: function(track, pattern, sequence) {
     if(track >= 0 && track <= 7 && pattern >= 0 && pattern <= 7 && sequence.length===64) {
-      this.sequencers[track][pattern].sequence = sequence;
+      this.patterns[track][pattern].sequence = sequence;
       if(track === this.track && pattern === this.pattern) {
-        this.drawSequence(track,pattern);
+        this.drawPattern(track,pattern);
       }
     }
   },
@@ -142,9 +145,13 @@ this.Controller = Class.define({
   writeState: function(output) {
     for(var t = 0, ts = this.TRACKS; t < ts; t++) {
       for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
-        output(t, p, this.sequencers[t][p].sequence);
+        output(t, p, this.patterns[t][p].sequence);
       }
     }
+  },
+
+  _updateSelectedPattern: function() {
+    this.selectedPattern = this.patterns[this.track][this.pattern];
   }
 
 });

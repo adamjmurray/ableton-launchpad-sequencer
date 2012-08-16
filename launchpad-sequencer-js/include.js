@@ -5,5 +5,5 @@ function include(n) {
     f.close(); 
     eval(t+'');
   }
-  else error("Missing required file: " + n);  
+  else error("Missing required file: " + n + "\n");
 }

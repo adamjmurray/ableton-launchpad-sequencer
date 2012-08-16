@@ -3,7 +3,7 @@ outlets = 3;
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n+"\n");}
 include('class.js');
 include('launchpad.js');
-include('sequencer.js');
+include('pattern.js');
 include('controller.js');
 
 log=function(msg){post(msg+'\n');};
@@ -18,6 +18,7 @@ controller = new Controller(launchpad);
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
 }
+
 
 function ctlin(cc,val) {
   if(cc === ALL_NOTES_OFF) {
