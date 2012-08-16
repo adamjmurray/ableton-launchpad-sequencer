@@ -1,22 +1,23 @@
-//==========================================================================
+//========================================================
 // Dependencies
 
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n+"\n");}
+
 include('class.js');
 include('launchpad.js');
 include('pattern.js');
-include('controller.js');
+include('sequencer.js');
 
 log=function(msg){post(msg+'\n');};
 
 
-//==========================================================================
+//========================================================
 // Constants
 
-ALL_NOTES_OFF = 123;
+TRANSPORT_STOP = 123;
 
 
-//==========================================================================
+//========================================================
 // Input & Output to Max
 
 outlets = 4;
@@ -41,18 +42,25 @@ pattrOut = function(trackIndex, patternIndex, sequenceValues) {
 
 
 launchpad = new Launchpad(noteOut, ctlOut);
-controller = new Controller(launchpad, sequencerOut);
+sequencer = new Sequencer(launchpad, sequencerOut);
+
+
+function bang() { // (re)initialize on bang
+  sequencer.reset();
+}
 
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
 }
 
 function ctlin(cc,val) {
-  if(cc === ALL_NOTES_OFF) {
-    // Live sends this when the transport is stopped, and also sends "all notes off" to
-    // all connected MIDI devices, which resets the Launchpad, so we need to restore the state:
-    controller.reset();
-    save();
+  if(cc === TRANSPORT_STOP) {
+    // Live sends "all notes off" to all connected MIDI devices when the transport stops,
+    // which resets the Launchpad, so we need to restore the state:
+    sequencer.reset();
+
+    // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
+    sequencer.writeState(pattrOut);
 
   } else {
     launchpad.ctlin(cc,val);
@@ -61,19 +69,8 @@ function ctlin(cc,val) {
 
 function clock(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
-  var stepIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
-  controller.setStepIndex(stepIndex);
-}
-
-function bang() { // (re)initialize on bang
-  launchpad.allOff();
-  controller.selectTrack(0);
-  controller.selectPattern(0);
-  controller.selectValue(1);
-}
-
-function save() {
-  controller.writeState(pattrOut);
+  var clockIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
+  sequencer.setClock(clockIndex);
 }
 
 function load(pattrPath) {
@@ -83,11 +80,12 @@ function load(pattrPath) {
     var trackNumber = parseInt(matches[1]);
     var patternNumber = parseInt(matches[2]);
     var sequenceValues = Array.prototype.slice.call(arguments, 1); // all the arguments after the first one
-    controller.setPattern(trackNumber-1, patternNumber-1, sequenceValues);
+    sequencer.setPattern(trackNumber-1, patternNumber-1, sequenceValues);
   }
 }
 
-//==========================================================================
+
+//========================================================
 // TODO: comment out when not developing
 log('\nrefreshed '+(new Date()).toString());
 bang();

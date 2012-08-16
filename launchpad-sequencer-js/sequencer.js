@@ -1,4 +1,4 @@
-this.Controller = Class.define({
+this.Sequencer = Class.define({
 
   PATTERNS: 8,
 
@@ -22,8 +22,8 @@ this.Controller = Class.define({
 
     this.track = 0; // selected track index
     this.pattern = 0; // selected pattern index
-    this.value = 0;
-    this.stepIndex = -1;
+    this.value = 1;
+    this.clock = -1;
     
     this.patterns = [];
     for(var t=0;t<this.TRACKS;t++) {
@@ -45,9 +45,15 @@ this.Controller = Class.define({
 
   //==============================================================================
 
+  /**
+   * Update the Launchpad lights to reflect the current sequencer state
+   */
   reset: function() {
-    this.setStepIndex(-1);
-    this.selectTrack(this.track);
+    this.launchpad.allOff();
+    this.setClock(this.clock);
+    this.selectValue(this.value);
+    this.selectTrack(this.track, true);
+    this.selectPattern(this.pattern);
   },
 
   setGridValue: function(x,y) {
@@ -61,13 +67,12 @@ this.Controller = Class.define({
     this.launchpad.grid(x,y, this.GRID_COLORS[newValue]);
   },
 
-  selectTrack: function(index) {
+  selectTrack: function(index, skipRedraw) {
     if(index >= 0 && index <= 3) {
       this.launchpad.top(this.track, 0);
       this.track = index;
       this.launchpad.top(index, this.TRACK_COLOR);
-      this._updateSelectedPattern();
-      this.drawPattern(index, this.pattern);
+      this._updateSelectedPattern(skipRedraw);
     }
   },
 
@@ -79,46 +84,35 @@ this.Controller = Class.define({
     }
   },
 
-  selectPattern: function(index) {
+  selectPattern: function(index, skipRedraw) {
     if(index >= 0 && index <= 7) {
       this.launchpad.right(this.pattern, 0);
       this.pattern = index;
       this.launchpad.right(index, this.PATTERN_COLOR);
-      this._updateSelectedPattern();
-      this.drawPattern(this.track, index);
+      this._updateSelectedPattern(skipRedraw);
     }
   },
 
-  drawPattern: function(track,pattern) {
-    var pattern = this.patterns[track][pattern];
-    if(!pattern) return;
-    for(var x=0;x<8;x++) {
-      for(var y=0;y<8;y++) {
-        var step = x + y*8;
-        this.launchpad.grid(x,y, this.GRID_COLORS[pattern.get(step)]);
-      }
-    }
-  },
-
-  setStepIndex: function(stepIndex) {
+  setClock: function(clock) {
     var
       output = this.output,
       selectedPattern = this.selectedPattern,
-      oldStepIndex = this.stepIndex,
-      oldX = oldStepIndex % 8,
-      oldY = Math.floor(oldStepIndex/8) % 8,
-      x = stepIndex % 8,
-      y = Math.floor(stepIndex/8) % 8;
+      oldClock = this.clock,
+      oldX = oldClock % 8,
+      oldY = Math.floor(oldClock/8) % 8,
+      x = clock % 8,
+      y = Math.floor(clock/8) % 8;
 
-    if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[selectedPattern.get(oldStepIndex)]);
+    // TODO: be careful, this likely won't work once we allow for changing start & end steps per pattern
+    if(oldClock >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[selectedPattern.get(oldClock)]);
 
-    if(this.stepIndex !== stepIndex) {
-      this.stepIndex = stepIndex;
-      if(stepIndex >= 0) {
+    if(this.clock !== clock) {
+      this.clock = clock;
+      if(clock >= 0) {
         this.launchpad.grid(x,y, this.STEP_COLOR);
         for(var t = 0, ts = this.TRACKS; t < ts; t++) {
           for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
-            var step = this.patterns[t][p].get(stepIndex);
+            var step = this.patterns[t][p].get(clock);
             if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
               output(t,p,step);
             }
@@ -137,7 +131,7 @@ this.Controller = Class.define({
     if(track >= 0 && track <= 7 && pattern >= 0 && pattern <= 7 && sequence.length===64) {
       this.patterns[track][pattern].sequence = sequence;
       if(track === this.track && pattern === this.pattern) {
-        this.drawPattern(track,pattern);
+        this._drawPattern(track,pattern);
       }
     }
   },
@@ -154,8 +148,24 @@ this.Controller = Class.define({
     }
   },
 
-  _updateSelectedPattern: function() {
+
+  //==============================================================================
+  // private
+
+  _updateSelectedPattern: function(skipRedraw) {
     this.selectedPattern = this.patterns[this.track][this.pattern];
+    if(!skipRedraw) this._drawPattern(this.track, this.pattern);
+  },
+
+  _drawPattern: function(track,pattern) {
+    var pattern = this.patterns[track][pattern];
+    if(!pattern) return;
+    for(var x=0;x<8;x++) {
+      for(var y=0;y<8;y++) {
+        var step = x + y*8;
+        this.launchpad.grid(x,y, this.GRID_COLORS[pattern.get(step)]);
+      }
+    }
   }
 
 });
