@@ -59,7 +59,7 @@ function ctlin(cc,val) {
   }
 }
 
-function pulse(bars,beats,units) {
+function clock(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
   var stepIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
   controller.setStepIndex(stepIndex);
