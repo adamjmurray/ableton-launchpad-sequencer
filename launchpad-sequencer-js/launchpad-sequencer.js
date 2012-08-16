@@ -1,4 +1,5 @@
-outlets = 3;
+//==========================================================================
+// Dependencies
 
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n+"\n");}
 include('class.js');
@@ -8,24 +9,39 @@ include('controller.js');
 
 log=function(msg){post(msg+'\n');};
 
+
 //==========================================================================
+// Constants
 
 ALL_NOTES_OFF = 123;
 
-launchpad = new Launchpad(
-  function(note, velocity) { // noteout
-    outlet(0, 'note', note, velocity);
-  },
-  function(cc, val) { // ctlout
-    outlet(0, 'ctl', cc, val);
-  }
-);
 
-controller = new Controller(launchpad,
-  function(track, pattern, value) {
-    outlet(1, track, pattern, value);
-  }
-);
+//==========================================================================
+// Input & Output to Max
+
+outlets = 4;
+
+noteOut = function(note, velocity) {
+  outlet(0, note, velocity);
+};
+
+ctlOut = function(cc, value) {
+  outlet(1, cc, value);
+};
+
+sequencerOut = function(track, pattern, value) {
+  outlet(2, track, pattern, value);
+};
+
+pattrOut = function(trackIndex, patternIndex, sequenceValues) {
+  // The Max patcher uses numbers (count from 1) instead of indexes.
+  // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
+  outlet(3, sequenceValues, patternIndex+1, trackIndex+1);
+};
+
+
+launchpad = new Launchpad(noteOut, ctlOut);
+controller = new Controller(launchpad, sequencerOut);
 
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
@@ -49,10 +65,7 @@ function pulse(bars,beats,units) {
   controller.setStepIndex(stepIndex);
 }
 
-/**
- * Initialize
- */
-function bang() {
+function bang() { // (re)initialize on bang
   launchpad.allOff();
   controller.selectTrack(0);
   controller.selectPattern(0);
@@ -60,11 +73,7 @@ function bang() {
 }
 
 function save() {
-  controller.writeState(function(trackIndex, patternIndex, sequenceValues) {
-    // The Max patcher uses numbers (count from 1) instead of indexes.
-    // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
-    outlet(2, sequenceValues, patternIndex+1, trackIndex+1);
-  });
+  controller.writeState(pattrOut);
 }
 
 function load(pattrPath) {
