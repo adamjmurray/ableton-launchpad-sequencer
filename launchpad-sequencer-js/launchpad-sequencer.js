@@ -12,8 +12,20 @@ log=function(msg){post(msg+'\n');};
 
 ALL_NOTES_OFF = 123;
 
-launchpad = new Launchpad();
-controller = new Controller(launchpad);
+launchpad = new Launchpad(
+  function(note, velocity) { // noteout
+    outlet(0, 'note', note, velocity);
+  },
+  function(cc, val) { // ctlout
+    outlet(0, 'ctl', cc, val);
+  }
+);
+
+controller = new Controller(launchpad,
+  function(track, pattern, value) {
+    outlet(1, track, pattern, value);
+  }
+);
 
 function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
@@ -24,7 +36,7 @@ function ctlin(cc,val) {
     // Live sends this when the transport is stopped, and also sends "all notes off" to
     // all connected MIDI devices, which resets the Launchpad, so we need to restore the state:
     controller.reset();
-    saveAll();
+    save();
 
   } else {
     launchpad.ctlin(cc,val);

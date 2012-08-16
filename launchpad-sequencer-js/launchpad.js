@@ -1,7 +1,9 @@
 this.Launchpad = Class.define({
 
-  init: function() {
+  init: function(noteout, ctlout) {
     this.callbacks = {};
+    this.noteout = noteout;
+    this.ctlout = ctlout;
   },
 
   on: function(evt,callback) {
@@ -35,24 +37,24 @@ this.Launchpad = Class.define({
 
   top: function(index,color) {
     if(index >= 0 && index <= 7) {
-      this._ctlout(104+index, color);    
+      this.ctlout(104+index, color);    
     }
   },
     
   grid: function(x,y,color) {
     if(x >= 0 && x <= 7 && y >=0 && y <= 7) {
-      this._noteout(16*y + x, color);  
+      this.noteout(16*y + x, color);  
     }
   },
 
   right: function(index,color) {
     if(index >= 0 && index <= 7) {
-      this._noteout(16*index + 8, color);  
+      this.noteout(16*index + 8, color);  
     }
   },
     
   allOff: function() {
-    this._ctlout(0,0);
+    this.ctlout(0,0);
   },
 
 
@@ -66,14 +68,6 @@ this.Launchpad = Class.define({
         callbacks[i].apply(this,args);
       }
     }
-  },
-
-  _noteout: function(note,velocity) {
-    outlet(0,'note',note,velocity);
-  },
-
-  _ctlout: function(cc,val) {
-    outlet(0,'ctl',cc,val);
   }
 
 });

@@ -20,6 +20,10 @@ this.Pattern = Class.define({
     return this.sequence[this.start + (offset % this.length)];
   },
 
+  setType: function(type) {
+    this.type = type;
+  },
+
   setStep: function(index,value) {
     if(index >=0 && index <=63) {
       this.sequence[index] = value;

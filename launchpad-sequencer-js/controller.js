@@ -16,8 +16,10 @@ this.Controller = Class.define({
   TRACK_COLOR: Launchpad.color(1,2),
   PATTERN_COLOR: Launchpad.color(2,0),
 
-  init: function(launchpad) {
+  init: function(launchpad, output) {
     this.launchpad = launchpad;
+    this.output = output;
+
     this.track = 0; // selected track index
     this.pattern = 0; // selected pattern index
     this.value = 0;
@@ -99,12 +101,14 @@ this.Controller = Class.define({
   },
 
   setStepIndex: function(stepIndex) {
-    var selectedPattern = this.selectedPattern,
-        oldStepIndex = this.stepIndex,
-        oldX = oldStepIndex % 8,
-        oldY = Math.floor(oldStepIndex/8) % 8,
-        x = stepIndex % 8,
-        y = Math.floor(stepIndex/8) % 8;
+    var
+      output = this.output,
+      selectedPattern = this.selectedPattern,
+      oldStepIndex = this.stepIndex,
+      oldX = oldStepIndex % 8,
+      oldY = Math.floor(oldStepIndex/8) % 8,
+      x = stepIndex % 8,
+      y = Math.floor(stepIndex/8) % 8;
 
     if(oldStepIndex >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[selectedPattern.get(oldStepIndex)]);
 
@@ -116,7 +120,7 @@ this.Controller = Class.define({
           for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
             var step = this.patterns[t][p].get(stepIndex);
             if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
-              outlet(1,t,p,step);
+              output(t,p,step);
             }
           }
         }
