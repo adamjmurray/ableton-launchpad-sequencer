@@ -19,7 +19,6 @@ function notein(pitch,velocity) {
   launchpad.notein(pitch,velocity);
 }
 
-
 function ctlin(cc,val) {
   if(cc === ALL_NOTES_OFF) {
     // Live sends this when the transport is stopped, and also sends "all notes off" to
@@ -48,7 +47,7 @@ function bang() {
   controller.selectValue(1);
 }
 
-function saveAll() {
+function save() {
   controller.writeState(function(trackIndex, patternIndex, sequenceValues) {
     // The Max patcher uses numbers (count from 1) instead of indexes.
     // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
