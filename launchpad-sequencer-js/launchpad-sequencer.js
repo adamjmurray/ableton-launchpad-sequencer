@@ -16,6 +16,7 @@ log=function(msg){post(msg+'\n');};
 // Constants
 
 TRANSPORT_STOP = 123;
+GUI_STEP_WIDTH = 19;
 
 
 //========================================================
@@ -85,6 +86,10 @@ function stepValue(value) {
 
 function pattern(patternIndex) {
   sequencer.selectPattern(patternIndex);
+}
+
+function grid(x,y) {
+  sequencer.setGridValue(x,y);
 }
 
 function clock(bars,beats,units) {
