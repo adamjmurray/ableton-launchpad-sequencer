@@ -32,8 +32,14 @@ this.GUI = Class.define({
     outlet(7, 'clear');
   },
 
-  patternType: function(type) {
-    outlet(8, type || "");
+  trackInfo: function(trackIndex, track) {
+    var trackNumber = trackIndex+1;
+    outlet(8, trackNumber, track.basePitch);
+  },
+
+  patternInfo: function(patternIndex, pattern) {
+    var patternNumber = patternIndex+1;
+    outlet(9, patternNumber, pattern.type || "");
   }
 
 });

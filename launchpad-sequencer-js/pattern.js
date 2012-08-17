@@ -8,14 +8,14 @@ this.Pattern = Class.define({
 
   init: function(type, defaultValue) {
     this.type = type;
-
     if(defaultValue===undefined || defaultValue===null) defaultValue=0;
+
     var seq = [];
-    for(var i=0;i<64;i++) seq.push(defaultValue);
+    for(var i=0; i<STEPS; i++) seq.push(defaultValue);
     this.sequence = seq;
 
     this.start = 0;
-    this.end = 63;
+    this.end = STEPS-1;
     this._updateLength();
   },
 
@@ -28,13 +28,13 @@ this.Pattern = Class.define({
   },
 
   setStep: function(index,value) {
-    if(index >=0 && index <=63) {
+    if(index >=0 && index < STEPS) {
       this.sequence[index] = value;
     }    
   },
 
   setStart: function(index) {
-    if(index >=0 && index <=63) {
+    if(index >=0 && index < STEPS) {
       this.start = index;
       if(this.start > this.end) this.end = this.start;
       this._updateLength();
@@ -42,7 +42,7 @@ this.Pattern = Class.define({
   },
 
   setEnd: function(index) {
-    if(index >=0 && index <=63) {
+    if(index >=0 && index < STEPS) {
       this.end = index;
       if(this.start > this.end) this.start = this.end;
       this._updateLength();

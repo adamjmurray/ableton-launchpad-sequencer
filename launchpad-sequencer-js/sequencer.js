@@ -4,22 +4,13 @@
  */
 this.Sequencer = Class.define({
 
-  PATTERNS: 8,
-
-  TRACKS: 4,
-
+  // TODO: move colors to launchpad (like GUI)
   GRID_COLORS:[
     Launchpad.color(0,0), // off
     Launchpad.color(3,0), // green
     Launchpad.color(3,2), // yellow
     Launchpad.color(2,3), // orange
     Launchpad.color(0,3)  // red
-  ],
-
-  DEFAULT_PATTERN_TYPES: [
-    'gate',
-    'pitch',
-    'velocity'
   ],
 
   STEP_COLOR: Launchpad.color(1,1), // color for current sequencer step, regardless of value
@@ -35,17 +26,16 @@ this.Sequencer = Class.define({
     this.pattern = 0; // selected pattern index
     this.value = 1;
     this.clock = -1;
-    
-    this.patterns = [];
-    for(var t=0;t<this.TRACKS;t++) {
-      var track = [];
-      for(var p=0, ps=this.PATTERNS; p<ps; p++) {
-        track.push( new Pattern(this.DEFAULT_PATTERN_TYPES[p]) );
-      }
-      this.patterns.push(track);
+
+    var tracks = [];
+    for(var t=0; t<TRACKS; t++) {
+      tracks.push( new Track() );
     }
+    this.tracks = tracks;
+
     this._updateSelectedPattern();
 
+    // TODO: can we do this in a more direct, and efficient, way?
     var call = this;
     launchpad.on('topDown', function(index) {
       if(index <= 3) { // left 4 top buttons
@@ -153,9 +143,9 @@ this.Sequencer = Class.define({
         this.gui.grid(x, y, 5);
 
         // generate MIDI output for current step
-        for(var t = 0, ts = this.TRACKS; t < ts; t++) {
-          for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
-            var step = this.patterns[t][p].get(clock);
+        for(var t=0; t<TRACKS; t++) {
+          for(var p=0; p<PATTERNS; p++) {
+            var step = this.tracks[t].patterns[p].get(clock);
             if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
               output(t,p,step);
             }
@@ -166,16 +156,17 @@ this.Sequencer = Class.define({
   },
 
   /**
-   * @param track the track index
-   * @param pattern the pattern index
-   * @param sequence an array of sequence values
+   * @param t the track index
+   * @param p the pattern index
+   * @param stepValues an array of sequence step values
    */
-  setPattern: function(track, pattern, sequence) {
-    if(track >= 0 && track <= 7 && pattern >= 0 && pattern <= 7 && sequence.length===64) {
-      this.patterns[track][pattern].sequence = sequence;
-      if(track === this.track && pattern === this.pattern) {
-        this._drawPattern(track,pattern);
-      }
+  setPattern: function(t, p, stepValues) {
+    if(t<0 || t>=TRACKS || p<0 || p>=PATTERNS || stepValues.length!==64) return; // invalid input
+
+    this.tracks[t].patterns[p].sequence = stepValues;
+
+    if(t === this.track && p === this.pattern) { // update current pattern
+      this._drawPattern(t, p);
     }
   },
 
@@ -184,9 +175,9 @@ this.Sequencer = Class.define({
    * output the state of the sequencing application.
    */
   writeState: function(output) {
-    for(var t = 0, ts = this.TRACKS; t < ts; t++) {
-      for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
-        output(t, p, this.patterns[t][p].sequence);
+    for(var t=0; t<TRACKS; t++) {
+      for(var p=0; p<PATTERNS; p++) {
+        output(t, p, this.tracks[t].patterns[p].sequence);
       }
     }
   },
@@ -196,22 +187,26 @@ this.Sequencer = Class.define({
   // private
 
   _updateSelectedPattern: function(skipRedraw) {
-    this.selectedPattern = this.patterns[this.track][this.pattern];
+    this.selectedPattern = this.tracks[this.track].patterns[this.pattern];
     if(!skipRedraw) this._drawPattern(this.track, this.pattern);
   },
 
   _drawPattern: function(trackIndex, patternIndex) {
-    var pattern = this.patterns[trackIndex][patternIndex];
+    var track = this.tracks[trackIndex];
+    var pattern = track ? track.patterns[patternIndex] : null;
     if(!pattern) return;
-    for(var x=0;x<8;x++) {
-      for(var y=0;y<8;y++) {
-        var step = x + y*8;
+
+    for(var x=0; x<ROW_LENGTH; x++) {
+      for(var y=0; y<ROW_LENGTH; y++) {
+        var step = x + y*ROW_LENGTH;
         var value = pattern.get(step);
-        this.launchpad.grid(x,y, this.GRID_COLORS[value]);
-        this.gui.grid(x,y, value);
+
+        this.launchpad.grid(x, y, this.GRID_COLORS[value]);
+        this.gui.grid(x, y, value);
       }
     }
-    this.gui.patternType(pattern.type);
+    this.gui.trackInfo(trackIndex, track);
+    this.gui.patternInfo(patternIndex, pattern);
   }
 
 });

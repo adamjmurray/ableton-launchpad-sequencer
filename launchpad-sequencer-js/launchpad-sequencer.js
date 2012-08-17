@@ -7,6 +7,7 @@ include('class.js');
 include('gui.js');
 include('launchpad.js');
 include('pattern.js');
+include('track.js');
 include('sequencer.js');
 
 log=function(msg){post(msg+'\n');};
@@ -18,11 +19,16 @@ log=function(msg){post(msg+'\n');};
 TRANSPORT_STOP = 123;
 GUI_STEP_WIDTH = 19;
 
+TRACKS= 4;
+PATTERNS = 8; // patterns per track
+STEPS = 64;   // sequencer steps per pattern
+ROW_LENGTH = 8; // steps per row in the grid
+
 
 //========================================================
 // Output to Max
 
-outlets = 9;
+outlets = 10;
 
 noteOut = function(note, velocity) {
   outlet(0, note, velocity);
