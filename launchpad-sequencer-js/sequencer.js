@@ -1,3 +1,7 @@
+/**
+ * The controller for the sequencing application.
+ * Manages state and keeps the views updated.
+ */
 this.Sequencer = Class.define({
 
   PATTERNS: 8,
@@ -16,9 +20,13 @@ this.Sequencer = Class.define({
   TRACK_COLOR: Launchpad.color(1,2),
   PATTERN_COLOR: Launchpad.color(2,0),
 
-  init: function(launchpad, output) {
+  init: function(launchpad, output, trackOut, stepValueOut, patternOut, gridOut) {
     this.launchpad = launchpad;
     this.output = output;
+    this.trackOut = trackOut;
+    this.stepValueOut = stepValueOut;
+    this.patternOut = patternOut;
+    this.gridOut = gridOut;
 
     this.track = 0; // selected track index
     this.pattern = 0; // selected pattern index
@@ -35,8 +43,11 @@ this.Sequencer = Class.define({
 
     var call = this;
     launchpad.on('topDown', function(index) {
-      if(index <= 3) call.selectTrack(index);
-      else call.selectValue(index-3);      
+      if(index <= 3) { // left 4 top buttons
+        call.selectTrack(index);
+      } else {         // right 4
+        call.selectValue(index-3);
+      }
     });
     launchpad.on('rightDown', function(idx){ call.selectPattern(idx); });
     launchpad.on( 'gridDown', function(x,y){ call.setGridValue( x,y); });
@@ -46,7 +57,7 @@ this.Sequencer = Class.define({
   //==============================================================================
 
   /**
-   * Update the Launchpad lights to reflect the current sequencer state
+   * Update the Launchpad and Max GUI lights to reflect the current sequencer state
    */
   reset: function() {
     this.launchpad.allOff();
@@ -73,6 +84,7 @@ this.Sequencer = Class.define({
       this.track = index;
       this.launchpad.top(index, this.TRACK_COLOR);
       this._updateSelectedPattern(skipRedraw);
+      this.trackOut(index);
     }
   },
 
@@ -81,6 +93,7 @@ this.Sequencer = Class.define({
       if(this.value !== 0) this.launchpad.top(this.value+3, 0);    
       this.value = value;
       if(value !== 0) this.launchpad.top(value+3, this.GRID_COLORS[value]);
+      this.stepValueOut(value);
     }
   },
 
@@ -89,27 +102,39 @@ this.Sequencer = Class.define({
       this.launchpad.right(this.pattern, 0);
       this.pattern = index;
       this.launchpad.right(index, this.PATTERN_COLOR);
+      this.patternOut(index);
       this._updateSelectedPattern(skipRedraw);
     }
   },
 
   setClock: function(clock) {
-    var
-      output = this.output,
-      selectedPattern = this.selectedPattern,
-      oldClock = this.clock,
-      oldX = oldClock % 8,
-      oldY = Math.floor(oldClock/8) % 8,
-      x = clock % 8,
-      y = Math.floor(clock/8) % 8;
-
-    // TODO: be careful, this likely won't work once we allow for changing start & end steps per pattern
-    if(oldClock >= 0) this.launchpad.grid(oldX,oldY, this.GRID_COLORS[selectedPattern.get(oldClock)]);
-
-    if(this.clock !== clock) {
+    var oldClock = this.clock;
+    if(oldClock !== clock) {
       this.clock = clock;
+
+      // a negative clock is inactive, and no updates are needed
+      if(oldClock >= 0) {
+        var oldX = oldClock % 8,
+            oldY = Math.floor(oldClock/8) % 8,
+            oldColor = this.GRID_COLORS[this.selectedPattern.get(oldClock)];
+
+        // update GUI to remove oldClock indicator
+        this.launchpad.grid(oldX, oldY, oldColor);
+        this.gridOut(oldX, oldY, oldColor);
+        // TODO: be careful, this likely won't work once we allow for changing start & end steps per pattern
+      }
+
       if(clock >= 0) {
-        this.launchpad.grid(x,y, this.STEP_COLOR);
+        var output = this.output,
+            x = clock % 8,
+            y = Math.floor(clock/8) % 8,
+            color = this.STEP_COLOR;
+
+        // show the new clock indicator
+        this.launchpad.grid(x, y, color);
+        this.gridOut(x, y, color);
+
+        // generate MIDI output for current step
         for(var t = 0, ts = this.TRACKS; t < ts; t++) {
           for(var p = 0, ps = this.PATTERNS; p < ps; p++) {
             var step = this.patterns[t][p].get(clock);

@@ -20,7 +20,7 @@ TRANSPORT_STOP = 123;
 //========================================================
 // Input & Output to Max
 
-outlets = 4;
+outlets = 8;
 
 noteOut = function(note, velocity) {
   outlet(0, note, velocity);
@@ -40,9 +40,31 @@ pattrOut = function(trackIndex, patternIndex, sequenceValues) {
   outlet(3, sequenceValues, patternIndex+1, trackIndex+1);
 };
 
+guiTrackOut = function(trackIndex) {
+  outlet(4, trackIndex);
+};
+
+guiStepValueOut = function(stepValue) {
+  if(stepValue > 0) { // the GUI goes from 0-3 for G,Y,O,R, which are stepValues 1-4
+    outlet(5, 'active', 1);
+    outlet(5, stepValue-1);
+  } else {
+    // turn off
+    outlet(5, 'active', 0);
+  }
+};
+
+guiPatternOut = function(patternIndex) {
+  outlet(6, patternIndex);
+};
+
+guiGridOut = function(x, y, value) {
+  // TODO: figure out how to draw the LCD
+
+};
 
 launchpad = new Launchpad(noteOut, ctlOut);
-sequencer = new Sequencer(launchpad, sequencerOut);
+sequencer = new Sequencer(launchpad, sequencerOut, guiTrackOut, guiStepValueOut, guiPatternOut, guiGridOut);
 
 
 function bang() { // (re)initialize on bang
