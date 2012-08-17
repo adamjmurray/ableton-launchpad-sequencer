@@ -143,12 +143,16 @@ function load(pattrPath) {
 
         switch(property) {
           case 'ptype':    pattern.type == values[0];  break;
-          case 'sequence': pattern.sequence == values; break;
+          case 'sequence': sequencer.setPattern(trackIndex, patternIndex, values); break;
         }
       }
     }
   }
+  else if(pattrPath == 'dump') { // dump done
+    sequencer.reset();
+  }
 }
+
 
 function save() {
   sequencer.writeState(trackPattrOut, patternPattrOut);
