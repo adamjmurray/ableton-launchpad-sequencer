@@ -4,6 +4,7 @@
 function include(n){var f=new File(n),t=[],e=f.eof,i=0;if(f.isopen){for(;i<e;i++)t+=f.readchars(1);f.close();eval(t+'');}else error("Missing required file: "+n+"\n");}
 
 include('class.js');
+include('gui.js');
 include('launchpad.js');
 include('pattern.js');
 include('sequencer.js');
@@ -40,29 +41,12 @@ pattrOut = function(trackIndex, patternIndex, sequenceValues) {
   outlet(3, sequenceValues, patternIndex+1, trackIndex+1);
 };
 
-guiTrackOut = function(trackIndex) {
-  outlet(4, trackIndex);
-};
-
-guiStepValueOut = function(stepValue) {
-  outlet(5, stepValue);
-};
-
-guiPatternOut = function(patternIndex) {
-  outlet(6, patternIndex);
-};
-
-guiGridOut = function(x, y, value) {
-  // TODO: figure out how to draw the LCD
-
-};
-
 
 //========================================================
 
+gui = new GUI();
 launchpad = new Launchpad(noteOut, ctlOut);
-
-sequencer = new Sequencer(launchpad, sequencerOut, guiTrackOut, guiStepValueOut, guiPatternOut, guiGridOut);
+sequencer = new Sequencer(launchpad, sequencerOut, gui);
 
 
 //========================================================
@@ -81,6 +65,7 @@ function ctlin(cc,val) {
     // Live sends "all notes off" to all connected MIDI devices when the transport stops,
     // which resets the Launchpad, so we need to restore the state:
     sequencer.reset();
+
 
     // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
     sequencer.writeState(pattrOut);
