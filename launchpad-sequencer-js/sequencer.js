@@ -16,6 +16,12 @@ this.Sequencer = Class.define({
     Launchpad.color(0,3)  // red
   ],
 
+  DEFAULT_PATTERN_TYPES: [
+    'gate',
+    'pitch',
+    'velocity'
+  ],
+
   STEP_COLOR: Launchpad.color(1,1), // color for current sequencer step, regardless of value
   TRACK_COLOR: Launchpad.color(1,2),
   PATTERN_COLOR: Launchpad.color(2,0),
@@ -33,7 +39,9 @@ this.Sequencer = Class.define({
     this.patterns = [];
     for(var t=0;t<this.TRACKS;t++) {
       var track = [];
-      for(var p=0;p<this.PATTERNS;p++) track.push(new Pattern());
+      for(var p=0, ps=this.PATTERNS; p<ps; p++) {
+        track.push( new Pattern(this.DEFAULT_PATTERN_TYPES[p]) );
+      }
       this.patterns.push(track);
     }
     this._updateSelectedPattern();
@@ -203,6 +211,7 @@ this.Sequencer = Class.define({
         this.gui.grid(x,y, value);
       }
     }
+    this.gui.patternType(pattern.type);
   }
 
 });

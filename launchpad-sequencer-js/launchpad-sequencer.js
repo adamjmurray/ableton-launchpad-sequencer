@@ -22,7 +22,7 @@ GUI_STEP_WIDTH = 19;
 //========================================================
 // Output to Max
 
-outlets = 8;
+outlets = 9;
 
 noteOut = function(note, velocity) {
   outlet(0, note, velocity);
@@ -66,7 +66,6 @@ function ctlin(cc,val) {
     // Live sends "all notes off" to all connected MIDI devices when the transport stops,
     // which resets the Launchpad, so we need to restore the state:
     sequencer.reset();
-
 
     // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
     sequencer.writeState(pattrOut);

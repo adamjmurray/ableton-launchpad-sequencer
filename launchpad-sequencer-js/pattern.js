@@ -6,11 +6,14 @@
  */
 this.Pattern = Class.define({
 
-  init: function(defaultValue) {
+  init: function(type, defaultValue) {
+    this.type = type;
+
     if(defaultValue===undefined || defaultValue===null) defaultValue=0;
     var seq = [];
     for(var i=0;i<64;i++) seq.push(defaultValue);
     this.sequence = seq;
+
     this.start = 0;
     this.end = 63;
     this._updateLength();

@@ -30,6 +30,10 @@ this.GUI = Class.define({
 
   clearGrid: function() {
     outlet(7, 'clear');
+  },
+
+  patternType: function(type) {
+    outlet(8, type || "");
   }
 
 });
