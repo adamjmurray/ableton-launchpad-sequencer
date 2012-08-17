@@ -148,13 +148,38 @@ this.Sequencer = Class.define({
 
         // generate MIDI output for current step
         for(var t=0; t<TRACKS; t++) {
-          var track = this.tracks[t];
-          for(var p=0; p<PATTERNS; p++) {
-            var pattern = track.patterns[p];
-            var step = pattern.get(clock);
-            if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
-              output(t,p, track.basePitch+step);
+          var track = this.tracks[t],
+              patterns = track.patterns;
+//        for(var p=0; p<PATTERNS; p++) {
+//          var step = pattern.get(clock);
+//          if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
+//            output(t,p, track.basePitch+step);
+//          }
+
+          // for now, just hardcoding, first pattern is gate, second is velocity, and third is pitch
+          var gate = patterns[0].get(clock);
+          if(gate > 0) {
+            var velocity, duration;
+                velocityValue = patterns[1].get(clock),
+                pitch = track.basePitch + patterns[2].get(clock);
+
+            switch(velocityValue) {
+              case 0: velocity = 100; break;
+              case 1: velocity = 127; break;
+              case 3: velocity =  70; break;
+              case 4: velocity =  50; break;
+              default: velocity = 85; break;
+
             }
+
+            switch(gate) {
+              case 1: duration = 0.5; break;
+              case 3: duration = 2; break;
+              case 4: duration = 4; break;
+              default: duration = 1;
+            }
+
+            output(pitch, velocity, duration);
           }
         }
       }

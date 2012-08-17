@@ -38,8 +38,9 @@ ctlOut = function(cc, value) {
   outlet(1, cc, value);
 };
 
-sequencerOut = function(track, pattern, value) {
-  outlet(2, track, pattern, value);
+sequencerOut = function(pitch, velocity, duration) {
+  duration *= 250; // TODO: figure out how to sync with tempo
+  outlet(2, pitch, velocity, duration);
 };
 
 trackPattrOut = function(trackIndex, track) {
