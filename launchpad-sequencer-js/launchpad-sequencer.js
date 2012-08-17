@@ -162,4 +162,3 @@ function save() {
 //========================================================
 // TODO: comment out when not developing
 log('\nrefreshed '+(new Date()).toString());
-bang();

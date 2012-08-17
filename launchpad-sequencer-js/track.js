@@ -2,8 +2,9 @@ this.Track = Class.define({
 
   DEFAULT_PATTERN_TYPES: [
     'gate',
-    'velocity',
-    'pitch'
+    'pitch',
+    'duration',
+    'octave'
   ],
 
   init: function(basePitch) {

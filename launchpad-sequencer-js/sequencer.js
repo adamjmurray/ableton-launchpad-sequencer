@@ -150,33 +150,31 @@ this.Sequencer = Class.define({
         for(var t=0; t<TRACKS; t++) {
           var track = this.tracks[t],
               patterns = track.patterns;
-//        for(var p=0; p<PATTERNS; p++) {
-//          var step = pattern.get(clock);
-//          if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
-//            output(t,p, track.basePitch+step);
-//          }
 
-          // for now, just hardcoding, first pattern is gate, second is velocity, and third is pitch
+          // for now, just hardcoding,
+          // 1st pattern is gate/velocity, 2nd pitch, 3rd duration, 4th octave
           var gate = patterns[0].get(clock);
           if(gate > 0) {
-            var velocity, duration;
-                velocityValue = patterns[1].get(clock),
-                pitch = track.basePitch + patterns[2].get(clock);
+            var velocity,
+                pitch = track.basePitch + patterns[1].get(clock),
+                duration = patterns[2].get(clock),
+                octave = patterns[3].get(clock);
 
-            switch(velocityValue) {
-              case 0: velocity = 100; break;
-              case 1: velocity = 127; break;
-              case 3: velocity =  70; break;
-              case 4: velocity =  50; break;
-              default: velocity = 85; break;
-
+            // TODO: cache value lookup in Arrays (like with colors)
+            switch(gate) {
+              case 1:  velocity =  50; break;
+              case 2:  velocity =  80; break;
+              case 3:  velocity = 105; break;
+              default: velocity = 127;
             }
 
-            switch(gate) {
-              case 1: duration = 0.5; break;
-              case 3: duration = 2; break;
-              case 4: duration = 4; break;
-              default: duration = 1;
+            if(duration===0) duration = 0.5; // off is half-step duration
+
+            switch(octave) {
+              case 1: pitch += 12; break;
+              case 2: pitch += 24; break;
+              case 3: pitch -= 12; break;
+              case 4: pitch -= 24; break;
             }
 
             output(pitch, velocity, duration);
