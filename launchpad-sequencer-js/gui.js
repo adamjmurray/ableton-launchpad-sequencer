@@ -22,10 +22,10 @@ this.GUI = Class.define({
   },
 
   grid: function(x, y, value) {
-    var left = x*16 + 2,
-        top  = y*16 + 2;
+    var left = x*19 + 2,
+        top  = y*19 + 2;
     outlet(7, 'frgb', this.GRID_COLORS[value]);
-    outlet(7, 'paintrect', left, top, left+12, top+12);
+    outlet(7, 'paintrect', left, top, left+13, top+13);
   },
 
   clearGrid: function() {
