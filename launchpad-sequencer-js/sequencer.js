@@ -86,6 +86,10 @@ this.Sequencer = Class.define({
     }
   },
 
+  selectedTrack: function() {
+    return this.tracks[this.track];
+  },
+
   selectValue: function(value, preventToggle) {
     if(value >= 0 && value <= 4) {
       var oldValue = this.value;
@@ -144,10 +148,12 @@ this.Sequencer = Class.define({
 
         // generate MIDI output for current step
         for(var t=0; t<TRACKS; t++) {
+          var track = this.tracks[t];
           for(var p=0; p<PATTERNS; p++) {
-            var step = this.tracks[t].patterns[p].get(clock);
+            var pattern = track.patterns[p];
+            var step = pattern.get(clock);
             if(step > 0) { // a simple filter for preliminary testing. TODO: interpret what these patterns mean
-              output(t,p,step);
+              output(t,p, track.basePitch+step);
             }
           }
         }

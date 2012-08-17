@@ -103,6 +103,13 @@ function grid(x,y) {
   sequencer.setGridValue(x,y);
 }
 
+/**
+ * sets the basePitch for the current track
+ */
+function basePitch(pitch) {
+  sequencer.selectedTrack().basePitch = pitch;
+}
+
 function clock(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
   var clockIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
