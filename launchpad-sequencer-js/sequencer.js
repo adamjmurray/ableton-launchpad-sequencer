@@ -61,7 +61,7 @@ this.Sequencer = Class.define({
     this.gui.clearGrid();
 
     this.setClock(this.clock);
-    this.selectValue(this.value);
+    this.selectValue(this.value, true);
     this.selectTrack(this.track, true);
     this.selectPattern(this.pattern);
   },
@@ -88,10 +88,19 @@ this.Sequencer = Class.define({
     }
   },
 
-  selectValue: function(value) {
-    if(value >= 0 && value <= 4) { 
-      if(this.value !== 0) this.launchpad.top(this.value+3, 0);    
+  selectValue: function(value, preventToggle) {
+    if(value >= 0 && value <= 4) {
+      var oldValue = this.value;
+
+      if(oldValue !== 0) { // hide old value:
+        this.launchpad.top(this.value+3, 0);
+      }
+      if(oldValue === value && !preventToggle) { // toggle
+        value = 0
+      }
       this.value = value;
+
+      // show new value
       if(value !== 0) this.launchpad.top(value+3, this.GRID_COLORS[value]);
       this.gui.stepValue(value);
     }
