@@ -12,7 +12,7 @@ this.Track = Class.define({
 
     var patterns = [];
     for(var p=0; p<PATTERNS; p++) {
-      patterns.push( new Pattern(this.DEFAULT_PATTERN_TYPES[p]) );
+      patterns.push( new Pattern(this.DEFAULT_PATTERN_TYPES[p] || "?") );
     }
     this.patterns = patterns;
   }

@@ -28,7 +28,7 @@ ROW_LENGTH = 8; // steps per row in the grid
 //========================================================
 // Output to Max
 
-outlets = 10;
+outlets = 11;
 
 noteOut = function(note, velocity) {
   outlet(0, note, velocity);
@@ -42,10 +42,16 @@ sequencerOut = function(track, pattern, value) {
   outlet(2, track, pattern, value);
 };
 
-pattrOut = function(trackIndex, patternIndex, sequenceValues) {
+trackPattrOut = function(trackIndex, track) {
   // The Max patcher uses numbers (count from 1) instead of indexes.
   // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
-  outlet(3, sequenceValues, patternIndex+1, trackIndex+1);
+  outlet(3, track.basePitch, trackIndex+1);
+};
+
+patternPattrOut = function(trackIndex, patternIndex, pattern) {
+  // The Max patcher uses numbers (count from 1) instead of indexes.
+  // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
+  outlet(4, pattern.type, pattern.sequence, patternIndex+1, trackIndex+1);
 };
 
 
@@ -74,7 +80,7 @@ function ctlin(cc,val) {
     sequencer.reset();
 
     // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
-    sequencer.writeState(pattrOut);
+    save();
 
   } else {
     launchpad.ctlin(cc,val);
@@ -104,16 +110,42 @@ function clock(bars,beats,units) {
 }
 
 function load(pattrPath) {
-  // pattrPath looks like "track.1::pattern.1::sequence"
-  var matches = /^track\.(\d)::pattern\.(\d)::sequence$/.exec(pattrPath);
+  // pattrPaths look like:
+  // track.1::basePitch 60.
+  // track.1::pattern.1::sequence 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  // track.1::pattern.1::ptype gate
+
+  var matches =/^track\.(\d+)::(.*)/.exec(pattrPath);
   if(matches) {
-    var trackNumber = parseInt(matches[1]);
-    var patternNumber = parseInt(matches[2]);
-    var sequenceValues = Array.prototype.slice.call(arguments, 1); // all the arguments after the first one
-    sequencer.setPattern(trackNumber-1, patternNumber-1, sequenceValues);
+    var trackIndex = parseInt(matches[1]) - 1,
+        track = sequencer.tracks[trackIndex],
+        subpath = matches[2],
+        values = Array.prototype.slice.call(arguments, 1); // all the arguments after the first one
+    if(!track) return;
+
+    if(subpath === 'basePitch') {
+      track.basePitch = parseInt(values[0]);
+    }
+    else {
+      matches = /^pattern\.(\d+)::(.*)/.exec(subpath);
+      if(matches) {
+        var patternIndex = parseInt(matches[1]) - 1,
+            pattern = track.patterns[patternIndex],
+            property = matches[2];
+        if(!pattern) return;
+
+        switch(property) {
+          case 'ptype':    pattern.type == values[0];  break;
+          case 'sequence': pattern.sequence == values; break;
+        }
+      }
+    }
   }
 }
 
+function save() {
+  sequencer.writeState(trackPattrOut, patternPattrOut);
+}
 
 //========================================================
 // TODO: comment out when not developing

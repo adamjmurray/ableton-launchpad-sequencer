@@ -10,36 +10,36 @@ this.GUI = Class.define({
   ],
 
   track: function(trackIndex) {
-    outlet(4, trackIndex);
+    outlet(5, trackIndex);
   },
 
   stepValue: function(stepValue) {
-    outlet(5, stepValue);
+    outlet(6, stepValue);
   },
 
   pattern: function(patternIndex) {
-    outlet(6, patternIndex);
+    outlet(7, patternIndex);
   },
 
   grid: function(x, y, value) {
     var left = x*GUI_STEP_WIDTH + 2,
         top  = y*GUI_STEP_WIDTH + 2;
-    outlet(7, 'frgb', this.GRID_COLORS[value]);
-    outlet(7, 'paintrect', left, top, left+13, top+13);
+    outlet(8, 'frgb', this.GRID_COLORS[value]);
+    outlet(8, 'paintrect', left, top, left+13, top+13);
   },
 
   clearGrid: function() {
-    outlet(7, 'clear');
+    outlet(8, 'clear');
   },
 
   trackInfo: function(trackIndex, track) {
     var trackNumber = trackIndex+1;
-    outlet(8, trackNumber, track.basePitch);
+    outlet(9, trackNumber, track.basePitch);
   },
 
   patternInfo: function(patternIndex, pattern) {
     var patternNumber = patternIndex+1;
-    outlet(9, patternNumber, pattern.type || "");
+    outlet(10, patternNumber, pattern.type || "");
   }
 
 });

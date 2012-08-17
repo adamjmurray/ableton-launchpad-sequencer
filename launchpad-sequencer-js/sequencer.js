@@ -171,13 +171,16 @@ this.Sequencer = Class.define({
   },
 
   /**
-   * Given an output function(trackIndex, patternIndex, sequenceValues)
    * output the state of the sequencing application.
    */
-  writeState: function(output) {
+  writeState: function(trackOut, patternOut) {
     for(var t=0; t<TRACKS; t++) {
+      var track = this.tracks[t];
+      trackOut(t, track);
+
       for(var p=0; p<PATTERNS; p++) {
-        output(t, p, this.tracks[t].patterns[p].sequence);
+        var pattern = track.patterns[p];
+        patternOut(t, p, pattern);
       }
     }
   },
