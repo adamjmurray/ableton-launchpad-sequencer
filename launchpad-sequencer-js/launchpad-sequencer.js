@@ -18,7 +18,7 @@ TRANSPORT_STOP = 123;
 
 
 //========================================================
-// Input & Output to Max
+// Output to Max
 
 outlets = 8;
 
@@ -45,13 +45,7 @@ guiTrackOut = function(trackIndex) {
 };
 
 guiStepValueOut = function(stepValue) {
-  if(stepValue > 0) { // the GUI goes from 0-3 for G,Y,O,R, which are stepValues 1-4
-    outlet(5, 'active', 1);
-    outlet(5, stepValue-1);
-  } else {
-    // turn off
-    outlet(5, 'active', 0);
-  }
+  outlet(5, stepValue);
 };
 
 guiPatternOut = function(patternIndex) {
@@ -63,9 +57,16 @@ guiGridOut = function(x, y, value) {
 
 };
 
+
+//========================================================
+
 launchpad = new Launchpad(noteOut, ctlOut);
+
 sequencer = new Sequencer(launchpad, sequencerOut, guiTrackOut, guiStepValueOut, guiPatternOut, guiGridOut);
 
+
+//========================================================
+// Input from Max
 
 function bang() { // (re)initialize on bang
   sequencer.reset();
@@ -87,6 +88,18 @@ function ctlin(cc,val) {
   } else {
     launchpad.ctlin(cc,val);
   }
+}
+
+function track(trackIndex) {
+  sequencer.selectTrack(trackIndex);
+}
+
+function stepValue(value) {
+  sequencer.selectValue(value);
+}
+
+function pattern(patternIndex) {
+  sequencer.selectPattern(patternIndex);
 }
 
 function clock(bars,beats,units) {
