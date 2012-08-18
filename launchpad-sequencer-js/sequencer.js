@@ -22,10 +22,10 @@ this.Sequencer = Class.define({
     this.output = output;
     this.gui = gui;
 
-    this.track = 0; // selected track index
+    this.track = 0;   // selected track index
     this.pattern = 0; // selected pattern index
-    this.value = 1;
-    this.clock = -1;
+    this.value = 1;   // selected step value
+    this.clock = -1;  // current transport time, in steps
 
     var tracks = [];
     for(var t=0; t<TRACKS; t++) {
@@ -84,10 +84,6 @@ this.Sequencer = Class.define({
       this._updateSelectedPattern(skipRedraw);
       this.gui.track(index);
     }
-  },
-
-  selectedTrack: function() {
-    return this.tracks[this.track];
   },
 
   selectValue: function(value, preventToggle) {
@@ -219,8 +215,11 @@ this.Sequencer = Class.define({
   // private
 
   _updateSelectedPattern: function(skipRedraw) {
-    this.selectedPattern = this.tracks[this.track].patterns[this.pattern];
-    if(!skipRedraw) this._drawPattern(this.track, this.pattern);
+    var trackIndex = this.track,
+        patternIndex = this.pattern;
+    this.selectedTrack = this.tracks[trackIndex];
+    this.selectedPattern = this.selectedTrack.patterns[patternIndex];
+    if(!skipRedraw) this._drawPattern(trackIndex, patternIndex);
   },
 
   _drawPattern: function(trackIndex, patternIndex) {

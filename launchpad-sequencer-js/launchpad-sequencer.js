@@ -108,7 +108,7 @@ function grid(x,y) {
  * sets the basePitch for the current track
  */
 function basePitch(pitch) {
-  sequencer.selectedTrack().basePitch = pitch;
+  sequencer.selectedTrack.basePitch = pitch;
 }
 
 function clock(bars,beats,units) {
