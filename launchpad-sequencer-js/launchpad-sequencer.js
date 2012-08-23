@@ -12,7 +12,6 @@ include('sequencer.js');
 
 log=function(msg){post(msg+'\n');};
 
-
 //========================================================
 // Constants
 
@@ -67,7 +66,11 @@ sequencer = new Sequencer(launchpad, sequencerOut, gui);
 // Input from Max
 
 function bang() { // (re)initialize on bang
-  sequencer.reset();
+  sequencer.redraw();
+}
+
+function factoryReset() {
+  sequencer.factoryReset();
 }
 
 function notein(pitch,velocity) {
@@ -77,8 +80,8 @@ function notein(pitch,velocity) {
 function ctlin(cc,val) {
   if(cc === TRANSPORT_STOP) {
     // Live sends "all notes off" to all connected MIDI devices when the transport stops,
-    // which resets the Launchpad, so we need to restore the state:
-    sequencer.reset();
+    // which resets the Launchpad, so we need to re-sync the state:
+    sequencer.redraw();
 
     // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
     save();
@@ -165,7 +168,7 @@ function load(pattrPath) {
     }
   }
   else if(pattrPath == 'dump') { // dump done
-    sequencer.reset();
+    sequencer.redraw();
   }
 }
 

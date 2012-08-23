@@ -22,18 +22,7 @@ this.Sequencer = Class.define({
     this.output = output;
     this.gui = gui;
 
-    this.track = 0;   // selected track index
-    this.pattern = 0; // selected pattern index
-    this.value = 1;   // selected step value
-    this.clock = -1;  // current transport time, in steps
-
-    var tracks = [];
-    for(var t=0; t<TRACKS; t++) {
-      tracks.push( new Track() );
-    }
-    this.tracks = tracks;
-
-    this._updateSelectedPattern();
+    this.factoryReset(true);
 
     // TODO: can we do this in a more direct, and efficient, way?
     var call = this;
@@ -52,9 +41,29 @@ this.Sequencer = Class.define({
   //==============================================================================
 
   /**
+   * Clear all patterns and set all track and pattern properties to their default values.
+   */
+  factoryReset: function(skipRedraw) {
+    this.track = 0;   // selected track index
+    this.pattern = 0; // selected pattern index
+    this.value = 1;   // selected step value
+    this.clock = -1;  // current transport time, in steps
+
+    var tracks = [];
+    for(var t=0; t<TRACKS; t++) {
+      tracks.push( new Track() );
+    }
+    this.tracks = tracks;
+
+    this._updateSelectedPattern(true);
+
+    if(!skipRedraw) this.redraw();
+  },
+
+  /**
    * Update the Launchpad and Max GUI lights to reflect the current sequencer state
    */
-  reset: function() {
+  redraw: function() {
     this.launchpad.allOff();
     this.gui.clearGrid();
 
