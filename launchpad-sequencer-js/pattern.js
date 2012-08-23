@@ -19,23 +19,13 @@ this.Pattern = Class.define({
     this._updateLength();
   },
 
-  get: function(offset) {
-    return this.sequence[this.start + (offset % this.length)];
-  },
-
   setType: function(type) {
     this.type = type;
   },
 
-  setStep: function(index,value) {
-    if(index >=0 && index < STEPS) {
-      this.sequence[index] = value;
-    }    
-  },
-
   setStart: function(index) {
     if(index >=0 && index < STEPS) {
-      this.start = index;
+      this.start = parseInt(index);
       if(this.start > this.end) this.end = this.start;
       this._updateLength();
     }
@@ -43,10 +33,36 @@ this.Pattern = Class.define({
 
   setEnd: function(index) {
     if(index >=0 && index < STEPS) {
-      this.end = index;
+      this.end = parseInt(index);
       if(this.start > this.end) this.start = this.end;
       this._updateLength();
     }
+  },
+
+  getStep: function(index) {
+    return this.sequence[index];
+  },
+
+  setStep: function(index,value) {
+    if(index >=0 && index < STEPS) {
+      this.sequence[index] = value;
+    }
+  },
+
+  /**
+   * Given a clock index (in steps) return the active step in this pattern,
+   * taking into account the start and end step.
+   */
+  stepForClock: function(clock) {
+    if(clock >= 0) {
+      return (clock % this.length) + this.start;
+    } else {
+      return -1;
+    }
+  },
+
+  getStepForClock: function(clock) {
+    return this.getStep(this.stepForClock(clock));
   },
 
   _updateLength: function() {

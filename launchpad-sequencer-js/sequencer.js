@@ -67,7 +67,7 @@ this.Sequencer = Class.define({
     this.launchpad.allOff();
     this.gui.clearGrid();
 
-    this.setClock(this.clock);
+    //this.setClock(this.clock);
     this.selectValue(this.value, true);
     this.selectTrack(this.track, true);
     this.selectPattern(this.pattern);
@@ -78,7 +78,7 @@ this.Sequencer = Class.define({
         selectedPattern = this.selectedPattern,
         value = this.value;
 
-    if(value === selectedPattern.get(step)) value = 0; // toggle off
+    if(value === selectedPattern.getStep(step)) value = 0; // toggle off
     selectedPattern.setStep(step, value);
 
     this.launchpad.grid(x, y, this.GRID_COLORS[value]);
@@ -127,65 +127,8 @@ this.Sequencer = Class.define({
     var oldClock = this.clock;
     if(oldClock !== clock) {
       this.clock = clock;
-
-      // a negative clock is inactive, and no updates are needed
-      if(oldClock >= 0) {
-        var oldX = oldClock % 8,
-            oldY = Math.floor(oldClock/8) % 8,
-            oldValue = this.selectedPattern.get(oldClock),
-            oldColor = this.GRID_COLORS[oldValue];
-
-        // update GUI to remove oldClock indicator
-        this.launchpad.grid(oldX, oldY, oldColor);
-        this.gui.grid(oldX, oldY, oldValue);
-        // TODO: be careful, this likely won't work once we allow for changing start & end steps per pattern
-      }
-
-      if(clock >= 0) {
-        var output = this.output,
-            x = clock % 8,
-            y = Math.floor(clock/8) % 8,
-            color = this.STEP_COLOR;
-
-        // show the new clock indicator
-        this.launchpad.grid(x, y, color);
-        this.gui.grid(x, y, 5);
-
-        // generate MIDI output for current step
-        for(var t=0; t<TRACKS; t++) {
-          var track = this.tracks[t],
-              patterns = track.patterns;
-
-          // for now, just hardcoding,
-          // 1st pattern is gate/velocity, 2nd pitch, 3rd duration, 4th octave
-          var gate = patterns[0].get(clock);
-          if(gate > 0) {
-            var velocity,
-                pitch = track.basePitch + patterns[1].get(clock),
-                duration = patterns[2].get(clock),
-                octave = patterns[3].get(clock);
-
-            // TODO: cache value lookup in Arrays (like with colors)
-            switch(gate) {
-              case 1:  velocity =  50; break;
-              case 2:  velocity =  80; break;
-              case 3:  velocity = 105; break;
-              default: velocity = 127;
-            }
-
-            if(duration===0) duration = 0.5; // off is half-step duration
-
-            switch(octave) {
-              case 1: pitch += 12; break;
-              case 2: pitch += 24; break;
-              case 3: pitch -= 12; break;
-              case 4: pitch -= 24; break;
-            }
-
-            output(pitch, velocity, duration);
-          }
-        }
-      }
+      this._drawActiveStep();
+      this._generateOutputForActiveStep();
     }
   },
 
@@ -239,14 +182,89 @@ this.Sequencer = Class.define({
     for(var x=0; x<ROW_LENGTH; x++) {
       for(var y=0; y<ROW_LENGTH; y++) {
         var step = x + y*ROW_LENGTH;
-        var value = pattern.get(step);
+        var value = pattern.getStep(step);
 
         this.launchpad.grid(x, y, this.GRID_COLORS[value]);
         this.gui.grid(x, y, value);
       }
     }
+
+    this.activeStep = -1;
+    this._drawActiveStep();
+
     this.gui.trackInfo(trackIndex, track);
     this.gui.patternInfo(patternIndex, pattern);
+  },
+
+  _drawActiveStep: function() {
+    var selectedPattern = this.selectedPattern,
+        oldActiveStep = this.activeStep,
+        activeStep = selectedPattern.stepForClock(this.clock);
+
+    // remove old active step indicators
+    if(oldActiveStep >= 0) {
+      var oldX = oldActiveStep % 8,
+          oldY = Math.floor(oldActiveStep/8) % 8,
+          oldValue = selectedPattern.getStep(oldActiveStep),
+          oldColor = this.GRID_COLORS[oldValue];
+
+      this.launchpad.grid(oldX, oldY, oldColor);
+      this.gui.grid(oldX, oldY, oldValue);
+    }
+
+    this.activeStep = activeStep;
+
+    // show the new active step indicators
+    if(activeStep >= 0) {
+      var x = activeStep % 8,
+          y = Math.floor(activeStep/8) % 8,
+          color = this.STEP_COLOR;
+
+      this.launchpad.grid(x, y, color);
+      this.gui.grid(x, y, 5);
+    }
+  },
+
+  _generateOutputForActiveStep: function() {
+    var clock = this.clock;
+    if(clock >= 0) {
+      var output = this.output;
+
+      // generate MIDI output for current step
+      for(var t=0; t<TRACKS; t++) {
+        var track = this.tracks[t],
+            patterns = track.patterns;
+
+        // for now, just hardcoding,
+        // 1st pattern is gate/velocity, 2nd pitch, 3rd duration, 4th octave
+        var gate = patterns[0].getStepForClock(clock);
+        if(gate > 0) {
+          var velocity,
+              pitch = track.basePitch + patterns[1].getStepForClock(clock),
+              duration = patterns[2].getStepForClock(clock),
+              octave = patterns[3].getStepForClock(clock);
+
+          // TODO: cache value lookup in Arrays (like with colors)
+          switch(gate) {
+            case 1:  velocity =  50; break;
+            case 2:  velocity =  80; break;
+            case 3:  velocity = 105; break;
+            default: velocity = 127;
+          }
+
+          if(duration===0) duration = 0.5; // off is half-step duration
+
+          switch(octave) {
+            case 1: pitch += 12; break;
+            case 2: pitch += 24; break;
+            case 3: pitch -= 12; break;
+            case 4: pitch -= 24; break;
+          }
+
+          output(pitch, velocity, duration);
+        }
+      }
+    }
   }
 
 });

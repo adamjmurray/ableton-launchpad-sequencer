@@ -81,6 +81,7 @@ function ctlin(cc,val) {
   if(cc === TRANSPORT_STOP) {
     // Live sends "all notes off" to all connected MIDI devices when the transport stops,
     // which resets the Launchpad, so we need to re-sync the state:
+    sequencer.setClock(-1);
     sequencer.redraw();
 
     // Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
@@ -116,14 +117,13 @@ function basePitch(pitch) {
 
 function startStep(stepNumber) {
   // set current pattern's starting step index
-  sequencer.selectedPattern.start = stepNumber-1;
+  sequencer.selectedPattern.setStart(stepNumber-1);
 }
 
 function endStep(stepNumber) {
   // set current pattern's ending step index
-  sequencer.selectedPattern.end = stepNumber-1;
+  sequencer.selectedPattern.setEnd(stepNumber-1);
 }
-
 
 function clock(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
@@ -159,9 +159,9 @@ function load(pattrPath) {
         if(!pattern) return;
 
         switch(property) {
-          case 'ptype':    pattern.type = values[0];  break;
-          case 'start':    pattern.start = values[0];  break;
-          case 'end':      pattern.end = values[0];  break;
+          case 'ptype':    pattern.setType(values[0]);  break;
+          case 'start':    pattern.setStart(values[0]);  break;
+          case 'end':      pattern.setEnd(values[0]);  break;
           case 'sequence': sequencer.setPattern(trackIndex, patternIndex, values); break;
         }
       }
