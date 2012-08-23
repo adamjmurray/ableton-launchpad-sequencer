@@ -38,8 +38,8 @@ this.GUI = Class.define({
   },
 
   patternInfo: function(patternIndex, pattern) {
-    var patternNumber = patternIndex+1;
-    outlet(10, patternNumber, pattern.type || "");
+    // values in the Max GUI are numbers counting from 1, hence all the "+1"s
+    outlet(10, patternIndex+1, pattern.type, pattern.start+1, pattern.end+1);
   }
 
 });

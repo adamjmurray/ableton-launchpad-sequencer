@@ -52,7 +52,7 @@ trackPattrOut = function(trackIndex, track) {
 patternPattrOut = function(trackIndex, patternIndex, pattern) {
   // The Max patcher uses numbers (count from 1) instead of indexes.
   // We also reverse the order so it's easy to use [zl ecils] to control poly~ target
-  outlet(4, pattern.type, pattern.sequence, patternIndex+1, trackIndex+1);
+  outlet(4, pattern.type, pattern.start, pattern.end, pattern.sequence, patternIndex+1, trackIndex+1);
 };
 
 
@@ -111,6 +111,17 @@ function basePitch(pitch) {
   sequencer.selectedTrack.basePitch = pitch;
 }
 
+function startStep(stepNumber) {
+  // set current pattern's starting step index
+  sequencer.selectedPattern.start = stepNumber-1;
+}
+
+function endStep(stepNumber) {
+  // set current pattern's ending step index
+  sequencer.selectedPattern.end = stepNumber-1;
+}
+
+
 function clock(bars,beats,units) {
   // assume 4/4 with 1/16 note pulses
   var clockIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120);
@@ -122,6 +133,8 @@ function load(pattrPath) {
   // track.1::basePitch 60.
   // track.1::pattern.1::sequence 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
   // track.1::pattern.1::ptype gate
+  // track.1::pattern.1::start 0
+  // track.1::pattern.1::end 63
 
   var matches =/^track\.(\d+)::(.*)/.exec(pattrPath);
   if(matches) {
@@ -143,7 +156,9 @@ function load(pattrPath) {
         if(!pattern) return;
 
         switch(property) {
-          case 'ptype':    pattern.type == values[0];  break;
+          case 'ptype':    pattern.type = values[0];  break;
+          case 'start':    pattern.start = values[0];  break;
+          case 'end':      pattern.end = values[0];  break;
           case 'sequence': sequencer.setPattern(trackIndex, patternIndex, values); break;
         }
       }
