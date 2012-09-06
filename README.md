@@ -7,14 +7,30 @@ Built with [Max/MSP](http://cycling74.com/products/max/) and [Max for Live](http
 of the code written in [CoffeeScript](http://coffeescript.org/).
 
 
+## Usage
+
+### Downloading
+
+[Download the latest version of this project here](https://github.com/adamjmurray/m4l-launchpad-sequencer/zipball/master)
+
+### Example project
+
+Open the Ableton Live project under the examples folder and follow the instructions in the launchpad sequencer device.
+
+### Using in your own projects
+
+Copy the contents of app folder to your project, then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd
+devices to your project. For setup detais, consult the example project.
+
+
 ## Building from Source
 
 ### Prerequisites
 
-0. Install [Node.JS](http://nodejs.org/)
+0. Install [Node.js](http://nodejs.org/)
 0. Install [CoffeeScript](http://coffeescript.org/#installation) via npm
 
-### Building for distribution
+### Building for normal use & distribution
 
 From this directory, run:
 
