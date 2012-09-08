@@ -15,12 +15,16 @@ of the code written in [CoffeeScript](http://coffeescript.org/).
 
 ### Example project
 
-Open the Ableton Live project under the examples folder and follow the instructions in the launchpad sequencer device.
+Open the Ableton Live project under the example-project folder
+and follow the instructions in the launchpad sequencer device.
 
-### Using in your own projects
+### Using in your own Ableton Live projects
 
-Copy the contents of app folder to your project, then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd
-devices to your project. For setup detais, consult the example project.
+Save the launchpad-sequencer folder to your computer,
+then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd devices to your project.
+For Live setup details, consult the example project.
+
+For new projects, it's easiest to simply save a copy of the example project.
 
 
 ## Building from Source
@@ -34,10 +38,10 @@ devices to your project. For setup detais, consult the example project.
 
 From this directory, run:
 
-    coffee --join app/launchpad-sequencer.js --compile lib/*.coffee
+    coffee --join launchpad-sequencer/launchpad-sequencer.js --compile lib/*.coffee
 
 ### Auto-building during development
 
 From this directory, run:
 
-    coffee --watch --join app/launchpad-sequencer.js --compile lib/*.coffee
+    coffee --watch --join launchpad-sequencer/launchpad-sequencer.js --compile lib/*.coffee
