@@ -38,10 +38,10 @@ For new projects, it's easiest to simply save a copy of the example project.
 
 From this directory, run:
 
-    coffee --join launchpad-sequencer/launchpad-sequencer.js --compile lib/*.coffee
+    cake build
 
 ### Auto-building during development
 
 From this directory, run:
 
-    coffee --watch --join launchpad-sequencer/launchpad-sequencer.js --compile lib/*.coffee
+    cake dev
