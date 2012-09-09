@@ -5,9 +5,8 @@
 #
 class Pattern
 
-  constructor: (@type, @defaultValue) ->
-    @defaultValue ?= 0
-    @sequence = (defaultValue for i in [0...STEPS])
+  constructor: (@type, @defaultValue = 0) ->
+    @sequence = (@defaultValue for i in [0...STEPS])
     @start = 0
     @end = STEPS - 1
     @_updateLength()
