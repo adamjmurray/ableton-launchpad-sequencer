@@ -1,28 +1,45 @@
 SRCS = [
+  'core'
   'launchpad'
+  'pattern'
+  'track'
   'main'
 ]
-BASE_BUILD_CMD = '--bare --join launchpad-sequencer/launchpad-sequencer.js --compile '
-BASE_BUILD_CMD += ("lib/#{src}.coffee" for src in SRCS).join(' ')
+
+SRC_FILES = ("lib/#{src}.coffee" for src in SRCS)
+
+COFFEE_ARGS = [
+  '--bare'
+  '--join'
+  'launchpad-sequencer/launchpad-sequencer.js'
+  '--compile'
+].concat SRC_FILES
 
 
-process = require 'child_process'
-
-exec = (cmd) ->
-  console.log "\n#{cmd}"
-  process.exec cmd, (error, stdout, stderr) ->
-    console.log stdout if stdout
-    if error
-      console.error "ERROR"
-      console.error stderr
+exec = (cmd, args, options={}) ->
+  console.log "\n#{cmd} #{args.join(' ')}"
+  console.log options.message if options.message
+  process = require('child_process').spawn(cmd, args)
+  process.stdout.on 'data', (data)-> console.log(data.toString())
+  process.stderr.on 'data', (data)-> console.log(data.toString())
+  process.on 'exit', (code)->
+    if code == 0
+      console.log "SUCCESS" unless options.suppressStatus
     else
-      console.log "SUCCESS"
+      console.log "exited with error code #{code}" unless options.suppressStatus
 
 
 task 'dev', 'watch the source files and rebuild automatically while developing', ->
-  console.log "\nWatching files... use ctrl+C to exit."
-  exec "coffee --watch #{BASE_BUILD_CMD}"
+  exec 'coffee', ['--watch'].concat(COFFEE_ARGS), {
+    message: "\nWatching files... use ctrl+C to exit.\n"
+  }
 
 
 task 'build', 'build the app', ->
-  exec "coffee #{BASE_BUILD_CMD}"
+  exec 'coffee', COFFEE_ARGS
+
+
+task 'validate', 'validate syntax', ->
+  for file in SRC_FILES
+    unless file == 'lib/main.coffee' # this will always fail because it depends on the other files
+      returnCode = exec 'coffee', [file], {suppressStatus: true}
