@@ -26,6 +26,18 @@ class Sequencer
     @selectTrack(@track, true)
     @selectPattern(@pattern)
 
+  # Quickly draw the Launchpad lights assuming all lights are currently off
+  drawLaunchpad: ->
+    @launchpad.track(@track)
+    @launchpad.stepValue(@value)
+    @launchpad.pattern(@pattern)
+    pattern = @selectedPattern
+    for x in [0...ROW_LENGTH]
+      for y in [0...ROW_LENGTH]
+        step = x + y*ROW_LENGTH
+        value = pattern.getStep(step)
+        @launchpad.grid(x, y, value)
+
 
   setGridValue: (x,y) ->
     step = x + y*8
@@ -78,19 +90,10 @@ class Sequencer
   # @param p the pattern index
   # @param stepValues an array of sequence step values
   setPattern: (t, p, stepValues) ->
-    return unless 0 <= t < TRACKS and 0 <= p < PATTERNS and stepValues.length == 60
+    return unless (0 <= t < TRACKS) and (0 <= p < PATTERNS) and (stepValues.length == 64)
     @tracks[t].patterns[p].sequence = stepValues
     @_drawPattern(t, p) if t == @track and p == @pattern # update current pattern
 
-
-  # output the state of the sequencing application.
-  writeState: (trackOut, patternOut) ->
-    for t in [0...TRACKS]
-      track = @tracks[t]
-      trackOut(t, track)
-      for p in [0...PATTERNS]
-        pattern = track.patterns[p]
-        patternOut(t, p, pattern)
 
 
   # ==============================================================================

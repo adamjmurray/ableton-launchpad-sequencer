@@ -28,10 +28,12 @@ factoryReset = -> sequencer.factoryReset()
 notein = (pitch, velocity) -> launchpad.notein(pitch, velocity)
 ctlin = (cc, val) ->
   if cc == TRANSPORT_STOP
+    sequencer.setClock(-1)
+
     # Live sends "all notes off" to all connected MIDI devices when the transport stops,
     # which resets the Launchpad, so we need to re-sync the state:
-    sequencer.setClock(-1)
-    sequencer.redraw()
+    sequencer.drawLaunchpad()
+    # sequencer.redraw() # this is slower
 
     # Also use this as an opportunity to record the sequencer state without affecting realtime audio performance
     save()
@@ -40,11 +42,17 @@ ctlin = (cc, val) ->
 
 
 track = (trackIndex) -> sequencer.selectTrack(trackIndex)
+
 stepValue = (value) -> sequencer.selectValue(value)
+
 pattern = (patternIndex) -> sequencer.selectPattern(patternIndex)
+
 grid = (x,y) -> sequencer.setGridValue(x,y)
+
 basePitch = (pitch) -> sequencer.selectedTrack?.basePitch = pitch
+
 startStep = (stepNumber) -> sequencer.selectedPattern.setStart(stepNumber-1)
+
 endStep = (stepNumber) -> sequencer.selectedPattern.setEnd(stepNumber-1)
 
 
@@ -91,14 +99,19 @@ load = (pattrPath, values...) ->
       when 'sequence' then sequencer.setPattern(trackIndex, patternIndex, values)
 
 
-save = -> sequencer.writeState(
-  (trackIndex, track) -> outlet(3, track.basePitch, trackIndex+1), # trackPattrOut
+save = ->
+  tracks = sequencer.tracks
+  for trackIndex in [0...TRACKS]
+    track = tracks[trackIndex]
+    outlet(3, track.basePitch, trackIndex+1)
 
-  (trackIndex, patternIndex, pattern) -> # patternPattrOut
-    outlet 4,
-      pattern.type, pattern.start, pattern.end, pattern.sequence,
-      patternIndex+1, trackIndex+1
-)
+    patterns = track.patterns
+    for patternIndex in [0...PATTERNS]
+      pattern = patterns[patternIndex]
+      outlet(4,
+        pattern.type, pattern.start, pattern.end, pattern.sequence,
+        patternIndex+1, trackIndex+1
+      )
 
 
 log 'reloaded at: ' + new Date
