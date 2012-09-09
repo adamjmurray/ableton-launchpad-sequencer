@@ -1,5 +1,20 @@
 class Launchpad
 
+  @color = (green,red) ->
+    16*green + red if (0 <= green <= 3) and (0 <= red <= 3)
+
+  @GRID_COLORS: [
+    @color(0,0) # off
+    @color(3,0) # green
+    @color(3,2) # yellow
+    @color(2,3) # orange
+    @color(0,3) # red
+  ]
+  @STEP_COLOR: Launchpad.color(1,1) # color for current sequencer step, regardless of value
+  @TRACK_COLOR: Launchpad.color(1,2)
+  @PATTERN_COLOR: Launchpad.color(2,0)
+
+
   constructor: ->
     noop = ->
     @noteout = noop
@@ -46,11 +61,3 @@ class Launchpad
 
   allOff: ->
     @ctlout(0,0)
-
-
-  #==============================================================================
-  # class methods
-
-  @color = (green,red) ->
-    16*green + red if (0 <= green <= 3) and (0 <= red <= 3)
-

@@ -35,11 +35,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # Constants, configuration, and core utility functions
 
 TRANSPORT_STOP = 123
-GUI_STEP_WIDTH = 19
+OFF = 0
 
 TRACKS = 4
 PATTERNS = 8   # patterns per track
 STEPS = 64     # sequencer steps per pattern
 ROW_LENGTH = 8 # steps per row in the grid
+GUI_STEP_WIDTH = 19
+
+outlets = 11   # Max outlets
 
 log = (msg)-> post(msg+'\n')

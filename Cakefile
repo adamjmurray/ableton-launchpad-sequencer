@@ -1,8 +1,10 @@
 SRCS = [
   'core'
   'launchpad'
+  'gui'
   'pattern'
   'track'
+  'sequencer'
   'main'
 ]
 
