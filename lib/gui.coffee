@@ -19,6 +19,8 @@ class GUI
     outlet(8, 'frgb', GUI.GRID_COLORS[value])
     outlet(8, 'paintrect', left, top, left+13, top+13)
 
+  activeStep: (x, y) -> @grid(x, y, 5)
+
   clearGrid: -> outlet(8, 'clear')
 
   trackInfo: (trackIndex, track) ->

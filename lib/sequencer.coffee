@@ -22,7 +22,6 @@ class Sequencer
   redraw: ->
     @launchpad.allOff()
     @gui.clearGrid()
-    # @setClock(@clock)
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)
@@ -34,37 +33,37 @@ class Sequencer
 
     value = @value
     value = 0 if value == pattern.getStep(step) # toggle off
-    pattern.setStep(step, value)
 
-    @launchpad.grid(x, y, Launchpad.GRID_COLORS[value])
+    pattern.setStep(step, value)
+    @launchpad.grid(x, y, value)
     @gui.grid(x, y, value)
 
 
   selectTrack: (index, skipRedraw) ->
-    if 0 <= index <= 3
-      @launchpad.top(@track, OFF)
-      @track = index
-      @launchpad.top(index, Launchpad.TRACK_COLOR)
-      @_updateSelectedPattern(skipRedraw)
-      @gui.track(index)
+    return unless 0 <= index <= 3
+    @launchpad.trackOff(@track)
+    @track = index
+    @launchpad.track(index)
+    @gui.track(index)
+    @_updateSelectedPattern(skipRedraw)
 
 
   selectValue: (value, preventToggle) ->
-    if 0 <= value <= 4
-      launchpad.top(@value+3, OFF) unless @value == 0
-      value = 0 if @value == value and not preventToggle
-      @value = value
-      @launchpad.top(value+3, Launchpad.GRID_COLORS[value]) unless value == 0
-      @gui.stepValue(value)
+    return unless 0 <= value <= 4
+    @launchpad.stepValueOff(@value)
+    value = 0 if @value == value and not preventToggle
+    @value = value
+    @launchpad.stepValue(value)
+    @gui.stepValue(value)
 
 
   selectPattern: (index, skipRedraw) ->
-    if(0 <= index <= 7)
-      @launchpad.right(@pattern, 0)
-      @pattern = index
-      @launchpad.right(index, Launchpad.PATTERN_COLOR)
-      @gui.pattern(index)
-      @_updateSelectedPattern(skipRedraw)
+    return unless 0 <= index <= 7
+    @launchpad.patternOff(@pattern)
+    @pattern = index
+    @launchpad.pattern(index)
+    @gui.pattern(index)
+    @_updateSelectedPattern(skipRedraw)
 
 
   setClock: (clock) ->
@@ -117,7 +116,7 @@ class Sequencer
       for y in [0...ROW_LENGTH]
         step = x + y*ROW_LENGTH
         value = pattern.getStep(step)
-        @launchpad.grid(x, y, Launchpad.GRID_COLORS[value])
+        @launchpad.grid(x, y, value)
         @gui.grid(x, y, value)
 
     # and force the active step to show its value:
@@ -135,8 +134,7 @@ class Sequencer
       oldX = oldActiveStep % 8
       oldY = Math.floor(oldActiveStep/8) % 8
       oldValue = selectedPattern.getStep(oldActiveStep)
-      oldColor = Launchpad.GRID_COLORS[oldValue]
-      @launchpad.grid(oldX, oldY, oldColor)
+      @launchpad.grid(oldX, oldY, oldValue)
       @gui.grid(oldX, oldY, oldValue)
 
     @activeStep = activeStep
@@ -145,9 +143,8 @@ class Sequencer
     if activeStep >= 0
       x = activeStep % 8
       y = Math.floor(activeStep/8) % 8
-      color = Launchpad.STEP_COLOR
-      @launchpad.grid(x, y, color)
-      @gui.grid(x, y, 5)
+      @launchpad.activeStep(x, y)
+      @gui.activeStep(x, y)
 
 
   _generateOutputForActiveStep: () ->

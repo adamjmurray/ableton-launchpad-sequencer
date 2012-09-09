@@ -35,7 +35,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # Constants, configuration, and core utility functions
 
 TRANSPORT_STOP = 123
-OFF = 0
 
 TRACKS = 4
 PATTERNS = 8   # patterns per track

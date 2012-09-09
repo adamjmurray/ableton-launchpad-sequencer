@@ -41,7 +41,7 @@ ctlin = (cc, val) ->
 
 track = (trackIndex) -> sequencer.selectTrack(trackIndex)
 stepValue = (value) -> sequencer.selectValue(value)
-pattern = (patternIndex) -> log "hi"; sequencer.selectPattern(patternIndex)
+pattern = (patternIndex) -> sequencer.selectPattern(patternIndex)
 grid = (x,y) -> sequencer.setGridValue(x,y)
 basePitch = (pitch) -> sequencer.selectedTrack?.basePitch = pitch
 startStep = (stepNumber) -> sequencer.selectedPattern.setStart(stepNumber-1)
