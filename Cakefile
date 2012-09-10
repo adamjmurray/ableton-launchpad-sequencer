@@ -5,6 +5,7 @@ SRCS = [
   'pattern'
   'track'
   'sequencer'
+  'pattr'
   'main'
 ]
 
@@ -44,4 +45,4 @@ task 'build', 'build the app', ->
 task 'validate', 'validate syntax', ->
   for file in SRC_FILES
     unless file == 'lib/main.coffee' # this will always fail because it depends on the other files
-      returnCode = exec 'coffee', [file], {suppressStatus: true}
+      exec 'coffee', [file], {suppressStatus: true}

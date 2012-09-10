@@ -1,3 +1,5 @@
+#========================================================
+# Intialize the objects
 
 gui = new GUI()
 
@@ -18,9 +20,11 @@ launchpad.onTopDown = (index) ->
   else # right 4
     sequencer.selectValue(index-3)
 
+pattr = new Pattr(sequencer)
+
 
 #========================================================
-# I/O with Max
+# Setup I/O with Max
 
 bang = -> sequencer.redraw()
 factoryReset = -> sequencer.factoryReset()
@@ -62,56 +66,9 @@ clock = (bars,beats,units) ->
   sequencer.setClock(clockIndex)
 
 
-load = (pattrPath, values...) ->
-  if(pattrPath == 'dump') # we're done
-    sequencer.redraw()
-    return
+save = -> pattr.save()
 
-  # pattrPaths look like:
-  # track.1::basePitch 60.
-  # track.1::pattern.1::sequence 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-  # track.1::pattern.1::ptype gate
-  # track.1::pattern.1::start 0
-  # track.1::pattern.1::end 63
-  matches =/^track\.(\d+)::(.*)/.exec(pattrPath)
-  return unless matches?
-
-  trackIndex = parseInt(matches[1]) - 1
-  subpath = matches[2]
-  track = sequencer.tracks[trackIndex]
-  return unless track?
-
-  if subpath == 'basePitch'
-    track.basePitch = parseInt(values[0])
-  else
-    matches = /^pattern\.(\d+)::(.*)/.exec(subpath)
-    return unless matches?
-
-    patternIndex = parseInt(matches[1]) - 1
-    property = matches[2]
-    pattern = track.patterns[patternIndex]
-    return unless pattern?
-
-    switch property
-      when 'ptype' then pattern.setType(values[0])
-      when 'start' then pattern.setStart(values[0])
-      when 'end' then pattern.setEnd(values[0])
-      when 'sequence' then sequencer.setPattern(trackIndex, patternIndex, values)
-
-
-save = ->
-  tracks = sequencer.tracks
-  for trackIndex in [0...TRACKS]
-    track = tracks[trackIndex]
-    outlet(3, track.basePitch, trackIndex+1)
-
-    patterns = track.patterns
-    for patternIndex in [0...PATTERNS]
-      pattern = patterns[patternIndex]
-      outlet(4,
-        pattern.type, pattern.start, pattern.end, pattern.sequence,
-        patternIndex+1, trackIndex+1
-      )
+load = (pattrPath, values...) -> pattr.load(pattrPath, values...)
 
 
 log 'reloaded at: ' + new Date
