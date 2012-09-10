@@ -20,7 +20,7 @@ and follow the instructions in the launchpad sequencer device.
 
 ### Using in your own Ableton Live projects
 
-Save the launchpad-sequencer folder to your computer,
+Save the launchpad-sequencer folder to your computer as desired,
 then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd devices to your project.
 For Live setup details, consult the example project.
 
