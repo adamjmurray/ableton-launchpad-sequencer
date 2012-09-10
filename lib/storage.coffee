@@ -1,23 +1,23 @@
 # The interface to the pattr persistence system in Max
-class Pattr
+class Storage
 
   constructor: (@sequencer) ->
 
 
-  load: (pattrPath, values...) ->
+  load: (path, values...) ->
     sequencer = @sequencer
 
-    if(pattrPath == 'dump') # we're done
+    if(path == 'dump') # we're done
       sequencer.redraw()
       return
 
-    # pattrPaths look like:
+    # paths look like:
     # track.1::basePitch 60.
     # track.1::pattern.1::sequence 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
     # track.1::pattern.1::ptype gate
     # track.1::pattern.1::start 0
     # track.1::pattern.1::end 63
-    matches =/^track\.(\d+)::(.*)/.exec(pattrPath)
+    matches =/^track\.(\d+)::(.*)/.exec(path)
     return unless matches?
 
     trackIndex = parseInt(matches[1]) - 1

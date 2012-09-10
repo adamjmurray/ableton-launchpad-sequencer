@@ -4,11 +4,11 @@
 class Sequencer
 
   constructor: (@launchpad, @gui, @output) ->
-    @factoryReset(true)
+    @reset(true)
 
 
   # Clear all patterns and set all track and pattern properties to their default values.
-  factoryReset: (skipRedraw) ->
+  reset: (skipRedraw) ->
     @track = 0   # selected track index
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value

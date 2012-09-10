@@ -5,7 +5,7 @@ SRCS = [
   'pattern'
   'track'
   'sequencer'
-  'pattr'
+  'storage'
   'main'
 ]
 
