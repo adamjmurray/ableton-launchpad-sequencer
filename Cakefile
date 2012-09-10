@@ -1,5 +1,6 @@
 SRCS = [
-  'core'
+  'config'
+  'util'
   'launchpad'
   'gui'
   'pattern'
@@ -16,6 +17,7 @@ COFFEE_ARGS = [
   '--join'
   'launchpad-sequencer/launchpad-sequencer.js'
   '--compile'
+  'license.txt'
 ].concat SRC_FILES
 
 
