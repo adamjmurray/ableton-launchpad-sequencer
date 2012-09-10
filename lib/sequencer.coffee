@@ -3,7 +3,8 @@
 #
 class Sequencer
 
-  constructor: (@launchpad, @gui, @output) ->
+  constructor: (@launchpad, @gui = new GUI) ->
+    @onNote = NOOP
     @reset(true)
 
 
@@ -130,7 +131,7 @@ class Sequencer
   _drawActiveStep: () ->
     selectedPattern = @selectedPattern
     oldActiveStep = @activeStep
-    activeStep = selectedPattern.stepForClock(@clock)
+    activeStep = selectedPattern.stepIndexForClock(@clock)
 
     # remove old active step indicators
     if oldActiveStep >= 0
@@ -150,36 +151,14 @@ class Sequencer
       @gui.activeStep(x, y)
 
 
+  # generate MIDI output for current step
   _generateOutputForActiveStep: () ->
     clock = @clock
-    return if clock < 0
-
-    # generate MIDI output for current step
-    for t in [0...TRACKS]
-      track = @tracks[t]
-      patterns = track.patterns
-
-      # for now, just hardcoding,
-      # 1st pattern is gate/velocity, 2nd pitch, 3rd duration, 4th octave
-      gate = patterns[0].getStepForClock(clock)
-      if gate > 0
-        pitch = track.basePitch + patterns[1].getStepForClock(clock)
-
-        # TODO: cache value lookup in Arrays (like with colors)
-        velocity = switch gate
-          when 1 then 50
-          when 2 then 80
-          when 3 then 105
-          else 127
-
-        duration = patterns[2].getStepForClock(clock)
-        duration = 0.5 if duration == 0 # off is half-step duration
-
-        octave = patterns[3].getStepForClock(clock)
-        switch octave
-          when 1 then pitch += 12
-          when 2 then pitch += 24
-          when 3 then pitch -= 12
-          when 4 then pitch -= 24
-
-        @output(pitch, velocity, duration)
+    if clock >= 0
+      for track in @tracks
+        note = track.noteForClock(clock)
+        outlet(2,
+          note.pitch,
+          note.velocity,
+          note.duration * 50 # TODO: figure out how to sync with tempo
+        ) if note

@@ -33,10 +33,13 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var GUI, GUI_STEP_WIDTH, Launchpad, PATTERNS, Pattern, ROW_LENGTH, STEPS, Sequencer, TRACKS, TRANSPORT_STOP, Track, bang, basePitch, clock, ctlin, endStep, factoryReset, grid, gui, launchpad, load, log, notein, outlets, pattern, save, sequencer, startStep, stepValue, track,
+var GUI, GUI_STEP_WIDTH, Launchpad, NOOP, PATTERNS, Pattern, ROW_LENGTH, STEPS, Sequencer, Storage, TRACKS, TRANSPORT_STOP, Track, bang, basePitch, clock, ctlin, endStep, grid, launchpad, load, log, notein, outlets, pattern, reset, save, sequencer, startStep, stepValue, storage, stringify, track,
+  __hasProp = {}.hasOwnProperty,
   __slice = [].slice;
 
 TRANSPORT_STOP = 123;
+
+NOOP = function() {};
 
 TRACKS = 4;
 
@@ -49,6 +52,36 @@ ROW_LENGTH = 8;
 GUI_STEP_WIDTH = 19;
 
 outlets = 11;
+
+stringify = function(obj) {
+  var key, value;
+  if (typeof obj === 'object') {
+    if (obj instanceof Array) {
+      return '[' + ((function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = obj.length; _i < _len; _i++) {
+          value = obj[_i];
+          _results.push("" + (stringify(value)));
+        }
+        return _results;
+      })()).join(',') + ']';
+    } else {
+      return '{' + ((function() {
+        var _results;
+        _results = [];
+        for (key in obj) {
+          if (!__hasProp.call(obj, key)) continue;
+          value = obj[key];
+          _results.push("" + key + ":" + (stringify(value)));
+        }
+        return _results;
+      })()).join(', ') + '}';
+    }
+  } else {
+    return obj.toString();
+  }
+};
 
 log = function(msg) {
   return post(msg + '\n');
@@ -81,16 +114,14 @@ Launchpad = (function() {
   Launchpad.PATTERN_COLOR = Launchpad.color(2, 0);
 
   function Launchpad() {
-    var noop;
-    noop = function() {};
-    this.noteout = noop;
-    this.ctlout = noop;
-    this.onTopDown = noop;
-    this.onTopUp = noop;
-    this.onRightDown = noop;
-    this.onRightUp = noop;
-    this.onGridDown = noop;
-    this.onGridUp = noop;
+    this.noteout = NOOP;
+    this.ctlout = NOOP;
+    this.onTopDown = NOOP;
+    this.onTopUp = NOOP;
+    this.onRightDown = NOOP;
+    this.onRightUp = NOOP;
+    this.onGridDown = NOOP;
+    this.onGridUp = NOOP;
   }
 
   Launchpad.prototype.ctlin = function(cc, value) {
@@ -236,7 +267,9 @@ Pattern = (function() {
 
   function Pattern(type, defaultValue) {
     var i;
-    this.type = type;
+    if (type == null) {
+      type = '?';
+    }
     this.defaultValue = defaultValue != null ? defaultValue : 0;
     this.sequence = (function() {
       var _i, _results;
@@ -249,10 +282,12 @@ Pattern = (function() {
     this.start = 0;
     this.end = STEPS - 1;
     this._updateLength();
+    this.setType(type);
   }
 
   Pattern.prototype.setType = function(type) {
-    return this.type = type;
+    this.type = type;
+    return this._process = Pattern.processors[type] || NOOP;
   };
 
   Pattern.prototype.setStart = function(index) {
@@ -275,6 +310,10 @@ Pattern = (function() {
     }
   };
 
+  Pattern.prototype._updateLength = function() {
+    return this.length = this.end - this.start + 1;
+  };
+
   Pattern.prototype.getStep = function(index) {
     return this.sequence[index];
   };
@@ -285,7 +324,7 @@ Pattern = (function() {
     }
   };
 
-  Pattern.prototype.stepForClock = function(clock) {
+  Pattern.prototype.stepIndexForClock = function(clock) {
     if (clock >= 0) {
       return (clock % this.length) + this.start;
     } else {
@@ -294,11 +333,31 @@ Pattern = (function() {
   };
 
   Pattern.prototype.getStepForClock = function(clock) {
-    return this.getStep(this.stepForClock(clock));
+    return this.getStep(this.stepIndexForClock(clock));
   };
 
-  Pattern.prototype._updateLength = function() {
-    return this.length = this.end - this.start + 1;
+  Pattern.prototype.processNote = function(note, clock) {
+    var value;
+    value = this.getStepForClock(clock);
+    if (value > 0) {
+      this._process(note, value);
+    }
+    return note;
+  };
+
+  Pattern.processors = {
+    gate: function(note, value) {
+      return note.duration *= value;
+    },
+    pitch: function(note, value) {
+      return note.pitch += value;
+    },
+    velocity: function(note, value) {
+      return note.velocity *= 1 + 0.2 * value;
+    },
+    octave: function(note, value) {
+      return note.pitch += (value <= 2 ? value * 12 : (value - 2) * -12);
+    }
   };
 
   return Pattern;
@@ -307,23 +366,31 @@ Pattern = (function() {
 
 Track = (function() {
 
-  Track.DEFAULT_PATTERN_TYPES = ['gate', 'pitch', 'duration', 'octave'];
-
-  function Track(basePitch) {
-    var p, _ref;
-    this.basePitch = basePitch;
-    if ((_ref = this.basePitch) == null) {
-      this.basePitch = 60;
-    }
-    this.patterns = (function() {
-      var _i, _results;
-      _results = [];
-      for (p = _i = 0; 0 <= PATTERNS ? _i < PATTERNS : _i > PATTERNS; p = 0 <= PATTERNS ? ++_i : --_i) {
-        _results.push(new Pattern(Track.DEFAULT_PATTERN_TYPES[p] || "?"));
-      }
-      return _results;
-    })();
+  function Track(basePitch, baseVelocity, baseDuration) {
+    this.basePitch = basePitch != null ? basePitch : 60;
+    this.baseVelocity = baseVelocity != null ? baseVelocity : 71;
+    this.baseDuration = baseDuration != null ? baseDuration : 1.0;
+    this.patterns = [new Pattern('gate'), new Pattern('pitch'), new Pattern('velocity'), new Pattern('octave'), new Pattern, new Pattern, new Pattern, new Pattern];
   }
+
+  Track.prototype.noteForClock = function(clock) {
+    var note, pattern, _i, _len, _ref;
+    if (this.patterns[0].getStepForClock(clock) > 0) {
+      note = {
+        pitch: this.basePitch,
+        velocity: this.baseVelocity,
+        duration: this.baseDuration
+      };
+      _ref = this.patterns;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        pattern = _ref[_i];
+        pattern.processNote(note, clock);
+      }
+      return note;
+    } else {
+      return null;
+    }
+  };
 
   return Track;
 
@@ -331,14 +398,14 @@ Track = (function() {
 
 Sequencer = (function() {
 
-  function Sequencer(launchpad, gui, output) {
+  function Sequencer(launchpad, gui) {
     this.launchpad = launchpad;
-    this.gui = gui;
-    this.output = output;
-    this.factoryReset(true);
+    this.gui = gui != null ? gui : new GUI;
+    this.onNote = NOOP;
+    this.reset(true);
   }
 
-  Sequencer.prototype.factoryReset = function(skipRedraw) {
+  Sequencer.prototype.reset = function(skipRedraw) {
     var track;
     this.track = 0;
     this.pattern = 0;
@@ -492,7 +559,7 @@ Sequencer = (function() {
     var activeStep, oldActiveStep, oldValue, oldX, oldY, selectedPattern, x, y;
     selectedPattern = this.selectedPattern;
     oldActiveStep = this.activeStep;
-    activeStep = selectedPattern.stepForClock(this.clock);
+    activeStep = selectedPattern.stepIndexForClock(this.clock);
     if (oldActiveStep >= 0) {
       oldX = oldActiveStep % 8;
       oldY = Math.floor(oldActiveStep / 8) % 8;
@@ -510,61 +577,102 @@ Sequencer = (function() {
   };
 
   Sequencer.prototype._generateOutputForActiveStep = function() {
-    var clock, duration, gate, octave, patterns, pitch, t, track, velocity, _i, _results;
+    var clock, note, track, _i, _len, _ref, _results;
     clock = this.clock;
-    if (clock < 0) {
-      return;
-    }
-    _results = [];
-    for (t = _i = 0; 0 <= TRACKS ? _i < TRACKS : _i > TRACKS; t = 0 <= TRACKS ? ++_i : --_i) {
-      track = this.tracks[t];
-      patterns = track.patterns;
-      gate = patterns[0].getStepForClock(clock);
-      if (gate > 0) {
-        pitch = track.basePitch + patterns[1].getStepForClock(clock);
-        velocity = (function() {
-          switch (gate) {
-            case 1:
-              return 50;
-            case 2:
-              return 80;
-            case 3:
-              return 105;
-            default:
-              return 127;
-          }
-        })();
-        duration = patterns[2].getStepForClock(clock);
-        if (duration === 0) {
-          duration = 0.5;
+    if (clock >= 0) {
+      _ref = this.tracks;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        track = _ref[_i];
+        note = track.noteForClock(clock);
+        if (note) {
+          _results.push(outlet(2, note.pitch, note.velocity, note.duration * 50));
+        } else {
+          _results.push(void 0);
         }
-        octave = patterns[3].getStepForClock(clock);
-        switch (octave) {
-          case 1:
-            pitch += 12;
-            break;
-          case 2:
-            pitch += 24;
-            break;
-          case 3:
-            pitch -= 12;
-            break;
-          case 4:
-            pitch -= 24;
-        }
-        _results.push(this.output(pitch, velocity, duration));
-      } else {
-        _results.push(void 0);
       }
+      return _results;
     }
-    return _results;
   };
 
   return Sequencer;
 
 })();
 
-gui = new GUI();
+Storage = (function() {
+
+  function Storage(sequencer) {
+    this.sequencer = sequencer;
+  }
+
+  Storage.prototype.load = function() {
+    var matches, path, pattern, patternIndex, property, sequencer, subpath, track, trackIndex, values;
+    path = arguments[0], values = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    sequencer = this.sequencer;
+    if (path === 'dump') {
+      sequencer.redraw();
+      return;
+    }
+    matches = /^track\.(\d+)::(.*)/.exec(path);
+    if (matches == null) {
+      return;
+    }
+    trackIndex = parseInt(matches[1]) - 1;
+    subpath = matches[2];
+    track = sequencer.tracks[trackIndex];
+    if (track == null) {
+      return;
+    }
+    if (subpath === 'basePitch') {
+      return track.basePitch = parseInt(values[0]);
+    } else {
+      matches = /^pattern\.(\d+)::(.*)/.exec(subpath);
+      if (matches == null) {
+        return;
+      }
+      patternIndex = parseInt(matches[1]) - 1;
+      property = matches[2];
+      pattern = track.patterns[patternIndex];
+      if (pattern == null) {
+        return;
+      }
+      switch (property) {
+        case 'ptype':
+          return pattern.setType(values[0]);
+        case 'start':
+          return pattern.setStart(values[0]);
+        case 'end':
+          return pattern.setEnd(values[0]);
+        case 'sequence':
+          return sequencer.setPattern(trackIndex, patternIndex, values);
+      }
+    }
+  };
+
+  Storage.prototype.save = function() {
+    var pattern, patternIndex, patterns, track, trackIndex, tracks, _i, _results;
+    tracks = this.sequencer.tracks;
+    _results = [];
+    for (trackIndex = _i = 0; 0 <= TRACKS ? _i < TRACKS : _i > TRACKS; trackIndex = 0 <= TRACKS ? ++_i : --_i) {
+      track = tracks[trackIndex];
+      outlet(3, track.basePitch, trackIndex + 1);
+      patterns = track.patterns;
+      _results.push((function() {
+        var _j, _results1;
+        _results1 = [];
+        for (patternIndex = _j = 0; 0 <= PATTERNS ? _j < PATTERNS : _j > PATTERNS; patternIndex = 0 <= PATTERNS ? ++_j : --_j) {
+          pattern = patterns[patternIndex];
+          _results1.push(outlet(4, pattern.type, pattern.start, pattern.end, pattern.sequence, patternIndex + 1, trackIndex + 1));
+        }
+        return _results1;
+      })());
+    }
+    return _results;
+  };
+
+  return Storage;
+
+})();
 
 launchpad = new Launchpad;
 
@@ -576,10 +684,7 @@ launchpad.ctlout = function(cc, value) {
   return outlet(1, cc, value);
 };
 
-sequencer = new Sequencer(launchpad, gui, function(pitch, velocity, duration) {
-  duration *= 250;
-  return outlet(2, pitch, velocity, duration);
-});
+sequencer = new Sequencer(launchpad);
 
 launchpad.onRightDown = function(idx) {
   return sequencer.selectPattern(idx);
@@ -589,20 +694,22 @@ launchpad.onGridDown = function(x, y) {
   return sequencer.setGridValue(x, y);
 };
 
-launchpad.onTopDown = function(index) {
-  if (index <= 3) {
-    return sequencer.selectTrack(index);
+launchpad.onTopDown = function(idx) {
+  if (idx <= 3) {
+    return sequencer.selectTrack(idx);
   } else {
-    return sequencer.selectValue(index - 3);
+    return sequencer.selectValue(idx - 3);
   }
 };
+
+storage = new Storage(sequencer);
 
 bang = function() {
   return sequencer.redraw();
 };
 
-factoryReset = function() {
-  return sequencer.factoryReset();
+reset = function() {
+  return sequencer.reset();
 };
 
 notein = function(pitch, velocity) {
@@ -610,13 +717,19 @@ notein = function(pitch, velocity) {
 };
 
 ctlin = function(cc, val) {
-  if (cc === TRANSPORT_STOP) {
+  if (cc !== TRANSPORT_STOP) {
+    return launchpad.ctlin(cc, val);
+  } else {
     sequencer.setClock(-1);
     sequencer.drawLaunchpad();
     return save();
-  } else {
-    return launchpad.ctlin(cc, val);
   }
+};
+
+clock = function(bars, beats, units) {
+  var clockIndex;
+  clockIndex = (bars - 1) * 16 + (beats - 1) * 4 + Math.round(units / 120);
+  return sequencer.setClock(clockIndex);
 };
 
 track = function(trackIndex) {
@@ -636,8 +749,7 @@ grid = function(x, y) {
 };
 
 basePitch = function(pitch) {
-  var _ref;
-  return (_ref = sequencer.selectedTrack) != null ? _ref.basePitch = pitch : void 0;
+  return sequencer.selectedTrack.basePitch = pitch;
 };
 
 startStep = function(stepNumber) {
@@ -648,74 +760,14 @@ endStep = function(stepNumber) {
   return sequencer.selectedPattern.setEnd(stepNumber - 1);
 };
 
-clock = function(bars, beats, units) {
-  var clockIndex;
-  clockIndex = (bars - 1) * 16 + (beats - 1) * 4 + Math.round(units / 120);
-  return sequencer.setClock(clockIndex);
+save = function() {
+  return storage.save();
 };
 
 load = function() {
-  var matches, patternIndex, pattrPath, property, subpath, trackIndex, values;
-  pattrPath = arguments[0], values = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-  if (pattrPath === 'dump') {
-    sequencer.redraw();
-    return;
-  }
-  matches = /^track\.(\d+)::(.*)/.exec(pattrPath);
-  if (matches == null) {
-    return;
-  }
-  trackIndex = parseInt(matches[1]) - 1;
-  subpath = matches[2];
-  track = sequencer.tracks[trackIndex];
-  if (track == null) {
-    return;
-  }
-  if (subpath === 'basePitch') {
-    return track.basePitch = parseInt(values[0]);
-  } else {
-    matches = /^pattern\.(\d+)::(.*)/.exec(subpath);
-    if (matches == null) {
-      return;
-    }
-    patternIndex = parseInt(matches[1]) - 1;
-    property = matches[2];
-    pattern = track.patterns[patternIndex];
-    if (pattern == null) {
-      return;
-    }
-    switch (property) {
-      case 'ptype':
-        return pattern.setType(values[0]);
-      case 'start':
-        return pattern.setStart(values[0]);
-      case 'end':
-        return pattern.setEnd(values[0]);
-      case 'sequence':
-        return sequencer.setPattern(trackIndex, patternIndex, values);
-    }
-  }
-};
-
-save = function() {
-  var patternIndex, patterns, trackIndex, tracks, _i, _results;
-  tracks = sequencer.tracks;
-  _results = [];
-  for (trackIndex = _i = 0; 0 <= TRACKS ? _i < TRACKS : _i > TRACKS; trackIndex = 0 <= TRACKS ? ++_i : --_i) {
-    track = tracks[trackIndex];
-    outlet(3, track.basePitch, trackIndex + 1);
-    patterns = track.patterns;
-    _results.push((function() {
-      var _j, _results1;
-      _results1 = [];
-      for (patternIndex = _j = 0; 0 <= PATTERNS ? _j < PATTERNS : _j > PATTERNS; patternIndex = 0 <= PATTERNS ? ++_j : --_j) {
-        pattern = patterns[patternIndex];
-        _results1.push(outlet(4, pattern.type, pattern.start, pattern.end, pattern.sequence, patternIndex + 1, trackIndex + 1));
-      }
-      return _results1;
-    })());
-  }
-  return _results;
+  var path, values;
+  path = arguments[0], values = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  return storage.load.apply(storage, [path].concat(__slice.call(values)));
 };
 
 log('reloaded at: ' + new Date);

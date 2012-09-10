@@ -36,6 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 TRANSPORT_STOP = 123
 
+NOOP = ->
+
 TRACKS = 4
 PATTERNS = 8   # patterns per track
 STEPS = 64     # sequencer steps per pattern
@@ -44,4 +46,15 @@ GUI_STEP_WIDTH = 19
 
 outlets = 11   # Max outlets
 
-log = (msg)-> post(msg+'\n')
+
+stringify = (obj) ->
+  if typeof(obj) == 'object'
+    if obj instanceof Array
+      '[' + ("#{stringify value}" for value in obj).join(',') + ']'
+    else
+      '{' + ("#{key}:#{stringify value}" for own key,value of obj).join(', ') + '}'
+  else
+    obj.toString()
+
+
+log = (msg) -> post(msg+'\n')

@@ -37,9 +37,9 @@ class Storage
       return unless pattern?
 
       switch property
-        when 'ptype' then pattern.setType(values[0])
-        when 'start' then pattern.setStart(values[0])
-        when 'end' then pattern.setEnd(values[0])
+        when 'ptype'    then pattern.setType(values[0]) # TODO: this needs to construct a pattern of the correct class
+        when 'start'    then pattern.setStart(values[0])
+        when 'end'      then pattern.setEnd(values[0])
         when 'sequence' then sequencer.setPattern(trackIndex, patternIndex, values)
 
 

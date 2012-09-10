@@ -5,11 +5,7 @@ launchpad = new Launchpad
 launchpad.noteout = (pitch, velocity) -> outlet(0, pitch, velocity)
 launchpad.ctlout  = (cc, value)       -> outlet(1, cc, value)
 
-sequencer = new Sequencer(launchpad, new GUI,
-  (pitch, velocity, duration) ->
-    duration *= 250 # TODO: figure out how to sync with tempo
-    outlet(2, pitch, velocity, duration)
-)
+sequencer = new Sequencer(launchpad)
 launchpad.onRightDown = (idx) -> sequencer.selectPattern(idx)
 launchpad.onGridDown  = (x,y) -> sequencer.setGridValue(x,y)
 launchpad.onTopDown   = (idx) -> if idx <= 3 then sequencer.selectTrack(idx) else sequencer.selectValue(idx-3)
