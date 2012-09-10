@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 64.0, 82.0, 751.0, 736.0 ],
+		"rect" : [ 64.0, 82.0, 1117.0, 921.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 64.0, 82.0, 751.0, 736.0 ],
+		"defrect" : [ 64.0, 82.0, 1117.0, 921.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -28,12 +28,96 @@
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
+					"id" : "obj-8",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 782.0, 100.0, 35.0, 18.0 ],
+					"text" : "-700"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-9",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 741.0, 99.0, 35.0, 18.0 ],
+					"text" : "-600"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-10",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 700.0, 100.0, 35.0, 18.0 ],
+					"text" : "-500"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-5",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 700.0, 153.0, 98.0 ],
+					"text" : "pentatnoic (minor) scale\n\n\noff => track's base pitch\n   1 => base pitch + 3\n   2 => base pitch + 5\n   3 => base pitch + 7\n   4 => base pitch + 10"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-4",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 500.0, 153.0, 98.0 ],
+					"text" : "first 5 notes of minor scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 3\n   3 => base pitch + 5\n   4 => base pitch + 7"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-3",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 600.0, 153.0, 98.0 ],
+					"text" : "pentatnoic (major) scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 7\n   4 => base pitch + 9"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
 					"id" : "obj-90",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 605.0, 107.0, 38.0, 18.0 ],
+					"patching_rect" : [ 623.0, 99.0, 38.0, 18.0 ],
 					"text" : "-400"
 				}
 
@@ -47,7 +131,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 564.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 582.0, 100.0, 38.0, 18.0 ],
 					"text" : "-300"
 				}
 
@@ -61,7 +145,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 523.0, 107.0, 38.0, 18.0 ],
+					"patching_rect" : [ 541.0, 99.0, 38.0, 18.0 ],
 					"text" : "-200"
 				}
 
@@ -75,7 +159,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 482.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 500.0, 100.0, 38.0, 18.0 ],
 					"text" : "-100"
 				}
 
@@ -101,10 +185,10 @@
 					"id" : "obj-78",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 5,
-					"outlettype" : [ "bang", "bang", "bang", "bang", "" ],
-					"patching_rect" : [ 441.0, 67.0, 182.0, 20.0 ],
-					"text" : "select gate pitch velocity octave"
+					"numoutlets" : 9,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ 441.0, 67.0, 437.0, 20.0 ],
+					"text" : "select gate pitch velocity octave major minor pentatonic_major pentatonic_minor"
 				}
 
 			}
@@ -168,12 +252,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-37",
-					"linecount" : 6,
+					"linecount" : 8,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 400.0, 153.0, 75.0 ],
-					"text" : "                  (?_?)\n\nthis pattern does nothing yet\n\n\n\n"
+					"patching_rect" : [ 0.0, 400.0, 153.0, 98.0 ],
+					"text" : "first 5 notes of major scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 5\n   4 => base pitch + 7"
 				}
 
 			}
@@ -231,10 +315,37 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-2", 0 ],
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-74", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 7 ]
 				}
 
 			}
@@ -276,10 +387,28 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 6 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-90", 0 ],
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-78", 4 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-8", 0 ]
 				}
 
 			}
@@ -316,6 +445,15 @@
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-89", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-9", 0 ]
 				}
 
 			}

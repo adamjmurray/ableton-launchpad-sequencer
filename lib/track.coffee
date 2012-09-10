@@ -1,16 +1,18 @@
 class Track
 
+  @DEFAULT_TYPES = [
+    'gate'
+    'pitch'
+    'velocity'
+    'octave'
+    'major'
+    'minor'
+    'pentatonic_major'
+    'pentatonic_minor'
+  ]
+
   constructor: (@basePitch=60, @baseVelocity=71, @baseDuration=1.0) ->
-    @patterns = [
-      new Pattern('gate')
-      new Pattern('pitch')
-      new Pattern('velocity')
-      new Pattern('octave')
-      new Pattern
-      new Pattern
-      new Pattern
-      new Pattern
-    ]
+    @patterns = (new Pattern(type) for type in Track.DEFAULT_TYPES)
 
 
   noteForClock: (clock) ->

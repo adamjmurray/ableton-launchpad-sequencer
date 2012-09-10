@@ -62,11 +62,21 @@ class Pattern
   #
   processNote: (note, clock) ->
     value = @getStepForClock(clock)
-    @_process(note, value) if value > 0
+    @_process(note, value) if value > 0 # NOTE: major assumption 0 is always a NOOP! But a good optimization...
     note
+
+  @MAJOR = [0,2,4,5,7]
+  @MINOR = [0,2,3,5,7]
+  @PENTATONIC_MAJOR = [0,2,4,7,9]
+  @PENTATONIC_MINOR = [0,3,5,7,10]
+
 
   @processors =
     gate:     (note, value) -> note.duration *= value
     pitch:    (note, value) -> note.pitch += value
     velocity: (note, value) -> note.velocity *= (1 + 0.2*value)
     octave:   (note, value) -> note.pitch += (if value <= 2 then value*12 else (value-2)*-12)
+    major:            (note, value) => note.pitch += @MAJOR[value]
+    minor:            (note, value) => note.pitch += @MINOR[value]
+    pentatonic_major: (note, value) => note.pitch += @PENTATONIC_MAJOR[value]
+    pentatonic_minor: (note, value) => note.pitch += @PENTATONIC_MINOR[value]
