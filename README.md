@@ -11,7 +11,7 @@ of the code written in [CoffeeScript](http://coffeescript.org/).
 
 ### Downloading
 
-[Download the latest version of this project here](https://github.com/adamjmurray/m4l-launchpad-sequencer/zipball/master)
+First release coming soon... in the meantime you can build from source (instructions below)
 
 ### Example project
 
@@ -32,7 +32,9 @@ For new projects, it's easiest to simply save a copy of the example project.
 ### Prerequisites
 
 0. Install [Node.js](http://nodejs.org/)
-0. Install [CoffeeScript](http://coffeescript.org/#installation) via npm
+0. Install [CoffeeScript](http://coffeescript.org/#installation) via `npm install coffee-script`
+
+To build the app for distribution, you also need [UglifyJS](https://github.com/mishoo/UglifyJS) via `npm install uglify-js`
 
 ### Building for normal use & distribution
 
@@ -45,3 +47,11 @@ From this directory, run:
 From this directory, run:
 
     cake dev
+
+### Building the app for distribution
+
+From this directory, run:
+
+    cake dist
+
+and you should end up with a zip file in the "dist" folder that contains the application and example project.
