@@ -46,10 +46,16 @@ stepValue = (value)        -> sequencer.selectValue(value)
 pattern   = (patternIndex) -> sequencer.selectPattern(patternIndex)
 grid      = (x,y)          -> sequencer.setGridValue(x,y)
 
-basePitch = (pitch)        -> sequencer.selectedTrack.basePitch = pitch
+# track properties
+basePitch     = (pitch)    -> sequencer.selectedTrack.basePitch = pitch
+baseVelocity  = (velocity) -> sequencer.selectedTrack.baseVelocity = velocity
+durationScale = (scale)    -> sequencer.selectedTrack.durationScale = scale
+
+# pattern properties
 startStep = (stepNumber)   -> sequencer.selectedPattern.setStart(stepNumber-1)
 endStep   = (stepNumber)   -> sequencer.selectedPattern.setEnd(stepNumber-1)
-
+# TODO: type
+# TODO: value1,2,3,4
 
 save = ()                  -> storage.save()
 load = (path, values...)   -> storage.load(path, values...)

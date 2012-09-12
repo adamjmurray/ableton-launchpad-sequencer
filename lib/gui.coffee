@@ -25,7 +25,7 @@ class GUI
 
   trackInfo: (trackIndex, track) ->
     trackNumber = trackIndex + 1
-    outlet(9, trackNumber, track.basePitch)
+    outlet(9, trackNumber, track.basePitch, track.baseVelocity, track.durationScale)
 
   patternInfo: (patternIndex, pattern) ->
     # values in the Max GUI are numbers counting from 1, hence all the "+1"s

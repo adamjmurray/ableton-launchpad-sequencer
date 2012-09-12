@@ -25,29 +25,34 @@ class Storage
     track = sequencer.tracks[trackIndex]
     return unless track?
 
-    if subpath == 'basePitch'
-      track.basePitch = parseInt(values[0])
-    else
-      matches = /^pattern\.(\d+)::(.*)/.exec(subpath)
-      return unless matches?
+    val = values[0]
 
-      patternIndex = parseInt(matches[1]) - 1
-      property = matches[2]
-      pattern = track.patterns[patternIndex]
-      return unless pattern?
+    switch subpath
+      when 'basePitch'     then track.basePitch     = parseInt val
+      when 'baseVelocity'  then track.baseVelocity  = parseInt val
+      when 'durationScale' then track.durationScale = parseFloat val
 
-      switch property
-        when 'ptype'    then pattern.setType(values[0]) # TODO: this needs to construct a pattern of the correct class
-        when 'start'    then pattern.setStart(values[0])
-        when 'end'      then pattern.setEnd(values[0])
-        when 'sequence' then sequencer.setPattern(trackIndex, patternIndex, values)
+      else
+        matches = /^pattern\.(\d+)::(.*)/.exec(subpath)
+        return unless matches?
+
+        patternIndex = parseInt(matches[1]) - 1
+        property = matches[2]
+        pattern = track.patterns[patternIndex]
+        return unless pattern?
+
+        switch property
+          when 'ptype'    then pattern.setType val
+          when 'start'    then pattern.setStart val
+          when 'end'      then pattern.setEnd val
+          when 'sequence' then sequencer.setPattern trackIndex, patternIndex, values
 
 
   save: ->
     tracks = @sequencer.tracks
     for trackIndex in [0...TRACKS]
       track = tracks[trackIndex]
-      outlet(3, track.basePitch, trackIndex+1)
+      outlet(3, track.basePitch, track.baseVelocity, track.durationScale, trackIndex+1)
 
       patterns = track.patterns
       for patternIndex in [0...PATTERNS]

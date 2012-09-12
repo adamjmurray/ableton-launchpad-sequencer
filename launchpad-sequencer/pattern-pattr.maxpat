@@ -94,7 +94,7 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 96.0, 168.0, 107.0, 20.0 ],
-					"restore" : [ 0.0 ],
+					"restore" : [ 0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
 							"parameter_longname" : "start",
@@ -311,10 +311,10 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-1" : [ "sequence", "sequence", 0 ],
+			"obj-2" : [ "ptype", "ptype", 0 ],
 			"obj-12" : [ "end", "end", 0 ],
 			"obj-11" : [ "start", "start", 0 ],
-			"obj-2" : [ "ptype", "ptype", 0 ]
+			"obj-1" : [ "sequence", "sequence", 0 ]
 		}
 
 	}
