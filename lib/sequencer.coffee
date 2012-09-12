@@ -160,5 +160,5 @@ class Sequencer
         outlet(2,
           note.pitch,
           note.velocity,
-          note.duration * 50 # TODO: figure out how to sync with tempo
+          note.duration
         ) if note

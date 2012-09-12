@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 64.0, 82.0, 1117.0, 921.0 ],
+		"rect" : [ 660.0, 134.0, 1117.0, 921.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 64.0, 82.0, 1117.0, 921.0 ],
+		"defrect" : [ 660.0, 134.0, 1117.0, 921.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -76,7 +76,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 700.0, 153.0, 98.0 ],
-					"text" : "pentatnoic (minor) scale\n\n\noff => track's base pitch\n   1 => base pitch + 3\n   2 => base pitch + 5\n   3 => base pitch + 7\n   4 => base pitch + 10"
+					"text" : "pentatonic (minor) scale\n\n\noff => track's base pitch\n   1 => base pitch + 3\n   2 => base pitch + 5\n   3 => base pitch + 7\n   4 => base pitch + 10"
 				}
 
 			}
@@ -104,7 +104,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 600.0, 153.0, 98.0 ],
-					"text" : "pentatnoic (major) scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 7\n   4 => base pitch + 9"
+					"text" : "pentatonic (major) scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 7\n   4 => base pitch + 9"
 				}
 
 			}
@@ -242,7 +242,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 300.0, 180.0, 98.0 ],
+					"patching_rect" : [ 0.0, 300.0, 154.0, 98.0 ],
 					"text" : "adds or substracts an octave to the pitch\n\noff => no change\n   1 => up 1 octave\n   2 => up 2 octaves\n   3 => down 1 octave\n   4 => down 2 octaves"
 				}
 
@@ -284,8 +284,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 0.0, 118.0, 98.0 ],
-					"text" : "controls if a note plays, and its duration\n\noff => no note\n   1 => 1 step\n   2 => 2 steps\n   3 => 3 steps\n   4 => 4 steps"
+					"patching_rect" : [ 0.0, 0.0, 123.0, 98.0 ],
+					"text" : "controls if a note plays, and its duration\n\noff => no note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 3 steps\n   4 => play for 4 steps"
 				}
 
 			}
