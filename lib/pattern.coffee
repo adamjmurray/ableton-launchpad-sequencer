@@ -65,18 +65,23 @@ class Pattern
     @_process(note, value) if value > 0 # NOTE: major assumption 0 is always a NOOP! But a good optimization...
     note
 
+
+  @DURATIONS = [0,1,2,4,8]
+  @VELOCITY_SCALERS = [1, 1.2, 1.4, 1.6, 1.8]
+
+  @CHROMATIC = [0,1,2,3,4]
   @MAJOR = [0,2,4,5,7]
   @MINOR = [0,2,3,5,7]
   @PENTATONIC_MAJOR = [0,2,4,7,9]
   @PENTATONIC_MINOR = [0,3,5,7,10]
-
+  @OCTAVES = [0, 12, 24, -12, -24]
 
   @processors =
-    gate:     (note, value) -> note.duration *= value
-    pitch:    (note, value) -> note.pitch += value
-    velocity: (note, value) -> note.velocity *= (1 + 0.2*value)
-    octave:   (note, value) -> note.pitch += (if value <= 2 then value*12 else (value-2)*-12)
-    major:            (note, value) => note.pitch += @MAJOR[value]
-    minor:            (note, value) => note.pitch += @MINOR[value]
-    pentatonic_major: (note, value) => note.pitch += @PENTATONIC_MAJOR[value]
-    pentatonic_minor: (note, value) => note.pitch += @PENTATONIC_MINOR[value]
+    gate:             (note, value) => note.duration += @DURATIONS[value]
+    velocity:         (note, value) => note.velocity *= @VELOCITY_SCALERS[value]
+    pitch:            (note, value) => note.pitch    += @CHROMATIC[value]
+    major:            (note, value) => note.pitch    += @MAJOR[value]
+    minor:            (note, value) => note.pitch    += @MINOR[value]
+    pentatonic_major: (note, value) => note.pitch    += @PENTATONIC_MAJOR[value]
+    pentatonic_minor: (note, value) => note.pitch    += @PENTATONIC_MINOR[value]
+    octave:           (note, value) => note.pitch    += @OCTAVES[value]

@@ -11,7 +11,7 @@ class Track
     'pentatonic_minor'
   ]
 
-  constructor: (@basePitch=60, @baseVelocity=71, @baseDuration=1.0) ->
+  constructor: (@basePitch=60, @baseVelocity=71, @baseDuration=0) ->
     @patterns = (new Pattern(type) for type in Track.DEFAULT_TYPES)
 
 
