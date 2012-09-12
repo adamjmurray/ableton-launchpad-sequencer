@@ -78,7 +78,8 @@ class Pattern
 
   @processors =
     gate:             (note, value) => note.duration += @DURATIONS[value]
-    velocity:         (note, value) => note.velocity *= @VELOCITY_SCALERS[value]
+    'velocity +':     (note, value) => note.velocity += (127 - note.velocity) * value/4
+    'velocity -':     (note, value) => note.velocity -= note.velocity * value/4 # assumes we filtered out 0 in processNote()
     pitch:            (note, value) => note.pitch    += @CHROMATIC[value]
     major:            (note, value) => note.pitch    += @MAJOR[value]
     minor:            (note, value) => note.pitch    += @MINOR[value]

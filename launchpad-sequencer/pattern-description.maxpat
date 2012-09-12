@@ -28,12 +28,42 @@
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
+					"id" : "obj-11",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 882.0, 108.0, 35.0, 18.0 ],
+					"presentation_rect" : [ 876.0, 107.0, 0.0, 0.0 ],
+					"text" : "-800"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-6",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 300.0, 193.0, 98.0 ],
+					"presentation_rect" : [ 4.0, 288.0, 0.0, 0.0 ],
+					"text" : "subtracts from the velocity of the note\n\n\noff => no change\n   1 => -25% of the distance to 0\n   2 => -50% of the distance to 0\n   3 => -75% of the distance to 0\n   4 => 0"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
 					"id" : "obj-8",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 782.0, 100.0, 35.0, 18.0 ],
+					"patching_rect" : [ 827.0, 108.0, 35.0, 18.0 ],
 					"text" : "-700"
 				}
 
@@ -47,7 +77,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 741.0, 99.0, 35.0, 18.0 ],
+					"patching_rect" : [ 772.0, 108.0, 35.0, 18.0 ],
 					"text" : "-600"
 				}
 
@@ -61,7 +91,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 700.0, 100.0, 35.0, 18.0 ],
+					"patching_rect" : [ 717.0, 108.0, 35.0, 18.0 ],
 					"text" : "-500"
 				}
 
@@ -75,7 +105,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 700.0, 153.0, 98.0 ],
+					"patching_rect" : [ 0.0, 800.0, 153.0, 98.0 ],
 					"text" : "pentatonic (minor) scale\n\n\noff => track's base pitch\n   1 => base pitch + 3\n   2 => base pitch + 5\n   3 => base pitch + 7\n   4 => base pitch + 10"
 				}
 
@@ -89,7 +119,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 500.0, 153.0, 98.0 ],
+					"patching_rect" : [ 0.0, 600.0, 153.0, 98.0 ],
 					"text" : "first 5 notes of minor scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 3\n   3 => base pitch + 5\n   4 => base pitch + 7"
 				}
 
@@ -103,7 +133,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 600.0, 153.0, 98.0 ],
+					"patching_rect" : [ 0.0, 700.0, 153.0, 98.0 ],
 					"text" : "pentatonic (major) scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 7\n   4 => base pitch + 9"
 				}
 
@@ -117,7 +147,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 623.0, 99.0, 38.0, 18.0 ],
+					"patching_rect" : [ 661.0, 108.0, 38.0, 18.0 ],
 					"text" : "-400"
 				}
 
@@ -131,7 +161,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 582.0, 100.0, 38.0, 18.0 ],
+					"patching_rect" : [ 606.0, 108.0, 38.0, 18.0 ],
 					"text" : "-300"
 				}
 
@@ -145,7 +175,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 541.0, 99.0, 38.0, 18.0 ],
+					"patching_rect" : [ 551.0, 108.0, 38.0, 18.0 ],
 					"text" : "-200"
 				}
 
@@ -159,7 +189,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 500.0, 100.0, 38.0, 18.0 ],
+					"patching_rect" : [ 496.0, 108.0, 38.0, 18.0 ],
 					"text" : "-100"
 				}
 
@@ -185,10 +215,10 @@
 					"id" : "obj-78",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 9,
-					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
-					"patching_rect" : [ 441.0, 67.0, 437.0, 20.0 ],
-					"text" : "select gate pitch velocity octave major minor pentatonic_major pentatonic_minor"
+					"numoutlets" : 10,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ 441.0, 67.0, 515.0, 20.0 ],
+					"text" : "select gate pitch \"velocity +\" \"velocity -\" octave major minor pentatonic_major pentatonic_minor"
 				}
 
 			}
@@ -242,7 +272,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 300.0, 154.0, 98.0 ],
+					"patching_rect" : [ 0.0, 400.0, 154.0, 98.0 ],
 					"text" : "adds or substracts an octave to the pitch\n\noff => no change\n   1 => up 1 octave\n   2 => up 2 octaves\n   3 => down 1 octave\n   4 => down 2 octaves"
 				}
 
@@ -256,7 +286,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 400.0, 153.0, 98.0 ],
+					"patching_rect" : [ 0.0, 500.0, 153.0, 98.0 ],
 					"text" : "first 5 notes of major scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 5\n   4 => base pitch + 7"
 				}
 
@@ -298,8 +328,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 200.0, 147.0, 98.0 ],
-					"text" : "controls the velocity of the note\n\noff => 71\n   1 => 85\n   2 => 99\n   3 => 113\n   4 => 127"
+					"patching_rect" : [ 0.0, 200.0, 188.0, 98.0 ],
+					"text" : "adds to the velocity of the note\n\n\noff => no change\n   1 => +25% of the distance to 127\n   2 => +50% of the distance to 127\n   3 => +75% of the distance to 127\n   4 => 127"
 				}
 
 			}
@@ -317,8 +347,17 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 726.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 891.5, 145.5, 532.5, 145.5 ],
+					"source" : [ "obj-11", 0 ]
 				}
 
 			}
@@ -337,6 +376,15 @@
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-78", 5 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 8 ]
 				}
 
 			}
@@ -407,7 +455,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 836.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-8", 0 ]
 				}
 
@@ -416,7 +464,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 450.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-85", 0 ]
 				}
 
@@ -425,7 +473,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 505.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-86", 0 ]
 				}
 
@@ -434,7 +482,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 560.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-88", 0 ]
 				}
 
@@ -443,7 +491,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 615.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-89", 0 ]
 				}
 
@@ -452,7 +500,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 781.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-9", 0 ]
 				}
 
@@ -461,7 +509,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [  ],
+					"midpoints" : [ 670.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-90", 0 ]
 				}
 

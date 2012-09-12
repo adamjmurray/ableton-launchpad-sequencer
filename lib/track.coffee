@@ -3,7 +3,7 @@ class Track
   @DEFAULT_TYPES = [
     'gate'
     'pitch'
-    'velocity'
+    'velocity +'
     'octave'
     'major'
     'minor'
