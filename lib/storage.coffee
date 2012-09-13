@@ -79,7 +79,7 @@ class Storage
   pastePattern: (target) ->
     pattern = @patternClipboard
     return unless pattern?
-    target.sequence = pattern.sequence
+    target.sequence = pattern.sequence[..] # make a copy
     target.start = pattern.start # can skip the setter() here for efficiency
     target.setEnd(pattern.end)   # but we use the proper setter here to trigger _updateLength()
     return
