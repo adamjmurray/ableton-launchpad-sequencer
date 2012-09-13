@@ -17,8 +17,6 @@ class Launchpad
 
 
   constructor: ->
-    @noteout     = NOOP
-    @ctlout      = NOOP
     @onTopDown   = NOOP
     @onTopUp     = NOOP
     @onRightDown = NOOP
