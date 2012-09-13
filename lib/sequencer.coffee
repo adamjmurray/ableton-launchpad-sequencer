@@ -3,7 +3,8 @@
 #
 class Sequencer
 
-  constructor: (@launchpad, @gui = new GUI) ->
+  constructor: (@launchpad) ->
+    @gui = new GUI
     @onNote = NOOP
     @reset(true)
 
@@ -70,7 +71,7 @@ class Sequencer
     pattern = @selectedPattern
     value = @value
     value = 0 if value == pattern.getStep(step) # toggle off
-
+    log 'set grid'
     pattern.setStep(step, value)
     @launchpad.grid(x, y, value)
     @gui.grid(x, y, value)
