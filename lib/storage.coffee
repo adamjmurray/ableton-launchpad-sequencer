@@ -1,4 +1,4 @@
-# The interface to the pattr persistence system in Max
+# The interface to the pattr persistence system in Max, and a copy/paste clipboard.
 class Storage
 
   constructor: (@sequencer) ->
@@ -46,18 +46,40 @@ class Storage
           when 'start'    then pattern.setStart val
           when 'end'      then pattern.setEnd val
           when 'sequence' then sequencer.setPattern trackIndex, patternIndex, values
+          else return error "Cannot load unknown property: #{path}"
 
 
   save: ->
     tracks = @sequencer.tracks
-    for trackIndex in [0...TRACKS]
+    for trackIndex in [0...TRACKS] by 1
       track = tracks[trackIndex]
       outlet(3, track.basePitch, track.baseVelocity, track.durationScale, trackIndex+1)
 
       patterns = track.patterns
-      for patternIndex in [0...PATTERNS]
+      for patternIndex in [0...PATTERNS] by 1
         pattern = patterns[patternIndex]
         outlet(4,
           pattern.type, pattern.start, pattern.end, pattern.sequence,
           patternIndex+1, trackIndex+1
         )
+    return
+
+
+  # Copy the given pattern to the clipboard.
+  # This inclues the 64 step values and the start and end step.
+  # It does not copy the pattern.type, to allow for sharing patterns between different pattern types.
+  copyPattern: (pattern) ->
+    @patternClipboard =
+      sequence: pattern.sequence
+      start: pattern.start
+      end: pattern.end
+    return
+
+  # Update the give target pattern to match the one in the clipboard
+  pastePattern: (target) ->
+    pattern = @patternClipboard
+    return unless pattern?
+    target.sequence = pattern.sequence
+    target.start = pattern.start # can skip the setter() here for efficiency
+    target.setEnd(pattern.end)   # but we use the proper setter here to trigger _updateLength()
+    return

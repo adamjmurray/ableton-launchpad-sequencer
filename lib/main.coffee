@@ -59,6 +59,8 @@ patternType = (type)       -> sequencer.selectedPattern.setType(type)
 # pattern actions
 clear  = -> sequencer.selectedPattern.clear() ; sequencer.drawGrid()
 random = -> sequencer.selectedPattern.random(); sequencer.drawGrid()
+copy   = -> storage.copyPattern(sequencer.selectedPattern)
+paste  = -> storage.pastePattern(sequencer.selectedPattern); sequencer.drawGrid()
 
 save = ()                  -> storage.save()
 load = (path, values...)   -> storage.load(path, values...)
