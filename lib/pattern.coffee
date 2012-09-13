@@ -16,6 +16,8 @@ class Pattern
   clear: ->
     @sequence = (0 for i in [0...STEPS])
 
+  random: ->
+    @sequence = (Math.floor(5*Math.random()) for i in [0...STEPS])
 
   setType: (type) ->
     @type = type

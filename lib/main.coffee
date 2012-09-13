@@ -57,7 +57,8 @@ endStep   = (stepNumber)   -> sequencer.selectedPattern.setEnd(stepNumber-1)
 patternType = (type)       -> sequencer.selectedPattern.setType(type)
 
 # pattern actions
-clear = -> sequencer.selectedPattern.clear(); sequencer.drawGrid()
+clear  = -> sequencer.selectedPattern.clear() ; sequencer.drawGrid()
+random = -> sequencer.selectedPattern.random(); sequencer.drawGrid()
 
 save = ()                  -> storage.save()
 load = (path, values...)   -> storage.load(path, values...)
