@@ -2,15 +2,8 @@
 # Intialize the application
 
 launchpad = new Launchpad
-launchpad.noteout = (pitch, velocity) -> outlet(0, pitch, velocity)
-launchpad.ctlout  = (cc, value)       -> outlet(1, cc, value)
-
 sequencer = new Sequencer(launchpad)
-launchpad.onRightDown = (idx) -> sequencer.selectPattern(idx)
-launchpad.onGridDown  = (x,y) -> sequencer.setGridValue(x,y)
-launchpad.onTopDown   = (idx) -> if idx <= 3 then sequencer.selectTrack(idx) else sequencer.selectValue(idx-3)
-
-storage = new Storage(sequencer)
+storage   = new Storage(sequencer)
 
 
 #==============================================================
@@ -23,6 +16,7 @@ reset = -> sequencer.reset()
 
 notein = (pitch, velocity) ->
   launchpad.notein(pitch, velocity)
+  return
 
 ctlin = (cc, val) ->
   if cc != TRANSPORT_STOP
@@ -33,37 +27,89 @@ ctlin = (cc, val) ->
     # which resets the Launchpad, so we need to re-sync the state:
     sequencer.drawLaunchpad()
     save() # this is a good time to save state without affecting realtime audio performance
+  return
 
 
 clock = (bars,beats,units) ->
   # assume 4/4 with 1/16 note pulses
   clockIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120)
   sequencer.setClock(clockIndex)
+  return
 
 
-track     = (trackIndex)   -> sequencer.selectTrack(trackIndex)
-stepValue = (value)        -> sequencer.selectValue(value)
-pattern   = (patternIndex) -> sequencer.selectPattern(patternIndex)
-grid      = (x,y)          -> sequencer.setGridValue(x,y)
+track = (trackIndex) ->
+  sequencer.selectTrack(trackIndex)
+  return
+
+stepValue = (value) ->
+  sequencer.selectValue(value)
+  return
+
+pattern = (patternIndex) ->
+  sequencer.selectPattern(patternIndex)
+  return
+
+grid = (x,y) ->
+  sequencer.setGridValue(x,y)
+  return
+
 
 # track properties
-basePitch     = (pitch)    -> sequencer.selectedTrack.basePitch = pitch
-baseVelocity  = (velocity) -> sequencer.selectedTrack.baseVelocity = velocity
-durationScale = (scale)    -> sequencer.selectedTrack.durationScale = scale
+basePitch = (pitch) ->
+  sequencer.selectedTrack.basePitch = pitch
+  return
+
+baseVelocity = (velocity) ->
+  sequencer.selectedTrack.baseVelocity = velocity
+  return
+
+durationScale = (scale) ->
+  sequencer.selectedTrack.durationScale = scale
+  return
+
 
 # pattern properties
-startStep = (stepNumber)   -> sequencer.selectedPattern.setStart(stepNumber-1)
-endStep   = (stepNumber)   -> sequencer.selectedPattern.setEnd(stepNumber-1)
-patternType = (type)       -> sequencer.selectedPattern.setType(type)
+startStep = (stepNumber)->
+  sequencer.selectedPattern.setStart(stepNumber-1)
+  return
+
+endStep = (stepNumber) ->
+  sequencer.selectedPattern.setEnd(stepNumber-1)
+  return
+
+patternType = (type) ->
+  sequencer.selectedPattern.setType(type)
+  return
+
 
 # pattern actions
-clear  = -> sequencer.selectedPattern.clear() ; sequencer.drawGrid()
-random = -> sequencer.selectedPattern.random(); sequencer.drawGrid()
-copy   = -> storage.copyPattern(sequencer.selectedPattern)
-paste  = -> storage.pastePattern(sequencer.selectedPattern); sequencer.drawGrid()
+clear = ->
+  sequencer.selectedPattern.clear()
+  sequencer.drawGrid()
+  return
 
-save = ()                  -> storage.save()
-load = (path, values...)   -> storage.load(path, values...)
+random = ->
+  sequencer.selectedPattern.random()
+  sequencer.drawGrid()
+  return
+
+copy = ->
+  storage.copyPattern(sequencer.selectedPattern)
+  return
+
+paste = ->
+  storage.pastePattern(sequencer.selectedPattern)
+  sequencer.drawGrid()
+  return
+
+
+save = ->
+  storage.save()
+  return
+
+load = (path, values...) ->
+  storage.load(path, values...)
+  return
 
 
 #==============================================================

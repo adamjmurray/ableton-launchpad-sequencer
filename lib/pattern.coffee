@@ -6,6 +6,7 @@
 class Pattern
 
   constructor: (type) ->
+    @sequence = new Array(STEPS)
     @clear()
     @start = 0
     @end = STEPS - 1
@@ -14,37 +15,43 @@ class Pattern
 
 
   clear: ->
-    @sequence = (0 for i in [0...STEPS])
+    @sequence[i] = 0 for i in [0...STEPS] by 1
+    return
 
   random: ->
-    @sequence = (Math.floor(5*Math.random()) for i in [0...STEPS])
+    @sequence[i] = Math.floor(5*Math.random()) for i in [0...STEPS] by 1
+    return
 
   setType: (type) ->
     @type = type
     @_process = Pattern.processors[type] or NOOP
-
+    return
 
   setStart: (index) ->
     if 0 <= index < STEPS
       @start = parseInt(index)
       @end = @start if @start > @end
       @_updateLength()
+    return
 
   setEnd: (index) ->
     if 0 <= index < STEPS
       @end = parseInt(index)
       @start = @end if @start > @end
       @_updateLength()
+    return
+
 
   _updateLength: ->
     @length = @end - @start + 1
-
+    return
 
   getStep: (index) ->
     @sequence[index]
 
   setStep: (index, value) ->
     @sequence[index] = value if 0 <= index < STEPS
+    return
 
 
   # Given a clock index (in steps) return the active step in this pattern,
@@ -83,12 +90,12 @@ class Pattern
   @OCTAVES = [0, 12, 24, -12, -24]
 
   @processors =
-    gate:             (note, value) => note.duration += @DURATIONS[value]
-    'velocity +':     (note, value) => note.velocity += (127 - note.velocity) * value/4
-    'velocity -':     (note, value) => note.velocity -= note.velocity * value/4 # assumes we filtered out 0 in processNote()
-    pitch:            (note, value) => note.pitch    += @CHROMATIC[value]
-    major:            (note, value) => note.pitch    += @MAJOR[value]
-    minor:            (note, value) => note.pitch    += @MINOR[value]
-    pentatonic_major: (note, value) => note.pitch    += @PENTATONIC_MAJOR[value]
-    pentatonic_minor: (note, value) => note.pitch    += @PENTATONIC_MINOR[value]
-    octave:           (note, value) => note.pitch    += @OCTAVES[value]
+    gate:             (note, value) => note.duration += @DURATIONS[value]; return
+    'velocity +':     (note, value) => note.velocity += (127 - note.velocity) * value/4; return
+    'velocity -':     (note, value) => note.velocity -= note.velocity * value/4; return # assumes we filtered out 0 in processNote()
+    pitch:            (note, value) => note.pitch    += @CHROMATIC[value]; return
+    major:            (note, value) => note.pitch    += @MAJOR[value]; return
+    minor:            (note, value) => note.pitch    += @MINOR[value]; return
+    pentatonic_major: (note, value) => note.pitch    += @PENTATONIC_MAJOR[value]; return
+    pentatonic_minor: (note, value) => note.pitch    += @PENTATONIC_MINOR[value]; return
+    octave:           (note, value) => note.pitch    += @OCTAVES[value]; return

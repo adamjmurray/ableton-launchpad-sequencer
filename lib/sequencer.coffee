@@ -7,6 +7,18 @@ class Sequencer
     @onNote = NOOP
     @reset(true)
 
+    launchpad.onTopDown = (idx) =>
+      if idx <= 3 then @selectTrack(idx) else @selectValue(idx-3)
+      return
+
+    launchpad.onRightDown = (idx) =>
+      @selectPattern(idx)
+      return
+
+    launchpad.onGridDown = (x,y) =>
+      @setGridValue(x,y)
+      return
+
 
   # Clear all patterns and set all track and pattern properties to their default values.
   reset: (skipRedraw) ->
@@ -14,9 +26,10 @@ class Sequencer
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @tracks = (new Track for track in [0...TRACKS])
+    @tracks = (new Track for track in [0...TRACKS] by 1)
     @_updateSelectedPattern(true)
     @redraw() unless skipRedraw
+    return
 
 
   # Update the Launchpad and Max GUI lights to reflect the current sequencer state
@@ -26,6 +39,7 @@ class Sequencer
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)
+    return
 
   # Quickly draw the Launchpad lights assuming all lights are currently off
   drawLaunchpad: ->
@@ -33,32 +47,34 @@ class Sequencer
     @launchpad.stepValue(@value)
     @launchpad.pattern(@pattern)
     pattern = @selectedPattern
-    for x in [0...ROW_LENGTH]
-      for y in [0...ROW_LENGTH]
+    for x in [0...ROW_LENGTH] by 1
+      for y in [0...ROW_LENGTH] by 1
         step = x + y*ROW_LENGTH
         value = pattern.getStep(step)
         @launchpad.grid(x, y, value)
+    return
 
   drawGrid: (pattern) ->
     pattern ?= @selectedPattern
-    for x in [0...ROW_LENGTH]
-      for y in [0...ROW_LENGTH]
+    for x in [0...ROW_LENGTH] by 1
+      for y in [0...ROW_LENGTH] by 1
         step = x + y*ROW_LENGTH
         value = pattern.getStep(step)
         @launchpad.grid(x, y, value)
         @gui.grid(x, y, value)
+    return
 
 
   setGridValue: (x,y) ->
     step = x + y*8
     pattern = @selectedPattern
-
     value = @value
     value = 0 if value == pattern.getStep(step) # toggle off
 
     pattern.setStep(step, value)
     @launchpad.grid(x, y, value)
     @gui.grid(x, y, value)
+    return
 
 
   selectTrack: (index, skipRedraw) ->
@@ -66,8 +82,10 @@ class Sequencer
     @launchpad.trackOff(@track)
     @track = index
     @launchpad.track(index)
+
     @gui.track(index)
     @_updateSelectedPattern(skipRedraw)
+    return
 
 
   selectValue: (value, preventToggle) ->
@@ -75,8 +93,10 @@ class Sequencer
     @launchpad.stepValueOff(@value)
     value = 0 if @value == value and not preventToggle
     @value = value
+
     @launchpad.stepValue(value)
     @gui.stepValue(value)
+    return
 
 
   selectPattern: (index, skipRedraw) ->
@@ -84,8 +104,10 @@ class Sequencer
     @launchpad.patternOff(@pattern)
     @pattern = index
     @launchpad.pattern(index)
+
     @gui.pattern(index)
     @_updateSelectedPattern(skipRedraw)
+    return
 
 
   setClock: (clock) ->
@@ -94,6 +116,7 @@ class Sequencer
       @clock = clock
       @_drawActiveStep()
       @_generateOutputForActiveStep()
+    return
 
 
   # @param t the track index
@@ -103,7 +126,7 @@ class Sequencer
     return unless (0 <= t < TRACKS) and (0 <= p < PATTERNS) and (stepValues.length == 64)
     @tracks[t].patterns[p].sequence = stepValues
     @_drawPattern(t, p) if t == @track and p == @pattern # update current pattern
-
+    return
 
 
   # ==============================================================================
@@ -115,6 +138,7 @@ class Sequencer
     @selectedTrack = @tracks[trackIndex]
     @selectedPattern = @selectedTrack.patterns[patternIndex]
     @_drawPattern(trackIndex, patternIndex) unless skipRedraw
+    return
 
 
   _drawPattern: (trackIndex, patternIndex) ->
@@ -129,6 +153,7 @@ class Sequencer
     # and force the active step to show its value:
     @activeStep = -1
     @_drawActiveStep()
+    return
 
 
   _drawActiveStep: () ->
@@ -153,6 +178,8 @@ class Sequencer
       @launchpad.activeStep(x, y)
       @gui.activeStep(x, y)
 
+    return
+
 
   # generate MIDI output for current step
   _generateOutputForActiveStep: () ->
@@ -165,3 +192,4 @@ class Sequencer
           note.velocity,
           note.duration
         ) if note
+    return

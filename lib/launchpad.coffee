@@ -33,6 +33,7 @@ class Launchpad
       @onTopDown(index)
     else
       @onTopUp(index)
+    return
 
 
   notein: (pitch, velocity) ->
@@ -42,34 +43,71 @@ class Launchpad
       if velocity > 0 then @onRightDown(y)  else @onRightUp(y)
     else
       if velocity > 0 then @onGridDown(x,y) else @onGridUp(x,y)
+    return
 
 
-  _top:   (index, color) -> @ctlout(104+index, color) if (0 <= index <= 7)
-
-  _grid:   (x, y, color) -> @noteout(16*y + x, color) if (0 <= x <= 7) and (0 <= y <= 7)
-
-  _right: (index, color) -> @noteout(16*index + 8, color) if (0 <= index <= 7)
+  ctlout: (cc, value) ->
+    outlet(1, cc, value)
+    return
 
 
-  allOff: -> @ctlout(0,0)
+  noteout: (pitch, velocity) ->
+    outlet(0, pitch, velocity)
+    return
 
 
-  track:    (trackIndex) -> @_top(trackIndex, Launchpad.TRACK_COLOR)
+  allOff: ->
+    @ctlout(0,0)
+    return
 
-  trackOff: (trackIndex) -> @_top(trackIndex, Launchpad.OFF)
+  track: (trackIndex) ->
+    @_top(trackIndex, Launchpad.TRACK_COLOR)
+    return
 
-
-  stepValue:    (stepValue) -> @_top(stepValue+3, Launchpad.GRID_COLORS[stepValue]) if stepValue > 0
-
-  stepValueOff: (stepValue) -> @_top(stepValue+3, Launchpad.OFF) if stepValue > 0
-
-
-  pattern:    (patternIndex) -> @_right(patternIndex, Launchpad.PATTERN_COLOR)
-
-  patternOff: (patternIndex) -> @_right(patternIndex, Launchpad.OFF)
+  trackOff: (trackIndex) ->
+    @_top(trackIndex, Launchpad.OFF)
+    return
 
 
-  grid: (x, y, value) -> @_grid(x, y, Launchpad.GRID_COLORS[value])
+  stepValue:    (stepValue) ->
+    @_top(stepValue+3, Launchpad.GRID_COLORS[stepValue]) if stepValue > 0
+    return
+
+  stepValueOff: (stepValue) ->
+    @_top(stepValue+3, Launchpad.OFF) if stepValue > 0
+    return
 
 
-  activeStep: (x, y) -> @_grid(x, y, Launchpad.STEP_COLOR)
+  pattern:    (patternIndex) ->
+    @_right(patternIndex, Launchpad.PATTERN_COLOR)
+    return
+
+  patternOff: (patternIndex) ->
+    @_right(patternIndex, Launchpad.OFF)
+    return
+
+
+  grid: (x, y, value) ->
+    @_grid(x, y, Launchpad.GRID_COLORS[value])
+    return
+
+
+  activeStep: (x, y) ->
+    @_grid(x, y, Launchpad.STEP_COLOR)
+    return
+
+
+  # ==============================================================================
+  # private
+
+  _top:   (index, color) ->
+    @ctlout(104+index, color) if (0 <= index <= 7)
+    return
+
+  _grid:   (x, y, color) ->
+    @noteout(16*y + x, color) if (0 <= x <= 7) and (0 <= y <= 7)
+    return
+
+  _right: (index, color) ->
+    @noteout(16*index + 8, color) if (0 <= index <= 7)
+    return
