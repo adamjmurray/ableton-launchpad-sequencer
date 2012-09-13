@@ -9,7 +9,7 @@ DIST_DIR = "#{BASE_DIR}/dist"
 
 SRC_FILES = ("#{SRC_DIR}/#{src}.coffee" for src in [
   'config'
-  'util'
+  'debug'
   'launchpad'
   'gui'
   'pattern'
