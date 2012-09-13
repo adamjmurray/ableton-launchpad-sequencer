@@ -39,6 +39,15 @@ class Sequencer
         value = pattern.getStep(step)
         @launchpad.grid(x, y, value)
 
+  drawGrid: (pattern) ->
+    pattern ?= @selectedPattern
+    for x in [0...ROW_LENGTH]
+      for y in [0...ROW_LENGTH]
+        step = x + y*ROW_LENGTH
+        value = pattern.getStep(step)
+        @launchpad.grid(x, y, value)
+        @gui.grid(x, y, value)
+
 
   setGridValue: (x,y) ->
     step = x + y*8
@@ -116,13 +125,7 @@ class Sequencer
     @gui.trackInfo(trackIndex, track)
     @gui.patternInfo(patternIndex, pattern)
 
-    for x in [0...ROW_LENGTH]
-      for y in [0...ROW_LENGTH]
-        step = x + y*ROW_LENGTH
-        value = pattern.getStep(step)
-        @launchpad.grid(x, y, value)
-        @gui.grid(x, y, value)
-
+    @drawGrid(pattern)
     # and force the active step to show its value:
     @activeStep = -1
     @_drawActiveStep()

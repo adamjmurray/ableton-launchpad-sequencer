@@ -5,12 +5,16 @@
 #
 class Pattern
 
-  constructor: (type = '?', @defaultValue = 0) ->
-    @sequence = (@defaultValue for i in [0...STEPS])
+  constructor: (type) ->
+    @clear()
     @start = 0
     @end = STEPS - 1
     @_updateLength()
     @setType(type)
+
+
+  clear: ->
+    @sequence = (0 for i in [0...STEPS])
 
 
   setType: (type) ->
