@@ -9,7 +9,8 @@ class GUI
     [80,130,200]  # current step
   ]
 
-  @WHITE = [255,255,255]
+  @START_END_COLOR = [200,200,255]
+  @TRANSPARENT = [0,0,0,255]
 
   constructor:->
     @oldlines = []
@@ -29,16 +30,16 @@ class GUI
   grid: (x, y, value) ->
     left = x*GUI_STEP_WIDTH + 2
     top  = y*GUI_STEP_WIDTH + 2
-    outlet(8, 'frgb', GUI.GRID_COLORS[value])
-    outlet(8, 'paintrect', left, top, left+GUI_BUTTON_WIDTH, top+GUI_BUTTON_WIDTH)
+    @color GUI.GRID_COLORS[value]
+    outlet 8, 'paintrect', left, top, left+GUI_BUTTON_WIDTH, top+GUI_BUTTON_WIDTH
     return
 
   activeStep: (x, y) ->
-    @grid(x, y, 5)
+    @grid x, y, 5
     return
 
   clearGrid: ->
-    outlet(8, 'clear')
+    outlet 8, 'clear'
     return
 
   trackInfo: (trackIndex, track) ->
@@ -50,14 +51,14 @@ class GUI
     # values in the Max GUI are numbers counting from 1, hence all the "+1"s
     start = pattern.start
     end = pattern.end
-    outlet(10, patternIndex+1, pattern.type, start+1, end+1)
+    outlet 10, patternIndex+1, pattern.type, start+1, end+1
 
     # start end/step indicators:
-    delta = GUI_BUTTON_WIDTH + 1
-    startX = (start % 8)*GUI_STEP_WIDTH + 1
-    startY = Math.floor(start/8)*GUI_STEP_WIDTH + 1
-    endX   = (end % 8)*GUI_STEP_WIDTH + 1
-    endY   = Math.floor(end/8)*GUI_STEP_WIDTH + 1
+    delta = GUI_BUTTON_WIDTH + 3
+    startX = (start % 8)*GUI_STEP_WIDTH
+    startY = Math.floor(start/8)*GUI_STEP_WIDTH
+    endX   = (end % 8)*GUI_STEP_WIDTH
+    endY   = Math.floor(end/8)*GUI_STEP_WIDTH
 
     lines = [
       [startX + delta, startY, startX, startY]
@@ -68,14 +69,18 @@ class GUI
       [endX + delta, endY + delta, endX, endY + delta]
     ]
 
-    outlet(8, 'frgb', [0,0,0,255])
-    @drawline(line...) for line in @oldlines
-    outlet(8, 'frgb', GUI.WHITE)
-    @drawline(line...) for line in lines
+    @color GUI.TRANSPARENT
+    @drawline(line) for line in @oldlines
+    @color GUI.START_END_COLOR
+    @drawline(line) for line in lines
     @oldlines = lines
-
     return
 
 
-  drawline: (x1,y1,x2,y2) ->
-    outlet(8, 'linesegment', x1, y1, x2, y2)
+  color: (color) ->
+    outlet 8, 'frgb', color
+    return
+
+  drawline: (line) ->
+    outlet 8, 'linesegment', line
+    return
