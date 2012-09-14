@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 483.0, 134.0, 1117.0, 921.0 ],
+		"rect" : [ 356.0, 44.0, 1115.0, 1041.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 483.0, 134.0, 1117.0, 921.0 ],
+		"defrect" : [ 356.0, 44.0, 1115.0, 1041.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -28,13 +28,130 @@
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
+					"id" : "obj-21",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 650.0, 300.0, 150.0, 20.0 ],
+					"text" : "legacy..."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-18",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 900.0, 199.0, 98.0 ],
+					"presentation_rect" : [ 10.0, 883.0, 0.0, 0.0 ],
+					"text" : "divides the duration of a note\n\n\noff => no change\n   1 => duration / 2\n   2 => duration / 3\n   3 => duration / 4\n   4 => duration / 5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-19",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 800.0, 199.0, 98.0 ],
+					"presentation_rect" : [ 10.0, 783.0, 0.0, 0.0 ],
+					"text" : "multiplies to the duration of a note\n\n\noff => no change\n   1 => duration * 2\n   2 => duration * 3\n   3 => duration * 4\n   4 => duration * 5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-17",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 100.0, 201.0, 98.0 ],
+					"presentation_rect" : [ -5.0, 100.0, 0.0, 0.0 ],
+					"text" : "adds to the pitch of the note \n\n\noff => no change\n   1 => + 1 semitone\n   2 => + 2 semitones\n   3 => + 3 semitones\n   4 => + 4 semitones"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-16",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 700.0, 199.0, 98.0 ],
+					"presentation_rect" : [ -10.0, 691.0, 0.0, 0.0 ],
+					"text" : "subtracts from the duration of a note\n\n\noff => no change\n   1 => - 1 step\n   2 => - 2 steps\n   3 => - 3 steps\n   4 => - 4 steps"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-15",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 600.0, 199.0, 98.0 ],
+					"presentation_rect" : [ -12.0, 596.0, 0.0, 0.0 ],
+					"text" : "adds to the duration of a note\n\n\noff => no change\n   1 => + 1 step\n   2 => + 2 steps\n   3 => + 3 steps\n   4 => + 4 steps"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-14",
+					"linecount" : 8,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 200.0, 201.0, 98.0 ],
+					"presentation_rect" : [ -1.0, 195.0, 0.0, 0.0 ],
+					"text" : "subtracts  from the pitch of the note \n\n\noff => no change\n   1 => - 1 semitone\n   2 => - 2 semitones\n   3 => - 3 semitones\n   4 => - 4 semitones"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-12",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 941.0, 108.0, 35.0, 18.0 ],
+					"presentation_rect" : [ 936.0, 107.0, 0.0, 0.0 ],
+					"text" : "-900"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
 					"id" : "obj-11",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 882.0, 108.0, 35.0, 18.0 ],
-					"presentation_rect" : [ 876.0, 107.0, 0.0, 0.0 ],
+					"patching_rect" : [ 885.0, 108.0, 35.0, 18.0 ],
 					"text" : "-800"
 				}
 
@@ -48,9 +165,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 300.0, 193.0, 98.0 ],
-					"presentation_rect" : [ 4.0, 288.0, 0.0, 0.0 ],
-					"text" : "subtracts from the velocity of the note\n\n\noff => no change\n   1 => -25% of the distance to 0\n   2 => -50% of the distance to 0\n   3 => -75% of the distance to 0\n   4 => 0"
+					"patching_rect" : [ 0.0, 500.0, 199.0, 98.0 ],
+					"text" : "reduces the velocity of the note\n\n\noff => no change\n   1 => 75% velocity\n   2 => 50% velocity\n   3 => 25% velocity\n   4 => 0 (mute)"
 				}
 
 			}
@@ -63,7 +179,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 827.0, 108.0, 35.0, 18.0 ],
+					"patching_rect" : [ 830.0, 108.0, 35.0, 18.0 ],
 					"text" : "-700"
 				}
 
@@ -77,7 +193,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 772.0, 108.0, 35.0, 18.0 ],
+					"patching_rect" : [ 774.0, 108.0, 35.0, 18.0 ],
 					"text" : "-600"
 				}
 
@@ -91,7 +207,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 717.0, 108.0, 35.0, 18.0 ],
+					"patching_rect" : [ 719.0, 108.0, 35.0, 18.0 ],
 					"text" : "-500"
 				}
 
@@ -105,7 +221,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 800.0, 153.0, 98.0 ],
+					"patching_rect" : [ 650.0, 650.0, 153.0, 98.0 ],
 					"text" : "pentatonic (minor) scale\n\n\noff => track's base pitch\n   1 => base pitch + 3\n   2 => base pitch + 5\n   3 => base pitch + 7\n   4 => base pitch + 10"
 				}
 
@@ -119,7 +235,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 600.0, 153.0, 98.0 ],
+					"patching_rect" : [ 650.0, 450.0, 153.0, 98.0 ],
 					"text" : "first 5 notes of minor scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 3\n   3 => base pitch + 5\n   4 => base pitch + 7"
 				}
 
@@ -133,7 +249,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 700.0, 153.0, 98.0 ],
+					"patching_rect" : [ 650.0, 550.0, 153.0, 98.0 ],
 					"text" : "pentatonic (major) scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 7\n   4 => base pitch + 9"
 				}
 
@@ -147,7 +263,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 661.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 663.0, 108.0, 38.0, 18.0 ],
 					"text" : "-400"
 				}
 
@@ -161,7 +277,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 606.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 608.0, 108.0, 38.0, 18.0 ],
 					"text" : "-300"
 				}
 
@@ -175,7 +291,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 551.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 552.0, 108.0, 38.0, 18.0 ],
 					"text" : "-200"
 				}
 
@@ -189,7 +305,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 496.0, 108.0, 38.0, 18.0 ],
+					"patching_rect" : [ 497.0, 108.0, 38.0, 18.0 ],
 					"text" : "-100"
 				}
 
@@ -215,10 +331,10 @@
 					"id" : "obj-78",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 10,
-					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
-					"patching_rect" : [ 441.0, 67.0, 515.0, 20.0 ],
-					"text" : "select gate pitch \"velocity +\" \"velocity -\" octave major minor pentatonic_major pentatonic_minor"
+					"numoutlets" : 11,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ 441.0, 67.0, 574.0, 20.0 ],
+					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration *\" \"duration /\""
 				}
 
 			}
@@ -272,7 +388,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 400.0, 154.0, 98.0 ],
+					"patching_rect" : [ 0.0, 300.0, 199.0, 98.0 ],
 					"text" : "adds or substracts an octave to the pitch\n\noff => no change\n   1 => up 1 octave\n   2 => up 2 octaves\n   3 => down 1 octave\n   4 => down 2 octaves"
 				}
 
@@ -286,22 +402,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 500.0, 153.0, 98.0 ],
+					"patching_rect" : [ 650.0, 350.0, 153.0, 98.0 ],
 					"text" : "first 5 notes of major scale\n\n\noff => track's base pitch\n   1 => base pitch + 2\n   2 => base pitch + 4\n   3 => base pitch + 5\n   4 => base pitch + 7"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial Bold",
-					"fontsize" : 10.0,
-					"id" : "obj-32",
-					"linecount" : 8,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 100.0, 181.0, 98.0 ],
-					"text" : "controls the pitch of the note \n\n\noff => track's base pitch\n   1 => base pitch + 1\n   2 => base pitch + 2\n   3 => base pitch + 3\n   4 => base pitch + 4"
 				}
 
 			}
@@ -314,8 +416,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 0.0, 123.0, 98.0 ],
-					"text" : "controls if a note plays, and its duration\n\noff => no note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
+					"patching_rect" : [ 0.0, 0.0, 199.0, 98.0 ],
+					"text" : "controls if a note plays, and its duration\n\n\noff => no note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
 				}
 
 			}
@@ -328,8 +430,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 200.0, 188.0, 98.0 ],
-					"text" : "adds to the velocity of the note\n\n\noff => no change\n   1 => +25% of the distance to 127\n   2 => +50% of the distance to 127\n   3 => +75% of the distance to 127\n   4 => 127"
+					"patching_rect" : [ 0.0, 400.0, 200.0, 98.0 ],
+					"text" : "adds to the velocity of the note a % of the distance to the maximum.\n\noff => no change\n   1 => +25% towards max\n   2 => +50% towards max\n   3 => +75% towards max\n   4 => max velocity (MIDI value 127)"
 				}
 
 			}
@@ -347,7 +449,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 726.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 728.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-10", 0 ]
 				}
 
@@ -356,8 +458,17 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 891.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 894.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 950.5, 145.0, 532.5, 145.0 ],
+					"source" : [ "obj-12", 0 ]
 				}
 
 			}
@@ -385,6 +496,15 @@
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-78", 8 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 9 ]
 				}
 
 			}
@@ -455,7 +575,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 836.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 839.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-8", 0 ]
 				}
 
@@ -473,7 +593,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 505.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 506.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-86", 0 ]
 				}
 
@@ -482,7 +602,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 560.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 561.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-88", 0 ]
 				}
 
@@ -491,7 +611,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 615.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 617.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-89", 0 ]
 				}
 
@@ -500,7 +620,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 781.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 783.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-9", 0 ]
 				}
 
@@ -509,7 +629,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 670.5, 145.5, 532.5, 145.5 ],
+					"midpoints" : [ 672.5, 145.5, 532.5, 145.5 ],
 					"source" : [ "obj-90", 0 ]
 				}
 
