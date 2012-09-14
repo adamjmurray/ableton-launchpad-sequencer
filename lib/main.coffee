@@ -71,10 +71,12 @@ durationScale = (scale) ->
 # pattern properties
 startStep = (stepNumber)->
   sequencer.selectedPattern.setStart(stepNumber-1)
+  sequencer.drawPatternInfo()
   return
 
 endStep = (stepNumber) ->
   sequencer.selectedPattern.setEnd(stepNumber-1)
+  sequencer.drawPatternInfo()
   return
 
 patternType = (type) ->

@@ -65,6 +65,9 @@ class Sequencer
         @gui.grid(x, y, value)
     return
 
+  drawPatternInfo: ->
+    @gui.patternInfo(@pattern, @selectedPattern)
+
 
   setGridValue: (x,y) ->
     step = x + y*8
