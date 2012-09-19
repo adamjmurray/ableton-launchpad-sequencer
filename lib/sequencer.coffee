@@ -75,14 +75,31 @@ class Sequencer
 
   selectTrack: (index, skipRedraw) ->
     return unless 0 <= index <= 3
-    @launchpad.trackOff(@selectedTrack)
+    launchpad = @launchpad
+    gui = @gui
+
+    # turn off old selectedTrack button on the Launchpad
+    launchpad.trackOff(@selectedTrack)
+
+    # switch to the new selectedTrack
     @track = index
     @_updateSelectedPattern(skipRedraw)
+    selectedTrack = @selectedTrack
+    patterns = selectedTrack.patterns
+    selectedPattern = @selectedPattern
 
-    @launchpad.track(@selectedTrack)
-    @gui.track(index)
-    @gui.trackMute(@selectedTrack)
-    @gui.patternMute(@selectedPattern)
+    # update the GUI
+    gui.track(index)
+    gui.trackMute(selectedTrack)
+    gui.patternMute(selectedPattern)
+
+    # update the Launchpad
+    launchpad.track(selectedTrack)
+    for pattern in patterns
+      if pattern == selectedPattern
+        launchpad.pattern(pattern)
+      else
+        launchpad.patternOff(pattern)
     return
 
 
