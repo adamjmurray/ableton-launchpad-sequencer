@@ -17,11 +17,6 @@ class Track
     @mute = false
 
 
-  toggleMute: ->
-    @mute = !@mute
-    return
-
-
   noteForClock: (clock) ->
     return if @mute
     note =

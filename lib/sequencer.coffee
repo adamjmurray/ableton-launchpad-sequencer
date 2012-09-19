@@ -129,12 +129,16 @@ class Sequencer
 
 
   muteSelectedTrack: (mute) ->
-    @selectedTrack.mute = mute
-    @launchpad.track(@selectedTrack)
+    selectedTrack = @selectedTrack
+    selectedTrack.mute = mute ? !selectedTrack.mute # if no value is given, then toggle
+    @launchpad.track(selectedTrack)
+    @gui.trackMute(selectedTrack)
 
   muteSelectedPattern: (mute) ->
-    @selectedPattern.mute = mute
-    @launchpad.pattern(@selectedPattern)
+    selectedPattern = @selectedPattern
+    selectedPattern.mute = mute ? !selectedPattern.mute # if no value is given, then toggle
+    @launchpad.pattern(selectedPattern)
+    @gui.patternMute(selectedPattern)
 
   # ==============================================================================
   # private
@@ -210,8 +214,7 @@ class Sequencer
         @trackMultiPress += 1
         if @trackMultiPress >= 3
           @trackMultiPress = 0
-          @selectedTrack.toggleMute()
-          @gui.trackMute(@selectedTrack)
+          @muteSelectedTrack() # toggle mute
       else
         @trackMultiPress = 1
         @selectTrack(buttonIndex)
@@ -228,8 +231,7 @@ class Sequencer
       @patternMultiPress += 1
       if @patternMultiPress >= 3
         @patternMultiPress = 0
-        @selectedPattern.toggleMute()
-        @gui.patternMute(@selectedPattern)
+        @muteSelectedPattern() # toggle mute
     else
       @patternMultiPress = 1
       @selectPattern(buttonIndex)

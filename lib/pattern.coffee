@@ -16,11 +16,6 @@ class Pattern
     @mute = false
 
 
-  toggleMute: ->
-    @mute = !@mute
-    return
-
-
   clear: ->
     @sequence[i] = 0 for i in [0...STEPS] by 1
     return
