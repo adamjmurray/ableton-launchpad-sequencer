@@ -7,18 +7,9 @@ class Sequencer
     @gui = new GUI
     @onNote = NOOP
     @reset(true)
-
-    launchpad.onTopDown = (idx) =>
-      if idx <= 3 then @selectTrack(idx) else @selectValue(idx-3)
-      return
-
-    launchpad.onRightDown = (idx) =>
-      @selectPattern(idx)
-      return
-
-    launchpad.onGridDown = (x,y) =>
-      @setGridValue(x,y)
-      return
+    launchpad.onTopDown = @_onLaunchpadTopDown
+    launchpad.onRightDown = @_onLaunchpadRightDown
+    launchpad.onGridDown = @_onLaunchpadGridDown
 
 
   # Clear all patterns and set all track and pattern properties to their default values.
@@ -198,4 +189,42 @@ class Sequencer
           note.velocity,
           note.duration
         ) if note
+    return
+
+
+  # Launchpad button event handlers
+  _onLaunchpadTopDown: (buttonIndex) =>
+    if buttonIndex <= 3
+      if @track == buttonIndex # track already selected
+        unless @trackPrimed
+          @trackPrimed = true # next press will be a double-press
+        else # double press
+          @trackPrimed = false
+          @selectedTrack.toggleMute()
+          @gui.trackMute(@selectedTrack)
+      else
+        @trackPrimed = false
+        @selectTrack(buttonIndex)
+
+    else # select step value
+      @selectValue(buttonIndex-3)
+
+    return
+
+  _onLaunchpadRightDown: (buttonIndex) =>
+    if @pattern == buttonIndex # pattern already selected
+      unless @patternPrimed
+        @patternPrimed = true # next press will be a double-press
+      else # double press
+        @patternPrimed = false
+        @selectedPattern.toggleMute()
+        @gui.patternMute(@selectedPattern)
+    else
+      @patternPrimed = false
+      @selectPattern(buttonIndex)
+
+    return
+
+  _onLaunchpadGridDown: (x,y) =>
+    @setGridValue(x,y)
     return
