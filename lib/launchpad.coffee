@@ -15,6 +15,9 @@ class Launchpad
   @TRACK_COLOR:   @color(1,2)
   @PATTERN_COLOR: @color(2,0)
 
+  @MUTE_COLOR:          @color(0,3)
+  @INACTIVE_MUTE_COLOR: @color(0,1)
+
 
   constructor: ->
     @onTopDown   = NOOP
@@ -58,16 +61,19 @@ class Launchpad
     @ctlout(0,0)
     return
 
-  track: (trackIndex) ->
-    @_top(trackIndex, Launchpad.TRACK_COLOR)
+
+  track: (track) ->
+    color = if track.mute then Launchpad.MUTE_COLOR else Launchpad.TRACK_COLOR
+    @_top(track.index, color)
     return
 
-  trackOff: (trackIndex) ->
-    @_top(trackIndex, Launchpad.OFF)
+  trackOff: (track) ->
+    color = if track.mute then Launchpad.INACTIVE_MUTE_COLOR else Launchpad.OFF
+    @_top(track.index, color)
     return
 
 
-  stepValue:    (stepValue) ->
+  stepValue: (stepValue) ->
     @_top(stepValue+3, Launchpad.GRID_COLORS[stepValue]) if stepValue > 0
     return
 
@@ -76,12 +82,14 @@ class Launchpad
     return
 
 
-  pattern:    (patternIndex) ->
-    @_right(patternIndex, Launchpad.PATTERN_COLOR)
+  pattern: (pattern) ->
+    color = if pattern.mute then Launchpad.MUTE_COLOR else Launchpad.PATTERN_COLOR
+    @_right(pattern.index, color)
     return
 
-  patternOff: (patternIndex) ->
-    @_right(patternIndex, Launchpad.OFF)
+  patternOff: (pattern) ->
+    color = if pattern.mute then Launchpad.INACTIVE_MUTE_COLOR else Launchpad.OFF
+    @_right(pattern.index, color)
     return
 
 

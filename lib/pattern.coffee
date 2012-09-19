@@ -5,7 +5,8 @@
 #
 class Pattern
 
-  constructor: (type) ->
+  constructor: (@index, type) ->
+    @number = index+1
     @sequence = new Array(STEPS)
     @clear()
     @start = 0

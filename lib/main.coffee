@@ -73,7 +73,7 @@ durationScale = (scale) ->
   return
 
 trackMute = (mute) ->
-  sequencer.selectedTrack.mute = mute
+  sequencer.muteSelectedTrack(mute)
   return
 
 
@@ -93,7 +93,7 @@ patternType = (type) ->
   return
 
 patternMute = (mute) ->
-  sequencer.selectedPattern.mute = mute
+  sequencer.muteSelectedPattern(mute)
   return
 
 

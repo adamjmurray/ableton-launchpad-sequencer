@@ -11,8 +11,9 @@ class Track
     'duration -'
   ]
 
-  constructor: (@basePitch=60, @baseVelocity=70, @durationScale=0.99) ->
-    @patterns = (new Pattern(type) for type in Track.DEFAULT_TYPES)
+  constructor: (@index, @basePitch=60, @baseVelocity=70, @durationScale=0.99) ->
+    @number = @index+1
+    @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)
     @mute = false
 
 

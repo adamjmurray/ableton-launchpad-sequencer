@@ -18,7 +18,9 @@ class Sequencer
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @tracks = (new Track for track in [0...TRACKS] by 1)
+    @tracks = (new Track(index) for index in [0...TRACKS] by 1)
+    @trackMultiPress = 0
+    @patternMultiPress = 0
     @_updateSelectedPattern(true)
     @redraw() unless skipRedraw
     return
@@ -35,9 +37,9 @@ class Sequencer
 
   # Quickly draw the Launchpad lights assuming all lights are currently off
   drawLaunchpad: ->
-    @launchpad.track(@track)
+    @launchpad.track(@selectedTrack)
     @launchpad.stepValue(@value)
-    @launchpad.pattern(@pattern)
+    @launchpad.pattern(@selectedPattern)
     pattern = @selectedPattern
     for x in [0...ROW_LENGTH] by 1
       for y in [0...ROW_LENGTH] by 1
@@ -73,12 +75,12 @@ class Sequencer
 
   selectTrack: (index, skipRedraw) ->
     return unless 0 <= index <= 3
-    @launchpad.trackOff(@track)
+    @launchpad.trackOff(@selectedTrack)
     @track = index
-    @launchpad.track(index)
-
-    @gui.track(index)
     @_updateSelectedPattern(skipRedraw)
+
+    @launchpad.track(@selectedTrack)
+    @gui.track(index)
     @gui.trackMute(@selectedTrack)
     @gui.patternMute(@selectedPattern)
     return
@@ -97,12 +99,12 @@ class Sequencer
 
   selectPattern: (index, skipRedraw) ->
     return unless 0 <= index <= 7
-    @launchpad.patternOff(@pattern)
+    @launchpad.patternOff(@selectedPattern)
     @pattern = index
-    @launchpad.pattern(index)
-
-    @gui.pattern(index)
     @_updateSelectedPattern(skipRedraw)
+
+    @launchpad.pattern(@selectedPattern)
+    @gui.pattern(index)
     @gui.patternMute(@selectedPattern)
     return
 
@@ -125,6 +127,14 @@ class Sequencer
     @_drawPattern(t, p) if t == @track and p == @pattern # update current pattern
     return
 
+
+  muteSelectedTrack: (mute) ->
+    @selectedTrack.mute = mute
+    @launchpad.track(@selectedTrack)
+
+  muteSelectedPattern: (mute) ->
+    @selectedPattern.mute = mute
+    @launchpad.pattern(@selectedPattern)
 
   # ==============================================================================
   # private
@@ -194,37 +204,40 @@ class Sequencer
 
   # Launchpad button event handlers
   _onLaunchpadTopDown: (buttonIndex) =>
+    @patternMultiPress = 0
     if buttonIndex <= 3
       if @track == buttonIndex # track already selected
-        unless @trackPrimed
-          @trackPrimed = true # next press will be a double-press
-        else # double press
-          @trackPrimed = false
+        @trackMultiPress += 1
+        if @trackMultiPress >= 3
+          @trackMultiPress = 0
           @selectedTrack.toggleMute()
           @gui.trackMute(@selectedTrack)
       else
-        @trackPrimed = false
+        @trackMultiPress = 1
         @selectTrack(buttonIndex)
 
     else # select step value
+      @trackMultiPress = 0
       @selectValue(buttonIndex-3)
 
     return
 
   _onLaunchpadRightDown: (buttonIndex) =>
+    @trackMultiPress = 0
     if @pattern == buttonIndex # pattern already selected
-      unless @patternPrimed
-        @patternPrimed = true # next press will be a double-press
-      else # double press
-        @patternPrimed = false
+      @patternMultiPress += 1
+      if @patternMultiPress >= 3
+        @patternMultiPress = 0
         @selectedPattern.toggleMute()
         @gui.patternMute(@selectedPattern)
     else
-      @patternPrimed = false
+      @patternMultiPress = 1
       @selectPattern(buttonIndex)
 
     return
 
   _onLaunchpadGridDown: (x,y) =>
+    @trackMultiPress = 0
+    @patternMultiPress = 0
     @setGridValue(x,y)
     return
