@@ -24,12 +24,15 @@ class Pattern
     @sequence[i] = Math.floor(5*Math.random()) for i in [0...STEPS] by 1
     return
 
-  shiftLeft: ->
-    @sequence.push(@sequence.shift())
-    return
-
-  shiftRight: ->
-    @sequence.unshift(@sequence.pop())
+  rotate: (steps) ->
+    seq = @sequence
+    len = @length
+    rot = @start + ((steps % len) + len) % len # force steps to be in [0..@length] and offset from @start
+    before = seq[0...@start]
+    left   = seq[@start...rot]
+    right  = seq[rot..@end]
+    after  = seq[(@end+1)..]
+    @sequence = before.concat right, left, after
     return
 
 

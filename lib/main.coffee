@@ -117,13 +117,23 @@ paste = ->
   sequencer.drawGrid()
   return
 
-shiftLeft = ->
-  sequencer.selectedPattern.shiftLeft()
+shiftleft = ->
+  sequencer.selectedPattern.rotate(1)
   sequencer.drawGrid()
   return
 
-shiftRight = ->
-  sequencer.selectedPattern.shiftRight()
+shiftup = ->
+  sequencer.selectedPattern.rotate(ROW_LENGTH)
+  sequencer.drawGrid()
+  return
+
+shiftright = ->
+  sequencer.selectedPattern.rotate(-1)
+  sequencer.drawGrid()
+  return
+
+shiftdown = ->
+  sequencer.selectedPattern.rotate(-ROW_LENGTH)
   sequencer.drawGrid()
   return
 
