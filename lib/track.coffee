@@ -13,9 +13,16 @@ class Track
 
   constructor: (@basePitch=60, @baseVelocity=70, @durationScale=0.99) ->
     @patterns = (new Pattern(type) for type in Track.DEFAULT_TYPES)
+    @mute = false
+
+
+  toggleMute: ->
+    @mute = !@mute
+    return
 
 
   noteForClock: (clock) ->
+    return if @mute
     note =
       pitch:    @basePitch
       velocity: @baseVelocity

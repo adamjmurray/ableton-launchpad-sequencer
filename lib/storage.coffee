@@ -17,7 +17,7 @@ class Storage
     # track.1::pattern.1::ptype gate
     # track.1::pattern.1::start 0
     # track.1::pattern.1::end 63
-    matches =/^track\.(\d+)::(.*)/.exec(path)
+    matches =/^t\.(\d+)::(.*)/.exec(path)
     return unless matches?
 
     trackIndex = parseInt(matches[1]) - 1
@@ -28,12 +28,13 @@ class Storage
     val = values[0]
 
     switch subpath
-      when 'basePitch'     then track.basePitch     = parseInt val
-      when 'baseVelocity'  then track.baseVelocity  = parseInt val
-      when 'durationScale' then track.durationScale = parseFloat val
+      when 'p' then track.basePitch     = parseInt val
+      when 'v' then track.baseVelocity  = parseInt val
+      when 'd' then track.durationScale = parseFloat val
+      when 'm' then track.mute          = (parseInt(val) > 0)
 
       else
-        matches = /^pattern\.(\d+)::(.*)/.exec(subpath)
+        matches = /^n\.(\d+)::(.*)/.exec(subpath)
         return unless matches?
 
         patternIndex = parseInt(matches[1]) - 1
@@ -42,26 +43,42 @@ class Storage
         return unless pattern?
 
         switch property
-          when 'ptype'    then pattern.setType val
-          when 'start'    then pattern.setStart val
-          when 'end'      then pattern.setEnd val
-          when 'sequence' then sequencer.setPattern trackIndex, patternIndex, values
-          else return error "Cannot load unknown property: #{path}"
+          when 't' then pattern.setType val
+          when 's' then pattern.setStart val
+          when 'e' then pattern.setEnd val
+          when 'q' then sequencer.setPattern trackIndex, patternIndex, values
+          when 'm' then pattern.mute = (parseInt(val) > 0)
+          else error "Cannot load unknown property: #{path}"
+    return
 
 
   save: ->
     tracks = @sequencer.tracks
     for trackIndex in [0...TRACKS] by 1
       track = tracks[trackIndex]
-      outlet(3, track.basePitch, track.baseVelocity, track.durationScale, trackIndex+1)
+      trackNumber = trackIndex+1
+      @saveTrackAttr trackNumber, 'p', track.basePitch
+      @saveTrackAttr trackNumber, 'v', track.baseVelocity
+      @saveTrackAttr trackNumber, 'd', track.durationScale
+      @saveTrackAttr trackNumber, 'm', track.mute
 
       patterns = track.patterns
       for patternIndex in [0...PATTERNS] by 1
         pattern = patterns[patternIndex]
-        outlet(4,
-          pattern.type, pattern.start, pattern.end, pattern.sequence,
-          patternIndex+1, trackIndex+1
-        )
+        patternNumber = patternIndex+1
+        @savePatternAttr trackNumber, patternNumber, 't', pattern.type
+        @savePatternAttr trackNumber, patternNumber, 's', pattern.start
+        @savePatternAttr trackNumber, patternNumber, 'e', pattern.end
+        @savePatternAttr trackNumber, patternNumber, 'q', pattern.sequence
+        @savePatternAttr trackNumber, patternNumber, 'm', if pattern.mute then 1 else 0
+    return
+
+  saveTrackAttr: (trackNumber, attrName, attrValue) ->
+    outlet OUTLET_PATTR, attrValue, "t.#{trackNumber}::#{attrName}"
+    return
+
+  savePatternAttr: (trackNumber, patternNumber, attrName, attrValue) ->
+    outlet OUTLET_PATTR, attrValue, "t.#{trackNumber}::n.#{patternNumber}::#{attrName}"
     return
 
 

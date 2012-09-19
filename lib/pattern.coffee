@@ -12,6 +12,12 @@ class Pattern
     @end = STEPS - 1
     @_updateLength()
     @setType(type)
+    @mute = false
+
+
+  toggleMute: ->
+    @mute = !@mute
+    return
 
 
   clear: ->
@@ -22,10 +28,12 @@ class Pattern
     @sequence[i] = Math.floor(5*Math.random()) for i in [0...STEPS] by 1
     return
 
+
   setType: (type) ->
     @type = type
     @_process = Pattern.processors[type] or NOOP
     return
+
 
   setStart: (index) ->
     if 0 <= index < STEPS
@@ -41,10 +49,10 @@ class Pattern
       @_updateLength()
     return
 
-
   _updateLength: ->
     @length = @end - @start + 1
     return
+
 
   getStep: (index) ->
     @sequence[index]
@@ -74,9 +82,10 @@ class Pattern
   # Returns the note.
   #
   processNote: (note, clock) ->
+    return if @mute
     value = @getStepForClock(clock)
-    @_process(note, value) if value > 0 # NOTE: major assumption 0 is always a NOOP! But a good optimization...
-    note
+    @_process(note, value) if value > 0 # NOTE, major assumption: 0 is always a NOOP! But a good optimization...
+    return
 
 
   @GATE_DURATIONS = [0,1,2,4,8]
