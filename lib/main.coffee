@@ -10,8 +10,13 @@ storage   = new Storage(sequencer)
 # Handlers for input from Max.
 # Each method below handles the Max messages of the same name
 
-bang  = -> sequencer.redraw()
-reset = -> sequencer.reset()
+bang  = ->
+  sequencer.redraw()
+  return
+
+reset = ->
+  sequencer.reset()
+  return
 
 
 notein = (pitch, velocity) ->
@@ -67,6 +72,10 @@ durationScale = (scale) ->
   sequencer.selectedTrack.durationScale = scale
   return
 
+trackMute = (mute) ->
+  sequencer.selectedTrack.mute = mute
+  return
+
 
 # pattern properties
 startStep = (stepNumber)->
@@ -81,6 +90,10 @@ endStep = (stepNumber) ->
 
 patternType = (type) ->
   sequencer.selectedPattern.setType(type)
+  return
+
+patternMute = (mute) ->
+  sequencer.selectedPattern.mute = mute
   return
 
 

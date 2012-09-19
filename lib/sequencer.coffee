@@ -88,6 +88,8 @@ class Sequencer
 
     @gui.track(index)
     @_updateSelectedPattern(skipRedraw)
+    @gui.trackMute(@selectedTrack)
+    @gui.patternMute(@selectedPattern)
     return
 
 
@@ -110,6 +112,7 @@ class Sequencer
 
     @gui.pattern(index)
     @_updateSelectedPattern(skipRedraw)
+    @gui.patternMute(@selectedPattern)
     return
 
 
@@ -190,7 +193,7 @@ class Sequencer
     if clock >= 0
       for track in @tracks
         note = track.noteForClock(clock)
-        outlet(2,
+        outlet(NOTE,
           note.pitch,
           note.velocity,
           note.duration

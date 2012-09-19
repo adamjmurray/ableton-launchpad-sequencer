@@ -15,23 +15,25 @@ class GUI
   constructor:->
     @oldlines = []
 
+
   track: (trackIndex) ->
-    outlet(5, trackIndex)
+    outlet TRACK_INDEX, trackIndex
     return
 
   stepValue: (stepValue) ->
-    outlet(6, stepValue)
+    outlet STEP_VALUE, stepValue
     return
 
   pattern: (patternIndex) ->
-    outlet(7, patternIndex)
+    outlet PATTERN_INDEX, patternIndex
     return
+
 
   grid: (x, y, value) ->
     left = x*GUI_STEP_WIDTH + 2
     top  = y*GUI_STEP_WIDTH + 2
     @color GUI.GRID_COLORS[value]
-    outlet 8, 'paintrect', left, top, left+GUI_BUTTON_WIDTH, top+GUI_BUTTON_WIDTH
+    outlet GRID, 'paintrect', left, top, left+GUI_BUTTON_WIDTH, top+GUI_BUTTON_WIDTH
     return
 
   activeStep: (x, y) ->
@@ -39,19 +41,33 @@ class GUI
     return
 
   clearGrid: ->
-    outlet 8, 'clear'
+    outlet GRID, 'clear'
     return
+
+  color: (color) ->
+    outlet GRID, 'frgb', color
+    return
+
+  drawline: (line) ->
+    outlet GRID, 'linesegment', line
+    return
+
 
   trackInfo: (trackIndex, track) ->
     trackNumber = trackIndex + 1
-    outlet(9, trackNumber, track.basePitch, track.baseVelocity, track.durationScale)
+    outlet TRACK_INFO, trackNumber, track.basePitch, track.baseVelocity, track.durationScale
     return
+
+  trackMute: (track) ->
+    outlet TRACK_MUTE, track.mute
+    return
+
 
   patternInfo: (patternIndex, pattern) ->
     # values in the Max GUI are numbers counting from 1, hence all the "+1"s
     start = pattern.start
     end = pattern.end
-    outlet 10, patternIndex+1, pattern.type, start+1, end+1
+    outlet PATTERN_INFO, patternIndex+1, pattern.type, start+1, end+1
 
     # start end/step indicators:
     delta = GUI_BUTTON_WIDTH + 3
@@ -76,11 +92,6 @@ class GUI
     @oldlines = lines
     return
 
-
-  color: (color) ->
-    outlet 8, 'frgb', color
-    return
-
-  drawline: (line) ->
-    outlet 8, 'linesegment', line
+  patternMute: (pattern) ->
+    outlet PATTERN_MUTE, pattern.mute
     return

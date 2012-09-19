@@ -45,12 +45,12 @@ class Launchpad
 
 
   ctlout: (cc, value) ->
-    outlet(1, cc, value)
+    outlet LAUNCHPAD_CC, cc, value
     return
 
 
   noteout: (pitch, velocity) ->
-    outlet(0, pitch, velocity)
+    outlet LAUNCHPAD_NOTE, pitch, velocity
     return
 
 

@@ -47,7 +47,7 @@ class Storage
           when 's' then pattern.setStart val
           when 'e' then pattern.setEnd val
           when 'q' then sequencer.setPattern trackIndex, patternIndex, values
-          when 'm' then pattern.mute = (parseInt(val) > 0)
+          when 'm' then pattern.mute = val
           else error "Cannot load unknown property: #{path}"
     return
 
@@ -74,11 +74,11 @@ class Storage
     return
 
   saveTrackAttr: (trackNumber, attrName, attrValue) ->
-    outlet OUTLET_PATTR, attrValue, "t.#{trackNumber}::#{attrName}"
+    outlet PATTR, attrValue, "t.#{trackNumber}::#{attrName}"
     return
 
   savePatternAttr: (trackNumber, patternNumber, attrName, attrValue) ->
-    outlet OUTLET_PATTR, attrValue, "t.#{trackNumber}::n.#{patternNumber}::#{attrName}"
+    outlet PATTR, attrValue, "t.#{trackNumber}::n.#{patternNumber}::#{attrName}"
     return
 
 
