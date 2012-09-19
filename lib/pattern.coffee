@@ -102,7 +102,7 @@ class Pattern
     gate:             (note, value) => note.duration += @GATE_DURATIONS[value]; return
     'duration +':     (note, value) => note.duration += value; return
     'duration -':     (note, value) => note.duration -= value; return
-    'duration *':     (note, value) => note.duration *= (value + 1); return
+    'duration x':     (note, value) => note.duration *= (value + 1); return
     'duration /':     (note, value) => note.duration /= (value + 1); return
     'velocity +':     (note, value) => note.velocity += (127 - note.velocity) * value/4; return
     'velocity -':     (note, value) => note.velocity -= note.velocity * value/4; return

@@ -42,13 +42,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-18",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 900.0, 199.0, 98.0 ],
-					"presentation_rect" : [ 10.0, 883.0, 0.0, 0.0 ],
-					"text" : "divides the duration of a note\n\n\noff => no change\n   1 => duration / 2\n   2 => duration / 3\n   3 => duration / 4\n   4 => duration / 5"
+					"patching_rect" : [ 0.0, 900.0, 139.0, 64.0 ],
+					"text" : "Divides the note's duration\n   1 => duration / 2\n   2 => duration / 3\n   3 => duration / 4\n   4 => duration / 5"
 				}
 
 			}
@@ -57,13 +56,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-19",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 800.0, 199.0, 98.0 ],
-					"presentation_rect" : [ 10.0, 783.0, 0.0, 0.0 ],
-					"text" : "multiplies to the duration of a note\n\n\noff => no change\n   1 => duration * 2\n   2 => duration * 3\n   3 => duration * 4\n   4 => duration * 5"
+					"patching_rect" : [ 0.0, 800.0, 150.0, 64.0 ],
+					"text" : "Multiplies the note's duration\n   1 => duration x 2\n   2 => duration x 3\n   3 => duration x 4\n   4 => duration x 5"
 				}
 
 			}
@@ -72,13 +70,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-17",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 100.0, 201.0, 98.0 ],
-					"presentation_rect" : [ -5.0, 100.0, 0.0, 0.0 ],
-					"text" : "adds to the pitch of the note \n\n\noff => no change\n   1 => + 1 semitone\n   2 => + 2 semitones\n   3 => + 3 semitones\n   4 => + 4 semitones"
+					"patching_rect" : [ 0.0, 100.0, 130.0, 64.0 ],
+					"text" : "Raises the note's pitch\n   1 => + 1 semitone\n   2 => + 2 semitones\n   3 => + 3 semitones\n   4 => + 4 semitones"
 				}
 
 			}
@@ -87,13 +84,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-16",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 700.0, 199.0, 98.0 ],
-					"presentation_rect" : [ -10.0, 691.0, 0.0, 0.0 ],
-					"text" : "subtracts from the duration of a note\n\n\noff => no change\n   1 => - 1 step\n   2 => - 2 steps\n   3 => - 3 steps\n   4 => - 4 steps"
+					"patching_rect" : [ 0.0, 700.0, 145.0, 64.0 ],
+					"text" : "Reduces the note's duration\n   1 =>  - 1 step\n   2 =>  - 2 steps\n   3 =>  - 3 steps\n   4 =>  - 4 steps"
 				}
 
 			}
@@ -102,13 +98,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-15",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 600.0, 199.0, 98.0 ],
-					"presentation_rect" : [ -12.0, 596.0, 0.0, 0.0 ],
-					"text" : "adds to the duration of a note\n\n\noff => no change\n   1 => + 1 step\n   2 => + 2 steps\n   3 => + 3 steps\n   4 => + 4 steps"
+					"patching_rect" : [ 0.0, 600.0, 151.0, 64.0 ],
+					"text" : "Increases the note's duration\n   1 =>  + 1 step\n   2 =>  + 2 steps\n   3 =>  + 3 steps\n   4 =>  + 4 steps"
 				}
 
 			}
@@ -117,13 +112,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-14",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 200.0, 201.0, 98.0 ],
-					"presentation_rect" : [ -1.0, 195.0, 0.0, 0.0 ],
-					"text" : "subtracts  from the pitch of the note \n\n\noff => no change\n   1 => - 1 semitone\n   2 => - 2 semitones\n   3 => - 3 semitones\n   4 => - 4 semitones"
+					"patching_rect" : [ 0.0, 200.0, 130.0, 64.0 ],
+					"text" : "Lowers the note's pitch\n   1 => - 1 semitone\n   2 => - 2 semitones\n   3 => - 3 semitones\n   4 => - 4 semitones"
 				}
 
 			}
@@ -137,7 +131,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 941.0, 108.0, 35.0, 18.0 ],
-					"presentation_rect" : [ 936.0, 107.0, 0.0, 0.0 ],
 					"text" : "-900"
 				}
 
@@ -161,12 +154,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-6",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 500.0, 199.0, 98.0 ],
-					"text" : "reduces the velocity of the note\n\n\noff => no change\n   1 => 75% velocity\n   2 => 50% velocity\n   3 => 25% velocity\n   4 => 0 (mute)"
+					"patching_rect" : [ 0.0, 500.0, 132.0, 64.0 ],
+					"text" : "Reduces the velocity\n   1 =>  75% velocity\n   2 =>  50% velocity\n   3 =>  25% velocity\n   4 =>  0 (mute)"
 				}
 
 			}
@@ -334,7 +327,7 @@
 					"numoutlets" : 11,
 					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
 					"patching_rect" : [ 441.0, 67.0, 574.0, 20.0 ],
-					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration *\" \"duration /\""
+					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration x\" \"duration /\""
 				}
 
 			}
@@ -384,12 +377,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-76",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 300.0, 199.0, 98.0 ],
-					"text" : "adds or substracts an octave to the pitch\n\noff => no change\n   1 => up 1 octave\n   2 => up 2 octaves\n   3 => down 1 octave\n   4 => down 2 octaves"
+					"patching_rect" : [ 0.0, 300.0, 140.0, 64.0 ],
+					"text" : "Changes the note's octave\n   1 => up 1 octave\n   2 => up 2 octaves\n   3 => down 1 octave\n   4 => down 2 octaves"
 				}
 
 			}
@@ -412,12 +405,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-7",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 0.0, 199.0, 98.0 ],
-					"text" : "controls if a note plays, and its duration\n\n\noff => no note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
+					"patching_rect" : [ 0.0, 0.0, 118.0, 64.0 ],
+					"text" : "Triggers a note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
 				}
 
 			}
@@ -426,12 +419,12 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-25",
-					"linecount" : 8,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 400.0, 200.0, 98.0 ],
-					"text" : "adds to the velocity of the note a % of the distance to the maximum.\n\noff => no change\n   1 => +25% towards max\n   2 => +50% towards max\n   3 => +75% towards max\n   4 => max velocity (MIDI value 127)"
+					"patching_rect" : [ 0.0, 400.0, 147.0, 64.0 ],
+					"text" : "Increases the note's velocity\n   1 =>  + 25% towards max\n   2 =>  + 50% towards max\n   3 =>  + 75% towards max\n   4 => max velocity (127)"
 				}
 
 			}
