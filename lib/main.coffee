@@ -117,6 +117,16 @@ paste = ->
   sequencer.drawGrid()
   return
 
+shiftLeft = ->
+  sequencer.selectedPattern.shiftLeft()
+  sequencer.drawGrid()
+  return
+
+shiftRight = ->
+  sequencer.selectedPattern.shiftRight()
+  sequencer.drawGrid()
+  return
+
 
 save = ->
   storage.save()

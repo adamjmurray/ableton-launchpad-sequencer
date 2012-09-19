@@ -24,6 +24,14 @@ class Pattern
     @sequence[i] = Math.floor(5*Math.random()) for i in [0...STEPS] by 1
     return
 
+  shiftLeft: ->
+    @sequence.push(@sequence.shift())
+    return
+
+  shiftRight: ->
+    @sequence.unshift(@sequence.pop())
+    return
+
 
   setType: (type) ->
     @type = type
