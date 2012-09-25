@@ -4,20 +4,23 @@ VERSION = '0.1'
 BASE_DIR = __dirname
 BUILD_DIR = "#{BASE_DIR}/#{PROJECT}"
 SRC_DIR = "#{BASE_DIR}/lib"
+TEST_DIR = "#{BASE_DIR}/test"
 EXAMPLE_DIR = "#{BASE_DIR}/example-project"
 DIST_DIR = "#{BASE_DIR}/dist"
 
-SRC_FILES = ("#{SRC_DIR}/#{src}.coffee" for src in [
+src_for = (name) -> "#{SRC_DIR}/#{name}.coffee"
+
+BASE_SRC_FILES = (src_for name for name in [
   'config'
-  'debug'
   'launchpad'
   'gui'
+  'scale'
   'pattern'
   'track'
   'sequencer'
   'storage'
-  'main'
 ])
+SRC_FILES = BASE_SRC_FILES.concat [src_for('debug'), src_for('main')]
 OUT_FILE = "#{BUILD_DIR}/#{PROJECT}.js"
 
 COFFEE_ARGS = [
@@ -28,8 +31,9 @@ COFFEE_ARGS = [
   'license.txt'
 ].concat SRC_FILES
 
+TEST_FILES = BASE_SRC_FILES.concat(src_for 'exports')
+TEST_OUT_FILE = "#{TEST_DIR}/#{PROJECT}.js"
 
-fs = require 'fs'
 spawn = require('child_process').spawn
 
 exec = (cmd, args=[], options={}, callback) ->
@@ -78,3 +82,8 @@ task 'dist', 'build & package the app for distribution', ->
 
 task 'clean', 'remove build artifacts', ->
   exec 'rm', ['-rf', OUT_FILE, DIST_DIR]
+
+
+task 'test', 'run the unit tests', ->
+  exec 'coffee', ['--compile', '--join', TEST_OUT_FILE].concat(TEST_FILES), {}, ->
+    exec 'jasmine-node', ['--coffee', '--matchall', '--verbose', TEST_DIR]

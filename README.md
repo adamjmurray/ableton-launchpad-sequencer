@@ -32,9 +32,10 @@ For new projects, it's easiest to simply save a copy of the example project.
 ### Prerequisites
 
 0. Install [Node.js](http://nodejs.org/)
-0. Install [CoffeeScript](http://coffeescript.org/#installation) via `npm install coffee-script`
+0. Install [CoffeeScript](http://coffeescript.org/#installation) via `sudo npm install -g coffee-script`
+0. Install [jasmine-node](http://github.com/mhevery/jasmine-node#install) via `sudo npm install -g jasmine-node`
 
-To build the app for distribution, you also need [UglifyJS](https://github.com/mishoo/UglifyJS) via `npm install uglify-js`
+To build the app for distribution, you also need [UglifyJS](https://github.com/mishoo/UglifyJS) via `sudo npm install -g uglify-js`
 
 ### Building for normal use & distribution
 
@@ -44,13 +45,13 @@ From this directory, run:
 
 ### Auto-building during development
 
-From this directory, run:
-
     cake dev
 
-### Building the app for distribution
+### Running unit tests
 
-From this directory, run:
+    cake test
+
+### Building the app for distribution
 
     cake dist
 
