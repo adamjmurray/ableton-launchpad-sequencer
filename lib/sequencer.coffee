@@ -5,6 +5,7 @@ class Sequencer
 
   constructor: (@launchpad) ->
     @gui = new GUI
+    @scale = new Scale
     @onNote = NOOP
     @reset(true)
     launchpad.onTopDown = @_onLaunchpadTopDown
@@ -18,7 +19,7 @@ class Sequencer
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @tracks = (new Track(index) for index in [0...TRACKS] by 1)
+    @tracks = (new Track(index, @scale) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
     @patternMultiPress = 0
     @_updateSelectedPattern(true)

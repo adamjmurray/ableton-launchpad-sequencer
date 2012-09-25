@@ -36,8 +36,7 @@ class Pattern
     return
 
 
-  setType: (type) ->
-    @type = type
+  setType: (@type) ->
     @_process = Pattern.processors[type] or NOOP
     return
 
@@ -98,25 +97,18 @@ class Pattern
   @GATE_DURATIONS = [0,1,2,4,8]
   @OCTAVES = [0, 12, 24, -12, -24]
 
-#  @MAJOR = [0,2,4,5,7]
-#  @MINOR = [0,2,3,5,7]
-#  @PENTATONIC_MAJOR = [0,2,4,7,9]
-#  @PENTATONIC_MINOR = [0,3,5,7,10]
-
   # The note modifying behavior for each pattern type.
   # These may asseume we filtered out stepValue 0 in processNote() as a NOOP
   @processors =
-    gate:             (note, value) => note.duration += @GATE_DURATIONS[value]; return
-    'duration +':     (note, value) => note.duration += value; return
-    'duration -':     (note, value) => note.duration -= value; return
-    'duration x':     (note, value) => note.duration *= (value + 1); return
-    'duration /':     (note, value) => note.duration /= (value + 1); return
-    'velocity +':     (note, value) => note.velocity += (127 - note.velocity) * value/4; return
-    'velocity -':     (note, value) => note.velocity -= note.velocity * value/4; return
-    'pitch +':        (note, value) => note.pitch    += value; return
-    'pitch -':        (note, value) => note.pitch    -= value; return
-    octave:           (note, value) => note.pitch    += @OCTAVES[value]; return
-#    major:            (note, value) => note.pitch    += @MAJOR[value]; return
-#    minor:            (note, value) => note.pitch    += @MINOR[value]; return
-#    pentatonic_major: (note, value) => note.pitch    += @PENTATONIC_MAJOR[value]; return
-#    pentatonic_minor: (note, value) => note.pitch    += @PENTATONIC_MINOR[value]; return
+    gate:         (note, value) => note.duration  += @GATE_DURATIONS[value]; return
+    'duration +': (note, value) => note.duration  += value; return
+    'duration -': (note, value) => note.duration  -= value; return
+    'duration x': (note, value) => note.duration  *= (value + 1); return
+    'duration /': (note, value) => note.duration  /= (value + 1); return
+    'velocity +': (note, value) => note.velocity  += (127 - note.velocity) * value/4; return
+    'velocity -': (note, value) => note.velocity  -= note.velocity * value/4; return
+    'pitch +':    (note, value) => note.pitch     += value; return
+    'pitch -':    (note, value) => note.pitch     -= value; return
+    octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
+    'scale +':    (note, value) => note.scaleStep += value; return
+    'scale -':    (note, value) => note.scaleStep -= value; return

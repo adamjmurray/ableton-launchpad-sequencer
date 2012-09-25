@@ -59,6 +59,11 @@ grid = (x,y) ->
   return
 
 
+scale = (scaleSteps...) ->
+  sequencer.scale.steps = scaleSteps
+  return
+
+
 # track properties
 basePitch = (pitch) ->
   sequencer.selectedTrack.basePitch = pitch
