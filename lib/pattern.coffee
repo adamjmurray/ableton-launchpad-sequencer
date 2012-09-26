@@ -5,7 +5,9 @@
 #
 class Pattern
 
-  constructor: (@index, type) ->
+  @scale: {map: ->} # dummy scale, to be assigned by the constructing code
+
+  constructor: (@index, type, @scale) ->
     @number = index+1
     @sequence = new Array(STEPS)
     @clear()
@@ -110,5 +112,5 @@ class Pattern
     'pitch +':    (note, value) => note.pitch     += value; return
     'pitch -':    (note, value) => note.pitch     -= value; return
     octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
-    'scale +':    (note, value) => note.scaleStep += value; return
-    'scale -':    (note, value) => note.scaleStep -= value; return
+    'scale +':    (note, value) => note.pitch = @scale.map(note.pitch,value); return
+    'scale -':    (note, value) => note.pitch = @scale.map(note.pitch,-value); return
