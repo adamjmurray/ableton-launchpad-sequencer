@@ -10,7 +10,7 @@ class GUI
   ]
 
   @START_END_COLOR = [200,200,255]
-  @TRANSPARENT = [0,0,0,255]
+  @NO_COLOR = [53,53,53] # this matches the background color in the GUI
 
   constructor:->
     @oldlines = []
@@ -85,7 +85,7 @@ class GUI
       [endX + delta, endY + delta, endX, endY + delta]
     ]
 
-    @color GUI.TRANSPARENT
+    @color GUI.NO_COLOR
     @drawline(line) for line in @oldlines
     @color GUI.START_END_COLOR
     @drawline(line) for line in lines

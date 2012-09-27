@@ -7,8 +7,12 @@ class Storage
   load: (path, values...) ->
     sequencer = @sequencer
 
-    if(path == 'dump') # we're done
+    if path == 'dump' # we're done
       sequencer.redraw()
+      return
+
+    if path == 'scale'
+      scale(values)
       return
 
     # paths look like:
@@ -18,7 +22,11 @@ class Storage
     # track.1::pattern.1::start 0
     # track.1::pattern.1::end 63
     matches =/^t\.(\d+)::(.*)/.exec(path)
-    return unless matches?
+
+    unless matches?
+      # for debugging, but note on loadbang pattrstorage sends a weird message like: u594004503.json,0
+      # error("launchpad sequencer can't load #{path} #{values}\n")
+      return
 
     trackIndex = parseInt(matches[1]) - 1
     subpath = matches[2]

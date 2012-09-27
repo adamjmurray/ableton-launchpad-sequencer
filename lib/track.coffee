@@ -2,10 +2,10 @@ class Track
 
   @DEFAULT_TYPES = [
     'gate'
-    'velocity +'
-    'velocity -'
     'scale +'
     'scale -'
+    'velocity +'
+    'velocity -'
     'octave'
     'duration +'
     'duration -'

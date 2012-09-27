@@ -60,6 +60,7 @@ grid = (x,y) ->
 
 
 scale = (scaleSteps...) ->
+  scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
   sequencer.scale.steps = scaleSteps
   return
 
