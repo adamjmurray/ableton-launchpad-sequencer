@@ -22,9 +22,19 @@ class Pattern
     @sequence[i] = 0 for i in [0...STEPS] by 1
     return
 
+
   random: ->
-    @sequence[i] = Math.floor(5*Math.random()) for i in [0...STEPS] by 1
+    for i in [@start..@end] by 1
+      @sequence[i] = Math.floor(5*Math.random())
     return
+
+
+  randomFill: (value) ->
+    for i in [@start..@end] by 1
+      # fill in value with 25% chance
+      @sequence[i] = value if Math.random() < 0.25
+    return
+
 
   rotate: (steps) ->
     seq = @sequence

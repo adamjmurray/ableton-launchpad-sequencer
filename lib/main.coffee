@@ -111,6 +111,11 @@ random = ->
   sequencer.drawGrid()
   return
 
+randomFill = ->
+  sequencer.selectedPattern.randomFill(sequencer.value)
+  sequencer.drawGrid()
+  return
+
 copy = ->
   storage.copyPattern(sequencer.selectedPattern)
   return
