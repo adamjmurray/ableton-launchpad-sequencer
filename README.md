@@ -37,6 +37,8 @@ For new projects, it's easiest to simply save a copy of the example project.
 0. Install [CoffeeScript](http://coffeescript.org/#installation) via `sudo npm install -g coffee-script`
 0. Install [jasmine-node](http://github.com/mhevery/jasmine-node#install) via `sudo npm install -g jasmine-node`
 
+Note: After installing Node.js, you can (maybe?) skip the other steps and run `npm install` in this repository.
+
 To build the app for distribution, you also need [UglifyJS](https://github.com/mishoo/UglifyJS) via `sudo npm install -g uglify-js`
 
 ### Building for normal use & distribution
