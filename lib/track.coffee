@@ -21,12 +21,11 @@ class Track
   noteForClock: (clock, scale) ->
     return if @mute
     note =
-      pitch:    @basePitch
-      velocity: @baseVelocity
-      duration: 0
+      pitch:      @basePitch
+      velocity:   @baseVelocity
+      duration:   0
 
     pattern.processNote(note,clock) for pattern in @patterns
 
-    if note.duration > 0 and note.velocity > 0
-      note.duration *= @durationScale
-      note
+    note.duration *= @durationScale
+    note

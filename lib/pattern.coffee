@@ -5,7 +5,7 @@
 #
 class Pattern
 
-  @scale: {map: ->} # dummy scale, to be assigned by the constructing code
+  @scale = {map: ->} # dummy scale, to be assigned by the constructing code
 
   constructor: (@index, type, @scale) ->
     @number = index+1
@@ -96,11 +96,12 @@ class Pattern
     return
 
 
-  @GATE_DURATIONS = [0,1,2,4,8]
-  @OCTAVES = [0, 12, 24, -12, -24]
+  @GATE_DURATIONS = [null, 1,  2,   4,   8  ]
+  @OCTAVES        = [null, 12, 24, -12, -24 ]
+  @MODS           = [null, 0,  42,  85,  127] # MIDI CC modulation values for each step value
 
   # The note modifying behavior for each pattern type.
-  # These may asseume we filtered out stepValue 0 in processNote() as a NOOP
+  # These may assume we filtered out stepValue 0 in processNote() as a NOOP
   @processors =
     gate:         (note, value) => note.duration  += @GATE_DURATIONS[value]; return
     'duration +': (note, value) => note.duration  += value; return
@@ -112,5 +113,7 @@ class Pattern
     'pitch +':    (note, value) => note.pitch     += value; return
     'pitch -':    (note, value) => note.pitch     -= value; return
     octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
-    'scale +':    (note, value) => note.pitch = @scale.map(note.pitch,value); return
-    'scale -':    (note, value) => note.pitch = @scale.map(note.pitch,-value); return
+    'scale +':    (note, value) => note.pitch      = @scale.map(note.pitch,value); return
+    'scale -':    (note, value) => note.pitch      = @scale.map(note.pitch,-value); return
+    modulation:   (note, value) => note.modulation = @MODS[value]; return
+    aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return

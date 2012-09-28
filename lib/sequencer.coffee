@@ -136,6 +136,13 @@ class Sequencer
     return
 
 
+  stop: ->
+    @setClock(-1)
+    # Live sends "all notes off" to all connected MIDI devices when the transport stops,
+    # which resets the Launchpad, so we need to re-sync the state:
+    @drawLaunchpad()
+
+
   # @param t the track index
   # @param p the pattern index
   # @param stepValues an array of sequence step values
@@ -213,14 +220,17 @@ class Sequencer
   # generate MIDI output for current step
   _generateOutputForActiveStep: () ->
     clock = @clock
-    if clock >= 0
-      for track in @tracks
-        note = track.noteForClock(clock)
-        outlet(NOTE,
-          note.pitch,
-          note.velocity,
-          note.duration
-        ) if note
+    return if clock < 0
+    for track,index in @tracks
+      note = track.noteForClock(clock)
+      continue unless note? # no note when track is muted
+
+      if note.duration > 0 and note.velocity > 0
+        outlet(NOTE, note.pitch, note.velocity, note.duration)
+
+      outlet(CC, 1, note.modulation) if note.modulation?
+      outlet(AFTERTOUCH, note.aftertouch) if note.aftertouch?
+
     return
 
 

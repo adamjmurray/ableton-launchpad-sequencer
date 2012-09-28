@@ -27,10 +27,7 @@ ctlin = (cc, val) ->
   if cc != TRANSPORT_STOP
     launchpad.ctlin(cc, val)
   else
-    sequencer.setClock(-1)
-    # Live sends "all notes off" to all connected MIDI devices when the transport stops,
-    # which resets the Launchpad, so we need to re-sync the state:
-    sequencer.drawLaunchpad()
+    sequencer.stop()
     save() # this is a good time to save state without affecting realtime audio performance
   return
 
