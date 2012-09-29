@@ -11,7 +11,7 @@ class Track
     'duration -'
   ]
 
-  constructor: (@index, @scale, @basePitch=60, @baseVelocity=70, @durationScale=0.99) ->
+  constructor: (@index, @scale, @basePitch=60, @baseVelocity=70, @durationScale=0.9) ->
     @number = @index+1
     Pattern.scale = scale # this is not clean...
     @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)

@@ -42,12 +42,12 @@ class Sequencer
     @launchpad.stepValue(@value)
     @launchpad.pattern(@selectedPattern)
     pattern = @selectedPattern
-    pattern.each (x,y,index) => @launchpad.grid(x, y, pattern.getStep(index)); return
+    Defer.eachStep (x,y,index) => @launchpad.grid(x, y, pattern.getStep(index)); return
     return
 
   drawGrid: (pattern) ->
     pattern ?= @selectedPattern
-    pattern.each (x,y,index) =>
+    Defer.eachStep (x,y,index) =>
       value = pattern.getStep(index)
       @launchpad.grid(x, y, value)
       @gui.grid(x, y, value)
@@ -190,12 +190,12 @@ class Sequencer
     return
 
 
-  random = ->
+  random: ->
     @selectedPattern.random()
     @drawGrid()
     return
 
-  randomFill = ->
+  randomFill: ->
     @selectedPattern.randomFill(@value)
     @drawGrid()
     return
@@ -238,7 +238,7 @@ class Sequencer
       oldX = oldActiveStep % 8
       oldY = Math.floor(oldActiveStep/8) % 8
       oldValue = selectedPattern.getStep(oldActiveStep)
-      @launchpad.grid(oldX, oldY, oldValue)
+      @launchpad.grid(oldX, oldY, oldValue) unless @patternOpsMode
       @gui.grid(oldX, oldY, oldValue)
 
     @activeStep = activeStep
@@ -247,7 +247,7 @@ class Sequencer
     if activeStep >= 0
       x = activeStep % 8
       y = Math.floor(activeStep/8) % 8
-      @launchpad.activeStep(x, y)
+      @launchpad.activeStep(x, y) unless @patternOpsMode
       @gui.activeStep(x, y)
 
     return

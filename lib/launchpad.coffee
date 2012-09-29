@@ -118,7 +118,7 @@ class Launchpad
   patternOps: (pattern) ->
     start = pattern.start
     end = pattern.end
-    pattern.each (x,y,index) =>
+    Defer.eachStep (x,y,index) =>
       color = if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF
       @_grid(x, y, color)
       return

@@ -12,6 +12,7 @@ src_for = (name) -> "#{SRC_DIR}/#{name}.coffee"
 
 BASE_SRC_FILES = (src_for name for name in [
   'config'
+  'defer'
   'launchpad'
   'gui'
   'scale'

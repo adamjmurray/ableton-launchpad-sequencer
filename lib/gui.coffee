@@ -1,6 +1,6 @@
 class GUI
 
-  @GRID_COLORS = [ # Max's LCD object expects [R,G,B] in 0-255 range
+  @GRID_COLORS: [ # Max's LCD object expects [R,G,B] in 0-255 range
     [150,150,150] # off
     [0,255,0]     # green
     [255,255,0]   # yellow
@@ -9,8 +9,8 @@ class GUI
     [80,130,200]  # current step
   ]
 
-  @START_END_COLOR = [200,200,255]
-  @NO_COLOR = [53,53,53] # this matches the background color in the GUI
+  @START_END_COLOR: [200,200,255]
+  @NO_COLOR: [53,53,53] # this matches the background color in the GUI
 
   constructor:->
     @oldlines = []
@@ -32,7 +32,7 @@ class GUI
   grid: (x, y, value) ->
     left = x*GUI_STEP_WIDTH + 2
     top  = y*GUI_STEP_WIDTH + 2
-    @color GUI.GRID_COLORS[value]
+    @color(GUI.GRID_COLORS[value])
     outlet GRID, 'paintrect', left, top, left+GUI_BUTTON_WIDTH, top+GUI_BUTTON_WIDTH
     return
 
