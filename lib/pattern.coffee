@@ -67,6 +67,15 @@ class Pattern
       @_updateLength()
     return
 
+  setRange: (start, end) ->
+    [start, end] = [end, start] if start > end
+    if 0 <= start <= STEPS and 0 <= end <= STEPS
+      @start = parseInt(start)
+      @end = parseInt(end)
+      @_updateLength()
+    return
+
+
   _updateLength: ->
     @length = @end - @start + 1
     return

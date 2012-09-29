@@ -178,8 +178,7 @@ class Sequencer
     return unless pattern?
     target = @selectedPattern
     target.sequence = pattern.sequence[..] # make a copy
-    target.start = pattern.start # can skip the setter() here for efficiency
-    target.setEnd(pattern.end)   # but we use the proper setter here to trigger _updateLength()
+    target.setRange(pattern.start, pattern.end)
     @drawGrid()
     return
 
