@@ -79,6 +79,13 @@ class Pattern
     @sequence[index] = value if 0 <= index < STEPS
     return
 
+  # call the callback for each step position (x,y,stepIndex)
+  each: (callback) ->
+    for x in [0...ROW_LENGTH] by 1
+      for y in [0...ROW_LENGTH] by 1
+        callback(x, y, x+y*ROW_LENGTH)
+    return
+
 
   # Given a clock index (in steps) return the active step in this pattern,
   # taking into account the start and end step.

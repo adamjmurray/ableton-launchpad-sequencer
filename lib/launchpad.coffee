@@ -26,13 +26,16 @@ class Launchpad
     @onRightUp   = NOOP
     @onGridDown  = NOOP
     @onGridUp    = NOOP
+    @heldTop     = null # Top button currently held down.
 
 
   ctlin: (cc, value) ->
     index = cc - 104
     if value > 0
+      @heldTop = index
       @onTopDown(index)
     else
+      @heldTop = null # this isn't accurate for multiple buttons held, but good enough for our purposes
       @onTopUp(index)
     return
 
@@ -100,6 +103,22 @@ class Launchpad
 
   activeStep: (x, y) ->
     @_grid(x, y, Launchpad.STEP_COLOR)
+    return
+
+
+  # enter the mode for pattern operations (set start & end, copy, paste, shift left, shift right)
+  patternOps: (pattern) ->
+    start = pattern.start
+    end = pattern.end
+    pattern.each (x,y,index) =>
+      color = if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF
+      @_grid(x, y, color)
+      return
+    # light up all stepValue lights to indicate they're in "pattern operation" mode
+    @_top(4, Launchpad.GRID_COLORS[1])
+    @_top(5, Launchpad.GRID_COLORS[2])
+    @_top(6, Launchpad.GRID_COLORS[3])
+    @_top(7, Launchpad.GRID_COLORS[4])
     return
 
 

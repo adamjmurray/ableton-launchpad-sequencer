@@ -42,21 +42,16 @@ class Sequencer
     @launchpad.stepValue(@value)
     @launchpad.pattern(@selectedPattern)
     pattern = @selectedPattern
-    for x in [0...ROW_LENGTH] by 1
-      for y in [0...ROW_LENGTH] by 1
-        step = x + y*ROW_LENGTH
-        value = pattern.getStep(step)
-        @launchpad.grid(x, y, value)
+    pattern.each (x,y,index) => @launchpad.grid(x, y, pattern.getStep(index)); return
     return
 
   drawGrid: (pattern) ->
     pattern ?= @selectedPattern
-    for x in [0...ROW_LENGTH] by 1
-      for y in [0...ROW_LENGTH] by 1
-        step = x + y*ROW_LENGTH
-        value = pattern.getStep(step)
-        @launchpad.grid(x, y, value)
-        @gui.grid(x, y, value)
+    pattern.each (x,y,index) =>
+      value = pattern.getStep(index)
+      @launchpad.grid(x, y, value)
+      @gui.grid(x, y, value)
+      return
     return
 
   drawPatternInfo: ->
@@ -238,6 +233,8 @@ class Sequencer
   _onLaunchpadTopDown: (buttonIndex) =>
     @patternMultiPress = 0
     if buttonIndex <= 3
+      @_patternOpsMode(false) if @patternOpsMode
+
       if @track == buttonIndex # track already selected
         @trackMultiPress += 1
         if @trackMultiPress >= 3
@@ -248,26 +245,50 @@ class Sequencer
         @selectTrack(buttonIndex)
 
     else # select step value
+      return if @patternOpsMode # TODO: perform copy,paste,shift operations
       @trackMultiPress = 0
       @selectValue(buttonIndex-3)
 
     return
 
+
   _onLaunchpadRightDown: (buttonIndex) =>
     @trackMultiPress = 0
+    if @patternOpsMode
+      # heldTop check prevents bad UX with an extra press
+      return if @launchpad.heldTop?
+      @_patternOpsMode(false)
+      # TODO: check if the buttin index is different and if so, switch patterns but stay in pattern ops mode
+
     if @pattern == buttonIndex # pattern already selected
       @patternMultiPress += 1
       if @patternMultiPress >= 3
         @patternMultiPress = 0
-        @muteSelectedPattern() # toggle mute
+        if @launchpad.heldTop?
+          # it was held the whole time, because a top button press would have reset @patternMultiPress
+          @_patternOpsMode(true)
+        else
+          @muteSelectedPattern() # toggle mute
     else
       @patternMultiPress = 1
       @selectPattern(buttonIndex)
-
     return
+
 
   _onLaunchpadGridDown: (x,y) =>
     @trackMultiPress = 0
     @patternMultiPress = 0
     @setGridValue(x,y)
+    return
+
+
+  # enter the mode for pattern options & operations (start, end, copy, paste, shift left/right)
+  _patternOpsMode: (enabled) ->
+    @patternOpsMode = enabled
+    if enabled
+      @launchpad.patternOps(@selectedPattern)
+    else
+      for valueIndex in [0..4]
+        @launchpad.stepValueOff(valueIndex) unless @value == valueIndex
+      @drawLaunchpad()
     return
