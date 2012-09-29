@@ -88,23 +88,3 @@ class Storage
   savePatternAttr: (trackNumber, patternNumber, attrName, attrValue) ->
     outlet PATTR, attrValue, "t.#{trackNumber}::n.#{patternNumber}::#{attrName}"
     return
-
-
-  # Copy the given pattern to the clipboard.
-  # This inclues the 64 step values and the start and end step.
-  # It does not copy the pattern.type, to allow for sharing patterns between different pattern types.
-  copyPattern: (pattern) ->
-    @patternClipboard =
-      sequence: pattern.sequence
-      start: pattern.start
-      end: pattern.end
-    return
-
-  # Update the give target pattern to match the one in the clipboard
-  pastePattern: (target) ->
-    pattern = @patternClipboard
-    return unless pattern?
-    target.sequence = pattern.sequence[..] # make a copy
-    target.start = pattern.start # can skip the setter() here for efficiency
-    target.setEnd(pattern.end)   # but we use the proper setter here to trigger _updateLength()
-    return

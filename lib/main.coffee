@@ -107,42 +107,35 @@ clear = ->
   return
 
 random = ->
-  sequencer.selectedPattern.random()
-  sequencer.drawGrid()
+  sequencer.random()
   return
 
 randomFill = ->
-  sequencer.selectedPattern.randomFill(sequencer.value)
-  sequencer.drawGrid()
+  sequencer.randomFill()
   return
 
 copy = ->
-  storage.copyPattern(sequencer.selectedPattern)
+  sequencer.copyPattern()
   return
 
 paste = ->
-  storage.pastePattern(sequencer.selectedPattern)
-  sequencer.drawGrid()
+  sequencer.pastePattern()
   return
 
 shiftleft = ->
-  sequencer.selectedPattern.rotate(1)
-  sequencer.drawGrid()
+  sequencer.rotate(1)
   return
 
 shiftup = ->
-  sequencer.selectedPattern.rotate(ROW_LENGTH)
-  sequencer.drawGrid()
+  sequencer.rotate(ROW_LENGTH)
   return
 
 shiftright = ->
-  sequencer.selectedPattern.rotate(-1)
-  sequencer.drawGrid()
+  sequencer.rotate(-1)
   return
 
 shiftdown = ->
-  sequencer.selectedPattern.rotate(-ROW_LENGTH)
-  sequencer.drawGrid()
+  sequencer.rotate(-ROW_LENGTH)
   return
 
 

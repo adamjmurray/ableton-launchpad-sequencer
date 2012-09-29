@@ -160,6 +160,48 @@ class Sequencer
     @launchpad.pattern(selectedPattern)
     @gui.patternMute(selectedPattern)
 
+
+  # Copy the given pattern to the clipboard.
+  # This inclues the 64 step values and the start and end step.
+  # It does not copy the pattern.type, to allow for sharing patterns between different pattern types.
+  copyPattern: ->
+    pattern = @selectedPattern
+    @patternClipboard =
+      sequence: pattern.sequence
+      start: pattern.start
+      end: pattern.end
+    return
+
+  # Update the give target pattern to match the one in the clipboard
+  pastePattern: ->
+    pattern = @patternClipboard
+    return unless pattern?
+    target = @selectedPattern
+    target.sequence = pattern.sequence[..] # make a copy
+    target.start = pattern.start # can skip the setter() here for efficiency
+    target.setEnd(pattern.end)   # but we use the proper setter here to trigger _updateLength()
+    @drawGrid()
+    return
+
+
+  # Rotate (shift with wrap-around) the selected pattern within it's start/end range.
+  rotate: (amount) ->
+    @selectedPattern.rotate(amount)
+    @drawGrid()
+    return
+
+
+  random = ->
+    @selectedPattern.random()
+    @drawGrid()
+    return
+
+  randomFill = ->
+    @selectedPattern.randomFill(@value)
+    @drawGrid()
+    return
+
+
   # ==============================================================================
   # private
 
@@ -244,10 +286,17 @@ class Sequencer
         @trackMultiPress = 1
         @selectTrack(buttonIndex)
 
-    else # select step value
-      return if @patternOpsMode # TODO: perform copy,paste,shift operations
-      @trackMultiPress = 0
-      @selectValue(buttonIndex-3)
+    else
+      if @patternOpsMode # perform copy,paste,shift operations
+        switch buttonIndex
+          when 4 then @copyPattern()
+          when 5 then @pastePattern()
+          when 6 then @rotate(1)
+          when 7 then @rotate(-1)
+
+      else # normal mode, select step value
+        @trackMultiPress = 0
+        @selectValue(buttonIndex-3)
 
     return
 
