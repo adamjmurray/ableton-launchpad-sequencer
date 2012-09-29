@@ -60,3 +60,4 @@ From this directory, run:
     cake dist
 
 and you should end up with a zip file in the "dist" folder that contains the application and example project.
+
