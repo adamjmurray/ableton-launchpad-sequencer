@@ -306,7 +306,7 @@ class Sequencer
       # heldTop check prevents bad UX with an extra press
       return if @launchpad.heldTop?
       @_patternOpsMode(false)
-      # TODO: check if the buttin index is different and if so, switch patterns but stay in pattern ops mode
+      # TODO: check if the button index is different and if so, switch patterns but stay in pattern ops mode
 
     if @pattern == buttonIndex # pattern already selected
       @patternMultiPress += 1
@@ -324,9 +324,21 @@ class Sequencer
 
 
   _onLaunchpadGridDown: (x,y) =>
-    @trackMultiPress = 0
-    @patternMultiPress = 0
-    @setGridValue(x,y)
+    if @patternOpsMode
+      lp = @launchpad
+      if lp.heldGridX?
+        start = x + y*ROW_LENGTH
+        end = lp.heldGridX + lp.heldGridY*ROW_LENGTH
+        @selectedPattern.setRange(start, end)
+
+        # redraw range:
+        @launchpad.patternOps(@selectedPattern)
+        @drawPatternInfo()
+
+    else
+      @trackMultiPress = 0
+      @patternMultiPress = 0
+      @setGridValue(x,y)
     return
 
 

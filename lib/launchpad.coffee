@@ -26,8 +26,9 @@ class Launchpad
     @onRightUp   = NOOP
     @onGridDown  = NOOP
     @onGridUp    = NOOP
-    @heldTop     = null # Top button currently held down.
-
+    @heldTop     = null # top button currently (and most recently) held down.
+    @heldGridX   = null # x index of grid button currently (and most recently) held down.
+    @heldGridY   = null # y index of grid button currently (and most recently) held down.
 
   ctlin: (cc, value) ->
     index = cc - 104
@@ -44,9 +45,16 @@ class Launchpad
     x = pitch % 16
     y = Math.floor(pitch / 16)
     if x > 7
-      if velocity > 0 then @onRightDown(y)  else @onRightUp(y)
+      if velocity > 0 then @onRightDown(y) else @onRightUp(y)
     else
-      if velocity > 0 then @onGridDown(x,y) else @onGridUp(x,y)
+      if velocity > 0
+        @onGridDown(x,y)
+        @heldGridX = x
+        @heldGridY = y
+      else
+        @onGridUp(x,y)
+        @heldGridX = null
+        @heldGridY = null
     return
 
 
