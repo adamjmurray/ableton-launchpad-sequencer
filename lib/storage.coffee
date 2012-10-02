@@ -12,7 +12,7 @@ class Storage
       return
 
     if path == 'scale'
-      scale(values)
+      scale(values...)
       return
 
     # paths look like:
