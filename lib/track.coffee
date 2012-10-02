@@ -29,3 +29,13 @@ class Track
 
     note.duration *= @durationScale
     note
+
+
+  toJSON: ->
+    (
+      pitch: @basePitch
+      velocity: @baseVelocity
+      duration: @durationScale
+      mute: @mute
+      patterns: @patterns
+    )

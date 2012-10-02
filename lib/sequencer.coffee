@@ -8,9 +8,10 @@ class Sequencer
     @scale = new Scale
     @onNote = NOOP
     @reset(true)
-    launchpad.onTopDown = @_onLaunchpadTopDown
-    launchpad.onRightDown = @_onLaunchpadRightDown
-    launchpad.onGridDown = @_onLaunchpadGridDown
+    if launchpad
+      launchpad.onTopDown = @_onLaunchpadTopDown
+      launchpad.onRightDown = @_onLaunchpadRightDown
+      launchpad.onGridDown = @_onLaunchpadGridDown
 
 
   # Clear all patterns and set all track and pattern properties to their default values.
@@ -199,6 +200,13 @@ class Sequencer
     @selectedPattern.randomFill(@value)
     @drawGrid()
     return
+
+
+  toJSON: ->
+    (
+      scale: @scale.steps
+      tracks: @tracks
+    )
 
 
   # ==============================================================================

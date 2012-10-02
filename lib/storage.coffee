@@ -88,3 +88,25 @@ class Storage
   savePatternAttr: (trackNumber, patternNumber, attrName, attrValue) ->
     outlet PATTR, attrValue, "t.#{trackNumber}::n.#{patternNumber}::#{attrName}"
     return
+
+
+  toJSONString: ->
+    @_s('', {'': @sequencer}) # this technique borrowed from https://github.com/douglascrockford/JSON-js
+
+
+  _s: (key, holder) ->
+    value = holder[key]
+    return 'null' unless value?
+
+    value = value.toJSON() if typeof value.toJSON == 'function'
+
+    switch typeof value
+      when 'object'
+        if value instanceof Array
+          '[' + (@_s(i, value) for i in [0...value.length] by 1).join(',') + ']'
+        else
+          '{' + (key + ':' + @_s(key, value) for own key of value).join(',') + '}'
+
+      when 'string' then '"' + value.replace('"', '\\"') + '"'
+
+      else value.toString()

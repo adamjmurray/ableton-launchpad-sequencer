@@ -136,3 +136,13 @@ class Pattern
     'scale -':    (note, value) => note.pitch      = @scale.map(note.pitch,-value); return
     modulation:   (note, value) => note.modulation = @MODS[value]; return
     aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return
+
+
+  toJSON: ->
+    (
+      type: @type
+      start: @start
+      end: @end
+      sequence: @sequence
+      mute: @mute
+    )
