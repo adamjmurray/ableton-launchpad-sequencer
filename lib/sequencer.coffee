@@ -208,6 +208,12 @@ class Sequencer
       tracks: @tracks
     )
 
+  fromJSON: ({scale,tracks}) ->
+    return unless scale? and tracks?.length == TRACKS
+    @scale.steps = scale
+    t.fromJSON tracks[i] for t,i in @tracks
+
+
 
   # ==============================================================================
   # private

@@ -90,9 +90,12 @@ class Storage
     return
 
 
-  toJSONString: ->
-    @_s('', {'': @sequencer}) # this technique borrowed from https://github.com/douglascrockford/JSON-js
+  ########################################################################################
+  # JSON methods (implementation inspired by https://github.com/douglascrockford/JSON-js)
 
+  # Save the sequencer state to a JSON String
+  toJSON: ->
+    @_s('', {'': @sequencer})
 
   _s: (key, holder) ->
     value = holder[key]
@@ -110,3 +113,13 @@ class Storage
       when 'string' then '"' + value.replace('"', '\\"') + '"'
 
       else value.toString()
+
+
+  # Load the sequencer state from a JSON String
+  fromJSON: (json) ->
+    # Check that the String looks safe to eval. No "new", functionCall(), or "="
+    throw "cannot parse unsafe-looking JSON: #{json}" if json.match(/new|\(|\)|=/)
+    @sequencer.fromJSON eval('(' + json + ')')
+
+
+
