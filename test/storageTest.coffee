@@ -19,35 +19,35 @@ describe 'Storage', ->
           p.start = null
           p.end = null
           p.mute = null
-          p.sequence = null
+          p.sequence = []
 
 
 
   describe 'toJSON()', ->
     it 'converts the sequencer to a string', ->
-      json = @storage.toJSON()
+      json = @storage.toJSON(@sequencer)
       expect( typeof json ).toEqual 'string'
 
     it 'returns a eval-able JSON string', ->
-      json = @storage.toJSON()
+      json = @storage.toJSON(@sequencer)
       obj = eval('(' + json + ')')
       expect( obj.scale ).toEqual [0...12]
       expect( obj.tracks.length ).toBe 4
 
     it 'can be loaded with fromJSON() and produce the same JSON string again', ->
-      json = @storage.toJSON()
+      json = @storage.toJSON(@sequencer)
       @clearSequencer()
-      expect( @storage.toJSON() ).not.toEqual json
-      @storage.fromJSON(json)
-      expect( @storage.toJSON() ).toEqual json
+      expect( @storage.toJSON(@sequencer) ).not.toEqual json
+      @sequencer.fromJSON(@storage.fromJSON(json))
+      expect( @storage.toJSON(@sequencer) ).toEqual json
 
 
   describe 'fromJSON()', ->
 
     it 'loads sequencer state from a JSON string', ->
-      json = @storage.toJSON()
+      json = @storage.toJSON(@sequencer)
       @clearSequencer()
-      @storage.fromJSON(json)
+      @sequencer.fromJSON(@storage.fromJSON(json))
       expect( @sequencer.scale.steps ).toEqual [0...12]
       expect( @sequencer.tracks.length ).toBe 4
       for t in @sequencer.tracks
