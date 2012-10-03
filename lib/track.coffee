@@ -47,3 +47,4 @@ class Track
     @duration = duration
     @mute = mute
     p.fromJSON patterns[i] for p,i in @patterns
+    return

@@ -40,9 +40,14 @@ describe 'Storage', ->
       @sequencer.fromJSON(@storage.parse jsonString)
       expect( @storage.stringify(@sequencer) ).toEqual jsonString
 
+    it 'passes the option omitTracks:true through to sequencer.toJSON(), which omits the track data', ->
+      jsonString = @storage.stringify(@sequencer, omitTracks:true)
+      json = eval('(' + jsonString + ')')
+      expect( json ).toEqual
+        scale: [0,1,2,3,4,5,6,7,8,9,10,11]
+
 
   describe 'parse()', ->
-
     it 'loads sequencer state from a JSON string', ->
       jsonString = @storage.stringify(@sequencer)
       @clearSequencer()

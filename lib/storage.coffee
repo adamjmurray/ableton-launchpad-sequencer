@@ -4,7 +4,7 @@ class Storage
   constructor: (@sequencer) ->
 
 
-  load: (path, json) ->
+  load: (path, jsonString) ->
     sequencer = @sequencer
 
     if path == 'dump' # we're done
@@ -12,9 +12,7 @@ class Storage
       return
 
     if path == 'global'
-      global = @parse(json)
-      # TODO: do this in a Global object fromJSON, and do some validation
-      @sequencer.scale.steps = global.scale
+      @sequencer.fromJSON(@parse jsonString)
       return
 
     # other paths look like:
@@ -28,16 +26,12 @@ class Storage
 
     trackIndex = parseInt(matches[1])
     track = sequencer.tracks[trackIndex]
-    if track?
-      object = @parse(json)
-      track.fromJSON(object)
+    track?.fromJSON(@parse jsonString)
     return
 
 
   save: ->
-    # TODO: introduce a Global object with it's own toJSON()
-    # this code knows too much about the inside of Sequencer & Scale
-    outlet(PATTR, 'global', @stringify({scale:@sequencer.scale.steps}))
+    outlet(PATTR, 'global', @stringify(@sequencer, omitTracks:true))
     outlet(PATTR, "track[#{index}]", @stringify(track)) for track,index in @sequencer.tracks
     return
 
@@ -47,23 +41,24 @@ class Storage
 
   # Generate a JSON string for a given object.
   # If the object implements toJSON() the return value of that method will be used to construct the JSON string.
-  stringify: (json) ->
-    @_s('', {'': json})
+  # If any options are passed in, they will be passed to any toJSON calls.
+  stringify: (json, options) ->
+    @_s('', {'': json}, options)
 
-  _s: (key, holder) ->
+  _s: (key, holder, options) ->
     value = holder[key]
     return 'null' unless value?
 
-    value = value.toJSON() if typeof value.toJSON == 'function'
+    value = value.toJSON(options) if typeof value.toJSON == 'function'
 
     switch typeof value
       when 'object'
         if value instanceof Array
-          '[' + (@_s(i, value) for i in [0...value.length] by 1).join(',') + ']'
+          '[' + (@_s(i, value, options) for i in [0...value.length] by 1).join(',') + ']'
         else
           # Note: not quotating the keys because they are all valid identifiers in this app.
           # This is technically not valid JSON but it *is* valid javascript object syntax.
-          '{' + (key + ':' + @_s(key, value) for own key of value).join(',') + '}'
+          '{' + (key + ':' + @_s(key, value, options) for own key of value).join(',') + '}'
 
       when 'string' then '"' + value.replace('"', '\\"') + '"'
 

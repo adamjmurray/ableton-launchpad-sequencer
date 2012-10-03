@@ -154,3 +154,4 @@ class Pattern
     @end = end
     @mute = mute
     @sequence = sequence
+    return

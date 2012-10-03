@@ -202,17 +202,17 @@ class Sequencer
     return
 
 
-  toJSON: ->
-    (
+  toJSON: (options) ->
+    json =
       scale: @scale.steps
-      tracks: @tracks
-    )
+    json.tracks = @tracks unless options?.omitTracks
+    json
 
   fromJSON: ({scale,tracks}) ->
-    return unless scale? and tracks?.length == TRACKS
-    @scale.steps = scale
-    t.fromJSON tracks[i] for t,i in @tracks
-
+    @scale.steps = scale if scale?
+    if tracks?.length == TRACKS
+      t.fromJSON tracks[i] for t,i in @tracks
+    return
 
 
   # ==============================================================================

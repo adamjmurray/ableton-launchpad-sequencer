@@ -30,8 +30,8 @@ PATTERN_INFO   = 12
 PATTERN_MUTE   = 13
 
 
-# Simulate the console with the Max window, for debugging and interoperability with Node.js
-if not console?
-  console =
+if not @console?
+  # Simulate the console with the Max window, for debugging and interoperability with Node.js
+  @console =
     log: (msg) -> post(msg+"\n")
     error: (msg) -> error(msg+"\n")
