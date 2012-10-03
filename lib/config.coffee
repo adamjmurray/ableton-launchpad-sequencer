@@ -28,3 +28,10 @@ TRACK_INFO     = 10
 TRACK_MUTE     = 11
 PATTERN_INFO   = 12
 PATTERN_MUTE   = 13
+
+
+# Simulate the console with the Max window, for debugging and interoperability with Node.js
+if not console?
+  console =
+    log: (msg) -> post(msg+"\n")
+    error: (msg) -> error(msg+"\n")

@@ -151,4 +151,4 @@ load = (path, values...) ->
 #==============================================================
 # Debugging stuff
 
-log 'reloaded at: ' + new Date
+console.log 'reloaded at: ' + new Date
