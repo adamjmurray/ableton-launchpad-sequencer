@@ -64,15 +64,15 @@ scale = (scaleSteps...) ->
 
 # track properties
 basePitch = (pitch) ->
-  sequencer.selectedTrack.basePitch = pitch
+  sequencer.selectedTrack.pitch = pitch
   return
 
 baseVelocity = (velocity) ->
-  sequencer.selectedTrack.baseVelocity = velocity
+  sequencer.selectedTrack.velocity = velocity
   return
 
 durationScale = (scale) ->
-  sequencer.selectedTrack.durationScale = scale
+  sequencer.selectedTrack.duration = scale
   return
 
 trackMute = (mute) ->

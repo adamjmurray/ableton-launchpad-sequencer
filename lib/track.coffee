@@ -11,7 +11,7 @@ class Track
     'duration -'
   ]
 
-  constructor: (@index, @scale, @basePitch=60, @baseVelocity=70, @durationScale=0.9) ->
+  constructor: (@index, @scale, @pitch=60, @velocity=70, @duration=0.9) ->
     @number = @index+1
     Pattern.scale = scale # this is not clean...
     @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)
@@ -21,29 +21,29 @@ class Track
   noteForClock: (clock, scale) ->
     return if @mute
     note =
-      pitch:      @basePitch
-      velocity:   @baseVelocity
-      duration:   0
+      pitch: @pitch
+      velocity: @velocity
+      duration: 0 # no note unless a gate or "duration +" pattern turns it on
 
     pattern.processNote(note,clock) for pattern in @patterns
 
-    note.duration *= @durationScale
+    note.duration *= @duration # track.duration scales the note's duration
     note
 
 
   toJSON: ->
     (
-      pitch: @basePitch
-      velocity: @baseVelocity
-      duration: @durationScale
+      pitch: @pitch
+      velocity: @velocity
+      duration: @duration
       mute: @mute
       patterns: @patterns
     )
 
   fromJSON: ({pitch,velocity,duration,mute,patterns}) ->
     return unless pitch? and velocity? and duration? and mute? and patterns?.length == PATTERNS
-    @basePitch = pitch
-    @baseVelocity = velocity
-    @durationScale = duration
+    @pitch = pitch
+    @velocity = velocity
+    @duration = duration
     @mute = mute
     p.fromJSON patterns[i] for p,i in @patterns

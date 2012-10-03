@@ -55,7 +55,7 @@ class GUI
 
   trackInfo: (trackIndex, track) ->
     trackNumber = trackIndex + 1
-    outlet TRACK_INFO, trackNumber, track.basePitch, track.baseVelocity, track.durationScale
+    outlet TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration
     return
 
   trackMute: (track) ->

@@ -10,9 +10,9 @@ describe 'Storage', ->
     @clearSequencer = ->
       @sequencer.scale.steps = null
       for t in @sequencer.tracks
-        t.basePitch = null
-        t.baseVelocity = null
-        t.durationScale = null
+        t.pitch = null
+        t.velocity = null
+        t.duration = null
         t.mute = null
         for p in t.patterns
           p.type = null
@@ -51,9 +51,9 @@ describe 'Storage', ->
       expect( @sequencer.scale.steps ).toEqual [0...12]
       expect( @sequencer.tracks.length ).toBe 4
       for t in @sequencer.tracks
-        expect( t.basePitch ).toBe 60
-        expect( t.baseVelocity ).toBe 70
-        expect( t.durationScale ).toBe 0.9
+        expect( t.pitch ).toBe 60
+        expect( t.velocity ).toBe 70
+        expect( t.duration ).toBe 0.9
         expect( t.mute ).toBe false
         expect( t.patterns.length ).toBe 8
         for p,i in t.patterns
