@@ -1,6 +1,7 @@
 # General-purpose utility functions
 
 stringify = (obj) ->
+  return 'null' unless obj?
   if typeof(obj) == 'object'
     if obj instanceof Array
       '[' + ("#{stringify value}" for value in obj).join(', ') + ']'
@@ -8,9 +9,9 @@ stringify = (obj) ->
       '{' + ("#{key}:#{stringify value}" for own key,value of obj).join(', ') + '}'
   else
     if typeof(obj) == 'string'
-      "\"#{string}\""
+      "\"#{obj}\""
     else
       obj.toString()
 
 
-log = (msg) -> post(msg+'\n')
+log = (msg) -> post(msg+"\n")

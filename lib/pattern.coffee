@@ -7,7 +7,7 @@ class Pattern
 
   @scale = {map: ->} # dummy scale, to be assigned by the constructing code
 
-  constructor: (@index, type, @scale) ->
+  constructor: (@index, type) ->
     @number = index+1
     @sequence = new Array(STEPS)
     @clear()
