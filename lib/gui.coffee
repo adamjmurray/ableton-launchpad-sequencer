@@ -95,3 +95,11 @@ class GUI
   patternMute: (pattern) ->
     outlet PATTERN_MUTE, pattern.mute
     return
+
+
+  scale: (scale) ->
+    steps = scale.steps
+    # GUI expects a list [{index}, {1/0}, ...] for index 0..11 (each other arg 1/0 is 1 of step enabled or 0 if not)
+    scale = []
+    scale.push(step, (if steps.indexOf(step) < 0 then 0 else 1)) for step in [0..11]
+    outlet(SCALE, scale)

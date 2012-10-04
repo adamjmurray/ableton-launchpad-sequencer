@@ -20,6 +20,7 @@ class Sequencer
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
+    @scale.steps = [0..11]
     @tracks = (new Track(index, @scale) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
     @patternMultiPress = 0
@@ -32,6 +33,7 @@ class Sequencer
   redraw: ->
     @launchpad.allOff()
     @gui.clearGrid()
+    @gui.scale(@scale)
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)

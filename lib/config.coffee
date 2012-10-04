@@ -13,7 +13,7 @@ GUI_BUTTON_WIDTH = 13
 DEFER_DELAY = 20 # How often to schedule chunks of work. See Defer class.
 
 # Max outlets
-outlets = 14
+outlets = 15
 LAUNCHPAD_NOTE = 0
 LAUNCHPAD_CC   = 1
 NOTE           = 2
@@ -28,7 +28,7 @@ TRACK_INFO     = 10
 TRACK_MUTE     = 11
 PATTERN_INFO   = 12
 PATTERN_MUTE   = 13
-
+SCALE          = 14
 
 if not @console?
   # Simulate the console with the Max window, for debugging and interoperability with Node.js
