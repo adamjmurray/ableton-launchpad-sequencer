@@ -47,3 +47,7 @@ class Scale
       index += scaleLength if index < 0 # support negative indexes
 
       @steps[index] + octave
+
+
+# Using a singleton scale simplifies some of the code.
+Scale.instance = new Scale

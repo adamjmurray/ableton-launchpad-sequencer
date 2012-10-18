@@ -5,8 +5,6 @@
 #
 class Pattern
 
-  @scale = {map: ->} # dummy scale, to be assigned by the constructing code
-
   constructor: (@index, type) ->
     @number = index+1
     @sequence = new Array(STEPS)
@@ -115,6 +113,7 @@ class Pattern
     return
 
 
+  @SCALE = Scale.instance
   @GATE_DURATIONS = [null, 1,  2,   4,   8  ]
   @OCTAVES        = [null, 12, 24, -12, -24 ]
   @MODS           = [null, 0,  42,  85,  127] # MIDI CC modulation values for each step value
@@ -132,8 +131,8 @@ class Pattern
     'pitch +':    (note, value) => note.pitch     += value; return
     'pitch -':    (note, value) => note.pitch     -= value; return
     octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
-    'scale +':    (note, value) => note.pitch      = @scale.map(note.pitch, value); return
-    'scale -':    (note, value) => note.pitch      = @scale.map(note.pitch, -value); return
+    'scale +':    (note, value) => note.pitch      = @SCALE.map(note.pitch, value); return
+    'scale -':    (note, value) => note.pitch      = @SCALE.map(note.pitch, -value); return
     modulation:   (note, value) => note.modulation = @MODS[value]; return
     aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return
     'pitch gate': (note, value) => note.duration = 1; note.pitch += (value-1); return

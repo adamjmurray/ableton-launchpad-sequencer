@@ -5,7 +5,7 @@ class Sequencer
 
   constructor: (@launchpad) ->
     @gui = new GUI
-    @scale = new Scale
+    @scale = Scale.instance
     @onNote = NOOP
     @reset(true)
     if launchpad
@@ -21,7 +21,7 @@ class Sequencer
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
     @scale.steps = [0..11]
-    @tracks = (new Track(index, @scale) for index in [0...TRACKS] by 1)
+    @tracks = (new Track(index) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
     @patternMultiPress = 0
     @_updateSelectedPattern(true)

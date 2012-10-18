@@ -11,14 +11,13 @@ class Track
     'duration -'
   ]
 
-  constructor: (@index, @scale, @pitch=60, @velocity=70, @duration=0.9) ->
+  constructor: (@index, @pitch=60, @velocity=70, @duration=0.9) ->
     @number = @index+1
-    Pattern.scale = scale # this is not clean...
     @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)
     @mute = false
 
 
-  noteForClock: (clock, scale) ->
+  noteForClock: (clock) ->
     return if @mute
     note =
       pitch: @pitch
