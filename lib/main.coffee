@@ -32,12 +32,9 @@ ctlin = (cc, val) ->
   return
 
 
-clock = (bars,beats,units) ->
-  # assume 4/4 with 1/16 note pulses
-  clockIndex = (bars-1)*16 + (beats-1)*4 + Math.round(units/120)
+clock = (clockIndex) ->
   sequencer.setClock(clockIndex)
   return
-
 
 track = (trackIndex) ->
   sequencer.selectTrack(trackIndex)
