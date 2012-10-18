@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 356.0, 44.0, 1115.0, 1041.0 ],
+		"rect" : [ 80.0, 59.0, 1423.0, 660.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 356.0, 44.0, 1115.0, 1041.0 ],
+		"defrect" : [ 80.0, 59.0, 1423.0, 660.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -28,13 +28,103 @@
 				"box" : 				{
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
+					"id" : "obj-31",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1600.0, 149.0, 64.0 ],
+					"presentation_rect" : [ 201.0, 1481.0, 0.0, 0.0 ],
+					"text" : "Plays a note for 1 step\n   1 => track velocity\n   2 => + 33% towards max\n   3 => + 66% towards max\n   4 => max velocity"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-30",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1500.0, 149.0, 64.0 ],
+					"presentation_rect" : [ 147.0, 1396.0, 0.0, 0.0 ],
+					"text" : "Plays a scale note for 1 step\n   1 => track pitch\n   2 => + 1 scale step\n   3 => + 2 scale steps\n   4 => + 3 scale steps"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-28",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1112.0, 127.0, 41.0, 18.0 ],
+					"presentation_rect" : [ 1113.0, 127.0, 0.0, 0.0 ],
+					"text" : "-1600"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-29",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1057.0, 127.0, 41.0, 18.0 ],
+					"presentation_rect" : [ 1057.0, 127.0, 0.0, 0.0 ],
+					"text" : "-1500"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-21",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1400.0, 149.0, 64.0 ],
+					"presentation_rect" : [ 194.0, 1280.0, 0.0, 0.0 ],
+					"text" : "Plays a note for 1 step\n   1 => track pitch\n   2 => + 1 semitone\n   3 => + 2 semitones\n   4 => + 3 semitones"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-5",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1001.0, 127.0, 41.0, 18.0 ],
+					"presentation_rect" : [ 1008.0, 129.0, 0.0, 0.0 ],
+					"text" : "-1400"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
 					"id" : "obj-27",
 					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 1300.0, 150.0, 64.0 ],
-					"text" : "Channel Aftertouch\n   1 => pressure 0     (min)\n   2 => pressure 42   (33%)\n   3 => pressure 85   (66%)\n   4 => pressure 127 (max)"
+					"text" : "Channel aftertouch\n   1 => pressure 0     (min)\n   2 => pressure 42   (33%)\n   3 => pressure 85   (66%)\n   4 => pressure 127 (max)"
 				}
 
 			}
@@ -48,7 +138,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 1200.0, 145.0, 64.0 ],
-					"text" : "Modulation Wheel (CC #1)\n   1 => CC value 0     (min)\n   2 => CC value 42   (33%)\n   3 => CC value 85   (66%)\n   4 => CC value 127 (max)"
+					"text" : "Modulation wheel (CC #1)\n   1 => CC value 0     (min)\n   2 => CC value 42   (33%)\n   3 => CC value 85   (66%)\n   4 => CC value 127 (max)"
 				}
 
 			}
@@ -61,7 +151,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 945.0, 127.0, 41.0, 18.0 ],
+					"patching_rect" : [ 946.0, 127.0, 41.0, 18.0 ],
 					"text" : "-1300"
 				}
 
@@ -75,7 +165,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 889.0, 127.0, 41.0, 18.0 ],
+					"patching_rect" : [ 890.0, 127.0, 41.0, 18.0 ],
 					"text" : "-1200"
 				}
 
@@ -117,7 +207,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 778.0, 127.0, 41.0, 18.0 ],
+					"patching_rect" : [ 779.0, 127.0, 41.0, 18.0 ],
 					"text" : "-1000"
 				}
 
@@ -243,7 +333,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 667.0, 127.0, 35.0, 18.0 ],
+					"patching_rect" : [ 668.0, 127.0, 35.0, 18.0 ],
 					"text" : "-800"
 				}
 
@@ -257,8 +347,8 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 0.0, 500.0, 132.0, 64.0 ],
-					"text" : "Reduces the velocity\n   1 =>  75% velocity\n   2 =>  50% velocity\n   3 =>  25% velocity\n   4 =>  0 (mute)"
+					"patching_rect" : [ 0.0, 500.0, 143.0, 64.0 ],
+					"text" : "Reduces the note's velocity\n   1 =>  75% velocity\n   2 =>  50% velocity\n   3 =>  25% velocity\n   4 =>  0 (mute)"
 				}
 
 			}
@@ -379,12 +469,13 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-78",
+					"linecount" : 2,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 15,
-					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
-					"patching_rect" : [ 223.0, 86.0, 796.0, 20.0 ],
-					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration x\" \"duration /\" \"scale +\" \"scale -\" modulation aftertouch"
+					"numoutlets" : 18,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ 223.0, 86.0, 964.0, 34.0 ],
+					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration x\" \"duration /\" \"scale +\" \"scale -\" modulation aftertouch \"pitch gate\" \"scale gate\" \"velocity gate\""
 				}
 
 			}
@@ -453,7 +544,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 0.0, 118.0, 64.0 ],
-					"text" : "Triggers a note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
+					"text" : "Plays a note\n   1 => play for 1 step\n   2 => play for 2 steps\n   3 => play for 4 steps\n   4 => play for 8 steps"
 				}
 
 			}
@@ -494,7 +585,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 676.5, 164.5, 314.5, 164.5 ],
+					"midpoints" : [ 677.5, 164.5, 314.5, 164.5 ],
 					"source" : [ "obj-11", 0 ]
 				}
 
@@ -521,7 +612,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 787.5, 164.0, 314.5, 164.0 ],
+					"midpoints" : [ 788.5, 164.0, 314.5, 164.0 ],
 					"source" : [ "obj-22", 0 ]
 				}
 
@@ -530,7 +621,25 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 898.5, 164.0, 314.5, 164.0 ],
+					"midpoints" : [ 1121.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-28", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1066.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-29", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 899.5, 164.0, 314.5, 164.0 ],
 					"source" : [ "obj-3", 0 ]
 				}
 
@@ -539,8 +648,17 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 954.5, 164.0, 314.5, 164.0 ],
+					"midpoints" : [ 955.5, 164.0, 314.5, 164.0 ],
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1010.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}
@@ -600,6 +718,24 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-28", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 16 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-29", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 15 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"hidden" : 0,
 					"midpoints" : [  ],
@@ -613,6 +749,15 @@
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-78", 13 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 14 ]
 				}
 
 			}

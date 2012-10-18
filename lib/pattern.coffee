@@ -122,7 +122,7 @@ class Pattern
   # The note modifying behavior for each pattern type.
   # These may assume we filtered out stepValue 0 in processNote() as a NOOP
   @processors =
-    gate:         (note, value) => note.duration  += @GATE_DURATIONS[value]; return
+    gate:         (note, value) => note.duration   = @GATE_DURATIONS[value]; return
     'duration +': (note, value) => note.duration  += value; return
     'duration -': (note, value) => note.duration  -= value; return
     'duration x': (note, value) => note.duration  *= (value + 1); return
@@ -132,10 +132,13 @@ class Pattern
     'pitch +':    (note, value) => note.pitch     += value; return
     'pitch -':    (note, value) => note.pitch     -= value; return
     octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
-    'scale +':    (note, value) => note.pitch      = @scale.map(note.pitch,value); return
-    'scale -':    (note, value) => note.pitch      = @scale.map(note.pitch,-value); return
+    'scale +':    (note, value) => note.pitch      = @scale.map(note.pitch, value); return
+    'scale -':    (note, value) => note.pitch      = @scale.map(note.pitch, -value); return
     modulation:   (note, value) => note.modulation = @MODS[value]; return
     aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return
+    'pitch gate': (note, value) => note.duration = 1; note.pitch += (value-1); return
+    'scale gate': (note, value) => note.duration = 1; note.pitch = @scale.map(note.pitch, value-1); return
+    'velocity gate': (note, value) => note.duration = 1; note.velocity += (127 - note.velocity) * (value-1) / 3; return
 
 
   toJSON: ->
