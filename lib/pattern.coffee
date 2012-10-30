@@ -34,6 +34,12 @@ class Pattern
     return
 
 
+  firstColumn: (value) ->
+    for i in [0...STEPS] by 8
+      @sequence[i] = value
+    return
+
+
   rotate: (steps) ->
     seq = @sequence
     len = @length

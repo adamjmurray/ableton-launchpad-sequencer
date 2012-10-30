@@ -200,8 +200,13 @@ class Sequencer
     @drawGrid()
     return
 
-  randomFill: ->
-    @selectedPattern.randomFill(@value)
+  randomFill: (value = @value) ->
+    @selectedPattern.randomFill(value)
+    @drawGrid()
+    return
+
+  firstColumn: (value = @value) ->
+    @selectedPattern.firstColumn(value)
     @drawGrid()
     return
 
@@ -363,7 +368,7 @@ class Sequencer
     return
 
 
-  # enter the mode for pattern options & operations (start, end, copy, paste, shift left/right)
+  # enter the mode for pattern operations (start, end, copy, paste, shift left/right)
   _patternOpsMode: (enabled) ->
     @patternOpsMode = enabled
     if enabled
