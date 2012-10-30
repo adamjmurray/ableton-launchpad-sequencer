@@ -93,7 +93,7 @@ class GUI
     return
 
   patternMute: (pattern) ->
-    outlet PATTERN_MUTE, pattern.mute
+    outlet(PATTERN_MUTE, pattern.mute)
     return
 
 
@@ -103,3 +103,6 @@ class GUI
     scale = []
     scale.push(step, (if steps.indexOf(step) < 0 then 0 else 1)) for step in [0..11]
     outlet(SCALE, scale)
+
+  stepLength: (length) ->
+    outlet(STEP_LENGTH, length)

@@ -16,6 +16,7 @@ class Sequencer
 
   # Clear all patterns and set all track and pattern properties to their default values.
   reset: (skipRedraw) ->
+    @stepLength = DEFAULT_STEP_LENGTH
     @track = 0   # selected track index
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
@@ -34,6 +35,7 @@ class Sequencer
     @launchpad.allOff()
     @gui.clearGrid()
     @gui.scale(@scale)
+    @gui.stepLength(@stepLength)
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)
@@ -205,13 +207,16 @@ class Sequencer
 
 
   toJSON: (options) ->
-    json =
+    json = {
       scale: @scale.steps
+      stepLength: @stepLength
+    }
     json.tracks = @tracks unless options?.omitTracks
     json
 
-  fromJSON: ({scale,tracks}) ->
+  fromJSON: ({scale,stepLength,tracks}) ->
     @scale.steps = scale if scale?
+    @stepLength = stepLength if stepLength?
     if tracks?.length == TRACKS
       t.fromJSON tracks[i] for t,i in @tracks
     return

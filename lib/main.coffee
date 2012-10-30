@@ -32,9 +32,14 @@ ctlin = (cc, val) ->
   return
 
 
+stepLength = (stepLength) ->
+  sequencer.stepLength = stepLength
+  return
+
 clock = (clockIndex) ->
   sequencer.setClock(clockIndex)
   return
+
 
 track = (trackIndex) ->
   sequencer.selectTrack(trackIndex)

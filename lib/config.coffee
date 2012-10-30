@@ -3,6 +3,8 @@ PATTERNS   = 8  # patterns per track
 STEPS      = 64 # sequencer steps per pattern
 ROW_LENGTH = 8  # steps per row in the grid
 
+DEFAULT_STEP_LENGTH = '16th'
+
 TRANSPORT_STOP = 123 # MIDI CC number
 
 NOOP = -> # the "no operation" function
@@ -13,7 +15,7 @@ GUI_BUTTON_WIDTH = 13
 DEFER_DELAY = 20 # How often to schedule chunks of work. See Defer class.
 
 # Max outlets
-outlets = 15
+outlets = 16
 LAUNCHPAD_NOTE = 0
 LAUNCHPAD_CC   = 1
 NOTE           = 2
@@ -29,6 +31,7 @@ TRACK_MUTE     = 11
 PATTERN_INFO   = 12
 PATTERN_MUTE   = 13
 SCALE          = 14
+STEP_LENGTH    = 15
 
 if not @console?
   # Simulate the console with the Max window, for debugging and interoperability with Node.js
