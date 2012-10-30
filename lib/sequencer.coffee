@@ -182,7 +182,7 @@ class Sequencer
     pattern = @patternClipboard
     return unless pattern?
     target = @selectedPattern
-    target.sequence = pattern.sequence
+    target.sequence = pattern.sequence[..] # copy again so it's not destructively modified by any pattern operations
     target.setRange(pattern.start, pattern.end)
     @drawGrid()
     return
