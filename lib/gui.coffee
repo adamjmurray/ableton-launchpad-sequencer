@@ -62,6 +62,9 @@ class GUI
     outlet TRACK_MUTE, track.mute
     return
 
+  trackMultiplier: (track) ->
+    outlet(TRACK_MULTIPLIER, track.multiplier)
+
 
   patternInfo: (patternIndex, pattern) ->
     # values in the Max GUI are numbers counting from 1, hence all the "+1"s

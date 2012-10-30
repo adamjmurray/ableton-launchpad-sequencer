@@ -92,6 +92,7 @@ class Sequencer
     # update the GUI
     gui.track(index)
     gui.trackMute(selectedTrack)
+    gui.trackMultiplier(selectedTrack)
     gui.patternMute(selectedPattern)
 
     # update the Launchpad

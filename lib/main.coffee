@@ -81,6 +81,10 @@ trackMute = (mute) ->
   sequencer.muteSelectedTrack(mute)
   return
 
+trackMultiplier = (multiplier) ->
+  sequencer.selectedTrack.multiplier = multiplier
+  return
+
 
 # pattern properties
 startStep = (stepNumber)->

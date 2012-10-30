@@ -14,11 +14,19 @@ class Track
   constructor: (@index, @pitch=60, @velocity=70, @duration=0.9) ->
     @number = @index+1
     @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)
+    @multiplier = 1
     @mute = false
 
 
   noteForClock: (clock) ->
     return if @mute
+
+    multiplier = @multiplier
+    if multiplier > 1
+      # step lengths are longer, so we only trigger every few clock ticks
+      return unless clock % multiplier == 0
+      clock /= multiplier
+
     note =
       pitch: @pitch
       velocity: @velocity
@@ -26,7 +34,7 @@ class Track
 
     pattern.processNote(note,clock) for pattern in @patterns
 
-    note.duration *= @duration # track.duration scales the note's duration
+    note.duration *= @duration * multiplier # track.duration and multiplier scales the note's duration
     note
 
 
