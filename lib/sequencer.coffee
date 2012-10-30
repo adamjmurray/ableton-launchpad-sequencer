@@ -256,9 +256,12 @@ class Sequencer
 
 
   _drawActiveStep: () ->
+    clock = @selectedTrack.clockForMultiplier(@clock)
+    return unless clock?
+
     selectedPattern = @selectedPattern
     oldActiveStep = @activeStep
-    activeStep = selectedPattern.stepIndexForClock(@clock)
+    activeStep = selectedPattern.stepIndexForClock(clock)
 
     # remove old active step indicators
     if oldActiveStep >= 0

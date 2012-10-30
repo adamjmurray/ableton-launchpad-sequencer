@@ -20,22 +20,25 @@ class Track
 
   noteForClock: (clock) ->
     return if @mute
+    clock = @clockForMultiplier(clock)
+    return unless clock?
 
-    multiplier = @multiplier
-    if multiplier > 1
-      # step lengths are longer, so we only trigger every few clock ticks
-      return unless clock % multiplier == 0
-      clock /= multiplier
-
-    note =
+    note = {
       pitch: @pitch
       velocity: @velocity
       duration: 0 # no note unless a gate or "duration +" pattern turns it on
-
+    }
     pattern.processNote(note,clock) for pattern in @patterns
-
-    note.duration *= @duration * multiplier # track.duration and multiplier scales the note's duration
+    note.duration *= @duration * @multiplier # track.duration and multiplier scales the note's duration
     note
+
+
+  clockForMultiplier: (clock) ->
+    # step lengths are longer, so we only trigger every few clock ticks
+    if clock % @multiplier == 0
+      clock /= @multiplier
+    else
+      null
 
 
   toJSON: ->
