@@ -172,7 +172,7 @@ class Sequencer
   copyPattern: ->
     pattern = @selectedPattern
     @patternClipboard =
-      sequence: pattern.sequence
+      sequence: pattern.sequence[..] # make a copy so we get a snapshot of the sequence at this moment
       start: pattern.start
       end: pattern.end
     return
@@ -182,7 +182,7 @@ class Sequencer
     pattern = @patternClipboard
     return unless pattern?
     target = @selectedPattern
-    target.sequence = pattern.sequence[..] # make a copy
+    target.sequence = pattern.sequence
     target.setRange(pattern.start, pattern.end)
     @drawGrid()
     return
