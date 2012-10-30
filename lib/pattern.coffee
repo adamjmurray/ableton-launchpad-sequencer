@@ -136,7 +136,7 @@ class Pattern
     modulation:   (note, value) => note.modulation = @MODS[value]; return
     aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return
     'pitch gate': (note, value) => note.duration = 1; note.pitch += (value-1); return
-    'scale gate': (note, value) => note.duration = 1; note.pitch = @scale.map(note.pitch, value-1); return
+    'scale gate': (note, value) => note.duration = 1; note.pitch = @SCALE.map(note.pitch, value-1); return
     'velocity gate': (note, value) => note.duration = 1; note.velocity += (127 - note.velocity) * (value-1) / 3; return
 
 
