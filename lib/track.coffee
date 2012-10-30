@@ -46,15 +46,17 @@ class Track
       pitch: @pitch
       velocity: @velocity
       duration: @duration
+      multiplier: @multiplier
       mute: @mute
       patterns: @patterns
     )
 
-  fromJSON: ({pitch,velocity,duration,mute,patterns}) ->
-    return unless pitch? and velocity? and duration? and mute? and patterns?.length == PATTERNS
+  fromJSON: ({pitch,velocity,duration,multiplier,mute,patterns}) ->
+    return unless pitch? and velocity? and duration? and multiplier? and mute? and patterns?.length == PATTERNS
     @pitch = pitch
     @velocity = velocity
     @duration = duration
+    @multiplier = multiplier
     @mute = mute
     p.fromJSON patterns[i] for p,i in @patterns
     return
