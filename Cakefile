@@ -1,5 +1,5 @@
 PROJECT = 'launchpad-sequencer'
-VERSION = '0.1'
+VERSION = '1.0-alpha'
 
 BASE_DIR = __dirname
 BUILD_DIR = "#{BASE_DIR}/#{PROJECT}"
@@ -53,11 +53,15 @@ exec = (cmd, args=[], options={}, callback) ->
       console.log "exited with error code #{code}"
 
 
+task 'clean', 'remove build artifacts', ->
+  exec 'rm', ['-rf', OUT_FILE, DIST_DIR]
+
+
 task 'dev', 'watch the source files and rebuild automatically while developing', ->
   exec 'coffee', ['--watch'].concat(COFFEE_ARGS), {message: "\nWatching files... use ctrl+C to exit.\n"}
 
 
-task 'build', 'build the app', ->
+task 'build', 'build the app (debug version)', ->
   exec 'coffee', COFFEE_ARGS
 
 
@@ -67,24 +71,29 @@ task 'validate', 'validate syntax', ->
       exec 'coffee', [file], {suppressStatus: true}
 
 
-task 'dist', 'build & package the app for distribution', ->
+task 'test', 'run the unit tests', ->
+  exec 'coffee', ['--compile', '--join', TEST_OUT_FILE].concat(TEST_FILES), {}, ->
+    exec 'jasmine-node', ['--coffee', '--matchall', '--verbose', TEST_DIR]
+
+
+task 'release', 'build the app (release version, minified)', ->
+  console.log '\nREMINDER: comment out any debugging code prior to packaging' # TODO: automate?
+  exec 'coffee', COFFEE_ARGS, suppressStatus:true, ->
+    exec 'uglifyjs', ['-nmf', '--overwrite', OUT_FILE], {}, ->
+      console.log '\nDone building the release vesion.\n' +
+       'Now freeze the Max device, save it, and then run the "cake package"\n'
+
+
+task 'dist', 'package the app for distribution', ->
+  console.log '\nAssuming the release version of the app has been built, and the Max device has been frozen.'
   opts = {suppressStatus: true}
   project = "#{PROJECT}-#{VERSION}"
   archive = "#{project}.zip"
   distFolder = "#{DIST_DIR}/#{project}"
   exec 'rm', ['-rf', DIST_DIR], opts, ->
-    exec 'coffee', COFFEE_ARGS, opts, ->
-      exec 'uglifyjs', ['--overwrite', OUT_FILE], opts, ->
-        exec 'mkdir', ['-p', distFolder], opts, ->
-          exec 'cp', ['-r', BUILD_DIR, "#{distFolder}/#{PROJECT}"], opts, ->
-            exec 'cp', ['-r', EXAMPLE_DIR, "#{distFolder}/example-project"], opts, ->
-              exec 'zip', ['-qlr', '-9', archive, project, '-x', '"*.DS_Store"'], {process:{cwd:DIST_DIR}}
-
-
-task 'clean', 'remove build artifacts', ->
-  exec 'rm', ['-rf', OUT_FILE, DIST_DIR]
-
-
-task 'test', 'run the unit tests', ->
-  exec 'coffee', ['--compile', '--join', TEST_OUT_FILE].concat(TEST_FILES), {}, ->
-    exec 'jasmine-node', ['--coffee', '--matchall', '--verbose', TEST_DIR]
+    exec 'mkdir', ['-p', "#{distFolder}/#{PROJECT}"], opts, ->
+      # I don't like hard-coding the amxd files, but it's difficult doing something like cp *.amxd in Node.js
+      exec 'cp', ["#{BUILD_DIR}/launchpad-sequencer.amxd", "#{distFolder}/#{PROJECT}"], opts, ->
+        exec 'cp', ["#{BUILD_DIR}/launchpad-sequencer-proxy.amxd", "#{distFolder}/#{PROJECT}"], opts, ->
+          exec 'cp', ['-r', EXAMPLE_DIR, "#{distFolder}/example-project"], opts, ->
+            exec 'zip', ['-qlr', '-9', archive, project], {process:{cwd:DIST_DIR}}
