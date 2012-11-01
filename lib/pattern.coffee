@@ -174,10 +174,10 @@ class Pattern
     )
 
   fromJSON: ({type,start,end,mute,sequence}) ->
-    return unless type? and start? and end? and mute? and sequence?.length == STEPS
-    @type = type
-    @start = start
-    @end = end
-    @mute = mute
-    @sequence = sequence
+    @setType(type) if type?
+    @start = start if start?
+    @end = end if end?
+    @_updateLength()
+    @mute = mute if mute?
+    @sequence = sequence if sequence?.length == STEPS
     return

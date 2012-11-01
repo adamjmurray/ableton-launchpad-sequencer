@@ -120,3 +120,10 @@ describe 'Pattern', ->
         expect( Object.keys(pitches).length ).toBeGreaterThan 5
         expect( Object.keys(velocities).length ).toBeGreaterThan 5
         expect( Object.keys(durations).length ).toBeGreaterThan 5
+
+
+  describe ".fromJSON()", ->
+    it "calls setType() to set the processor properly", ->
+      spyOn @pattern,'setType'
+      @pattern.fromJSON(type:'duration /')
+      expect(@pattern.setType).toHaveBeenCalled()

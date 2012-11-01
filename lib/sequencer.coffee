@@ -223,8 +223,10 @@ class Sequencer
   fromJSON: ({scale,stepLength,tracks}) ->
     @scale.steps = scale if scale?
     @stepLength = stepLength if stepLength?
-    if tracks?.length == TRACKS
-      t.fromJSON tracks[i] for t,i in @tracks
+    if tracks?.length > 0
+      for track,i in @tracks
+        json = tracks[i]
+        track.fromJSON(json) if json
     return
 
 
