@@ -12,7 +12,7 @@ NOOP = -> # the "no operation" function
 GUI_STEP_WIDTH = 19
 GUI_BUTTON_WIDTH = 13
 
-DEFER_DELAY = 1 # How often (in ms) to schedule chunks of work. See Defer class.
+DEFER_DELAY = 20 # How often (in ms) to schedule chunks of work. See Defer class.
 
 # Max outlets
 outlets = 17
