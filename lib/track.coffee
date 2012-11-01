@@ -1,12 +1,12 @@
 class Track
 
   @DEFAULT_TYPES = [
-    'gate'
+    'scale gate'
     'scale +'
     'scale -'
+    'octave'
     'velocity +'
     'velocity -'
-    'octave'
     'duration +'
     'duration -'
   ]
@@ -28,7 +28,12 @@ class Track
       velocity: @velocity
       duration: 0 # no note unless a gate or "duration +" pattern turns it on
     }
-    pattern.processNote(note,clock) for pattern in @patterns
+    for pattern in @patterns
+      if note.skip # random skip caused next pattern to be skipped
+        note.skip = null
+        continue
+      pattern.processNote(note,clock)
+
     note.duration *= @duration * @multiplier # track.duration and multiplier scales the note's duration
     note
 

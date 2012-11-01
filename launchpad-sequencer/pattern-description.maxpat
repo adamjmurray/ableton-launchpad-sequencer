@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 80.0, 59.0, 1423.0, 660.0 ],
+		"rect" : [ 80.0, 59.0, 1436.0, 668.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 80.0, 59.0, 1423.0, 660.0 ],
+		"defrect" : [ 80.0, 59.0, 1436.0, 668.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -26,6 +26,118 @@
 		"devicewidth" : 0.0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-35",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1335.0, 127.0, 41.0, 18.0 ],
+					"text" : "-2000"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-36",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1280.0, 127.0, 41.0, 18.0 ],
+					"text" : "-1900"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-37",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1224.0, 127.0, 41.0, 18.0 ],
+					"text" : "-1800"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-38",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 1169.0, 127.0, 41.0, 18.0 ],
+					"text" : "-1700"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-24",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 2000.0, 149.0, 64.0 ],
+					"text" : "Extreme randomization\n   1 => random pitch\n   2 => random velocity\n   3 => random duration\n   4 => randomize all 3 values"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-32",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1900.0, 155.0, 64.0 ],
+					"text" : "Random skip the next pattern\n   1 => 25% chance to skip\n   2 => 50% chance to skip\n   3 => 75% chance to skip\n   4 => always skip next pattern"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-33",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1800.0, 149.0, 64.0 ],
+					"text" : "Randomly set duration to 0\n   1 => 25% chance to mute\n   2 => 50% chance to mute\n   3 => 75% chance to mute\n   4 => always mute"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 10.0,
+					"id" : "obj-34",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 0.0, 1700.0, 162.0, 64.0 ],
+					"text" : "Randomly play a note for 1 step\n   1 => 25% chance to play\n   2 => 50% chance to play\n   3 => 75% chance to play\n   4 => always play"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"fontname" : "Arial Bold",
 					"fontsize" : 10.0,
 					"id" : "obj-31",
@@ -34,7 +146,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 1600.0, 149.0, 64.0 ],
-					"presentation_rect" : [ 201.0, 1481.0, 0.0, 0.0 ],
 					"text" : "Plays a note for 1 step\n   1 => track velocity\n   2 => + 33% towards max\n   3 => + 66% towards max\n   4 => max velocity"
 				}
 
@@ -49,7 +160,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 1500.0, 149.0, 64.0 ],
-					"presentation_rect" : [ 147.0, 1396.0, 0.0, 0.0 ],
 					"text" : "Plays a scale note for 1 step\n   1 => track pitch\n   2 => + 1 scale step\n   3 => + 2 scale steps\n   4 => + 3 scale steps"
 				}
 
@@ -63,8 +173,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1112.0, 127.0, 41.0, 18.0 ],
-					"presentation_rect" : [ 1113.0, 127.0, 0.0, 0.0 ],
+					"patching_rect" : [ 1113.0, 127.0, 41.0, 18.0 ],
 					"text" : "-1600"
 				}
 
@@ -79,7 +188,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1057.0, 127.0, 41.0, 18.0 ],
-					"presentation_rect" : [ 1057.0, 127.0, 0.0, 0.0 ],
 					"text" : "-1500"
 				}
 
@@ -94,7 +202,6 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 0.0, 1400.0, 149.0, 64.0 ],
-					"presentation_rect" : [ 194.0, 1280.0, 0.0, 0.0 ],
 					"text" : "Plays a note for 1 step\n   1 => track pitch\n   2 => + 1 semitone\n   3 => + 2 semitones\n   4 => + 3 semitones"
 				}
 
@@ -109,7 +216,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1001.0, 127.0, 41.0, 18.0 ],
-					"presentation_rect" : [ 1008.0, 129.0, 0.0, 0.0 ],
 					"text" : "-1400"
 				}
 
@@ -472,10 +578,10 @@
 					"linecount" : 2,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 18,
-					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
-					"patching_rect" : [ 223.0, 86.0, 964.0, 34.0 ],
-					"text" : "select gate \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration x\" \"duration /\" \"scale +\" \"scale -\" modulation aftertouch \"pitch gate\" \"scale gate\" \"velocity gate\""
+					"numoutlets" : 22,
+					"outlettype" : [ "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "bang", "" ],
+					"patching_rect" : [ 223.0, 86.0, 1187.0, 34.0 ],
+					"text" : "select \"duration gate\" \"pitch +\" \"pitch -\" octave \"velocity +\" \"velocity -\" \"duration +\" \"duration -\" \"duration x\" \"duration /\" \"scale +\" \"scale -\" modulation aftertouch \"pitch gate\" \"scale gate\" \"velocity gate\" \"random gate\" \"random mute\" \"random skip\" chaos"
 				}
 
 			}
@@ -621,7 +727,7 @@
 				"patchline" : 				{
 					"destination" : [ "obj-74", 0 ],
 					"hidden" : 0,
-					"midpoints" : [ 1121.5, 164.0, 314.5, 164.0 ],
+					"midpoints" : [ 1122.5, 164.0, 314.5, 164.0 ],
 					"source" : [ "obj-28", 0 ]
 				}
 
@@ -641,6 +747,42 @@
 					"hidden" : 0,
 					"midpoints" : [ 899.5, 164.0, 314.5, 164.0 ],
 					"source" : [ "obj-3", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1344.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-35", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1289.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-36", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1233.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-74", 0 ],
+					"hidden" : 0,
+					"midpoints" : [ 1178.5, 164.0, 314.5, 164.0 ],
+					"source" : [ "obj-38", 0 ]
 				}
 
 			}
@@ -740,6 +882,42 @@
 					"hidden" : 0,
 					"midpoints" : [  ],
 					"source" : [ "obj-78", 12 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-35", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 20 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-36", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 19 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-37", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 18 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-38", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ],
+					"source" : [ "obj-78", 17 ]
 				}
 
 			}

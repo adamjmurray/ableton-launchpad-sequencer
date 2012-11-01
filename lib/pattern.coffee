@@ -110,7 +110,6 @@ class Pattern
   #   duration: <pulses/quarter note beats (float)>
   # }
   # modify the note for this pattern's value at the given clock index.
-  # Returns the note.
   #
   processNote: (note, clock) ->
     return if @mute
@@ -119,31 +118,50 @@ class Pattern
     return
 
 
-  @SCALE = Scale.instance
-  @GATE_DURATIONS = [null, 1,  2,   4,   8  ]
-  @OCTAVES        = [null, 12, 24, -12, -24 ]
-  @MODS           = [null, 0,  42,  85,  127] # MIDI CC modulation values for each step value
+  @SCALE: Scale.instance
+  @GATE_DURATIONS: [null, 1,  2,   4,   8  ]
+  @OCTAVES:        [null, 12, 24, -12, -24 ]
+  @MODS:           [null, 0,  42,  85,  127] # MIDI CC modulation values for each step value
+
+  @randomPitch:    -> Math.floor(Math.random() * 128)
+  @randomVelocity: @randomPitch
+  @randomDuration: -> Math.random() * 8
 
   # The note modifying behavior for each pattern type.
   # These may assume we filtered out stepValue 0 in processNote() as a NOOP
-  @processors =
-    gate:         (note, value) => note.duration   = @GATE_DURATIONS[value]; return
+  @processors:
+    'pitch gate':    (note, value) => note.duration = 1; note.pitch += (value-1); return
+    'scale gate':    (note, value) => note.duration = 1; note.pitch = @SCALE.map(note.pitch, value-1); return
+    'velocity gate': (note, value) => note.duration = 1; note.velocity += (127 - note.velocity) * (value-1) / 3; return
+    'duration gate': (note, value) => note.duration = @GATE_DURATIONS[value]; return
+
+    'pitch +':    (note, value) => note.pitch     += value; return
+    'pitch -':    (note, value) => note.pitch     -= value; return
+    'scale +':    (note, value) => note.pitch      = @SCALE.map(note.pitch, value); return
+    'scale -':    (note, value) => note.pitch      = @SCALE.map(note.pitch, -value); return
+    'octave':     (note, value) => note.pitch     += @OCTAVES[value]; return
+
+    'velocity +': (note, value) => note.velocity  += (127 - note.velocity) * value/4; return
+    'velocity -': (note, value) => note.velocity  -= note.velocity * value/4; return
+
     'duration +': (note, value) => note.duration  += value; return
     'duration -': (note, value) => note.duration  -= value; return
     'duration x': (note, value) => note.duration  *= (value + 1); return
     'duration /': (note, value) => note.duration  /= (value + 1); return
-    'velocity +': (note, value) => note.velocity  += (127 - note.velocity) * value/4; return
-    'velocity -': (note, value) => note.velocity  -= note.velocity * value/4; return
-    'pitch +':    (note, value) => note.pitch     += value; return
-    'pitch -':    (note, value) => note.pitch     -= value; return
-    octave:       (note, value) => note.pitch     += @OCTAVES[value]; return
-    'scale +':    (note, value) => note.pitch      = @SCALE.map(note.pitch, value); return
-    'scale -':    (note, value) => note.pitch      = @SCALE.map(note.pitch, -value); return
-    modulation:   (note, value) => note.modulation = @MODS[value]; return
-    aftertouch:   (note, value) => note.aftertouch = @MODS[value]; return
-    'pitch gate': (note, value) => note.duration = 1; note.pitch += (value-1); return
-    'scale gate': (note, value) => note.duration = 1; note.pitch = @SCALE.map(note.pitch, value-1); return
-    'velocity gate': (note, value) => note.duration = 1; note.velocity += (127 - note.velocity) * (value-1) / 3; return
+
+    'modulation': (note, value) => note.modulation = @MODS[value]; return
+    'aftertouch': (note, value) => note.aftertouch = @MODS[value]; return
+
+    'random gate':(note, value) => if Math.random() <= value/4 then note.duration = 1; return
+    'random mute':(note, value) => if Math.random() <= value/4 then note.duration = 0; return
+    'random skip':(note, value) => if Math.random() <= value/4 then note.skip = true; return
+    'chaos'      :(note, value) =>
+      switch value
+        when 1 then note.pitch    = @randomPitch()
+        when 2 then note.velocity = @randomVelocity()
+        when 3 then note.duration = @randomDuration()
+        when 4 then [note.pitch, note.velocity, note.duration] = [@randomPitch(), @randomVelocity(), @randomDuration()]
+      return
 
 
   toJSON: ->
