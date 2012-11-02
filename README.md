@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/adamjmurray/m4l-launchpad-sequencer.png)](http://travis-ci.org/adamjmurray/m4l-launchpad-sequencer)
 
-A device for [Ableton Live](http://ableton.com/live-8) that brings unique step sequencing capabilities to
+A device for [Ableton Live](http://www.ableton.com/en/live/) that brings unique step sequencing capabilities to
 the [Novation Launchpad](http://us.novationmusic.com/midi-controllers-digital-dj/launchpad) hardware controller.
 
 Built with [Max/MSP](http://cycling74.com/products/max/) and [Max for Live](http://ableton.com/maxforlive) with much
