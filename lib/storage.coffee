@@ -1,4 +1,4 @@
-# The interface to the pattr persistence system in Max, and a copy/paste clipboard.
+# The interface to the pattr persistence system in Max.
 class Storage
 
   constructor: (@sequencer) ->

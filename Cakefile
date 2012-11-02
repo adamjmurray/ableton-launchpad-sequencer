@@ -81,7 +81,7 @@ task 'release', 'build the app (release version, minified)', ->
   exec 'coffee', COFFEE_ARGS, suppressStatus:true, ->
     exec 'uglifyjs', ['-nmf', '--overwrite', OUT_FILE], {}, ->
       console.log '\nDone building the release vesion.\n' +
-       'Now freeze the Max device, save it, and then run the "cake package"\n'
+       'Now freeze the Max device, save it, and then run the "cake dist"\n'
 
 
 task 'dist', 'package the app for distribution', ->
