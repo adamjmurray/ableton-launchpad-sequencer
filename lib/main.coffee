@@ -107,12 +107,7 @@ patternMute = (mute) ->
 
 
 # pattern operations
-clear = ->
-  sequencer.selectedPattern.clear()
-  sequencer.drawGrid()
-  return
-
-randomize = ->
+random = ->
   sequencer.random()
   return
 
@@ -124,8 +119,24 @@ randomThin = ->
   sequencer.randomFill(0)
   return
 
+fill = ->
+  sequencer.fill()
+  return
+
+clear = ->
+  sequencer.fill(0)
+  return
+
 firstColumn = ->
   sequencer.firstColumn()
+  return
+
+reverse = ->
+  sequencer.reverse()
+  return
+
+replace = ->
+  sequencer.replace()
   return
 
 

@@ -195,6 +195,10 @@ class Sequencer
     @drawGrid()
     return
 
+  reverse: ->
+    @selectedPattern.reverse()
+    @drawGrid()
+    return
 
   random: ->
     @selectedPattern.random()
@@ -203,6 +207,16 @@ class Sequencer
 
   randomFill: (value = @value) ->
     @selectedPattern.randomFill(value)
+    @drawGrid()
+    return
+
+  fill: (value = @value) ->
+    @selectedPattern.fill(value)
+    @drawGrid()
+    return
+
+  replace: (value = @value) ->
+    @selectedPattern.replace(value)
     @drawGrid()
     return
 

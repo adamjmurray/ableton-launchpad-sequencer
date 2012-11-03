@@ -40,6 +40,26 @@ class Pattern
     return
 
 
+  fill: (value) ->
+    for i in [@start..@end] by 1
+      @sequence[i] = value
+    return
+
+
+  replace: (value) ->
+    for i in [@start..@end] by 1
+      @sequence[i] = value if @sequence[i] > 0
+    return
+
+
+  reverse: ->
+    s = @sequence
+    for i in [@start...(@start + @length/2)] by 1
+      j = @end-i
+      [s[i],s[j]] = [s[j],s[i]]
+    return
+
+
   rotate: (steps) ->
     seq = @sequence
     len = @length
