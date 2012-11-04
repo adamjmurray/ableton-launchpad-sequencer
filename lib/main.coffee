@@ -173,6 +173,15 @@ load = (path, values...) ->
   storage.load(path, values...)
   return
 
+importFile = (path) ->
+  console.log path
+  return
+
+
+exportFile = (path) ->
+  console.log path
+  return
+
 
 #==============================================================
 # Debugging stuff
