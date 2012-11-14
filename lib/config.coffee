@@ -37,5 +37,5 @@ TRACK_MULTIPLIER = 16
 if not @console?
   # Simulate the console with the Max window, for debugging and interoperability with Node.js
   @console =
-    log: (msg) -> post(msg+"\n")
-    error: (msg) -> error(msg+"\n")
+    log: (msg...) -> post(msg+"\n")
+    error: (msg...) -> error(msg+"\n")
