@@ -1,5 +1,3 @@
-#========================================================
-# Intialize the application
 
 launchpad = new Launchpad
 sequencer = new Sequencer(launchpad)
@@ -9,7 +7,9 @@ storage   = new Storage(sequencer)
 #==============================================================
 # Handlers for input from Max.
 # Each method below handles the Max messages of the same name
-
+#
+#--------------------------------------------------------------
+#  Init
 bang  = ->
   sequencer.redraw()
   return
@@ -18,7 +18,9 @@ reset = ->
   sequencer.reset()
   return
 
-
+#--------------------------------------------------------------
+# Launchpad MIDI in
+#
 notein = (pitch, velocity) ->
   launchpad.notein(pitch, velocity)
   return
@@ -31,7 +33,9 @@ ctlin = (cc, val) ->
     save() # this is a good time to save state without affecting realtime audio performance
   return
 
-
+#--------------------------------------------------------------
+# Global
+#
 stepLength = (stepLength) ->
   sequencer.stepLength = stepLength
   return
@@ -39,8 +43,15 @@ stepLength = (stepLength) ->
 clock = (clockIndex) ->
   sequencer.setClock(clockIndex)
   return
+  
+scale = (scaleSteps...) ->
+  scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
+  sequencer.scale.steps = scaleSteps
+  return
 
-
+#--------------------------------------------------------------
+# GUI Launchpad Buttons 
+#
 track = (trackIndex) ->
   sequencer.selectTrack(trackIndex)
   return
@@ -57,14 +68,9 @@ grid = (x,y) ->
   sequencer.setGridValue(x,y)
   return
 
-
-scale = (scaleSteps...) ->
-  scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
-  sequencer.scale.steps = scaleSteps
-  return
-
-
-# track properties
+#--------------------------------------------------------------
+# Track Settings
+#
 basePitch = (pitch) ->
   sequencer.selectedTrack.pitch = pitch
   return
@@ -85,8 +91,9 @@ trackMultiplier = (multiplier) ->
   sequencer.selectedTrack.multiplier = multiplier
   return
 
-
-# pattern properties
+#--------------------------------------------------------------
+# Pattern Settings
+#
 startStep = (stepNumber)->
   sequencer.selectedPattern.setStart(stepNumber-1)
   sequencer.drawPatternInfo()
@@ -105,8 +112,9 @@ patternMute = (mute) ->
   sequencer.muteSelectedPattern(mute)
   return
 
-
-# pattern operations
+#--------------------------------------------------------------
+# Pattern Operations
+#
 random = ->
   sequencer.random()
   return
@@ -139,15 +147,6 @@ replace = ->
   sequencer.replace()
   return
 
-
-copy = ->
-  sequencer.copyPattern()
-  return
-
-paste = ->
-  sequencer.pastePattern()
-  return
-
 shiftleft = ->
   sequencer.rotate(1)
   return
@@ -164,6 +163,16 @@ shiftdown = ->
   sequencer.rotate(-ROW_LENGTH)
   return
 
+#--------------------------------------------------------------
+# Persistence
+#
+copy = ->
+  sequencer.copyPattern()
+  return
+
+paste = ->
+  sequencer.pastePattern()
+  return
 
 save = ->
   storage.save()
@@ -176,7 +185,6 @@ load = (path, values...) ->
 importFile = (filepath) ->
   storage.import(filepath)
   return
-
 
 exportFile = (filepath) ->
   storage.export(filepath)
