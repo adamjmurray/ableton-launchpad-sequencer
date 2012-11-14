@@ -66,10 +66,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 240.0, 206.0, 32.0, 48.0 ],
+					"patching_rect" : [ 240.0, 206.0, 34.0, 48.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 360.0, 209.0, 67.0, 20.0 ],
-					"text" : "Db1 ... B4"
+					"presentation_rect" : [ 366.0, 208.0, 67.0, 20.0 ],
+					"text" : "C1 ... B4"
 				}
 
 			}
@@ -346,7 +346,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 469.0, 255.0, 321.0, 29.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 259.0, 264.0, 269.0, 25.0 ],
+					"presentation_rect" : [ 253.0, 264.0, 274.0, 25.0 ],
 					"rounded" : 36
 				}
 

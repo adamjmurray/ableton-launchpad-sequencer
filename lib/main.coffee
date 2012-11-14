@@ -34,6 +34,38 @@ ctlin = (cc, val) ->
   return
 
 #--------------------------------------------------------------
+# Live Track MIDI in
+#
+note = (pitch, velocity) ->
+  isOn = velocity > 0
+
+  if pitch < 32
+    track = Math.floor(pitch/8)
+    pattern = pitch % 8
+    console.log "#{if isOn then '' else 'un'}mute pattern #{pattern} of track #{track}"
+    # or if scale is already muted, should this toggle?
+    # it should probably reset to the original mute state (rather than unmute) when not isOn
+
+  else if pitch < 36
+    track = pitch - 32
+    console.log "#{if isOn then '' else 'un'}mute track #{track}"
+
+  else if pitch < 84
+    console.log "#{if isOn then '' else 'un'}set track pitch to #{pitch}"
+    # TODO: keep track of how many of these are held, and that will map to the track index
+
+  else if pitch < 96
+    scale = pitch - 84
+    console.log "#{if isOn then '' else 'un'}scale #{scale}"
+    # reset scale to original state when none of these notes are held
+
+  else if pitch < 128
+    transpose = pitch - 108
+    console.log "#{if isOn then '' else 'un'}set global transpose #{transpose}"
+
+  return
+
+#--------------------------------------------------------------
 # Global
 #
 stepLength = (stepLength) ->
