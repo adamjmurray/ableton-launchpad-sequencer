@@ -29,6 +29,54 @@
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
+					"id" : "obj-21",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 98.0, 208.0, 29.0, 48.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 533.0, 208.0, 67.0, 20.0 ],
+					"text" : "C5 ... B5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-18",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 519.0, 205.0, 29.0, 34.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 224.0, 208.0, 39.0, 20.0 ],
+					"text" : "Ab0.."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-13",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 240.0, 206.0, 32.0, 48.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 360.0, 209.0, 67.0, 20.0 ],
+					"text" : "Db1 ... B4"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
 					"id" : "obj-16",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -74,11 +122,11 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 554.0, 283.0, 177.0, 62.0 ],
+					"patching_rect" : [ 554.0, 283.0, 180.0, 62.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 4,
-					"presentation_rect" : [ 554.0, 283.0, 177.0, 62.0 ],
-					"text" : "\"round-robin\" track transpose (each note transposes one track 1,2,3,4,1,2,3,etc...). \nC6 is the center."
+					"presentation_linecount" : 3,
+					"presentation_rect" : [ 297.0, 290.0, 217.0, 48.0 ],
+					"text" : "set track base pitch \"round-robin\" (each note sets track pitch in a circular loop: set track 1,2,3,4,1,2,3,etc...) "
 				}
 
 			}
@@ -87,13 +135,14 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-25",
+					"linecount" : 3,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 592.0, 208.0, 24.0, 20.0 ],
+					"patching_rect" : [ 592.0, 208.0, 27.0, 48.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 592.0, 208.0, 24.0, 20.0 ],
-					"text" : "C6"
+					"presentation_rect" : [ 662.0, 205.0, 62.0, 20.0 ],
+					"text" : "C6 ... G8"
 				}
 
 			}
@@ -102,30 +151,15 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-24",
-					"linecount" : 4,
+					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 256.0, 284.0, 77.0, 62.0 ],
+					"patching_rect" : [ 256.0, 284.0, 77.0, 75.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 4,
-					"presentation_rect" : [ 256.0, 284.0, 77.0, 62.0 ],
-					"text" : " set scale.\nplay a chord to set the scale"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial",
-					"fontsize" : 12.0,
-					"id" : "obj-22",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 732.0, 211.0, 24.0, 20.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 732.0, 211.0, 24.0, 20.0 ],
-					"text" : "C8"
+					"presentation_linecount" : 5,
+					"presentation_rect" : [ 538.0, 278.0, 77.0, 75.0 ],
+					"text" : "      V\n set scale.\nplay a chord to set the scale"
 				}
 
 			}
@@ -134,13 +168,14 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-20",
+					"linecount" : 4,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 29.0, 207.0, 29.0, 20.0 ],
+					"patching_rect" : [ 29.0, 207.0, 29.0, 62.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 29.0, 207.0, 29.0, 20.0 ],
-					"text" : "C-2"
+					"presentation_rect" : [ 92.0, 206.0, 73.0, 20.0 ],
+					"text" : "C -2 ... G0"
 				}
 
 			}
@@ -149,13 +184,14 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-19",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 382.0, 210.0, 24.0, 20.0 ],
+					"patching_rect" : [ 382.0, 210.0, 24.0, 34.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 382.0, 210.0, 24.0, 20.0 ],
-					"text" : "C3"
+					"presentation_rect" : [ 378.0, 272.0, 38.0, 20.0 ],
+					"text" : "(C3)"
 				}
 
 			}
@@ -164,15 +200,15 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-17",
-					"linecount" : 4,
+					"linecount" : 6,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 336.0, 274.0, 130.0, 62.0 ],
+					"patching_rect" : [ 336.0, 274.0, 130.0, 89.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 4,
-					"presentation_rect" : [ 336.0, 274.0, 130.0, 62.0 ],
-					"text" : "global transpose.\nC3 is \"center\", so you can transpose 1 octave up or down."
+					"presentation_rect" : [ 640.0, 284.0, 220.0, 62.0 ],
+					"text" : "global transpose.\nC7 is \"center\", so you can transpose down by up to 1 octave, and transpose up by an octave and a half"
 				}
 
 			}
@@ -253,8 +289,8 @@
 					"patching_rect" : [ 221.0, 274.0, 42.0, 48.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 221.0, 274.0, 42.0, 48.0 ],
-					"text" : "   ^\nmute\ntrack"
+					"presentation_rect" : [ 225.0, 279.0, 42.0, 48.0 ],
+					"text" : "   V\nmute\ntrack"
 				}
 
 			}
@@ -268,7 +304,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 101.0, 280.0, 84.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 101.0, 280.0, 84.0, 20.0 ],
+					"presentation_rect" : [ 94.0, 286.0, 84.0, 20.0 ],
 					"text" : "mute pattern"
 				}
 
@@ -297,7 +333,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 40.0, 253.0, 190.0, 31.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 40.0, 253.0, 190.0, 31.0 ],
+					"presentation_rect" : [ 40.0, 254.0, 190.0, 31.0 ],
 					"rounded" : 36
 				}
 
@@ -310,7 +346,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 469.0, 255.0, 321.0, 29.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 469.0, 255.0, 321.0, 29.0 ],
+					"presentation_rect" : [ 259.0, 264.0, 269.0, 25.0 ],
 					"rounded" : 36
 				}
 
@@ -323,7 +359,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 250.0, 255.0, 70.0, 31.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 250.0, 255.0, 70.0, 31.0 ],
+					"presentation_rect" : [ 603.0, 255.0, 184.0, 31.0 ],
 					"rounded" : 36
 				}
 

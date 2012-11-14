@@ -3,12 +3,24 @@ class Storage
 
   constructor: (@sequencer) ->
 
+  import: (filepath) ->
+    file = new File(filepath, 'read')
+    jsonString = file.readstring(10240) # 2048 * 5 is the max we can store in pattr objects in Max 5
+    @sequencer.fromJSON(@parse jsonString)
+    @sequencer.redraw()
+    return
+
+
+  export: (filepath) ->
+    file = new File(filepath, 'write')
+    file.writestring(@stringify @sequencer)
+    file.close()
+    return
+
 
   load: (path, jsonString) ->
-    sequencer = @sequencer
-
     if path == 'dump' # we're done
-      sequencer.redraw()
+      @sequencer.redraw()
       return
 
     if path == 'global'
@@ -18,14 +30,13 @@ class Storage
     # other paths look like:
     # track[#{index}]
     matches =/^track\[(\d+)\]$/.exec(path)
-
     unless matches?
       # for debugging, but note on loadbang pattrstorage sends a weird message like: u594004503.json,0
       # error("launchpad sequencer can't load #{path} #{values}\n")
       return
 
     trackIndex = parseInt(matches[1])
-    track = sequencer.tracks[trackIndex]
+    track = @sequencer.tracks[trackIndex]
     track?.fromJSON(@parse jsonString)
     return
 
