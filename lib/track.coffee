@@ -16,6 +16,7 @@ class Track
     @patterns = (new Pattern(index,type) for type,index in Track.DEFAULT_TYPES)
     @multiplier = 1
     @mute = false
+    @note = {}
 
 
   noteForClock: (clock) ->
@@ -23,11 +24,13 @@ class Track
     clock = @clockForMultiplier(clock)
     return unless clock?
 
-    note = {
-      pitch: @pitch
-      velocity: @velocity
-      duration: 0 # no note unless a gate or "duration +" pattern turns it on
-    }
+    note = @note # avoids creating and garbage collecting objects each clock tick
+    note.pitch = @pitch
+    note.velocity = @velocity
+    note.duration = 0 # no note unless a gate or "duration +" pattern turns it on
+    # note.interval = null # for whenever an interval pattern exists
+    # note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick
+
     for pattern in @patterns
       if note.skip # random skip caused next pattern to be skipped
         note.skip = null
