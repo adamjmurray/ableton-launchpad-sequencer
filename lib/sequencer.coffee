@@ -168,24 +168,18 @@ class Sequencer
 
 
   # Copy the given pattern to the clipboard.
-  # This inclues the 64 step values and the start and end step.
-  # It does not copy the pattern.type, to allow for sharing patterns between different pattern types.
   copyPattern: ->
-    pattern = @selectedPattern
-    @patternClipboard =
-      sequence: pattern.sequence[..] # make a copy so we get a snapshot of the sequence at this moment
-      start: pattern.start
-      end: pattern.end
+    pattern = @selectedPattern.toJSON()
+    pattern.sequence = pattern.sequence[..] # make a copy so we get a snapshot of the sequence at this moment
+    @patternClipboard = pattern
     return
 
   # Update the give target pattern to match the one in the clipboard
   pastePattern: ->
     pattern = @patternClipboard
     return unless pattern?
-    target = @selectedPattern
-    target.sequence = pattern.sequence[..] # copy again so it's not destructively modified by any pattern operations
-    target.setRange(pattern.start, pattern.end)
-    @drawGrid()
+    @selectedPattern.fromJSON(pattern)
+    @selectPattern(@pattern) # this redraws everything needed
     return
 
 
