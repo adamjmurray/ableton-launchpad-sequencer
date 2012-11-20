@@ -6,15 +6,6 @@ class Scale
     @steps = [0...12] # full chromatic scale by default
 
 
-  pitchOffset: (scaleStep) ->
-    scaleLength = @steps.length
-    return 0 if scaleLength == 0
-    octave = 12 * Math.floor(scaleStep/scaleLength)
-    index = scaleStep % scaleLength
-    index += scaleLength if index < 0 # support negative indexes
-    @steps[index] + octave
-
-
   map: (pitch, scaleOffset) ->
     return pitch if scaleOffset == 0
 
