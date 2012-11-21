@@ -2,13 +2,8 @@
 class Controller
 
   constructor : (@sequencer) ->
-    @pitchedTrack = -1
-    @trackTranspose = []
-    @_globalTransposes = []
-
     @scale = Scale.instance
-    @trackMutes = [] # original state before input alters it
-    @patternMutes = []
+    @_globalTransposes = []
 
 
   # Track MIDI input
@@ -16,10 +11,12 @@ class Controller
     enabled = velocity > 0
 
     if pitch < 32
-      @mutePattern( Math.floor(pitch/8), pitch % 8, enabled )
+      # TODO? optionally support a toggle mode, instead of only muting while note is held
+      @sequencer.mutePattern( Math.floor(pitch/8), pitch % 8, enabled )
 
     else if pitch < 36
-      @muteTrack( pitch - 32, enabled )
+      # TODO? optionally support a toggle mode, instead of only muting while note is held
+      @sequencer.muteTrack( pitch - 32, enabled )
 
     else if pitch < 84
       @trackPitch(pitch, enabled)
@@ -33,19 +30,9 @@ class Controller
     return
 
 
-  mutePattern : (trackIdx, patternIdx, mute) ->
-    pattern = @sequencer.tracks[trackIdx]?.patterns[patternIdx]
-    pattern?.mute = mute
-    return
-
-
-  muteTrack : (trackIdx, mute) ->
-    track = @sequencer.tracks[trackIdx]
-    track?.mute = mute
-    return
-
-
   trackPitch : (pitch, enabled) ->
+    @pitchedTrack = -1
+    @trackTranspose = []
     console.log "#{if isOn then '' else 'un'}set track pitch to #{pitch}"
     if enabled
       index = trackTranspose.indexOf null
@@ -55,6 +42,7 @@ class Controller
       pitchedTrack = (pitchedTrack + 1) % 4
       sequencer.tracks[pitchedTrack]?.pitchOverride = pitch
       # TODO: keep track of how many of these are held, and that will map to the track index
+
     else
       index = trackTranspose.indexOf pitch
       trackTranspose[index] = null if index >= 0
@@ -72,6 +60,7 @@ class Controller
 
 
   globalTranspose : (amount, enabled) ->
+    # TODO: add a global transpose control to the GUI?
     transposes = @_globalTransposes
 
     if enabled

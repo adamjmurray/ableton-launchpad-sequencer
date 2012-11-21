@@ -156,16 +156,28 @@ class Sequencer
 
 
   muteSelectedTrack: (mute) ->
-    selectedTrack = @selectedTrack
-    selectedTrack.mute = mute ? !selectedTrack.mute # if no value is given, then toggle
-    @launchpad.track(selectedTrack)
-    @gui.trackMute(selectedTrack)
+    @muteTrack(@track, mute)
+    return
+
+  muteTrack: (trackIdx, mute) ->
+    track = @tracks[trackIdx]
+    return unless track?
+    track.mute = mute ? !track.mute # if no value is given, then toggle
+    @launchpad.track(track)
+    @gui.trackMute(track) if track == @selectedTrack # GUI only show current track state
+    return
 
   muteSelectedPattern: (mute) ->
-    selectedPattern = @selectedPattern
-    selectedPattern.mute = mute ? !selectedPattern.mute # if no value is given, then toggle
-    @launchpad.pattern(selectedPattern)
-    @gui.patternMute(selectedPattern)
+    @mutePattern(@track, @pattern, mute)
+    return
+
+  mutePattern: (trackIdx, patternIdx, mute) ->
+    pattern = @tracks[trackIdx]?.patterns[patternIdx]
+    return unless pattern?
+    pattern.mute = mute ? !pattern.mute # if no value is given, then toggle
+    @launchpad.pattern(pattern)
+    @gui.patternMute(pattern) if pattern == @selectedPattern # GUI only show current pattern state
+    return
 
 
   # Copy the given pattern to the clipboard.
