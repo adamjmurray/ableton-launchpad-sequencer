@@ -29,7 +29,7 @@ class Track
     return unless clock?
 
     note = @note # avoids creating and garbage collecting objects each clock tick
-    note.pitch = @pitchOverride || @pitch # Note: this won't allow for a pitchOverride of 0! But this is not possible right now anyway
+    note.pitch = @pitchOverride ? @pitch
     note.velocity = @velocity
     note.duration = 0 # no note unless a gate or "duration +" pattern turns it on
     # note.interval = null # for whenever an interval pattern exists
