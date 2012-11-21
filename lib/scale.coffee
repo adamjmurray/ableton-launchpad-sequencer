@@ -6,6 +6,17 @@ class Scale
     @steps = [0...12] # full chromatic scale by default
 
 
+  setStep: (step, enabled) ->
+    index = @steps.indexOf step
+    if enabled
+      if index < 0
+        @steps.push step
+    else
+      if index >= 0
+        @steps.splice(index, 1)
+    return
+
+
   map: (pitch, scaleOffset) ->
     return pitch if scaleOffset == 0
 

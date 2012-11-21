@@ -2,6 +2,7 @@
 class Controller
 
   constructor : (@sequencer) ->
+    @gui = @sequencer.gui
     @scale = Scale.instance
     @_globalTransposes = []
 
@@ -22,7 +23,8 @@ class Controller
       @trackPitch(pitch, enabled)
 
     else if pitch < 96
-      @scale(pitch - 84, enabled)
+      @scale.setStep(pitch - 84, enabled)
+      @gui.scale(@scale)
 
     else if pitch < 128
       @globalTranspose(pitch - 108, enabled)
@@ -51,12 +53,6 @@ class Controller
     # null values should revert the track to it's base pitch (or the previous value mod 4)
     # when a new note is held, it will fill in the first null value
     # when all values are null (no notes held), reset the array to empty
-
-
-  scale : (scaleStep, enabled) ->
-    # @scale.steps[ scaleStep ] ?= enabled
-    # TODO, above is not correct...
-    return
 
 
   globalTranspose : (amount, enabled) ->
