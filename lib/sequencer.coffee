@@ -22,6 +22,7 @@ class Sequencer
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
     @scale.steps = [0..11]
+    @globalTranspose = 0
     @tracks = (new Track(index) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
     @patternMultiPress = 0
@@ -302,7 +303,7 @@ class Sequencer
       continue unless note? # no note when track is muted
 
       if note.duration > 0 and note.velocity > 0
-        outlet(NOTE, note.pitch, note.velocity, note.duration)
+        outlet(NOTE, note.pitch + @globalTranspose, note.velocity, note.duration)
 
       outlet(CC, 1, note.modulation) if note.modulation?
       outlet(AFTERTOUCH, note.aftertouch) if note.aftertouch?

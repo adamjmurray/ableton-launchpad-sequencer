@@ -16,6 +16,7 @@ BASE_SRC_FILES = (src_for name for name in [
   'launchpad'
   'gui'
   'scale'
+  'controller'
   'pattern'
   'track'
   'sequencer'
