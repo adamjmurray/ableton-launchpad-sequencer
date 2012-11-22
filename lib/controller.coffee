@@ -5,7 +5,7 @@ class Controller
     @gui = @sequencer.gui
     @scale = Scale.instance
     @_globalTransposes = []
-
+    @_pitchOverrides = []
 
   # Track MIDI input
   note : (pitch, velocity) ->
@@ -20,9 +20,10 @@ class Controller
       @sequencer.muteTrack( pitch - 32, enabled )
 
     else if pitch < 84
-      @trackPitch(pitch, enabled)
+      @trackPitchOverride(pitch, enabled)
 
     else if pitch < 96
+      # TODO? when all notes are lifted, revert back to original scale?
       @scale.setStep(pitch - 84, enabled)
       @gui.scale(@scale)
 
@@ -32,27 +33,22 @@ class Controller
     return
 
 
-  trackPitch : (pitch, enabled) ->
-    @pitchedTrack = -1
-    @trackTranspose = []
-    console.log "#{if isOn then '' else 'un'}set track pitch to #{pitch}"
+  trackPitchOverride : (pitch, enabled) ->
+    overrides = @_pitchOverrides
     if enabled
-      index = trackTranspose.indexOf null
-      index = trackTranspose.length if index < 0
-      trackTranspose[index] = pitch
-
-      pitchedTrack = (pitchedTrack + 1) % 4
-      sequencer.tracks[pitchedTrack]?.pitchOverride = pitch
-      # TODO: keep track of how many of these are held, and that will map to the track index
+      index = overrides.indexOf null
+      index = overrides.length if index < 0
+      overrides[index] = pitch
+      trackIdx = index % 4 # TODO: this needs to be smarter
+      @sequencer.tracks[trackIdx]?.pitchOverride = pitch
 
     else
-      index = trackTranspose.indexOf pitch
-      trackTranspose[index] = null if index >= 0
-      trackTranspose.splice(pitchIndex,1) if pitchIndex >= 0 # delete the pitch
-    # TODO: I think a better way is to null out any released notes, then...
-    # null values should revert the track to it's base pitch (or the previous value mod 4)
-    # when a new note is held, it will fill in the first null value
-    # when all values are null (no notes held), reset the array to empty
+      index = overrides.indexOf pitch
+      overrides[index] = null if index >= 0
+      overrides.pop() while overrides[overrides.length-1] == null
+      # TODO: this needs to be smarter
+      trackIdx = index % 4
+      @sequencer.tracks[trackIdx]?.pitchOverride = null
 
 
   globalTranspose : (amount, enabled) ->

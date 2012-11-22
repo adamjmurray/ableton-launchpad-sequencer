@@ -5,6 +5,42 @@ describe 'Controller', ->
   beforeEach ->
     @sequencer = new Sequencer
     @controller = new Controller(@sequencer)
+    @trackOverrides = ->
+      @sequencer.tracks.map (track) -> track.pitchOverride
+
+
+  describe 'trackPitchOverride(pitch, enabled)', ->
+
+    describe 'enabling a pitchOverride', ->
+      it 'sets pitchOverride for track 1, then 2, then 3, then 4', ->
+        @controller.trackPitchOverride(70, true)
+        expect( @trackOverrides() ).toEqual [70,null,null,null]
+        @controller.trackPitchOverride(71, true)
+        expect( @trackOverrides() ).toEqual [70,71,null,null]
+        @controller.trackPitchOverride(72, true)
+        expect( @trackOverrides() ).toEqual [70,71,72,null]
+        @controller.trackPitchOverride(73, true)
+        expect( @trackOverrides() ).toEqual [70,71,72,73]
+
+
+    describe 'disabling a pitchOverride', ->
+      beforeEach ->
+        @controller.trackPitchOverride(70, true)
+        @controller.trackPitchOverride(71, true)
+        @controller.trackPitchOverride(72, true)
+        @controller.trackPitchOverride(73, true)
+
+      it 'reverts pitchOverride for the corresponding track', ->
+        @controller.trackPitchOverride(70, false)
+        expect( @trackOverrides() ).toEqual [null,71,72,73]
+        @controller.trackPitchOverride(72, false)
+        expect( @trackOverrides() ).toEqual [null,71,null,73]
+        @controller.trackPitchOverride(73, false)
+        expect( @trackOverrides() ).toEqual [null,71,null,null]
+        @controller.trackPitchOverride(71, false)
+        expect( @trackOverrides() ).toEqual [null,null,null,null]
+
+
 
   describe 'globalTranspose(amount, enabled)', ->
 
