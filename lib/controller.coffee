@@ -23,6 +23,7 @@ class Controller
       @trackPitchOverride(pitch, enabled)
 
     else if pitch < 96
+      # TODO? clear original scale as soon as first note is pressed?
       # TODO? when all notes are lifted, revert back to original scale?
       @scale.setStep(pitch - 84, enabled)
       @gui.scale(@scale)
@@ -46,9 +47,15 @@ class Controller
       index = overrides.indexOf pitch
       overrides[index] = null if index >= 0
       overrides.pop() while overrides[overrides.length-1] == null
-      # TODO: this needs to be smarter
       trackIdx = index % 4
-      @sequencer.tracks[trackIdx]?.pitchOverride = null
+      newPitchOverride = null
+      # the newPitchOverride becomes the last non-null override for the track
+      for i in [trackIdx...overrides.length] by 4
+        o = overrides[i]
+        newPitchOverride = o if o?
+      @sequencer.tracks[trackIdx]?.pitchOverride = newPitchOverride
+
+    return
 
 
   globalTranspose : (amount, enabled) ->
