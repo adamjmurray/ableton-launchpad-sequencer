@@ -12,14 +12,24 @@ class Scale
 
   getSteps: -> @_steps
     
-  setStep: (step, enabled) ->
-    index = @_steps.indexOf step
+  overrideStep: (step, enabled) ->
     if enabled
+      if not @_stepsCopy? # backup the original scale
+        @_stepsCopy = @_steps[..]
+        @_steps = []
+
+      index = @_steps.indexOf(step)
       if index < 0
         @_steps.push step
+
     else
+      index = @_steps.indexOf(step)
       if index >= 0
         @_steps.splice(index, 1)
+        if @_steps.length == 0 # restore the original scale when no more overrides
+          @_steps = @_stepsCopy
+          @_stepsCopy = null
+
     @_memo = {}
     return
 

@@ -24,9 +24,7 @@ class Controller
       @trackPitchOverride(pitch, velocity)
 
     else if pitch < 96
-      # TODO? clear original scale as soon as first note is pressed?
-      # TODO? when all notes are lifted, revert back to original scale?
-      @scale.setStep(pitch - 84, enabled)
+      @scale.overrideStep(pitch - 84, enabled)
       @gui.scale(@scale)
 
     else if pitch < 128
