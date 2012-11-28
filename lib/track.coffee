@@ -14,6 +14,7 @@ class Track
   constructor: (@index) ->
     @pitch = 60
     @pitchOverride = null # MIDI input can temporarily override the track pitch
+    @velocityOverride = null
     @velocity = 70
     @duration = 0.9
     @number = @index+1
@@ -30,7 +31,7 @@ class Track
 
     note = @note # avoids creating and garbage collecting objects each clock tick
     note.pitch = @pitchOverride ? @pitch
-    note.velocity = @velocity
+    note.velocity = @velocityOverride ? @velocity
     note.duration = 0 # no note unless a gate or "duration +" pattern turns it on
     # note.interval = null # for whenever an interval pattern exists
     # note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick

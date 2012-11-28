@@ -51,6 +51,7 @@ class Scale
           index -= 1 if scaleOffset > 0 # we went one past
           break
 
+      # TODO: I think maybe index should be 0 if scaleOffset < 0 in this case?
       index -= 1 if not found and scaleOffset > 0 # went one past
 
       index += scaleOffset

@@ -6,6 +6,7 @@ class Controller
     @scale = Scale.instance
     @_globalTransposes = []
     @_pitchOverrides = []
+    @_velocityOverrides = []
 
   # Track MIDI input
   note : (pitch, velocity) ->
@@ -20,7 +21,7 @@ class Controller
       @sequencer.muteTrack( pitch - 32, enabled )
 
     else if pitch < 84
-      @trackPitchOverride(pitch, enabled)
+      @trackPitchOverride(pitch, velocity)
 
     else if pitch < 96
       # TODO? clear original scale as soon as first note is pressed?
@@ -34,26 +35,43 @@ class Controller
     return
 
 
-  trackPitchOverride : (pitch, enabled) ->
-    overrides = @_pitchOverrides
-    if enabled
-      index = overrides.indexOf null
-      index = overrides.length if index < 0
-      overrides[index] = pitch
+  trackPitchOverride : (pitch, velocity) ->
+    pitchOverrides = @_pitchOverrides
+    velocityOverrides = @_velocityOverrides
+    if velocity > 0
+      index = pitchOverrides.indexOf null
+      index = pitchOverrides.length if index < 0
+      pitchOverrides[index] = pitch
+      velocityOverrides[index] = velocity
+
       trackIdx = index % 4
-      @sequencer.tracks[trackIdx]?.pitchOverride = pitch
+      track = @sequencer.tracks[trackIdx]
+      if track?
+        track.pitchOverride = pitch
+        track.velocityOverride = velocity
 
     else
-      index = overrides.indexOf pitch
-      overrides[index] = null if index >= 0
-      overrides.pop() while overrides[overrides.length-1] == null
+      index = pitchOverrides.indexOf pitch
+      if index >= 0
+        pitchOverrides[index] = null
+        velocityOverrides[index] = null
+        while pitchOverrides[pitchOverrides.length-1] == null
+          pitchOverrides.pop()
+          velocityOverrides.pop()
+
       trackIdx = index % 4
       newPitchOverride = null
+      newVelocityOverride = null
       # the newPitchOverride becomes the last non-null override for the track
-      for i in [trackIdx...overrides.length] by 4
-        o = overrides[i]
-        newPitchOverride = o if o?
-      @sequencer.tracks[trackIdx]?.pitchOverride = newPitchOverride
+      for i in [trackIdx...pitchOverrides.length] by 4
+        if  pitchOverrides[i]?
+          newPitchOverride = pitchOverrides[i]
+          newVelocityOverride = velocityOverrides[i]
+
+      track = @sequencer.tracks[trackIdx]
+      if track?
+        track.pitchOverride = newPitchOverride
+        track.velocityOverride = newVelocityOverride
 
     return
 
