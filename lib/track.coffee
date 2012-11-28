@@ -24,7 +24,7 @@ class Track
 
 
   noteForClock: (clock) ->
-    return if @mute
+    return if @mute and not @pitchOverride? # pitch override unmutes
     clock = @clockForMultiplier(clock)
     return unless clock?
 

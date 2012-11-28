@@ -40,7 +40,7 @@ class Controller
       index = overrides.indexOf null
       index = overrides.length if index < 0
       overrides[index] = pitch
-      trackIdx = index % 4 # TODO: this needs to be smarter
+      trackIdx = index % 4
       @sequencer.tracks[trackIdx]?.pitchOverride = pitch
 
     else
