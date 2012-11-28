@@ -8,7 +8,8 @@ describe 'Controller', ->
   beforeEach ->
     sequencer = new Sequencer
     controller = new Controller(sequencer)
-    
+
+
 
   describe 'trackPitchOverride(pitch, enabled)', ->
 
@@ -36,7 +37,7 @@ describe 'Controller', ->
 
     describe 'disabling a pitchOverride', ->
 
-      it 'reverts pitchOverride for the corresponding track', ->
+      it 'removes the pitchOverride for the corresponding track when no wrap-around has occurred', ->
         setTrackPitchOverrides 1,2,3,4
         controller.trackPitchOverride(1, false)
         expect( trackOverrides() ).toEqual [_,2,3,4]
@@ -53,6 +54,18 @@ describe 'Controller', ->
         expect( trackOverrides() ).toEqual [1,6,3,4]
         controller.trackPitchOverride(6, false)
         expect( trackOverrides() ).toEqual [1,2,3,4]
+
+      it 'does nothing when a pitch, which was supplanted by wrap-around, is set to off', ->
+        setTrackPitchOverrides 1,2,3,4,5,6
+        controller.trackPitchOverride(2, false)
+        expect( trackOverrides() ).toEqual [5,6,3,4]
+
+
+      it 'removes the pitchOverride after a wrap-around if the previous pitch has already set to off', ->
+        setTrackPitchOverrides 1,2,3,4,5,6
+        controller.trackPitchOverride(2, false)
+        controller.trackPitchOverride(6, false)
+        expect( trackOverrides() ).toEqual [5,_,3,4]
 
 
 
