@@ -8,7 +8,7 @@ describe 'Storage', ->
 
     # Delete the sequencers state so we can test fromJSON() is really loading state
     @clearSequencer = ->
-      @sequencer.scale.steps = null
+      @sequencer.scale.setSteps(null)
       @sequencer.stepLength = null
       for t in @sequencer.tracks
         t.pitch = null
@@ -54,7 +54,7 @@ describe 'Storage', ->
       jsonString = @storage.stringify(@sequencer)
       @clearSequencer()
       @sequencer.fromJSON(@storage.parse jsonString)
-      expect( @sequencer.scale.steps ).toEqual [0...12]
+      expect( @sequencer.scale.getSteps() ).toEqual [0...12]
       expect( @sequencer.stepLength).toEqual '16th'
       expect( @sequencer.tracks.length ).toBe 4
       for t in @sequencer.tracks

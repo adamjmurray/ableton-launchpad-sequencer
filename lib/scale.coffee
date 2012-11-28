@@ -3,27 +3,38 @@
 class Scale
 
   constructor: ->
-    @steps = [0...12] # full chromatic scale by default
+    @_steps = [0...12] # full chromatic scale by default
+    @_memo = {} # we memoize for performance
 
+  setSteps: (steps) ->
+    @_steps = steps
+    @_memo = {}
 
+  getSteps: -> @_steps
+    
   setStep: (step, enabled) ->
-    index = @steps.indexOf step
+    index = @_steps.indexOf step
     if enabled
       if index < 0
-        @steps.push step
+        @_steps.push step
     else
       if index >= 0
-        @steps.splice(index, 1)
+        @_steps.splice(index, 1)
+    @_memo = {}
     return
 
 
   map: (pitch, scaleOffset) ->
     return pitch if scaleOffset == 0
 
-    scaleLength = @steps.length
+    memoIdx = pitch + 128 * scaleOffset
+    memoVal = @_memo[memoIdx]
+    return memoVal if memoVal?
+    
+    scaleLength = @_steps.length
     if scaleLength == 0
       # no scale, just add (or subtract) octaves
-      pitch + 12 * scaleOffset
+      mappedVal = pitch + 12 * scaleOffset
 
     else
       octave = Math.floor(pitch / 12) * 12
@@ -31,7 +42,7 @@ class Scale
 
       # find the nearest pitch class in the scale that's not higher than the given pitch's pitch class
       found = false
-      for pc,index in @steps
+      for pc,index in @_steps
         if pc == pitchClass
           found = true
           break
@@ -48,8 +59,10 @@ class Scale
       index %= scaleLength
       index += scaleLength if index < 0 # support negative indexes
 
-      @steps[index] + octave
+      mappedVal = @_steps[index] + octave
 
+    @_memo[memoIdx] = mappedVal
+    return mappedVal
 
-# Using a singleton scale simplifies some of the code.
+    # Using a singleton scale simplifies some of the code.
 Scale.instance = new Scale

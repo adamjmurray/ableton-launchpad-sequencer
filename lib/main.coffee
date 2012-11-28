@@ -53,7 +53,7 @@ clock = (clockIndex) ->
   
 scale = (scaleSteps...) ->
   scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
-  sequencer.scale.steps = scaleSteps
+  sequencer.scale.setSteps(scaleSteps)
   return
 
 #--------------------------------------------------------------

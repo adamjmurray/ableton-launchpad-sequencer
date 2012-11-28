@@ -21,7 +21,7 @@ class Sequencer
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @scale.steps = [0..11]
+    @scale.setSteps [0..11]
     @globalTranspose = 0
     @tracks = (new Track(index) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
@@ -235,14 +235,14 @@ class Sequencer
 
   toJSON: (options) ->
     json = {
-      scale: @scale.steps
+      scale: @scale.getSteps()
       stepLength: @stepLength
     }
     json.tracks = @tracks unless options?.omitTracks
     json
 
   fromJSON: ({scale,stepLength,tracks}) ->
-    @scale.steps = scale if scale?
+    @scale.setSteps(scale) if scale?
     @stepLength = stepLength if stepLength?
     if tracks?.length > 0
       for track,i in @tracks
