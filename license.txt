@@ -1,7 +1,7 @@
 ###
 Original source files are at http://github.com/adamjmurray/m4l-launchpad-sequencer
 
-Copyright (c) 2012, Adam Murray.
+Copyright (c) 2012-2013, Adam Murray.
 http://github.com/adamjmurray
 http://compusition.com
 
