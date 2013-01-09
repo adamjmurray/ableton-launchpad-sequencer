@@ -15,7 +15,7 @@ GUI_BUTTON_WIDTH = 13
 DEFER_DELAY = 20 # How often (in ms) to schedule chunks of work. See Defer class.
 
 # Max outlets
-outlets = 17
+this.outlets = 17
 LAUNCHPAD_NOTE = 0
 LAUNCHPAD_CC   = 1
 NOTE           = 2
