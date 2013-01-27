@@ -123,29 +123,18 @@ class Launchpad
     return
 
 
-  # enter the mode for pattern operations (set start & end, copy, paste, shift left, shift right)
-  patternOps: (pattern) ->
+  patternSteps: (pattern) ->
+    self = @
+    Defer.eachStep (x,y,index) -> self._grid(x, y, Launchpad.GRID_COLORS[pattern.getStep(index)]); return
+    return
+
+
+  # Use the grid to show the pattern length by lighting up all the steps from the start to the end step
+  patternLength: (pattern) ->
     start = pattern.start
     end = pattern.end
-    Defer.eachStep (x,y,index) =>
-      color = if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF
-      @_grid(x, y, color)
-      return
-    # Top lights change to indicate we're in this mode.
-    # Left 4 are for shifting and are all yellow
-    @_top(0, Launchpad.GRID_COLORS[2])
-    @_top(1, Launchpad.GRID_COLORS[2])
-    @_top(2, Launchpad.GRID_COLORS[2])
-    @_top(3, Launchpad.GRID_COLORS[2])
-
-    # Next 2 are copy & paste, and are red
-    @_top(4, Launchpad.GRID_COLORS[4])
-    @_top(5, Launchpad.GRID_COLORS[4])
-
-    # Finally the last 2 control the view state: step mode or pattern length mode
-    # one of them is green depending on the mode TODO: manage the mode
-    @_top(6, Launchpad.GRID_COLORS[1])
-    @_top(7, Launchpad.GRID_COLORS[1])
+    self = @
+    Defer.eachStep (x,y,index) -> self._grid(x, y, (if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF)); return
     return
 
 
