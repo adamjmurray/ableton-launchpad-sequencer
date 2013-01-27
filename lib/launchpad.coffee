@@ -26,17 +26,19 @@ class Launchpad
     @onRightUp   = NOOP
     @onGridDown  = NOOP
     @onGridUp    = NOOP
-    @heldTop     = null # top button currently (and most recently) held down.
-    @heldGridX   = null # x index of grid button currently (and most recently) held down.
-    @heldGridY   = null # y index of grid button currently (and most recently) held down.
+    @heldTop     = null # top button held down (only the first is recorded if there are multiple held down).
+    @heldGridX   = null # x index of grid button held down (only the first is recorded if there are multiple held down).
+    @heldGridY   = null # y index of grid button held down (only the first is recorded if there are multiple held down).
+    @heldGridXLatest = null # the most recently held down grid button
+    @heldGridYLatest = null # the most recently held down grid button
 
   ctlin: (cc, value) ->
     index = cc - 104
     if value > 0
-      @heldTop = index
+      @heldTop = index unless @heldTop?
       @onTopDown(index)
     else
-      @heldTop = null # this isn't accurate for multiple buttons held, but good enough for our purposes
+      @heldTop = null if @heldTop == index
       @onTopUp(index)
     return
 
@@ -49,12 +51,19 @@ class Launchpad
     else
       if velocity > 0
         @onGridDown(x,y)
-        @heldGridX = x
-        @heldGridY = y
+        @heldGridXLatest = x
+        @heldGridYLatest = y
+        unless @heldGridX? or @heldGridY?
+          @heldGridX = x
+          @heldGridY = y
       else
         @onGridUp(x,y)
-        @heldGridX = null
-        @heldGridY = null
+        if @heldGridXLatest == x and @heldGridYLatest == y
+          @heldGridXLatest = null
+          @heldGridYLatest = null
+        if @heldGridX == x and @heldGridY == y
+          @heldGridX = @heldGridXLatest
+          @heldGridY = @heldGridYLatest
     return
 
 
