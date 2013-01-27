@@ -35,11 +35,11 @@ class Launchpad
   ctlin: (cc, value) ->
     index = cc - 104
     if value > 0
-      @heldTop = index unless @heldTop?
       @onTopDown(index)
+      @heldTop = index unless @heldTop?
     else
-      @heldTop = null if @heldTop == index
       @onTopUp(index)
+      @heldTop = null if @heldTop == index
     return
 
 
@@ -53,7 +53,7 @@ class Launchpad
         @onGridDown(x,y)
         @heldGridXLatest = x
         @heldGridYLatest = y
-        unless @heldGridX? or @heldGridY?
+        unless @heldGridX?
           @heldGridX = x
           @heldGridY = y
       else
@@ -131,11 +131,21 @@ class Launchpad
       color = if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF
       @_grid(x, y, color)
       return
-    # light up all stepValue lights to indicate they're in "pattern operation" mode
-    @_top(4, Launchpad.GRID_COLORS[1])
-    @_top(5, Launchpad.GRID_COLORS[2])
-    @_top(6, Launchpad.GRID_COLORS[3])
-    @_top(7, Launchpad.GRID_COLORS[4])
+    # Top lights change to indicate we're in this mode.
+    # Left 4 are for shifting and are all yellow
+    @_top(0, Launchpad.GRID_COLORS[2])
+    @_top(1, Launchpad.GRID_COLORS[2])
+    @_top(2, Launchpad.GRID_COLORS[2])
+    @_top(3, Launchpad.GRID_COLORS[2])
+
+    # Next 2 are copy & paste, and are red
+    @_top(4, Launchpad.GRID_COLORS[4])
+    @_top(5, Launchpad.GRID_COLORS[4])
+
+    # Finally the last 2 control the view state: step mode or pattern length mode
+    # one of them is green depending on the mode TODO: manage the mode
+    @_top(6, Launchpad.GRID_COLORS[1])
+    @_top(7, Launchpad.GRID_COLORS[1])
     return
 
 
