@@ -2,6 +2,7 @@ TRACKS     = 4
 PATTERNS   = 8  # patterns per track
 STEPS      = 64 # sequencer steps per pattern
 ROW_LENGTH = 8  # steps per row in the grid
+VALUES = 5 # number of distinct step values, currently off, green, yellow, orange, red
 
 DEFAULT_STEP_LENGTH = '16th'
 

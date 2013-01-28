@@ -140,6 +140,10 @@ reverse = ->
   sequencerController.reverse()
   return
 
+invert = ->
+  sequencerController.invert()
+  return
+
 replace = ->
   sequencerController.replace()
   return

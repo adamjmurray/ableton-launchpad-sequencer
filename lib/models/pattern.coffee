@@ -59,6 +59,14 @@ class Pattern
       [s[i],s[j]] = [s[j],s[i]]
     return
 
+  # Flips value 1 with 4, and 2 with 3
+  invert: ->
+    for i in [@start..@end] by 1
+      value = @sequence[i]
+      value = VALUES-value if value > 0
+      @sequence[i] = value
+    return
+
 
   rotate: (steps) ->
     seq = @sequence

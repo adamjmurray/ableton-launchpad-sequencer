@@ -220,6 +220,11 @@ class SequencerController
     @drawGrid()
     return
 
+  invert: ->
+    @selectedPattern.invert()
+    @drawGrid()
+    return
+
   random: ->
     @selectedPattern.random()
     @drawGrid()

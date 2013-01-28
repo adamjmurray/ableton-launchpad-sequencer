@@ -6,6 +6,17 @@ describe 'Pattern', ->
     @pattern = new Pattern
     @pattern.sequence = [0...64] # so the index is the same as the stepValue, and we can test processNote() more easily
 
+  describe 'invert()', ->
+    it 'flips the steps values 1<=>4 and 2<=>3', ->
+      @pattern.sequence = (i%5 for i in [0...64])
+      @pattern.invert()
+      expectedSequence = (for i in [0...64]
+        i %= 5
+        if i==0 then 0 else 5-i
+      )
+      expect(@pattern.sequence).toEqual expectedSequence
+
+
   describe 'processNote()', ->
     beforeEach ->
       @note = {pitch:60,velocity:70,duration:0}
