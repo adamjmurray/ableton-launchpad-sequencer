@@ -13,7 +13,7 @@ class SequencerController
 
   # Clear all patterns and set all track and pattern properties to their default values.
   reset: (firstTime) ->
-    @launchpad.reset(true) unless firstTime
+    @sequencer.reset(true) unless firstTime
     @track = 0   # selected track index
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
@@ -202,6 +202,7 @@ class SequencerController
     pattern = @patternClipboard
     return unless pattern?
     @selectedPattern.fromJSON(pattern)
+    console.error("TODO: update pastePattern logic")
     if @patternOps
       @_patternOpsMode(Controller.STEPS_MODE)
     else

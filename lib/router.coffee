@@ -45,7 +45,7 @@ clock = (clockIndex) ->
   return
 
 scale = (scaleSteps...) ->
-  sequencerController.setScale(scaleSteps)
+  sequencerController.setScale(scaleSteps...)
   return
 
 #--------------------------------------------------------------
