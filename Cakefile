@@ -22,7 +22,7 @@ BASE_SRC_FILES = (src_for name for name in [
   'sequencer'
   'storage'
 ])
-SRC_FILES = BASE_SRC_FILES.concat(src_for 'main')
+SRC_FILES = BASE_SRC_FILES.concat src_for('main'), src_for('input/max-input')
 OUT_FILE = "#{BUILD_DIR}/#{PROJECT}.js"
 
 COFFEE_ARGS = [
