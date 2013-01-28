@@ -1,7 +1,7 @@
 # Interprets user input from the Launchpad, track MIDI input, and GUI
-class Controller
+class MIDIController
 
-  # Pattern "Ops" modes
+# Pattern "Ops" modes
   @LENGTH_MODE: 0 # pattern start/end (length)
   @STEPS_MODE: 1  # pattern step values
 

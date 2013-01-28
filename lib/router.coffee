@@ -1,23 +1,28 @@
+# The code in this file redirects all incoming messages from the Max patcher to an appropriate controller method.
+
+#--------------------------------------------------------------
+# Core Max messages
+#
 bang  = ->
-  sequencer.redraw()
+  sequencerController.redraw()
   return
 
 reset = ->
-  sequencer.reset()
+  sequencerController.reset()
   return
 
 #--------------------------------------------------------------
 # Launchpad MIDI in
 #
 notein = (pitch, velocity) ->
-  launchpad.notein(pitch, velocity)
+  launchdpadController.notein(pitch, velocity)
   return
 
 ctlin = (cc, val) ->
   if cc != TRANSPORT_STOP
-    launchpad.ctlin(cc, val)
+    launchdpadController.ctlin(cc, val)
   else
-    sequencer.stop()
+    sequencerController.stop()
     save() # this is a good time to save state without affecting realtime audio performance
   return
 
@@ -25,162 +30,159 @@ ctlin = (cc, val) ->
 # Live Track MIDI in
 #
 note = (pitch, velocity) ->
-  controller.note(pitch, velocity)
+  midiController.note(pitch, velocity)
   return
 
 #--------------------------------------------------------------
 # Global
 #
 stepLength = (stepLength) ->
-  sequencer.stepLength = stepLength
+  sequencerController.setStepLength(stepLength);
   return
 
 clock = (clockIndex) ->
-  sequencer.setClock(clockIndex)
+  sequencerController.setClock(clockIndex)
   return
 
 scale = (scaleSteps...) ->
-  scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
-  sequencer.scale.setSteps(scaleSteps)
+  sequencerController.setScale(scaleSteps)
   return
 
 #--------------------------------------------------------------
 # GUI Launchpad Buttons
 #
 track = (trackIndex) ->
-  sequencer.selectTrack(trackIndex)
+  sequencerController.selectTrack(trackIndex)
   return
 
 stepValue = (value) ->
-  sequencer.selectValue(value)
+  sequencerController.selectValue(value)
   return
 
 pattern = (patternIndex) ->
-  sequencer.selectPattern(patternIndex)
+  sequencerController.selectPattern(patternIndex)
   return
 
 grid = (x,y) ->
-  sequencer.setGridValue(x,y)
+  sequencerController.setGridValue(x,y)
   return
 
 #--------------------------------------------------------------
 # Track Settings
 #
 basePitch = (pitch) ->
-  sequencer.selectedTrack.pitch = pitch
+  sequencerController.setSelectedTrackPitch(pitch)
   return
 
 baseVelocity = (velocity) ->
-  sequencer.selectedTrack.velocity = velocity
+  sequencerController.setSelectedTrackVelocity(velocity)
   return
 
 durationScale = (scale) ->
-  sequencer.selectedTrack.duration = scale
+  sequencerController.setSelectedTrackDurationScale(scale)
   return
 
 trackMute = (mute) ->
-  sequencer.muteSelectedTrack(mute)
+  sequencerController.setSelectedTrackMute(mute)
   return
 
 trackMultiplier = (multiplier) ->
-  sequencer.selectedTrack.multiplier = multiplier
+  sequencerController.setSelectedTrackStepLengthMultiplier(multiplier)
   return
 
 #--------------------------------------------------------------
 # Pattern Settings
 #
 startStep = (stepNumber)->
-  sequencer.selectedPattern.setStart(stepNumber-1)
-  sequencer.drawPatternInfo()
+  sequencerController.setSelectedPatternStartStep(stepNumber-1)
   return
 
 endStep = (stepNumber) ->
-  sequencer.selectedPattern.setEnd(stepNumber-1)
-  sequencer.drawPatternInfo()
+  sequencerController.setSelectedPatternEndStep(stepNumber-1)
   return
 
 patternType = (type) ->
-  sequencer.selectedPattern.setType(type)
+  sequencerController.setSelectedPatternType(type)
   return
 
 patternMute = (mute) ->
-  sequencer.muteSelectedPattern(mute)
+  sequencerController.setSelectedPatternMute(mute)
   return
 
 #--------------------------------------------------------------
 # Pattern Operations
 #
 random = ->
-  sequencer.random()
+  sequencerController.random()
   return
 
 randomFill = ->
-  sequencer.randomFill()
+  sequencerController.randomFill()
   return
 
 randomThin = ->
-  sequencer.randomFill(0)
+  sequencerController.randomFill(0)
   return
 
 fill = ->
-  sequencer.fill()
+  sequencerController.fill()
   return
 
 clear = ->
-  sequencer.fill(0)
+  sequencerController.fill(0)
   return
 
 firstColumn = ->
-  sequencer.firstColumn()
+  sequencerController.firstColumn()
   return
 
 reverse = ->
-  sequencer.reverse()
+  sequencerController.reverse()
   return
 
 replace = ->
-  sequencer.replace()
+  sequencerController.replace()
   return
 
 shiftleft = ->
-  sequencer.rotate(1)
+  sequencerController.rotate(1)
   return
 
 shiftup = ->
-  sequencer.rotate(ROW_LENGTH)
+  sequencerController.rotate(ROW_LENGTH)
   return
 
 shiftright = ->
-  sequencer.rotate(-1)
+  sequencerController.rotate(-1)
   return
 
 shiftdown = ->
-  sequencer.rotate(-ROW_LENGTH)
+  sequencerController.rotate(-ROW_LENGTH)
   return
 
 #--------------------------------------------------------------
 # Persistence
 #
 copy = ->
-  sequencer.copyPattern()
+  sequencerController.copyPattern()
   return
 
 paste = ->
-  sequencer.pastePattern()
+  sequencerController.pastePattern()
   return
 
 save = ->
-  storage.save()
+  storageController.save()
   return
 
 load = (path, values...) ->
-  storage.load(path, values...)
+  storageController.load(path, values...)
   return
 
 importFile = (filepath) ->
-  storage.import(filepath)
+  storageController.import(filepath)
   return
 
 exportFile = (filepath) ->
-  storage.export(filepath)
+  storageController.export(filepath)
   return

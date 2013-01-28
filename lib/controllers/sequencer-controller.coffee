@@ -1,33 +1,33 @@
 # The controller for the sequencing application.
 # Manages state and keeps the views updated.
 #
-class Sequencer
+class SequencerController
 
-  constructor: (@launchpad) ->
+  constructor: (@sequencer, @launchpad) ->
     @gui = new GUI
-    @scale = Scale.instance
-    @onNote = NOOP
     @reset(true)
+    # TODO: move all this to LaunchpadController
     if launchpad
       launchpad.onTopDown = @_onLaunchpadTopDown
       launchpad.onRightDown = @_onLaunchpadRightDown
       launchpad.onGridDown = @_onLaunchpadGridDown
 
 
+  setStepLength: (stepLength) ->
+    @sequencer.stepLength = stepLength
+    return
+
   # Clear all patterns and set all track and pattern properties to their default values.
-  reset: (skipRedraw) ->
-    @stepLength = DEFAULT_STEP_LENGTH
+  reset: (firstTime) ->
+    @launchpad.reset(true) unless firstTime
     @track = 0   # selected track index
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @scale.setSteps [0..11]
-    @globalTranspose = 0
-    @tracks = (new Track(index) for index in [0...TRACKS] by 1)
     @trackMultiPress = 0
     @patternMultiPress = 0
     @_updateSelectedPattern(true)
-    @redraw() unless skipRedraw
+    @redraw() unless firstTime
     return
 
 
@@ -35,7 +35,7 @@ class Sequencer
   redraw: ->
     @launchpad.allOff()
     @gui.clearGrid()
-    @gui.scale(@scale)
+    @gui.scale(@sequencer.scale)
     @gui.stepLength(@stepLength)
     @selectValue(@value, true)
     @selectTrack(@track, true)
@@ -132,13 +132,20 @@ class Sequencer
     return
 
 
+  setScale: (scaleSteps...) ->
+    scaleSteps = [] if scaleSteps[0] == -1 # special case message for empty scale
+    @sequencer.scale.setSteps(scaleSteps)
+    return
+
+
   setClock: (clock) ->
     oldClock = @clock
     if(oldClock != clock)
       @clock = clock
+      @sequencer.step(clock)
       @_drawActiveStep()
-      @_generateOutputForActiveStep()
     return
+
 
 
   stop: ->
@@ -146,6 +153,7 @@ class Sequencer
     # Live sends "all notes off" to all connected MIDI devices when the transport stops,
     # which resets the Launchpad, so we need to re-sync the state:
     @drawLaunchpad()
+    return
 
 
   # @param t the track index
@@ -153,29 +161,29 @@ class Sequencer
   # @param stepValues an array of sequence step values
   setPattern: (t, p, stepValues) ->
     return unless (0 <= t < TRACKS) and (0 <= p < PATTERNS) and (stepValues.length == 64)
-    @tracks[t].patterns[p].sequence = stepValues
+    @sequencer.tracks[t].patterns[p].sequence = stepValues
     @_drawPattern(t, p) if t == @track and p == @pattern # update current pattern
     return
 
 
-  muteSelectedTrack: (mute) ->
+  setSelectedTrackMute: (mute) ->
     @muteTrack(@track, mute)
     return
 
   muteTrack: (trackIdx, mute) ->
-    track = @tracks[trackIdx]
+    track = @sequencer.tracks[trackIdx]
     return unless track?
     track.mute = mute ? !track.mute # if no value is given, then toggle
     @launchpad.track(track)
     @gui.trackMute(track) if track == @selectedTrack # GUI only show current track state
     return
 
-  muteSelectedPattern: (mute) ->
+  setSelectedPatternMute: (mute) ->
     @mutePattern(@track, @pattern, mute)
     return
 
   mutePattern: (trackIdx, patternIdx, mute) ->
-    pattern = @tracks[trackIdx]?.patterns[patternIdx]
+    pattern = @sequencer.tracks[trackIdx]?.patterns[patternIdx]
     return unless pattern?
     pattern.mute = mute ? !pattern.mute # if no value is given, then toggle
     @launchpad.pattern(pattern)
@@ -238,22 +246,34 @@ class Sequencer
     @drawGrid()
     return
 
+  setSelectedTrackPitch: (pitch) ->
+    @selectedTrack.pitch = pitch
+    return
 
-  toJSON: (options) ->
-    json = {
-      scale: @scale.getSteps()
-      stepLength: @stepLength
-    }
-    json.tracks = @tracks unless options?.omitTracks
-    json
+  setSelectedTrackVelocity: (velocity) ->
+    @selectedTrack.velocity = velocity
+    return
 
-  fromJSON: ({scale,stepLength,tracks}) ->
-    @scale.setSteps(scale) if scale?
-    @stepLength = stepLength if stepLength?
-    if tracks?.length > 0
-      for track,i in @tracks
-        json = tracks[i]
-        track.fromJSON(json) if json
+  setSelectedTrackDurationScale: (scale) ->
+    @selectedTrack.duration = scale
+    return
+
+  setSelectedTrackStepLengthMultiplier: (multiplier) ->
+    @selectedTrack.multiplier = multiplier
+    return
+
+  setSelectedPatternStartStep: (stepIndex)->
+    @selectedPattern.setStart(stepIndex)
+    @drawPatternInfo()
+    return
+
+  setSelectedPatternEndStep: (stepIndex) ->
+    @selectedPattern.setEnd(stepIndex)
+    @drawPatternInfo()
+    return
+
+  setSelectedPatternType: (type) ->
+    @selectedPattern.setType(type)
     return
 
 
@@ -263,14 +283,14 @@ class Sequencer
   _updateSelectedPattern: (skipRedraw) ->
     trackIndex = @track
     patternIndex = @pattern
-    @selectedTrack = @tracks[trackIndex]
+    @selectedTrack = @sequencer.tracks[trackIndex]
     @selectedPattern = @selectedTrack.patterns[patternIndex]
     @_drawPattern(trackIndex, patternIndex) unless skipRedraw
     return
 
 
   _drawPattern: (trackIndex, patternIndex) ->
-    track = @tracks[trackIndex]
+    track = @sequencer.tracks[trackIndex]
     pattern = track?.patterns[patternIndex]
     return unless pattern?
 
@@ -308,23 +328,6 @@ class Sequencer
       y = Math.floor(activeStep/8) % 8
       @launchpad.activeStep(x, y) unless @patternOps
       @gui.activeStep(x, y)
-
-    return
-
-
-  # generate MIDI output for current step
-  _generateOutputForActiveStep: () ->
-    clock = @clock
-    return if clock < 0
-    for track,index in @tracks
-      note = track.noteForClock(clock)
-      continue unless note? # no note when track is muted
-
-      if note.duration > 0 and note.velocity > 0
-        outlet(NOTE, note.pitch + @globalTranspose, note.velocity, note.duration)
-
-      outlet(CC, 1, note.modulation) if note.modulation?
-      outlet(AFTERTOUCH, note.aftertouch) if note.aftertouch?
 
     return
 
@@ -448,4 +451,3 @@ class Sequencer
         launchpad.patternSteps(pattern)
 
     return
-  

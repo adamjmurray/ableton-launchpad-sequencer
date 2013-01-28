@@ -13,16 +13,18 @@ src_for = (name) -> "#{SRC_DIR}/#{name}.coffee"
 BASE_SRC_FILES = (src_for name for name in [
   'config'
   'defer'
-  'launchpad'
-  'gui'
-  'scale'
-  'controller'
-  'pattern'
-  'track'
-  'sequencer'
-  'storage'
+  'models/scale'
+  'models/pattern'
+  'models/track'
+  'models/sequencer'
+  'views/launchpad'
+  'views/gui'
+  'controllers/launchpad-controller'
+  'controllers/midi-controller'
+  'controllers/sequencer-controller'
+  'controllers/storage-controller'
 ])
-SRC_FILES = BASE_SRC_FILES.concat src_for('main'), src_for('input/max-input')
+SRC_FILES = BASE_SRC_FILES.concat src_for('main'), src_for('router')
 OUT_FILE = "#{BUILD_DIR}/#{PROJECT}.js"
 
 COFFEE_ARGS = [

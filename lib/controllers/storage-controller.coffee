@@ -1,7 +1,7 @@
 # The interface to the pattr persistence system in Max.
-class Storage
+class StorageController
 
-  constructor: (@sequencer) ->
+  constructor: (@sequencer, @sequencerController) ->
 
   import: (filepath) ->
     file = new File(filepath, 'read')
@@ -20,7 +20,7 @@ class Storage
 
   load: (path, jsonString) ->
     if path == 'dump' # we're done
-      @sequencer.redraw()
+      @sequencerController.redraw()
       return
 
     if path == 'global'
