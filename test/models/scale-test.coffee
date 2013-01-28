@@ -1,4 +1,4 @@
-{Scale} = require "#{__dirname}/launchpad-sequencer.js"
+{Scale} = require "#{__dirname}/../launchpad-sequencer.js"
 
 describe 'Scale', ->
 

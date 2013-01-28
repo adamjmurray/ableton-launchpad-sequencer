@@ -1,4 +1,4 @@
-{Pattern} = require "#{__dirname}/launchpad-sequencer.js"
+{Pattern} = require "#{__dirname}/../launchpad-sequencer.js"
 
 describe 'Pattern', ->
 

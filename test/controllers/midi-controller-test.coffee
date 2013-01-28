@@ -1,13 +1,13 @@
-{Controller,Sequencer} = require "#{__dirname}/launchpad-sequencer.js"
+{MIDIController,Sequencer} = require "#{__dirname}/../launchpad-sequencer.js"
 
-describe 'Controller', ->
+describe 'MIDIController', ->
 
   sequencer = null
   controller = null
 
   beforeEach ->
     sequencer = new Sequencer
-    controller = new Controller(sequencer)
+    controller = new MIDIController(sequencer)
 
 
 

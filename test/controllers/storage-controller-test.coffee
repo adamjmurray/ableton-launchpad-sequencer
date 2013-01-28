@@ -1,10 +1,10 @@
-{Storage,Sequencer,Track} = require "#{__dirname}/launchpad-sequencer.js"
+{StorageController,Sequencer,Track} = require "#{__dirname}/../launchpad-sequencer.js"
 
-describe 'Storage', ->
+describe 'StorageController', ->
 
   beforeEach ->
     @sequencer = new Sequencer
-    @storage = new Storage(@sequencer)
+    @storage = new StorageController(@sequencer)
 
     # Delete the sequencers state so we can test fromJSON() is really loading state
     @clearSequencer = ->
