@@ -6,12 +6,6 @@ class SequencerController
   constructor: (@sequencer, @launchpad) ->
     @gui = new GUI
     @reset(true)
-    # TODO: move all this to LaunchpadController
-    if launchpad
-      launchpad.onTopDown = @_onLaunchpadTopDown
-      launchpad.onRightDown = @_onLaunchpadRightDown
-      launchpad.onGridDown = @_onLaunchpadGridDown
-
 
   setStepLength: (stepLength) ->
     @sequencer.stepLength = stepLength
@@ -24,8 +18,6 @@ class SequencerController
     @pattern = 0 # selected pattern index
     @value = 1   # selected step value
     @clock = -1  # current transport time, in steps
-    @trackMultiPress = 0
-    @patternMultiPress = 0
     @_updateSelectedPattern(true)
     @redraw() unless firstTime
     return
@@ -165,6 +157,9 @@ class SequencerController
     @_drawPattern(t, p) if t == @track and p == @pattern # update current pattern
     return
 
+  toggleSelectedTrackMute: ->
+    @muteTrack(@track)
+    return
 
   setSelectedTrackMute: (mute) ->
     @muteTrack(@track, mute)
@@ -176,6 +171,10 @@ class SequencerController
     track.mute = mute ? !track.mute # if no value is given, then toggle
     @launchpad.track(track)
     @gui.trackMute(track) if track == @selectedTrack # GUI only show current track state
+    return
+
+  toggleSelectedPatternMute: ->
+    @mutePattern(@track, @pattern)
     return
 
   setSelectedPatternMute: (mute) ->
@@ -331,123 +330,3 @@ class SequencerController
 
     return
 
-
-  # Launchpad button event handlers
-  _onLaunchpadTopDown: (buttonIndex) =>
-    @patternMultiPress = 0
-    if @patternOps
-      # shift up, down, left, right, copy, paste, length mode, steps modes
-      switch buttonIndex
-        when 0 then @rotate(8);  @_patternOpsMode(Controller.STEPS_MODE, true)
-        when 1 then @rotate(-8); @_patternOpsMode(Controller.STEPS_MODE, true)
-        when 2 then @rotate(1);  @_patternOpsMode(Controller.STEPS_MODE, true)
-        when 3 then @rotate(-1); @_patternOpsMode(Controller.STEPS_MODE, true)
-        when 4 then @copyPattern()
-        when 5 then @pastePattern()
-        when 6 then @_patternOpsMode(Controller.LENGTH_MODE)
-        when 7 then @_patternOpsMode(Controller.STEPS_MODE)
-
-    else if buttonIndex <= 3
-      if @track == buttonIndex # track already selected
-        @trackMultiPress += 1
-        if @trackMultiPress >= 3
-          @trackMultiPress = 0
-          @muteSelectedTrack() # toggle mute
-      else
-        @trackMultiPress = 1
-        @selectTrack(buttonIndex)
-
-    else
-      # set step value
-      @trackMultiPress = 0
-      @selectValue(buttonIndex-3)
-
-    return
-
-
-  _onLaunchpadRightDown: (buttonIndex) =>
-    @trackMultiPress = 0
-    if @patternOps
-      # heldTop check prevents bad UX with an extra press
-      return if @launchpad.heldTop?
-      @_patternOps(false)
-
-    if @pattern == buttonIndex # pattern already selected
-      @patternMultiPress += 1
-      if @patternMultiPress >= 3
-        @patternMultiPress = 0
-        if @launchpad.heldTop?
-          # it was held the whole time, because a top button press would have reset @patternMultiPress
-          @_patternOps(true)
-        else
-          @muteSelectedPattern() # toggle mute
-    else
-      @patternMultiPress = 1
-      @selectPattern(buttonIndex)
-    return
-
-
-  _onLaunchpadGridDown: (x,y) =>
-    if @patternOps
-      lp = @launchpad
-      if lp.heldGridX?
-        start = x + y*ROW_LENGTH
-        end = lp.heldGridX + lp.heldGridY*ROW_LENGTH
-        @selectedPattern.setRange(start, end)
-
-        # redraw range:
-        @_patternOpsMode(Controller.LENGTH_MODE)
-        @drawPatternInfo()
-
-    else
-      @trackMultiPress = 0
-      @patternMultiPress = 0
-      @setGridValue(x,y)
-    return
-
-
-  # enter the mode for pattern operations (set start/end, shift, copy, paste)
-  _patternOps: (enabled) ->
-    @patternOps = enabled
-    if enabled
-      launchpad = @launchpad
-      # Top lights change to indicate we're in this mode.
-      # Left 4 are for shifting
-      launchpad._top(0, Launchpad.YELLOW)
-      launchpad._top(1, Launchpad.YELLOW)
-      launchpad._top(2, Launchpad.YELLOW)
-      launchpad._top(3, Launchpad.YELLOW)
-
-      # Next 2 are copy & paste
-      launchpad._top(4, Launchpad.ORANGE)
-      launchpad._top(5, Launchpad.RED)
-
-      # Last 2 are determined by the mode
-      @_patternOpsMode(Controller.LENGTH_MODE)
-    else
-      #for valueIndex in [0..4]
-      #  @launchpad.stepValueOff(valueIndex) unless @value == valueIndex
-      @launchpad.allOff()
-      @drawLaunchpad()
-    return
-
-
-  _patternOpsMode: (mode, skipRedraw) ->
-    @patternOpsMode = mode
-    pattern = @selectedPattern
-    launchpad = @launchpad
-
-    switch mode
-      when Controller.LENGTH_MODE
-        launchpad._top(6, Launchpad.GREEN)
-        launchpad._top(7, Launchpad.OFF)
-        return if skipRedraw
-        launchpad.patternLength(pattern)
-
-      when Controller.STEPS_MODE
-        launchpad._top(6, Launchpad.OFF)
-        launchpad._top(7, Launchpad.GREEN)
-        return if skipRedraw
-        launchpad.patternSteps(pattern)
-
-    return

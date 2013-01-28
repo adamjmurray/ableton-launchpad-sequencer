@@ -1,44 +1,26 @@
 class LaunchpadController
 
-  @color = (green,red) ->
-    16*green + red if (0 <= green <= 3) and (0 <= red <= 3)
+  # Pattern "Ops" modes
+  @LENGTH_MODE: 0 # pattern start/end (length)
+  @STEPS_MODE: 1  # pattern step values
 
-
-  @OFF:    @color(0,0)
-  @GREEN:  @color(3,0)
-  @YELLOW: @color(3,2)
-  @ORANGE: @color(2,3)
-  @RED:    @color(0,3)
-  @GRID_COLORS: [@OFF, @GREEN, @YELLOW, @ORANGE, @RED]
-
-  @STEP_COLOR:    @color(1,1) # color for current sequencer step, regardless of value
-  @TRACK_COLOR:   @color(1,2)
-  @PATTERN_COLOR: @color(2,0)
-
-  @MUTE_COLOR:          @color(0,3)
-  @INACTIVE_MUTE_COLOR: @color(0,1)
-
-
-  constructor: ->
-    @onTopDown   = NOOP
-    @onTopUp     = NOOP
-    @onRightDown = NOOP
-    @onRightUp   = NOOP
-    @onGridDown  = NOOP
-    @onGridUp    = NOOP
+  constructor: (@launchpad, @sequencerController) ->
     @heldTop     = null # top button held down (only the first is recorded if there are multiple held down).
     @heldGridX   = null # x index of grid button held down (only the first is recorded if there are multiple held down).
     @heldGridY   = null # y index of grid button held down (only the first is recorded if there are multiple held down).
     @heldGridXLatest = null # the most recently held down grid button
     @heldGridYLatest = null # the most recently held down grid button
+    @trackMultiPress = 0
+    @patternMultiPress = 0
+
 
   ctlin: (cc, value) ->
     index = cc - 104
     if value > 0
-      @onTopDown(index)
+      @_onTopDown(index)
       @heldTop = index unless @heldTop?
     else
-      @onTopUp(index)
+      # @_onTopUp(index)
       @heldTop = null if @heldTop == index
     return
 
@@ -47,17 +29,17 @@ class LaunchpadController
     x = pitch % 16
     y = Math.floor(pitch / 16)
     if x > 7
-      if velocity > 0 then @onRightDown(y) else @onRightUp(y)
+      if velocity > 0 then @_onRightDown(y) # else @_onRightUp(y)
     else
       if velocity > 0
-        @onGridDown(x,y)
+        @_onGridDown(x,y)
         @heldGridXLatest = x
         @heldGridYLatest = y
         unless @heldGridX?
           @heldGridX = x
           @heldGridY = y
       else
-        @onGridUp(x,y)
+        # @_onGridUp(x,y)
         if @heldGridXLatest == x and @heldGridYLatest == y
           @heldGridXLatest = null
           @heldGridYLatest = null
@@ -67,88 +49,125 @@ class LaunchpadController
     return
 
 
-  ctlout: (cc, value) ->
-    outlet LAUNCHPAD_CC, cc, value
-    return
-
-
-  noteout: (pitch, velocity) ->
-    outlet LAUNCHPAD_NOTE, pitch, velocity
-    return
-
-
-  allOff: ->
-    @ctlout(0,0)
-    return
-
-
-  track: (track) ->
-    color = if track.mute then Launchpad.MUTE_COLOR else Launchpad.TRACK_COLOR
-    @_top(track.index, color)
-    return
-
-  trackOff: (track) ->
-    color = if track.mute then Launchpad.INACTIVE_MUTE_COLOR else Launchpad.OFF
-    @_top(track.index, color)
-    return
-
-
-  stepValue: (stepValue) ->
-    @_top(stepValue+3, Launchpad.GRID_COLORS[stepValue]) if stepValue > 0
-    return
-
-  stepValueOff: (stepValue) ->
-    @_top(stepValue+3, Launchpad.OFF) if stepValue > 0
-    return
-
-
-  pattern: (pattern) ->
-    color = if pattern.mute then Launchpad.MUTE_COLOR else Launchpad.PATTERN_COLOR
-    @_right(pattern.index, color)
-    return
-
-  patternOff: (pattern) ->
-    color = if pattern.mute then Launchpad.INACTIVE_MUTE_COLOR else Launchpad.OFF
-    @_right(pattern.index, color)
-    return
-
-
-  grid: (x, y, value) ->
-    @_grid(x, y, Launchpad.GRID_COLORS[value])
-    return
-
-
-  activeStep: (x, y) ->
-    @_grid(x, y, Launchpad.STEP_COLOR)
-    return
-
-
-  patternSteps: (pattern) ->
-    self = @
-    Defer.eachStep (x,y,index) -> self._grid(x, y, Launchpad.GRID_COLORS[pattern.getStep(index)]); return
-    return
-
-
-  # Use the grid to show the pattern length by lighting up all the steps from the start to the end step
-  patternLength: (pattern) ->
-    start = pattern.start
-    end = pattern.end
-    self = @
-    Defer.eachStep (x,y,index) -> self._grid(x, y, (if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF)); return
-    return
-
 
   # ==============================================================================
   # private
 
-  _top:   (index, color) ->
-    @ctlout(104+index, color) if (0 <= index <= 7)
+  # Launchpad button event handlers
+  _onTopDown: (buttonIndex) ->
+    @patternMultiPress = 0
+    if @patternOps
+      # shift up, down, left, right, copy, paste, length mode, steps modes
+      switch buttonIndex
+        when 0 then @sequencerController.rotate(8);  @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
+        when 1 then @sequencerController.rotate(-8); @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
+        when 2 then @sequencerController.rotate(1);  @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
+        when 3 then @sequencerController.rotate(-1); @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
+        when 4 then @sequencerController.copyPattern()
+        when 5 then @sequencerController.pastePattern()
+        when 6 then @_patternOpsMode(LaunchpadController.LENGTH_MODE)
+        when 7 then @_patternOpsMode(LaunchpadController.STEPS_MODE)
+
+    else if buttonIndex <= 3
+      if @sequencerController.track == buttonIndex # track already selected
+        @trackMultiPress += 1
+        if @trackMultiPress >= 3
+          @trackMultiPress = 0
+          @sequencerController.toggleSelectedTrackMute() # toggle mute
+      else
+        @trackMultiPress = 1
+        @sequencerController.selectTrack(buttonIndex)
+
+    else
+      # set step value
+      @trackMultiPress = 0
+      @sequencerController.selectValue(buttonIndex-3)
+
     return
 
-  _grid:   (x, y, color) ->
-    @noteout(16*y + x, color) if (0 <= x <= 7) and (0 <= y <= 7)
+
+  _onRightDown: (buttonIndex) ->
+    @trackMultiPress = 0
+    if @patternOps
+      # heldTop check prevents bad UX with an extra press
+      return if @heldTop?
+      @_patternOps(false)
+
+    if @sequencerController.pattern == buttonIndex # pattern already selected
+      @patternMultiPress += 1
+      if @patternMultiPress >= 3
+        @patternMultiPress = 0
+        if @heldTop?
+          # it was held the whole time, because a top button press would have reset @patternMultiPress
+          @_patternOps(true)
+        else
+          @sequencerController.toggleSelectedPatternMute() # toggle mute
+    else
+      @patternMultiPress = 1
+      @sequencerController.selectPattern(buttonIndex)
     return
 
-  _right: (index, color) ->
-    @noteout(16*index + 8, color) if (0 <= index <= 7)
+
+  _onGridDown: (x,y) ->
+    if @patternOps
+      if @heldGridX?
+        start = x + y*ROW_LENGTH
+        end = @heldGridX + @heldGridY*ROW_LENGTH
+        @sequencerController.selectedPattern.setRange(start, end)
+
+        # redraw range:
+        @_patternOpsMode(LaunchpadController.LENGTH_MODE)
+        @sequencerController.drawPatternInfo()
+
+    else
+      @trackMultiPress = 0
+      @patternMultiPress = 0
+      @sequencerController.setGridValue(x,y)
+    return
+
+
+  # enter the mode for pattern operations (set start/end, shift, copy, paste)
+  _patternOps: (enabled) ->
+    @patternOps = enabled
+    if enabled
+      launchpad = @launchpad
+      # Top lights change to indicate we're in this mode.
+      # Left 4 are for shifting
+      launchpad._top(0, Launchpad.YELLOW)
+      launchpad._top(1, Launchpad.YELLOW)
+      launchpad._top(2, Launchpad.YELLOW)
+      launchpad._top(3, Launchpad.YELLOW)
+
+      # Next 2 are copy & paste
+      launchpad._top(4, Launchpad.ORANGE)
+      launchpad._top(5, Launchpad.RED)
+
+      # Last 2 are determined by the mode
+      @_patternOpsMode(LaunchpadController.LENGTH_MODE)
+    else
+      #for valueIndex in [0..4]
+      #  @launchpad.stepValueOff(valueIndex) unless @value == valueIndex
+      @launchpad.allOff()
+      @sequencerController.drawLaunchpad()
+    return
+
+
+  _patternOpsMode: (mode, skipRedraw) ->
+    @patternOpsMode = mode
+    pattern = @sequencerController.selectedPattern
+    launchpad = @launchpad
+
+    switch mode
+      when LaunchpadController.LENGTH_MODE
+        launchpad._top(6, Launchpad.GREEN)
+        launchpad._top(7, Launchpad.OFF)
+        return if skipRedraw
+        launchpad.patternLength(pattern)
+
+      when LaunchpadController.STEPS_MODE
+        launchpad._top(6, Launchpad.OFF)
+        launchpad._top(7, Launchpad.GREEN)
+        return if skipRedraw
+        launchpad.patternSteps(pattern)
+
     return

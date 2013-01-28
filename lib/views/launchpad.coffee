@@ -19,54 +19,6 @@ class Launchpad
   @INACTIVE_MUTE_COLOR: @color(0,1)
 
 
-  constructor: ->
-    @onTopDown   = NOOP
-    @onTopUp     = NOOP
-    @onRightDown = NOOP
-    @onRightUp   = NOOP
-    @onGridDown  = NOOP
-    @onGridUp    = NOOP
-    @heldTop     = null # top button held down (only the first is recorded if there are multiple held down).
-    @heldGridX   = null # x index of grid button held down (only the first is recorded if there are multiple held down).
-    @heldGridY   = null # y index of grid button held down (only the first is recorded if there are multiple held down).
-    @heldGridXLatest = null # the most recently held down grid button
-    @heldGridYLatest = null # the most recently held down grid button
-
-  ctlin: (cc, value) ->
-    index = cc - 104
-    if value > 0
-      @onTopDown(index)
-      @heldTop = index unless @heldTop?
-    else
-      @onTopUp(index)
-      @heldTop = null if @heldTop == index
-    return
-
-
-  notein: (pitch, velocity) ->
-    x = pitch % 16
-    y = Math.floor(pitch / 16)
-    if x > 7
-      if velocity > 0 then @onRightDown(y) else @onRightUp(y)
-    else
-      if velocity > 0
-        @onGridDown(x,y)
-        @heldGridXLatest = x
-        @heldGridYLatest = y
-        unless @heldGridX?
-          @heldGridX = x
-          @heldGridY = y
-      else
-        @onGridUp(x,y)
-        if @heldGridXLatest == x and @heldGridYLatest == y
-          @heldGridXLatest = null
-          @heldGridYLatest = null
-        if @heldGridX == x and @heldGridY == y
-          @heldGridX = @heldGridXLatest
-          @heldGridY = @heldGridYLatest
-    return
-
-
   ctlout: (cc, value) ->
     outlet LAUNCHPAD_CC, cc, value
     return

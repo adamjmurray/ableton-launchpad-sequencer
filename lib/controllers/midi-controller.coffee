@@ -1,11 +1,6 @@
 # Interprets user input from the Launchpad, track MIDI input, and GUI
 class MIDIController
 
-# Pattern "Ops" modes
-  @LENGTH_MODE: 0 # pattern start/end (length)
-  @STEPS_MODE: 1  # pattern step values
-
-
   constructor : (@sequencer) ->
     @gui = @sequencer.gui
     @scale = Scale.instance
