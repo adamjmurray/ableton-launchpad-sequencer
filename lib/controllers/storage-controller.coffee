@@ -29,7 +29,7 @@ class StorageController
 
     # other paths look like:
     # track[#{index}]
-    matches =/^track\[(\d+)\]$/.exec(path)
+    matches = /^track\[(\d+)\]$/.exec(path)
     unless matches?
       # for debugging, but note on loadbang pattrstorage sends a weird message like: u594004503.json,0
       # error("launchpad sequencer can't load #{path} #{values}\n")

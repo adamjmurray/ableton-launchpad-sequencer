@@ -28,7 +28,7 @@ class SequencerController
     @launchpad.allOff()
     @gui.clearGrid()
     @gui.scale(@sequencer.scale)
-    @gui.stepLength(@stepLength)
+    @gui.stepLength(@sequencer.stepLength)
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)
