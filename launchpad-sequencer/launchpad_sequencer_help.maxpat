@@ -7,10 +7,10 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 4.0, 48.0, 834.0, 624.0 ],
+		"rect" : [ 104.0, 320.0, 834.0, 624.0 ],
 		"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 4.0, 48.0, 834.0, 624.0 ],
+		"defrect" : [ 104.0, 320.0, 834.0, 624.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -44,8 +44,8 @@
 					"clicktabcolor" : [ 0.94902, 0.980392, 1.0, 1.0 ],
 					"clicktextcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 					"fontface" : 1,
-					"fontname" : "Arial",
-					"fontsize" : 12.0,
+					"fontname" : "Arial Bold",
+					"fontsize" : 11.0,
 					"hovertabcolor" : [ 0.564706, 0.643137, 0.67451, 1.0 ],
 					"htabcolor" : [ 0.803922, 0.929412, 1.0, 1.0 ],
 					"id" : "obj-27",
@@ -60,7 +60,7 @@
 					"spacing_x" : 20.0,
 					"spacing_y" : 20.0,
 					"tabcolor" : [ 0.466667, 0.564706, 0.643137, 1.0 ],
-					"tabs" : [ "Getting Started", "Pattern Types", "Tips and Tricks", "Timing Problems?", "MIDI Input" ]
+					"tabs" : [ "Getting Started", "Pattern Types", "Tips and Tricks", "Launchpad Shortcuts", "Timing Problems?", "MIDI Input" ]
 				}
 
 			}

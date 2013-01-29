@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ 118.0, 155.0, 1440.0, 772.0 ],
+		"rect" : [ -17.0, 173.0, 1440.0, 772.0 ],
 		"bglocked" : 0,
-		"defrect" : [ 118.0, 155.0, 1440.0, 772.0 ],
+		"defrect" : [ -17.0, 173.0, 1440.0, 772.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 13.0,
@@ -28,14 +28,112 @@
 				"box" : 				{
 					"fontname" : "Arial Bold",
 					"fontsize" : 13.0,
-					"id" : "obj-67",
+					"id" : "obj-81",
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1604.0, 490.0, 477.0, 21.0 ],
+					"patching_rect" : [ 2378.0, 177.0, 481.0, 36.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 1600.0, 420.0, 804.0, 21.0 ],
-					"text" : "TODO: finalize behavior and document it here"
+					"presentation_rect" : [ 2400.0, 180.0, 804.0, 21.0 ],
+					"text" : "Pressing 2 grid buttons at the same time will set the start/end steps for the pattern."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-80",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 2401.0, 195.0, 477.0, 66.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 2400.0, 210.0, 798.0, 36.0 ],
+					"text" : "The top 8 buttons on the Launchpad perform the following operations on the currently selected pattern (to help you remember, these operations correspond to the row of 8 \"pattern edit\" buttons to the right of the pattern in the GUI):"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-79",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 2399.0, 140.0, 477.0, 21.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 2400.0, 135.0, 804.0, 21.0 ],
+					"text" : "PATTERN EDIT MODE"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-78",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 2400.0, 40.0, 477.0, 21.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 2400.0, 60.0, 804.0, 21.0 ],
+					"text" : "TRACK & PATTERN MUTE"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-70",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1600.0, 557.0, 481.0, 36.0 ],
+					"presentation" : 1,
+					"presentation_rect" : [ 2400.0, 345.0, 804.0, 21.0 ],
+					"text" : "To exit \"pattern edit mode\", select a pattern by pressing one of the 8 buttons on the right side of the Launchpad."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-68",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1599.0, 478.0, 481.0, 51.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 2400.0, 300.0, 809.0, 36.0 ],
+					"text" : "With the exception of copy & paste, these operations only apply to the start-end range of the pattern. Copy & paste always applies to the entire pattern."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial Bold",
+					"fontsize" : 13.0,
+					"id" : "obj-67",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1604.0, 490.0, 477.0, 51.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 2,
+					"presentation_rect" : [ 2400.0, 255.0, 804.0, 36.0 ],
+					"text" : "(1) shift pattern up, (2) shift pattern down, (3) shift pattern left, (4) shift pattern right, (5) reverse pattern, (6) invert pattern, \n(7) copy pattern (8) paste pattern."
 				}
 
 			}
@@ -44,15 +142,14 @@
 					"fontname" : "Arial Bold",
 					"fontsize" : 13.0,
 					"id" : "obj-66",
-					"linecount" : 3,
+					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1603.0, 450.0, 477.0, 51.0 ],
+					"patching_rect" : [ 1603.0, 450.0, 477.0, 36.0 ],
 					"presentation" : 1,
-					"presentation_linecount" : 2,
-					"presentation_rect" : [ 1600.0, 375.0, 804.0, 36.0 ],
-					"text" : "Hold down the current tracks' button and press a pattern button 3 times to enter \"pattern edit mode\". In this mode, the following operations are possible:"
+					"presentation_rect" : [ 2400.0, 150.0, 798.0, 21.0 ],
+					"text" : "Hold down the current tracks' button and press a pattern button 3 times to enter \"pattern edit mode\". While in this mode:"
 				}
 
 			}
@@ -65,25 +162,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1593.0, 419.0, 474.0, 36.0 ],
+					"patching_rect" : [ 1593.0, 419.0, 477.0, 36.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 1600.0, 345.0, 804.0, 21.0 ],
+					"presentation_rect" : [ 2400.0, 75.0, 804.0, 21.0 ],
 					"text" : "Press a track or patterns' button 3 times in a row to toggle the track/pattern mute. "
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontname" : "Arial Bold",
-					"fontsize" : 13.0,
-					"id" : "obj-50",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 1599.0, 369.0, 474.0, 21.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 1600.0, 300.0, 804.0, 21.0 ],
-					"text" : "LAUNCHPAD SHORTCUTS"
 				}
 
 			}
@@ -97,7 +179,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1612.0, 395.0, 474.0, 21.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 1600.0, 315.0, 804.0, 21.0 ],
+					"presentation_rect" : [ 2400.0, 0.0, 804.0, 21.0 ],
 					"text" : "On the Launchpad hardware, the following shortcuts exist:"
 				}
 
@@ -114,7 +196,7 @@
 					"patching_rect" : [ 1593.0, 317.0, 474.0, 51.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 1600.0, 45.0, 804.0, 36.0 ],
+					"presentation_rect" : [ 1600.0, 60.0, 804.0, 36.0 ],
 					"text" : "Use a track's step length multiplier to make the tracks run at different rates. For example, you can set one track's step multiplier to 2, and another's to 3, in order to create 2-against-3 polyrhtyms."
 				}
 
@@ -128,10 +210,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1605.0, 271.0, 470.0, 66.0 ],
+					"patching_rect" : [ 1605.0, 271.0, 473.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 1600.0, 210.0, 802.0, 51.0 ],
+					"presentation_rect" : [ 1600.0, 285.0, 802.0, 51.0 ],
 					"text" : "Put your target instrument on a different track. Then you can record the sequencer's MIDI output in clips on that track. Once you've recorded clips, you can fine-tune your generated patterns with Live's MIDI editing features. This is also the key to avoiding timing problems."
 				}
 
@@ -308,7 +390,7 @@
 					"patching_rect" : [ 2407.0, 191.0, 430.0, 81.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 2400.0, 480.0, 809.0, 51.0 ],
+					"presentation_rect" : [ 3200.0, 480.0, 809.0, 51.0 ],
 					"text" : "NOTE: As a performance optimization, the state of the sequencer is only saved when Live's transport is stopped. To avoid losing your sequence, make sure you stop the Live transport before you save your Live set. Alternately, you can click the \"save\" button inside the device to force it to save at any time."
 				}
 
@@ -326,7 +408,7 @@
 					"patching_rect" : [ 2401.0, 208.0, 571.0, 110.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 4,
-					"presentation_rect" : [ 2400.0, 210.0, 797.0, 89.0 ],
+					"presentation_rect" : [ 3200.0, 210.0, 797.0, 89.0 ],
 					"text" : "The safest way to produce a song with this device is to route its MIDI output to another track that hosts the target instrument. Then you may record this sequencer's MIDI into MIDI clips on the target track. Once you have generated the desired clips, disable this track and finish producing your song with the target track.",
 					"textcolor" : [ 0.184314, 0.184314, 0.184314, 1.0 ]
 				}
@@ -372,7 +454,7 @@
 					"patching_rect" : [ 2396.0, 85.0, 425.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 2400.0, 90.0, 787.0, 36.0 ],
+					"presentation_rect" : [ 3200.0, 90.0, 787.0, 36.0 ],
 					"text" : "Unfortunately, even turning a knob in a VST plugin can cause timing problems. If you setup macros or automation with Live it may help? Otherwise, avoid adjusting instrument and effects while the sequencer is playing."
 				}
 
@@ -389,7 +471,7 @@
 					"patching_rect" : [ 2388.0, 47.0, 424.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 2400.0, 45.0, 807.0, 36.0 ],
+					"presentation_rect" : [ 3200.0, 45.0, 807.0, 36.0 ],
 					"text" : "Avoid adding and removing devices and plugins while working with the sequencer. Any \"heavy\" operation in Live will cause this device's MIDI stream to temporarily fall behind (it should \"catch up\" though)."
 				}
 
@@ -406,7 +488,7 @@
 					"patching_rect" : [ 2367.0, 6.0, 424.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 2400.0, 0.0, 802.0, 36.0 ],
+					"presentation_rect" : [ 3200.0, 0.0, 802.0, 36.0 ],
 					"text" : "This device is a \"proof of concept\" and cannot always maintain stable timing. I hope to make a VST version of thie device one day with rock-solid timing. In the meantime, here are some known issues and workarounds."
 				}
 
@@ -422,7 +504,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 1593.0, 179.0, 425.0, 36.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 1600.0, 135.0, 797.0, 21.0 ],
+					"presentation_rect" : [ 1600.0, 180.0, 797.0, 21.0 ],
 					"text" : "You can use MIDI input to set the track's pitches, which allows for arpeggiator-like sequencing."
 				}
 
@@ -456,7 +538,7 @@
 					"patching_rect" : [ 1599.0, 120.0, 470.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 1600.0, 165.0, 802.0, 36.0 ],
+					"presentation_rect" : [ 1600.0, 225.0, 802.0, 36.0 ],
 					"text" : "Use a Live Instrument Rack with a keyboard split to control multiple synthesizers and/or drum machines from a single instance of this device. For example, each track may control a different 2-octave range. Or you can sequence drums along with a melody."
 				}
 
@@ -537,10 +619,10 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1663.0, 42.0, 330.0, 66.0 ],
+					"patching_rect" : [ 1663.0, 42.0, 331.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 1600.0, 90.0, 797.0, 36.0 ],
+					"presentation_rect" : [ 1600.0, 120.0, 797.0, 36.0 ],
 					"text" : "Use the global scale and scale gate pattern types to make melodies and harmonies that fit your song's key. For best results, make sure each track's pitch is set to a pitch in the scale."
 				}
 
@@ -557,7 +639,7 @@
 					"patching_rect" : [ 1570.0, 2.0, 408.0, 51.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 2,
-					"presentation_rect" : [ 3200.0, 0.0, 793.0, 36.0 ],
+					"presentation_rect" : [ 4000.0, 0.0, 793.0, 36.0 ],
 					"text" : "MIDI notes can be used to remote control the step sequencer device. \nThe note's pitch determines how it affects the sequencer:"
 				}
 
@@ -644,7 +726,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 604.0, 238.0, 81.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3693.0, 46.0, 67.0, 20.0 ],
+					"presentation_rect" : [ 4493.0, 46.0, 67.0, 20.0 ],
 					"text" : "C5 ... B5"
 				}
 
@@ -659,7 +741,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 214.0, 238.0, 47.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3386.0, 50.0, 39.0, 20.0 ],
+					"presentation_rect" : [ 4186.0, 50.0, 39.0, 20.0 ],
 					"text" : "Ab0.."
 				}
 
@@ -674,7 +756,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 294.0, 249.0, 71.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3530.0, 109.0, 67.0, 20.0 ],
+					"presentation_rect" : [ 4330.0, 109.0, 67.0, 20.0 ],
 					"text" : "C1 ... B4"
 				}
 
@@ -691,7 +773,7 @@
 					"patching_rect" : [ 599.0, 328.0, 180.0, 62.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 3464.0, 128.0, 217.0, 48.0 ],
+					"presentation_rect" : [ 4264.0, 128.0, 217.0, 48.0 ],
 					"text" : "set track base pitch \"round-robin\" (each note sets track pitch in a circular loop: set track 1,2,3,4,1,2,3,etc...) "
 				}
 
@@ -706,7 +788,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 716.0, 250.0, 66.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3834.0, 109.0, 62.0, 20.0 ],
+					"presentation_rect" : [ 4634.0, 109.0, 62.0, 20.0 ],
 					"text" : "C6 ... G8"
 				}
 
@@ -723,7 +805,7 @@
 					"patching_rect" : [ 301.0, 329.0, 77.0, 75.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 5,
-					"presentation_rect" : [ 3704.0, 110.0, 77.0, 75.0 ],
+					"presentation_rect" : [ 4504.0, 110.0, 77.0, 75.0 ],
 					"text" : "      V\n set scale.\nplay a chord to set the scale"
 				}
 
@@ -738,7 +820,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 85.0, 247.0, 79.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3269.0, 109.0, 73.0, 20.0 ],
+					"presentation_rect" : [ 4069.0, 109.0, 73.0, 20.0 ],
 					"text" : "C -2 ... G0"
 				}
 
@@ -753,7 +835,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 423.0, 253.0, 39.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3548.0, 50.0, 38.0, 20.0 ],
+					"presentation_rect" : [ 4348.0, 50.0, 38.0, 20.0 ],
 					"text" : "C3"
 				}
 
@@ -770,7 +852,7 @@
 					"patching_rect" : [ 381.0, 319.0, 130.0, 89.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 5,
-					"presentation_rect" : [ 3806.0, 126.0, 199.0, 75.0 ],
+					"presentation_rect" : [ 4606.0, 126.0, 199.0, 75.0 ],
 					"text" : "global transpose.\nC7 is \"center\", so you can transpose down by up to 1 octave, and transpose up by an octave and a half"
 				}
 
@@ -784,7 +866,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 714.0, 275.0, 71.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3835.0, 66.0, 71.0, 45.0 ]
+					"presentation_rect" : [ 4635.0, 66.0, 71.0, 45.0 ]
 				}
 
 			}
@@ -797,7 +879,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 574.0, 275.0, 71.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3695.0, 67.0, 71.0, 45.0 ]
+					"presentation_rect" : [ 4495.0, 67.0, 71.0, 45.0 ]
 				}
 
 			}
@@ -810,7 +892,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 434.0, 275.0, 71.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3555.0, 67.0, 71.0, 45.0 ]
+					"presentation_rect" : [ 4355.0, 67.0, 71.0, 45.0 ]
 				}
 
 			}
@@ -823,7 +905,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 294.0, 275.0, 71.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3415.0, 67.0, 71.0, 45.0 ]
+					"presentation_rect" : [ 4215.0, 67.0, 71.0, 45.0 ]
 				}
 
 			}
@@ -836,7 +918,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 154.0, 275.0, 71.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3275.0, 67.0, 71.0, 45.0 ]
+					"presentation_rect" : [ 4075.0, 67.0, 71.0, 45.0 ]
 				}
 
 			}
@@ -852,7 +934,7 @@
 					"patching_rect" : [ 266.0, 319.0, 42.0, 48.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 3389.0, 110.0, 42.0, 48.0 ],
+					"presentation_rect" : [ 4189.0, 110.0, 42.0, 48.0 ],
 					"text" : "   V\nmute\ntrack"
 				}
 
@@ -867,7 +949,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 146.0, 325.0, 84.0, 20.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3259.0, 131.0, 84.0, 20.0 ],
+					"presentation_rect" : [ 4059.0, 131.0, 84.0, 20.0 ],
 					"text" : "mute pattern"
 				}
 
@@ -883,7 +965,7 @@
 					"outlettype" : [ "int", "int" ],
 					"patching_rect" : [ 84.0, 275.0, 750.0, 45.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3205.0, 67.0, 750.0, 45.0 ],
+					"presentation_rect" : [ 4005.0, 67.0, 750.0, 45.0 ],
 					"range" : 128
 				}
 
@@ -896,7 +978,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 85.0, 298.0, 190.0, 31.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3206.0, 90.0, 190.0, 37.0 ],
+					"presentation_rect" : [ 4006.0, 90.0, 190.0, 37.0 ],
 					"rounded" : 36
 				}
 
@@ -909,7 +991,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 514.0, 300.0, 321.0, 29.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3417.0, 95.0, 277.0, 32.0 ],
+					"presentation_rect" : [ 4217.0, 95.0, 277.0, 32.0 ],
 					"rounded" : 36
 				}
 
@@ -922,7 +1004,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 295.0, 300.0, 70.0, 31.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3766.0, 88.0, 187.0, 38.0 ],
+					"presentation_rect" : [ 4566.0, 88.0, 187.0, 38.0 ],
 					"rounded" : 36
 				}
 
