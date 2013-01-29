@@ -202,11 +202,7 @@ class SequencerController
     pattern = @patternClipboard
     return unless pattern?
     @selectedPattern.fromJSON(pattern)
-    console.error("TODO: update pastePattern logic")
-    if @patternOps
-      @_patternOpsMode(Controller.STEPS_MODE)
-    else
-      @selectPattern(@pattern) # this redraws everything needed
+    @selectPattern(@pattern) # this redraws everything needed
     return
 
 

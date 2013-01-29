@@ -59,14 +59,16 @@ class LaunchpadController
     if @patternOps
       # shift up, down, left, right, copy, paste, length mode, steps modes
       switch buttonIndex
-        when 0 then @sequencerController.rotate(8);  @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
-        when 1 then @sequencerController.rotate(-8); @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
-        when 2 then @sequencerController.rotate(1);  @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
-        when 3 then @sequencerController.rotate(-1); @_patternOpsMode(LaunchpadController.STEPS_MODE, true)
-        when 4 then @sequencerController.copyPattern()
-        when 5 then @sequencerController.pastePattern()
-        when 6 then @_patternOpsMode(LaunchpadController.LENGTH_MODE)
-        when 7 then @_patternOpsMode(LaunchpadController.STEPS_MODE)
+        when 0 then @sequencerController.rotate(8)
+        when 1 then @sequencerController.rotate(-8)
+        when 2 then @sequencerController.rotate(1)
+        when 3 then @sequencerController.rotate(-1)
+        when 4 then @sequencerController.reverse()
+        when 5 then @sequencerController.invert()
+        when 6 then @sequencerController.copyPattern()
+        when 7 then @sequencerController.pastePattern()
+      # and redraw:
+      launchpad.patternLength(@sequencerController.selectedPattern)
 
     else if buttonIndex <= 3
       if @sequencerController.track == buttonIndex # track already selected
@@ -116,7 +118,7 @@ class LaunchpadController
         @sequencerController.selectedPattern.setRange(start, end)
 
         # redraw range:
-        @_patternOpsMode(LaunchpadController.LENGTH_MODE)
+        launchpad.patternLength(@sequencerController.selectedPattern)
         @sequencerController.drawPatternInfo()
 
     else
@@ -138,36 +140,17 @@ class LaunchpadController
       launchpad._top(2, Launchpad.YELLOW)
       launchpad._top(3, Launchpad.YELLOW)
 
-      # Next 2 are copy & paste
-      launchpad._top(4, Launchpad.ORANGE)
-      launchpad._top(5, Launchpad.RED)
+      # Next 2 are for reverse and invert
+      launchpad._top(4, Launchpad.YELLOW)
+      launchpad._top(5, Launchpad.YELLOW)
 
-      # Last 2 are determined by the mode
-      @_patternOpsMode(LaunchpadController.LENGTH_MODE)
+      # Last 2 are copy & paste
+      launchpad._top(6, Launchpad.GREEN)
+      launchpad._top(7, Launchpad.RED)
+
+      launchpad.patternLength(@sequencerController.selectedPattern)
     else
-      #for valueIndex in [0..4]
-      #  @launchpad.stepValueOff(valueIndex) unless @value == valueIndex
       @launchpad.allOff()
       @sequencerController.drawLaunchpad()
     return
 
-
-  _patternOpsMode: (mode, skipRedraw) ->
-    @patternOpsMode = mode
-    pattern = @sequencerController.selectedPattern
-    launchpad = @launchpad
-
-    switch mode
-      when LaunchpadController.LENGTH_MODE
-        launchpad._top(6, Launchpad.GREEN)
-        launchpad._top(7, Launchpad.OFF)
-        return if skipRedraw
-        launchpad.patternLength(pattern)
-
-      when LaunchpadController.STEPS_MODE
-        launchpad._top(6, Launchpad.OFF)
-        launchpad._top(7, Launchpad.GREEN)
-        return if skipRedraw
-        launchpad.patternSteps(pattern)
-
-    return

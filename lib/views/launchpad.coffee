@@ -12,6 +12,14 @@ class Launchpad
   @GRID_COLORS: [@OFF, @GREEN, @YELLOW, @ORANGE, @RED]
 
   @STEP_COLOR:    @color(1,1) # color for current sequencer step, regardless of value
+
+  @INACTIVE_GREEN:  @color(2,0)
+  @INACTIVE_YELLOW: @color(2,1)
+  @INACTIVE_ORANGE: @color(1,2)
+  @INACTIVE_RED:    @color(0,2)
+  @INACTIVE_GRID_COLORS: [@OFF, @INACTIVE_GREEN, @INACTIVE_YELLOW, @INACTIVE_ORANGE, @INACTIVE_RED]
+  @ACTIVE_GRID_COLORS: [@STEP_COLOR, @GREEN, @YELLOW, @ORANGE, @RED]
+
   @TRACK_COLOR:   @color(1,2)
   @PATTERN_COLOR: @color(2,0)
 
@@ -86,7 +94,11 @@ class Launchpad
     start = pattern.start
     end = pattern.end
     self = @
-    Defer.eachStep (x,y,index) -> self._grid(x, y, (if start <= index <= end then Launchpad.STEP_COLOR else Launchpad.OFF)); return
+    Defer.eachStep (x,y,index) ->
+      stepValue = pattern.getStep(index)
+      color = if start <= index <= end then Launchpad.ACTIVE_GRID_COLORS[stepValue] else Launchpad.INACTIVE_GRID_COLORS[stepValue]
+      self._grid(x, y, color)
+      return
     return
 
 
