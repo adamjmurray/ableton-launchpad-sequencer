@@ -27,6 +27,10 @@ class Launchpad
   @INACTIVE_MUTE_COLOR: @color(0,1)
 
 
+  constructor: ->
+    @patternOpsMode = false
+
+
   ctlout: (cc, value) ->
     outlet LAUNCHPAD_CC, cc, value
     return
@@ -83,22 +87,23 @@ class Launchpad
     return
 
 
-  patternSteps: (pattern) ->
+  patternSteps: (pattern, additionalDeferredCallback) ->
     self = @
-    Defer.eachStep (x,y,index) -> self._grid(x, y, Launchpad.GRID_COLORS[pattern.getStep(index)]); return
-    return
-
-
-  # Use the grid to show the pattern length by lighting up all the steps from the start to the end step
-  patternLength: (pattern) ->
-    start = pattern.start
-    end = pattern.end
-    self = @
-    Defer.eachStep (x,y,index) ->
-      stepValue = pattern.getStep(index)
-      color = if start <= index <= end then Launchpad.ACTIVE_GRID_COLORS[stepValue] else Launchpad.INACTIVE_GRID_COLORS[stepValue]
-      self._grid(x, y, color)
-      return
+    if @patternOpsMode   # Use the grid to show the pattern length by lighting up all the steps from the start to the end step
+      start = pattern.start
+      end = pattern.end
+      Defer.eachStep (x,y,index) ->
+        stepValue = pattern.getStep(index)
+        color = if start <= index <= end then Launchpad.ACTIVE_GRID_COLORS[stepValue] else Launchpad.INACTIVE_GRID_COLORS[stepValue]
+        self._grid(x, y, color)
+        additionalDeferredCallback(x, y, stepValue) if additionalDeferredCallback?
+        return
+    else
+      Defer.eachStep (x,y,index) ->
+        stepValue = pattern.getStep(index)
+        self._grid(x, y, Launchpad.GRID_COLORS[stepValue])
+        additionalDeferredCallback(x, y, stepValue) if additionalDeferredCallback?
+        return
     return
 
 

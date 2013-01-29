@@ -48,10 +48,8 @@ class SequencerController
     pattern ?= @selectedPattern
     launchpad = @launchpad
     gui = @gui
-    Defer.eachStep (x,y,index) ->
-      value = pattern.getStep(index)
-      launchpad.grid(x, y, value)
-      gui.grid(x, y, value)
+    launchpad.patternSteps pattern, (x,y,stepValue) ->
+      gui.grid(x, y, stepValue)
       return
     return
 
