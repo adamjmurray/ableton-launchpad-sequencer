@@ -56,7 +56,7 @@ class LaunchpadController
   # Launchpad button event handlers
   _onTopDown: (buttonIndex) ->
     @patternMultiPress = 0
-    if @patternOps
+    if @patternOpsMode
       # shift up, down, left, right, copy, paste, length mode, steps modes
       switch buttonIndex
         when 0 then @sequencerController.rotate(8)
@@ -88,10 +88,10 @@ class LaunchpadController
 
   _onRightDown: (buttonIndex) ->
     @trackMultiPress = 0
-    if @patternOps
+    if @patternOpsMode
       # heldTop check prevents bad UX with an extra press
       return if @heldTop?
-      @_patternOps(false)
+      @_patternOpsMode(false)
 
     if @sequencerController.pattern == buttonIndex # pattern already selected
       @patternMultiPress += 1
@@ -99,7 +99,7 @@ class LaunchpadController
         @patternMultiPress = 0
         if @heldTop?
           # it was held the whole time, because a top button press would have reset @patternMultiPress
-          @_patternOps(true)
+          @_patternOpsMode(true)
         else
           @sequencerController.toggleSelectedPatternMute() # toggle mute
     else
@@ -109,7 +109,7 @@ class LaunchpadController
 
 
   _onGridDown: (x,y) ->
-    if @patternOps
+    if @patternOpsMode
       if @heldGridX?
         start = x + y*ROW_LENGTH
         end = @heldGridX + @heldGridY*ROW_LENGTH
@@ -127,8 +127,8 @@ class LaunchpadController
 
 
   # enter the mode for pattern operations (set start/end, shift, copy, paste)
-  _patternOps: (enabled) ->
-    @patternOps = enabled
+  _patternOpsMode: (enabled) ->
+    @patternOpsMode = enabled
     launchpad = @launchpad
     launchpad.patternOpsMode = enabled
     if enabled

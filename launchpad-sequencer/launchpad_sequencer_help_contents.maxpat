@@ -7,9 +7,9 @@
 			"revision" : 9
 		}
 ,
-		"rect" : [ -17.0, 173.0, 1440.0, 772.0 ],
+		"rect" : [ 0.0, 173.0, 1440.0, 772.0 ],
 		"bglocked" : 0,
-		"defrect" : [ -17.0, 173.0, 1440.0, 772.0 ],
+		"defrect" : [ 0.0, 173.0, 1440.0, 772.0 ],
 		"openrect" : [ 0.0, 0.0, 0.0, 0.0 ],
 		"openinpresentation" : 1,
 		"default_fontsize" : 13.0,
@@ -96,7 +96,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1600.0, 557.0, 481.0, 36.0 ],
+					"patching_rect" : [ 1600.0, 557.0, 485.0, 36.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 2400.0, 345.0, 804.0, 21.0 ],
 					"text" : "To exit \"pattern edit mode\", select a pattern by pressing one of the 8 buttons on the right side of the Launchpad."
@@ -210,7 +210,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1605.0, 271.0, 473.0, 66.0 ],
+					"patching_rect" : [ 1605.0, 271.0, 477.0, 66.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
 					"presentation_rect" : [ 1600.0, 285.0, 802.0, 51.0 ],
@@ -571,8 +571,8 @@
 					"patching_rect" : [ 791.0, 190.0, 413.0, 81.0 ],
 					"presentation" : 1,
 					"presentation_linecount" : 3,
-					"presentation_rect" : [ 800.0, 180.0, 801.0, 51.0 ],
-					"text" : "When a gate pattern generates a note, the note's pitch and velocity settings come from the track settings. Each track can have different pitch and velocity settings. The gate determines the length of the note (depending on the particular pattern type), and the duration scaled by the tracks' duration setting."
+					"presentation_rect" : [ 800.0, 181.0, 801.0, 51.0 ],
+					"text" : "When a gate pattern generates a note, the note's pitch and velocity settings come from the track settings. Each track can have different pitch and velocity settings. The gate determines the length of the note (depending on the particular pattern type), and the duration is scaled by the tracks' duration setting."
 				}
 
 			}

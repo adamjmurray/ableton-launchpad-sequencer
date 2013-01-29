@@ -316,7 +316,7 @@ class SequencerController
       oldX = oldActiveStep % 8
       oldY = Math.floor(oldActiveStep/8) % 8
       oldValue = selectedPattern.getStep(oldActiveStep)
-      @launchpad.grid(oldX, oldY, oldValue) unless @patternOps
+      @launchpad.grid(oldX, oldY, oldValue) unless launchpad.patternOpsMode
       @gui.grid(oldX, oldY, oldValue)
 
     @activeStep = activeStep
@@ -325,7 +325,7 @@ class SequencerController
     if activeStep >= 0
       x = activeStep % 8
       y = Math.floor(activeStep/8) % 8
-      @launchpad.activeStep(x, y) unless @patternOps
+      @launchpad.activeStep(x, y) unless launchpad.patternOpsMode
       @gui.activeStep(x, y)
 
     return
