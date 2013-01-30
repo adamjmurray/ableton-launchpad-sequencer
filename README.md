@@ -11,18 +11,25 @@ of the code written in [CoffeeScript](http://coffeescript.org/).
 
 ## Usage
 
-### Downloading
+### Downloads
 
-First release coming soon... in the meantime you can build from source (instructions below)
+The first beta version is available at http://bit.ly/Vpmckt
 
-### Example project
+### Getting Started
 
-Open the Ableton Live project under the example-project folder
-and follow the instructions in the launchpad sequencer device.
+Open the included example Live set and press play. It will hopefully make sound electric piano sounds.
+
+If you have plugged in your Launchpad, that should light up and respond to button presses.
+(There's a "sync" button in the Sequencer track if you plug in the Launchpad after opening the Live set).
+Make sure you disable the Launchpad as a "control surface", as explained in the "Launchpad IO" track.
+
+It's a bit complicated, so I wrote some documentation.
+In the sequencer track click the yellow help button and check out the tabs in there.
+Also be sure to open Live's Info View and hover over parts of the device with your mouse for an explanation of each feature.
 
 ### Using in your own Ableton Live projects
 
-Save the launchpad-sequencer folder to your computer as desired,
+Save the launchpad-sequencer folder (from the download above) to your computer as desired,
 then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd devices to your project.
 For Live setup details, consult the example project.
 
