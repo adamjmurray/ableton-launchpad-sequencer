@@ -64,7 +64,24 @@ From this directory, run:
 
 ### Building the app for distribution
 
+This part is a little tricky because it requires a few manaul steps. First run:
+
+    cake release
+
+Then:
+
+0. open the example Live set
+0. open the launchpad-sequencer
+  * Freeze the Max patcher
+  * Save the Max patcher
+0. Open the launchpad-sequencer-proxy device
+  * Freeze the Max patcher
+  * Save the Max patcher
+0. Save the Live set
+
+And finally, back on the command line, run:
+
     cake dist
 
-and you should end up with a zip file in the "dist" folder that contains the application and example project.
+You should end up with a zip file in the "dist" folder that contains the application and example project.
 
