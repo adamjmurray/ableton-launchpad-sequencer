@@ -27,11 +27,11 @@ class SequencerController
   redraw: ->
     @launchpad.allOff()
     @gui.clearGrid()
-    @gui.scale(@sequencer.scale)
-    @gui.stepLength(@sequencer.stepLength)
     @selectValue(@value, true)
     @selectTrack(@track, true)
     @selectPattern(@pattern)
+    @gui.scale(@sequencer.scale)
+    @gui.stepLength(@sequencer.stepLength)
     return
 
   # Quickly draw the Launchpad lights assuming all lights are currently off
