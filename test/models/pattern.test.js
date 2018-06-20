@@ -1,5 +1,5 @@
-import { Scale, Pattern } from '../../lib';
-import { STEPS, VALUES } from '../../lib/config';
+import { Scale, Pattern } from '../../src';
+import { STEPS, VALUES } from '../../src/config';
 import assert from 'assert';
 
 describe('Pattern', () => {

@@ -1,4 +1,4 @@
-import Scale from '../../lib/models/scale';
+import { Scale } from '../../src';
 import assert from 'assert';
 
 describe('Scale', () => {
