@@ -6,16 +6,16 @@ import { DEFAULT_STEP_LENGTH, TRACKS, NOTE, CC, AFTERTOUCH } from '../config';
 export default class Sequencer {
 
   constructor() {
-    this.scale = new Scale();
-    this.reset(true);
+    this.scale = new Scale;
+    this.reset();
   }
 
   // Clear all patterns and set all track and pattern properties to their default values.
   reset() {
     this.stepLength = DEFAULT_STEP_LENGTH;
-    this.scale.setSteps([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-    this.globalTranspose = 0;
-    this.tracks = [...Array(TRACKS)].map((_, index) => new Track(index));
+    this.scale.steps = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    this.globalTranspose = 0; // TODO: Do we really need global transpose? (there's the Ableton MIDI effect...)
+    this.tracks = [...Array(TRACKS)].map((_, index) => new Track(index, this.scale));
   }
 
   step(clockIndex) {

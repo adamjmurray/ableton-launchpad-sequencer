@@ -2,8 +2,9 @@ import { PATTERNS, DEFAULT_PATTERN_TYPES } from '../config';
 
 export default class Track {
 
-  constructor(index) {
+  constructor(index, scale) {
     this.index = index;
+    this.scale = scale;
     this.pitch = 60;
     this.pitchOverride = null; // MIDI input can temporarily override the track pitch
     this.velocityOverride = null;
@@ -32,7 +33,7 @@ export default class Track {
       if (note.skip) { // random skip caused next pattern to be skipped
         note.skip = null;
       } else {
-        pattern.processNote(note, clock);
+        pattern.processNote(note, clock, this.scale);
       }
     }
 
