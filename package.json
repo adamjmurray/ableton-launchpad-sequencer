@@ -4,7 +4,8 @@
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
   "devDependencies": {
     "coffeescript": "^2.3.1",
-    "jasmine-node": "^1.14.6"
+    "jasmine-node": "^1.14.6",
+    "mocha": "^5.2.0"
   },
   "scripts": {
     "test": "cake test"
