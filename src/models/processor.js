@@ -39,7 +39,7 @@ const processors = {
       case 1: note.pitch = randomPitch(); break;
       case 2: note.velocity = randomVelocity(); break;
       case 3: note.duration = randomDuration(); break;
-      case 4: [note.pitch, note.velocity, note.duration] = [randomPitch(), randomVelocity(), trandomDuration()]; break;
+      case 4: [note.pitch, note.velocity, note.duration] = [randomPitch(), randomVelocity(), randomDuration()]; break;
     }
   }
 };
@@ -57,6 +57,7 @@ export default class Processor {
   }
 
   process(note, value, scale) {
-    return this._process(note, value, scale);
+    this._process(note, value, scale);
+    return note;
   }
 };

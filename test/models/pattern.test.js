@@ -12,4 +12,6 @@ describe('Pattern', () => {
       assert.deepEqual(pattern.sequence, expected);
     })
   });
+
+  // TODO...
 });
