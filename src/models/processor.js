@@ -5,7 +5,6 @@ const randomPitch = randomMidiValue;
 const randomVelocity = randomMidiValue;
 const randomDuration = () => Math.random() * 8;
 
-// TODO: move this to sequencer
 // The note modifying behavior for each pattern type.
 // These may assume we filtered out stepValue 0 in processNote() as a NOOP
 const processors = {

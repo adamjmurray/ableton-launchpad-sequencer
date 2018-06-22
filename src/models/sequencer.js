@@ -1,8 +1,7 @@
 import Scale from './scale';
 import { DEFAULT_STEP_LENGTH, TRACKS, NOTE, CC, AFTERTOUCH } from '../config';
 
-// The controller for the sequencing application.
-// Manages state and keeps the views updated.
+// The top-level container of tracks and their patterns.
 export default class Sequencer {
 
   constructor() {
