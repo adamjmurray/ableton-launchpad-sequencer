@@ -46,7 +46,7 @@ const processors = {
 export default class Processor {
 
   constructor(type) {
-    this.type = type;
+    this._type = type;
   }
 
   get type() { return this._type; }

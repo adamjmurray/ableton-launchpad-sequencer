@@ -38,7 +38,7 @@ export default class Sequencer {
 
   toJSON(options = {}) {
     const json = {
-      scale: this.scale.getSteps(),
+      scale: this.scale.pitchClasses,
       stepLength: this.stepLength
     };
     if (!options.omitTracks) {
@@ -49,13 +49,15 @@ export default class Sequencer {
 
   fromJSON({ scale, stepLength, tracks }) {
     if (scale != null) {
-      this.scale.setSteps(scale);
+      this.scale.pitchClasses = scale;
     }
     if (stepLength != null) {
       this.stepLength = stepLength;
     }
     if (tracks != null) {
-      tracks.forEach((track, index) => this.tracks[index].fromJSON(track));
+      tracks.forEach((track, index) =>
+        this.tracks[index].fromJSON(track)
+      );
     }
   }
 }

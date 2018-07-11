@@ -14,9 +14,9 @@ const randomDuration = () => Math.random() * 8;
 //
 export default class Pattern {
 
-  constructor(type, sequence) {
+  constructor(type) {
     this._processor = new Processor(type);
-    this.sequence = sequence;
+    this.sequence = Array(STEPS).fill(0);
     this.start = 0;
     this.end = STEPS - 1;
     this.mute = false;
@@ -179,13 +179,13 @@ export default class Pattern {
   }
 
   toJSON() {
-    return ({
-      type: this._type,
+    return {
+      type: this.type,
       start: this._start,
       end: this._end,
       mute: this.mute,
       sequence: this._sequence
-    });
+    };
   }
 
   fromJSON({ type, start, end, mute, sequence }) {
