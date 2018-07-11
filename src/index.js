@@ -7,4 +7,7 @@ import Track from './models/track';
 import Scale from './models/scale';
 import Sequencer from './models/sequencer';
 
-export { MIDIController, StorageController, Pattern, Processor, Track, Scale, Sequencer };
+import GUI from './views/gui';
+import Launchpad from './views/launchpad';
+
+export { MIDIController, StorageController, Pattern, Processor, Track, Scale, Sequencer, GUI, Launchpad };

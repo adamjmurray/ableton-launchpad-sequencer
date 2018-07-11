@@ -8,12 +8,12 @@ export default class Defer {
 
   // Call the callback for each pattern step position (x,y,stepIndex)
   // Uses a deferring mechanism for performance
-  eachStep(callback) {
+  static eachStep(callback) {
     if (this._nextRow) { this._nextRow.cancel(); } // stop any existing scheduled activity
     this._eachRow(callback, 0);
   };
 
-  _eachRow(callback, y) {
+  static _eachRow(callback, y) {
     for (let x = 0; x < ROW_LENGTH; x++) {
       callback(x, y, x + y * ROW_LENGTH);
     }

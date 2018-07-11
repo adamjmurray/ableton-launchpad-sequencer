@@ -45,8 +45,8 @@ function clock(clockIndex) {
   sequencerController.setClock(clockIndex);
 };
 
-function scale(...scaleSteps) {
-  sequencerController.setScale(scaleSteps);
+function scale(...pitchClasses) {
+  sequencerController.setScale(pitchClasses);
 };
 
 //--------------------------------------------------------------
