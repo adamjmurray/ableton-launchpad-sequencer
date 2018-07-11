@@ -1,4 +1,5 @@
 import { PATTERNS, DEFAULT_PATTERN_TYPES } from '../config';
+import Pattern from './pattern';
 
 export default class Track {
 

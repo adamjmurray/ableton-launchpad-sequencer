@@ -1,4 +1,5 @@
 import Scale from './scale';
+import Track from './track';
 import { DEFAULT_STEP_LENGTH, TRACKS, NOTE, CC, AFTERTOUCH } from '../config';
 
 // The top-level container of tracks and their patterns.

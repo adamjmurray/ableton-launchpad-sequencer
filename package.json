@@ -8,8 +8,8 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha -r babel-core/register test/**/*.test.js",
-    "watch-test": "node_modules/.bin/mocha -w -R min -r babel-core/register test/**/*.test.js"
+    "test": "node_modules/.bin/mocha -c -r babel-core/register test/**/*.test.js",
+    "watch-test": "node_modules/.bin/mocha -c -w -R min -r babel-core/register test/**/*.test.js"
   },
   "repository": {
     "type": "git",
