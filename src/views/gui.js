@@ -78,7 +78,6 @@ export default class GUI {
     const startY = Math.floor(start / 8) * GUI_STEP_WIDTH;
     const endX = (end % 8) * GUI_STEP_WIDTH;
     const endY = Math.floor(end / 8) * GUI_STEP_WIDTH;
-
     const lines = [
       [startX + delta, startY, startX, startY],
       [startX, startY, startX, startY + delta],
@@ -89,9 +88,13 @@ export default class GUI {
     ];
 
     this.color(GUI.NO_COLOR);
-    for (var line of this.oldlines) { this.drawline(line); }
+    for (const oldLine of this.oldlines) {
+      this.drawline(oldLine);
+    }
     this.color(GUI.START_END_COLOR);
-    for (line of lines) { this.drawline(line); }
+    for (const line of lines) {
+      this.drawline(line);
+    }
     this.oldlines = lines;
   }
 

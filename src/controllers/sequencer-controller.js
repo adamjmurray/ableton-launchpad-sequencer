@@ -1,13 +1,6 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 // The controller for the sequencing application.
 // Manages state and keeps the views updated.
-//
-class SequencerController {
+export default class SequencerController {
 
   constructor(sequencer, launchpad) {
     this.sequencer = sequencer;
@@ -22,15 +15,18 @@ class SequencerController {
 
   // Clear all patterns and set all track and pattern properties to their default values.
   reset(firstTime) {
-    if (!firstTime) { this.sequencer.reset(true); }
+    if (!firstTime) {
+      this.sequencer.reset(true);
+    }
     this.track = 0;   // selected track index
     this.pattern = 0; // selected pattern index
     this.value = 1;   // selected step value
     this.clock = -1;  // current transport time, in steps
     this._updateSelectedPattern(true);
-    if (!firstTime) { this.redraw(); }
+    if (!firstTime) {
+      this.redraw();
+    }
   }
-
 
   // Update the Launchpad and Max GUI lights to reflect the current sequencer state
   redraw() {
@@ -54,34 +50,33 @@ class SequencerController {
   }
 
   drawGrid(pattern) {
-    if (pattern == null) { pattern = this.selectedPattern; }
-    const { launchpad } = this;
-    const { gui } = this;
-    launchpad.patternSteps(pattern, function (x, y, stepValue) {
-      gui.grid(x, y, stepValue);
-    });
+    if (pattern == null) {
+      pattern = this.selectedPattern;
+    }
+    const { launchpad, gui } = this;
+    launchpad.patternSteps(pattern, (x, y, stepValue) => gui.grid(x, y, stepValue));
   }
 
   drawPatternInfo() {
-    return this.gui.patternInfo(this.pattern, this.selectedPattern);
+    this.gui.patternInfo(this.pattern, this.selectedPattern);
   }
-
 
   setGridValue(x, y) {
     const step = x + (y * 8);
     const pattern = this.selectedPattern;
     let { value } = this;
-    if (value === pattern.getStep(step)) { value = 0; } // toggle off
+    if (value === pattern.getStep(step)) { // toggle off
+      value = 0;
+    }
     pattern.setStep(step, value);
     this.launchpad.grid(x, y, value);
     this.gui.grid(x, y, value);
   }
 
-
   selectTrack(index, skipRedraw) {
-    if (0 > index || index > 3) { return; }
-    const { launchpad } = this;
-    const { gui } = this;
+    if (0 > index || index > 3) return;
+    const { launchpad, gui, selectedTrack, selectedPattern } = this;
+    const { patterns } = selectedTrack;
 
     // turn off old selectedTrack button on the Launchpad
     launchpad.trackOff(this.selectedTrack);
@@ -89,9 +84,6 @@ class SequencerController {
     // switch to the new selectedTrack
     this.track = index;
     this._updateSelectedPattern(skipRedraw);
-    const { selectedTrack } = this;
-    const { patterns } = selectedTrack;
-    const { selectedPattern } = this;
 
     // update the GUI
     gui.track(index);
@@ -101,7 +93,7 @@ class SequencerController {
 
     // update the Launchpad
     launchpad.track(selectedTrack);
-    for (let pattern of patterns) {
+    for (const pattern of patterns) {
       if (pattern === selectedPattern) {
         launchpad.pattern(pattern);
       } else {
@@ -110,35 +102,33 @@ class SequencerController {
     }
   }
 
-
   selectValue(value, preventToggle) {
-    if (0 > value || value > 4) { return; }
+    if (0 > value || value > 4) return;
     this.launchpad.stepValueOff(this.value);
-    if ((this.value === value) && !preventToggle) { value = 0; }
+    if (this.value === value && !preventToggle) {
+      value = 0;
+    }
     this.value = value;
-
     this.launchpad.stepValue(value);
     this.gui.stepValue(value);
   }
 
-
   selectPattern(index, skipRedraw) {
-    if (0 > index || index > 7) { return; }
+    if (0 > index || index > 7) return;
     this.launchpad.patternOff(this.selectedPattern);
     this.pattern = index;
     this._updateSelectedPattern(skipRedraw);
-
     this.launchpad.pattern(this.selectedPattern);
     this.gui.pattern(index);
     this.gui.patternMute(this.selectedPattern);
   }
 
-
-  setScale(scaleSteps) {
-    if (scaleSteps[0] === -1) { scaleSteps = []; } // special case message for empty scale
-    this.sequencer.scale.setSteps(scaleSteps);
+  setScale(pitchClasses) {
+    if (pitchClasses[0] === -1) {  // special case message for empty scale
+      pitchClasses = [];
+    }
+    this.sequencer.scale.pitchClasses = pitchClasses;
   }
-
 
   setClock(clock) {
     const oldClock = this.clock;
@@ -149,8 +139,6 @@ class SequencerController {
     }
   }
 
-
-
   stop() {
     this.setClock(-1);
     // Live sends "all notes off" to all connected MIDI devices when the transport stops,
@@ -158,14 +146,19 @@ class SequencerController {
     this.drawLaunchpad();
   }
 
-
   // @param t the track index
   // @param p the pattern index
   // @param stepValues an array of sequence step values
   setPattern(t, p, stepValues) {
-    if ((0 > t || t >= TRACKS) || (0 > p || p >= PATTERNS) || (stepValues.length !== 64)) { return; }
+    if (0 > t || t >= TRACKS
+      || 0 > p || p >= PATTERNS
+      || stepValues.length !== 64) {
+      return;
+    }
     this.sequencer.tracks[t].patterns[p].sequence = stepValues;
-    if ((t === this.track) && (p === this.pattern)) { this._drawPattern(t, p); } // update current pattern
+    if (t === this.track && p === this.pattern) { // GUI only show selected pattern state
+      this._drawPattern(t, p);
+    }
   }
 
   toggleSelectedTrackMute() {
@@ -178,10 +171,12 @@ class SequencerController {
 
   muteTrack(trackIdx, mute) {
     const track = this.sequencer.tracks[trackIdx];
-    if (track == null) { return; }
+    if (track == null) return;
     track.mute = mute != null ? mute : !track.mute; // if no value is given, then toggle
     this.launchpad.track(track);
-    if (track === this.selectedTrack) { this.gui.trackMute(track); } // GUI only show current track state
+    if (track === this.selectedTrack) { // GUI only shows the selected track state
+      this.gui.trackMute(track);
+    }
   }
 
   toggleSelectedPatternMute() {
@@ -193,13 +188,16 @@ class SequencerController {
   }
 
   mutePattern(trackIdx, patternIdx, mute) {
-    const pattern = this.sequencer.tracks[trackIdx] != null ? this.sequencer.tracks[trackIdx].patterns[patternIdx] : undefined;
-    if (pattern == null) { return; }
+    const pattern = this.sequencer.tracks[trackIdx] != null
+      ? this.sequencer.tracks[trackIdx].patterns[patternIdx]
+      : undefined;
+    if (pattern == null) return;
     pattern.mute = mute != null ? mute : !pattern.mute; // if no value is given, then toggle
     this.launchpad.pattern(pattern);
-    if (pattern === this.selectedPattern) { this.gui.patternMute(pattern); } // GUI only show current pattern state
+    if (pattern === this.selectedPattern) { // GUI only show selected pattern state
+      this.gui.patternMute(pattern);
+    }
   }
-
 
   // Copy the given pattern to the clipboard.
   copyPattern() {
@@ -211,11 +209,10 @@ class SequencerController {
   // Update the give target pattern to match the one in the clipboard
   pastePattern() {
     const pattern = this.patternClipboard;
-    if (pattern == null) { return; }
+    if (pattern == null) return;
     this.selectedPattern.fromJSON(pattern);
     this.selectPattern(this.pattern); // this redraws everything needed
   }
-
 
   // Rotate (shift with wrap-around) the selected pattern within it's start/end range.
   rotate(amount) {
@@ -288,7 +285,6 @@ class SequencerController {
     this.selectedPattern.setType(type);
   }
 
-
   // ==============================================================================
   // private
 
@@ -297,14 +293,15 @@ class SequencerController {
     const patternIndex = this.pattern;
     this.selectedTrack = this.sequencer.tracks[trackIndex];
     this.selectedPattern = this.selectedTrack.patterns[patternIndex];
-    if (!skipRedraw) { this._drawPattern(trackIndex, patternIndex); }
+    if (!skipRedraw) {
+      this._drawPattern(trackIndex, patternIndex);
+    }
   }
-
 
   _drawPattern(trackIndex, patternIndex) {
     const track = this.sequencer.tracks[trackIndex];
     const pattern = track != null ? track.patterns[patternIndex] : undefined;
-    if (pattern == null) { return; }
+    if (pattern == null) return;
 
     this.gui.trackInfo(trackIndex, track);
     this.gui.patternInfo(patternIndex, pattern);
@@ -315,10 +312,9 @@ class SequencerController {
     this._drawActiveStep();
   }
 
-
   _drawActiveStep() {
     const clock = this.selectedTrack.clockForMultiplier(this.clock);
-    if (clock == null) { return; }
+    if (clock == null) return;
 
     const { selectedPattern } = this;
     const oldActiveStep = this.activeStep;
@@ -329,7 +325,9 @@ class SequencerController {
       const oldX = oldActiveStep % 8;
       const oldY = Math.floor(oldActiveStep / 8) % 8;
       const oldValue = selectedPattern.getStep(oldActiveStep);
-      if (!launchpad.patternOpsMode) { this.launchpad.grid(oldX, oldY, oldValue); }
+      if (!launchpad.patternOpsMode) {
+        this.launchpad.grid(oldX, oldY, oldValue);
+      }
       this.gui.grid(oldX, oldY, oldValue);
     }
 
@@ -339,10 +337,10 @@ class SequencerController {
     if (activeStep >= 0) {
       const x = activeStep % 8;
       const y = Math.floor(activeStep / 8) % 8;
-      if (!launchpad.patternOpsMode) { this.launchpad.activeStep(x, y); }
+      if (!launchpad.patternOpsMode) {
+        this.launchpad.activeStep(x, y);
+      }
       this.gui.activeStep(x, y);
     }
-
   }
 }
-
