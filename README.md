@@ -5,8 +5,8 @@
 A device for [Ableton Live](http://www.ableton.com/en/live/) that brings unique step sequencing capabilities to
 the [Novation Launchpad](http://us.novationmusic.com/midi-controllers-digital-dj/launchpad) hardware controller.
 
-Built with [Max/MSP](http://cycling74.com/products/max/) and [Max for Live](http://ableton.com/maxforlive) with much
-of the code written in [CoffeeScript](http://coffeescript.org/).
+Built with [Max/MSP](http://cycling74.com/products/max/), [Max for Live](http://ableton.com/maxforlive), and
+a lot of JavaScript.
 
 
 ## Usage
@@ -34,54 +34,3 @@ then add the launchpad-sequencer-proxy.amxd and launchpad-sequencer.amxd devices
 For Live setup details, consult the example project.
 
 For new projects, it's easiest to simply save a copy of the example project.
-
-
-## Building from Source
-
-### Prerequisites
-
-0. Install [Node.js](http://nodejs.org/)
-0. Install [CoffeeScript](http://coffeescript.org/#installation) via `sudo npm install -g coffee-script`
-0. Install [jasmine-node](http://github.com/mhevery/jasmine-node#install) via `sudo npm install -g jasmine-node`
-
-Note: After installing Node.js, you can (maybe?) skip the other steps and run `npm install` in this repository.
-
-To build the app for distribution, you also need [UglifyJS](https://github.com/mishoo/UglifyJS) via `sudo npm install -g uglify-js`
-
-### Building for normal use & distribution
-
-From this directory, run:
-
-    cake build
-
-### Auto-building during development
-
-    cake dev
-
-### Running unit tests
-
-    cake test
-
-### Building the app for distribution
-
-This part is a little tricky because it requires a few manaul steps. First run:
-
-    cake release
-
-Then:
-
-0. open the example Live set
-0. open the launchpad-sequencer
-  * Freeze the Max patcher
-  * Save the Max patcher
-0. Open the launchpad-sequencer-proxy device
-  * Freeze the Max patcher
-  * Save the Max patcher
-0. Save the Live set
-
-And finally, back on the command line, run:
-
-    cake dist
-
-You should end up with a zip file in the "dist" folder that contains the application and example project.
-

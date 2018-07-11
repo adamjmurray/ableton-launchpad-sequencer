@@ -17,13 +17,11 @@ export {
   MIDIController,
   SequencerController,
   StorageController,
-
   Pattern,
   Processor,
   Track,
   Scale,
   Sequencer,
-
   GUI,
   Launchpad
 };

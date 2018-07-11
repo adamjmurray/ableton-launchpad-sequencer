@@ -36,6 +36,8 @@ const _s = (key, holder, options) => {
   }
 }
 
+const _eval = eval; // https://github.com/rollup/rollup/wiki/Troubleshooting#avoiding-eval
+
 // The interface to the pattr persistence system in Max.
 export default class StorageController {
 
@@ -108,6 +110,6 @@ export default class StorageController {
     if (jsonString.match(/new|\(|\)|=/)) {
       throw `cannot parse unsafe-looking JSON: ${jsonString}`;
     }
-    return eval(`(${jsonString})`);
+    return _eval(`(${jsonString})`);
   }
 }

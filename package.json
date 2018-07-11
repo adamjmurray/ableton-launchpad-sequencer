@@ -2,20 +2,27 @@
   "name": "m4l-launchpad-sequencer",
   "version": "0.5.0",
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
+  "dependencies": {},
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1",
-    "mocha": "^5.2.0"
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "mocha": "^5.2.0",
+    "rollup": "^0.62.0",
+    "rollup-plugin-babel": "^3.0.7"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha -c -r babel-core/register test/**/*.test.js",
-    "watch-test": "node_modules/.bin/mocha -c -w -R min -r babel-core/register test/**/*.test.js"
+    "build": "npx rollup -c rollup.config.js",
+    "dev": "npx rollup -c rollup.config.js -w",
+    "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",
+    "test": "npx mocha -c -r babel-core/register test/**/*.test.js",
+    "watch-test": "npx mocha -c -w -R min -r babel-core/register test/**/*.test.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/adamjmurray/m4l-launchpad-sequencer.git"
   },
   "author": "Adam Murray",
-  "license": "BSD",
-  "dependencies": {}
+  "license": "BSD"
 }
