@@ -16,7 +16,7 @@ export default class Pattern {
 
   constructor(type) {
     this._processor = new Processor(type);
-    this.sequence = [...Array(STEPS)].map(_ => 0);
+    this.sequence = Array(STEPS).fill(0);
     this.start = 0;
     this.end = STEPS - 1;
     this.mute = false;
@@ -28,7 +28,7 @@ export default class Pattern {
   get sequence() { return this._sequence; }
   set sequence(sequence) {
     const seq = (sequence || []).slice(0, STEPS);
-    this._sequence = seq.concat([...Array(STEPS - seq.length)].map(_ => 0));
+    this._sequence = seq.concat(Array(STEPS - seq.length).fill(0));
   }
 
   get start() { return this._start; }

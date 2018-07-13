@@ -1,3 +1,4 @@
+import './polyfills';
 import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
 import { ROW_LENGTH } from './config';
 
