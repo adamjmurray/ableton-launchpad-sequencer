@@ -1,3 +1,6 @@
+import Launchpad from '../views/launchpad';
+import { ROW_LENGTH } from '../config';
+
 export default class LaunchpadController {
 
   // Pattern "Ops" modes

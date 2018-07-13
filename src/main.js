@@ -1,8 +1,7 @@
 import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
+import { ROW_LENGTH } from './config';
 
-// Max outlets
-// TODO: set this in Max. Rollup doesn't like it (https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined)
-// this.outlets = 17;
+outlets = 17;
 
 const launchpad = new Launchpad;
 const sequencer = new Sequencer(launchpad);

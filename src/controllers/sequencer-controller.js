@@ -1,3 +1,6 @@
+import GUI from '../views/gui';
+import { PATTERNS, TRACKS } from '../config';
+
 // The controller for the sequencing application.
 // Manages state and keeps the views updated.
 export default class SequencerController {

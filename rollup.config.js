@@ -9,8 +9,8 @@ export default {
   plugins: [
     babel({
       babelrc: false,
-      presets: [['env', { modules: false, targets: { node: '4' } }]],
+      presets: [['env', { modules: false }]],
       plugins: ['external-helpers'],
-    })
-  ]
+    }),
+  ],
 };

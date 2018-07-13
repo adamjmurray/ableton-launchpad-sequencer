@@ -13,7 +13,7 @@
     "rollup-plugin-babel": "^3.0.7"
   },
   "scripts": {
-    "build": "npx rollup -c rollup.config.js",
+    "build": "npx rollup -c rollup.config.js && sed -i 's/^export {.*};//' launchpad-sequencer/launchpad-sequencer.js",
     "dev": "npx rollup -c rollup.config.js -w",
     "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",
     "test": "npx mocha -c -r babel-core/register test/**/*.test.js",
