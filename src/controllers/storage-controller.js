@@ -26,9 +26,10 @@ const _s = (key, holder, options) => {
 
       } else { // Object
         const result = [];
-        for (key of Object.keys(value || {})) {
-          result.push(`${quote(key)}: ${_s(key, value, options)}`);
-        }
+        Object.keys(value || {})
+          .forEach(key =>
+            result.push(`${quote(key)}: ${_s(key, value, options)}`)
+          );
         return `{${result.join(',')}}`;
       }
     case 'string':
@@ -90,9 +91,7 @@ export default class StorageController {
 
   save() {
     outlet(PATTR, 'global', this.stringify(this.sequencer, { omitTracks: true }));
-    for (const track of tracks) {
-      outlet(PATTR, `track[${index}]`, this.stringify(track));
-    }
+    tracks.forEach(track => outlet(PATTR, `track[${index}]`, this.stringify(track)));
   }
 
 

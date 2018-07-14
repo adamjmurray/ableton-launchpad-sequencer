@@ -96,13 +96,13 @@ export default class SequencerController {
 
     // update the Launchpad
     launchpad.track(selectedTrack);
-    for (const pattern of patterns) {
+    patterns.forEach(pattern => {
       if (pattern === selectedPattern) {
         launchpad.pattern(pattern);
       } else {
         launchpad.patternOff(pattern);
       }
-    }
+    });
   }
 
   selectValue(value, preventToggle) {

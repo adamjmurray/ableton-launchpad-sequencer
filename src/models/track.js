@@ -30,13 +30,13 @@ export default class Track {
     // note.interval = null # for whenever an interval pattern exists
     // note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick
 
-    for (const pattern of this.patterns) {
+    patterns.forEach(pattern => {
       if (note.skip) { // random skip caused next pattern to be skipped
         note.skip = null;
       } else {
         pattern.processNote(note, clock, this.scale);
       }
-    }
+    });
 
     note.duration *= this.duration * this.multiplier; // track.duration and multiplier scales the note's duration
     return note;

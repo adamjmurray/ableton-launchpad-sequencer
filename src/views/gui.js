@@ -104,13 +104,9 @@ export default class GUI {
     ];
 
     this.color(GUI.NO_COLOR);
-    for (const oldLine of this.oldlines) {
-      this.drawline(oldLine);
-    }
+    this.oldlines.forEach(oldLine => this.drawline(oldLine));
     this.color(GUI.START_END_COLOR);
-    for (const line of lines) {
-      this.drawline(line);
-    }
+    lines.forEach(line => this.drawline(line));
     this.oldlines = lines;
   }
 
