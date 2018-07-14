@@ -275,17 +275,17 @@ export default class SequencerController {
   }
 
   setSelectedPatternStartStep(stepIndex) {
-    this.selectedPattern.setStart(stepIndex);
+    this.selectedPattern.start = stepIndex;
     this.drawPatternInfo();
   }
 
   setSelectedPatternEndStep(stepIndex) {
-    this.selectedPattern.setEnd(stepIndex);
+    this.selectedPattern.end = stepIndex;
     this.drawPatternInfo();
   }
 
   setSelectedPatternType(type) {
-    this.selectedPattern.setType(type);
+    this.selectedPattern.type = type;
   }
 
   // ==============================================================================
@@ -319,7 +319,7 @@ export default class SequencerController {
     const clock = this.selectedTrack.clockForMultiplier(this.clock);
     if (clock == null) return;
 
-    const { selectedPattern } = this;
+    const { selectedPattern, launchpad, gui } = this;
     const oldActiveStep = this.activeStep;
     const activeStep = selectedPattern.stepIndexForClock(clock);
 
@@ -329,9 +329,9 @@ export default class SequencerController {
       const oldY = Math.floor(oldActiveStep / 8) % 8;
       const oldValue = selectedPattern.getStep(oldActiveStep);
       if (!launchpad.patternOpsMode) {
-        this.launchpad.grid(oldX, oldY, oldValue);
+        launchpad.grid(oldX, oldY, oldValue);
       }
-      this.gui.grid(oldX, oldY, oldValue);
+      gui.grid(oldX, oldY, oldValue);
     }
 
     this.activeStep = activeStep;
@@ -341,9 +341,9 @@ export default class SequencerController {
       const x = activeStep % 8;
       const y = Math.floor(activeStep / 8) % 8;
       if (!launchpad.patternOpsMode) {
-        this.launchpad.activeStep(x, y);
+        launchpad.activeStep(x, y);
       }
-      this.gui.activeStep(x, y);
+      gui.activeStep(x, y);
     }
   }
 }
