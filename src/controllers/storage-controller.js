@@ -1,46 +1,5 @@
 import { PATTR } from '../config';
 
-const quote = (value) => {
-  return `"${value.replace('"', '\\"')}"`;
-}
-
-const _s = (key, holder, options) => {
-  var key;
-  let value = holder[key];
-
-  if (value == null) {
-    return 'null';
-  }
-  if (typeof value.toJSON === 'function') {
-    value = value.toJSON(options);
-  }
-
-  switch (typeof value) {
-    case 'object': // Object or Array
-      if (value instanceof Array) {
-        const result = [];
-        for (let i = 0, end = value.length; i < end; i++) {
-          result.push(_s(i, value, options));
-        }
-        return `[${result.join(',')}]`;
-
-      } else { // Object
-        const result = [];
-        Object.keys(value || {})
-          .forEach(key =>
-            result.push(`${quote(key)}: ${_s(key, value, options)}`)
-          );
-        return `{${result.join(',')}}`;
-      }
-    case 'string':
-      return quote(value);
-    default:
-      return value.toString();
-  }
-}
-
-const _eval = eval; // https://github.com/rollup/rollup/wiki/Troubleshooting#avoiding-eval
-
 // The interface to the pattr persistence system in Max.
 export default class StorageController {
 
@@ -52,13 +11,13 @@ export default class StorageController {
   import(filepath) {
     const file = new File(filepath, 'read');
     const jsonString = file.readstring(10240); // 2048 * 5 is the max we can store in pattr objects in Max 5
-    this.sequencer.fromJSON(this.parse(jsonString));
+    this.sequencer.fromJSON(JSON.parse(jsonString));
     this.sequencerController.redraw();
   }
 
   export(filepath) {
     const file = new File(filepath, 'write');
-    file.writestring(this.stringify(this.sequencer));
+    file.writestring(JSON.stringify(this.sequencer));
     file.close();
   }
 
@@ -69,7 +28,7 @@ export default class StorageController {
     }
 
     if (path === 'global') {
-      this.sequencer.fromJSON(this.parse(jsonString));
+      this.sequencer.fromJSON(JSON.parse(jsonString));
       return;
     }
 
@@ -90,27 +49,8 @@ export default class StorageController {
   }
 
   save() {
-    outlet(PATTR, 'global', this.stringify(this.sequencer, { omitTracks: true }));
-    tracks.forEach(track => outlet(PATTR, `track[${index}]`, this.stringify(track)));
-  }
-
-
-  //#######################################################################################
-  // JSON methods (implementation inspired by https://github.com/douglascrockford/JSON-js)
-
-  // Generate a JSON string for a given object.
-  // If the object implements toJSON() the return value of that method will be used to construct the JSON string.
-  // If any options are passed in, they will be passed to any toJSON calls.
-  stringify(json, options) {
-    return _s('', { '': json }, options);
-  }
-
-  // Parse the given JSON string into a generic JavaScript object
-  parse(jsonString) {
-    // Check that the String looks safe to eval. No "new", function call parentheses "()", or "="
-    if (jsonString.match(/new|\(|\)|=/)) {
-      throw `cannot parse unsafe-looking JSON: ${jsonString}`;
-    }
-    return _eval(`(${jsonString})`);
+    outlet(PATTR, 'global', JSON.stringify(this.sequencer, { omitTracks: true }));
+    this.sequencer.tracks.forEach((track, index) =>
+      outlet(PATTR, `track[${index}]`, JSON.stringify(track)));
   }
 }

@@ -1,7 +1,6 @@
 console = {
-  log: function () {
-    for (var i = 0, len = arguments.length; i < len; i++) {
-      var message = arguments[i];
+  log(...values) {
+    values.forEach(message => {
       if (message && message.toString) {
         var s = message.toString();
         if (s.indexOf("[object ") >= 0) {
@@ -15,7 +14,7 @@ console = {
       else {
         post(message);
       }
-    }
+    });
     post("\n");
   }
 }
