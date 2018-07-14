@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel';
+import { babel, unexport } from 'rollup-plugin-bundleutils';
 
 export default {
   input: 'src/main.js',
@@ -7,10 +7,7 @@ export default {
     format: 'es',
   },
   plugins: [
-    babel({
-      babelrc: false,
-      presets: [['env', { modules: false }]],
-      plugins: ['external-helpers'],
-    }),
+    babel(),
+    unexport(),
   ],
 };
