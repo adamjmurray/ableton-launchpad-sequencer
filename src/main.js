@@ -204,4 +204,4 @@ export function exportFile(filepath) {
   storageController.export(filepath);
 };
 
-post(`reloaded at: ${new Date}\n`);
+console.log(`reloaded at: ${new Date}`);
