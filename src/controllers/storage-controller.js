@@ -22,6 +22,8 @@ export default class StorageController {
   }
 
   load(path, jsonString) {
+    if (!jsonString) return;
+
     if (path === 'dump') { // we're done
       this.sequencerController.redraw();
       return;
@@ -44,7 +46,7 @@ export default class StorageController {
     const trackIndex = parseInt(matches[1]);
     const track = this.sequencer.tracks[trackIndex];
     if (track != null) {
-      track.fromJSON(this.parse(jsonString));
+      track.fromJSON(JSON.parse(jsonString));
     }
   }
 

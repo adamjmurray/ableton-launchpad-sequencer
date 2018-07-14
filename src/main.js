@@ -57,7 +57,7 @@ export function clock(clockIndex) {
   sequencerController.setClock(clockIndex);
 };
 
-export function scale(...pitchClasses) {
+export function setScale(...pitchClasses) {
   sequencerController.setScale(pitchClasses);
 };
 
