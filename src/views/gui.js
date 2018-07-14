@@ -1,3 +1,19 @@
+import {
+  TRACK_INDEX,
+  STEP_VALUE,
+  PATTERN_INDEX,
+  GUI_STEP_WIDTH,
+  GUI_BUTTON_WIDTH,
+  GRID,
+  TRACK_INFO,
+  TRACK_MUTE,
+  TRACK_MULTIPLIER,
+  PATTERN_INFO,
+  PATTERN_MUTE,
+  SCALE,
+  STEP_LENGTH,
+} from '../config';
+
 export default class GUI {
 
   // Max's LCD object expects [R,G,B] in 0-255 range

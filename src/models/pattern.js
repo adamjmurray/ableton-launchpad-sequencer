@@ -1,5 +1,5 @@
 import Processor from './processor';
-import { GATE_DURATIONS, MODS, NOOP, OCTAVES, ROW_LENGTH, STEPS, VALUES } from '../config';
+import { ROW_LENGTH, STEPS, VALUES } from '../config';
 import { mod } from '../utils';
 
 const randomMidiValue = () => Math.floor(Math.random() * 128);

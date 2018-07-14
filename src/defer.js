@@ -1,5 +1,5 @@
 
-import { ROW_LENGTH } from './config';
+import { ROW_LENGTH, DEFER_DELAY } from './config';
 
 // TODO: test if this file is still necessary
 

@@ -1,3 +1,5 @@
+import { PATTR } from '../config';
+
 const quote = (value) => {
   return `"${value.replace('"', '\\"')}"`;
 }
