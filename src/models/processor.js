@@ -9,7 +9,7 @@ const randomDuration = () => Math.random() * 8;
 // These may assume we filtered out stepValue 0 in processNote() as a NOOP
 const processors = {
   'pitch gate': (note, value) => { note.duration = 1; note.pitch += (value - 1); },
-  'scale gate': (note, value) => { note.duration = 1; note.pitch = scale.map(note.pitch, value - 1); },
+  'scale gate': (note, value, scale) => { note.duration = 1; note.pitch = scale.map(note.pitch, value - 1); },
   'velocity gate': (note, value) => { note.duration = 1; note.velocity += ((127 - note.velocity) * (value - 1)) / 3; },
   'duration gate': (note, value) => { note.duration = GATE_DURATIONS[value]; },
 
@@ -46,7 +46,7 @@ const processors = {
 export default class Processor {
 
   constructor(type) {
-    this._type = type;
+    this.type = type;
   }
 
   get type() { return this._type; }

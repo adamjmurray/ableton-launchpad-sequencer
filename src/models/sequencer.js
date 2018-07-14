@@ -20,7 +20,7 @@ export default class Sequencer {
 
   step(clockIndex) {
     if (clockIndex < 0) return;
-    tracks.forEach((track) => {
+    this.tracks.forEach((track) => {
       const note = track.noteForClock(clockIndex);
       if (note) {
         if ((note.duration > 0) && (note.velocity > 0)) {

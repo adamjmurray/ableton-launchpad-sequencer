@@ -30,7 +30,7 @@ export default class Track {
     // note.interval = null # for whenever an interval pattern exists
     // note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick
 
-    patterns.forEach(pattern => {
+    this.patterns.forEach(pattern => {
       if (note.skip) { // random skip caused next pattern to be skipped
         note.skip = null;
       } else {

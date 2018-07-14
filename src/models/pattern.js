@@ -2,11 +2,6 @@ import Processor from './processor';
 import { ROW_LENGTH, STEPS, VALUES } from '../config';
 import { mod } from '../utils';
 
-const randomMidiValue = () => Math.floor(Math.random() * 128);
-const randomPitch = randomMidiValue;
-const randomVelocity = randomMidiValue;
-const randomDuration = () => Math.random() * 8;
-
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
 //
 // It consists of 64 steps with integer values (typically 0-4 for off,green,yellow,orange,red lights),
