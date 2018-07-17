@@ -1,8 +1,6 @@
 
 import { ROW_LENGTH, DEFER_DELAY } from './config';
 
-// TODO: test if this file is still necessary
-
 // Scheduler for expensive tasks that need to run in chunks to avoid MIDI timing issues.
 export default class Defer {
 

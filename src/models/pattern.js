@@ -9,7 +9,8 @@ import { mod } from '../utils';
 //
 export default class Pattern {
 
-  constructor(type) {
+  constructor(index, type) {
+    this.index = index;
     this._processor = new Processor(type);
     this.sequence = Array(STEPS).fill(0);
     this.start = 0;

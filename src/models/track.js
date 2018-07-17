@@ -12,7 +12,7 @@ export default class Track {
     this.velocity = 70;
     this.duration = 0.9;
     this.number = this.index + 1;
-    this.patterns = [...Array(PATTERNS)].map((_, index) => new Pattern(DEFAULT_PATTERN_TYPES[index]));
+    this.patterns = [...Array(PATTERNS)].map((_, index) => new Pattern(index, DEFAULT_PATTERN_TYPES[index]));
     this.multiplier = 1;
     this.mute = false;
     this.note = {};

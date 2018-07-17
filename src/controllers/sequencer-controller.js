@@ -78,8 +78,7 @@ export default class SequencerController {
 
   selectTrack(index, skipRedraw) {
     if (0 > index || index > 3) return;
-    const { launchpad, gui, selectedTrack, selectedPattern } = this;
-    const { patterns } = selectedTrack;
+    const { launchpad, gui } = this;
 
     // turn off old selectedTrack button on the Launchpad
     launchpad.trackOff(this.selectedTrack);
@@ -90,14 +89,14 @@ export default class SequencerController {
 
     // update the GUI
     gui.track(index);
-    gui.trackMute(selectedTrack);
-    gui.trackMultiplier(selectedTrack);
-    gui.patternMute(selectedPattern);
+    gui.trackMute(this.selectedTrack);
+    gui.trackMultiplier(this.selectedTrack);
+    gui.patternMute(this.selectedPattern);
 
     // update the Launchpad
-    launchpad.track(selectedTrack);
-    patterns.forEach(pattern => {
-      if (pattern === selectedPattern) {
+    launchpad.track(this.selectedTrack);
+    this.selectedTrack.patterns.forEach(pattern => {
+      if (pattern === this.selectedPattern) {
         launchpad.pattern(pattern);
       } else {
         launchpad.patternOff(pattern);
