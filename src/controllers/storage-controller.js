@@ -51,12 +51,7 @@ export default class StorageController {
   }
 
   save() {
-    // TODO: see if it's still needed to separate these out (this was to workaround an old Max limitation)
     const sequencerJSON = JSON.stringify(this.sequencer);
-    const tracksJSON = json.tracks;
-    delete sequencerJSON.tracks;
     outlet(PATTR, 'global', sequencerJSON);
-    tracksJSON.forEach((trackJSON, index) =>
-      outlet(PATTR, `track[${index}]`, trackJSON));
   }
 }
