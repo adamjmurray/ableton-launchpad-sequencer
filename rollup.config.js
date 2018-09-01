@@ -1,4 +1,4 @@
-import { babel, unexport } from 'rollup-plugin-bundleutils';
+import babel from 'rollup-plugin-babel';
 
 export default {
   input: 'src/main.js',
@@ -8,6 +8,6 @@ export default {
   },
   plugins: [
     babel(),
-    unexport(),
+    { renderChunk: code => code.replace(/\nexport.*/, '') }, // remove top-level exports
   ],
 };

@@ -1,21 +1,22 @@
 {
   "name": "m4l-launchpad-sequencer",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
   "dependencies": {},
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "mocha": "^5.2.0",
-    "rollup": "^0.62.0",
-    "rollup-plugin-bundleutils": "^1.0.5"
+    "rollup": "^0.65.0",
+    "rollup-plugin-babel": "^4.0.2"
   },
   "scripts": {
     "build": "npx rollup -c rollup.config.js",
     "dev": "npx rollup -c -w rollup.config.js",
     "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",
-    "test": "npx mocha -c -r babel-core/register test/**/*.test.js",
-    "watch-test": "npx mocha -c -w -R min -r babel-core/register test/**/*.test.js"
+    "test": "npx mocha -c -r @babel/register test/**/*.test.js",
+    "watch-test": "npx mocha -c -w -R min -r @babel/register test/**/*.test.js"
   },
   "repository": {
     "type": "git",
