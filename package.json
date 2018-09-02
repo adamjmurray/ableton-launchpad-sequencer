@@ -12,11 +12,11 @@
     "rollup-plugin-babel": "^4.0.2"
   },
   "scripts": {
-    "build": "npx rollup -c rollup.config.js",
-    "dev": "npx rollup -c -w rollup.config.js",
+    "build": "npx rollup -c",
+    "dev": "npx rollup -c -w",
     "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",
-    "test": "npx mocha -c -r @babel/register test/**/*.test.js",
-    "watch-test": "npx mocha -c -w -R min -r @babel/register test/**/*.test.js"
+    "test": "npx mocha -c -r @babel/register 'test/**/*.test.js'",
+    "watch-test": "npx mocha -c -w -R min -r @babel/register 'test/**/*.test.js'"
   },
   "repository": {
     "type": "git",
