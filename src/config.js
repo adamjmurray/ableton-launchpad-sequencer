@@ -36,6 +36,7 @@ export const PATTERN_MUTE = 13;
 export const SCALE = 14;
 export const STEP_LENGTH = 15;
 export const TRACK_MULTIPLIER = 16;
+export const LAUNCHPAD_RAPID_UPDATE = 17;
 
 // Pattern settings:
 export const DEFAULT_PATTERN_TYPES = [

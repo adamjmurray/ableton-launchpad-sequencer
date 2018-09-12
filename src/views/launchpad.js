@@ -1,9 +1,9 @@
-import { LAUNCHPAD_CC, LAUNCHPAD_NOTE } from '../config';
+import { LAUNCHPAD_CC, LAUNCHPAD_NOTE, LAUNCHPAD_RAPID_UPDATE, TRACKS, PATTERNS } from '../config';
 import Defer from '../defer';
 
 export default class Launchpad {
 
-  static get OFF() { return this.color(0, 0); }
+  static get OFF() { return 4; } // 0 value for off doesn't work with rapid update mode. 4 also is (looks like?) off
   static get GREEN() { return this.color(3, 0); }
   static get YELLOW() { return this.color(3, 2); }
   static get ORANGE() { return this.color(2, 3); }
@@ -107,6 +107,62 @@ export default class Launchpad {
         }
       });
     }
+  }
+
+  render(state) {
+    const { sequence, stepValue, trackIndex, trackMutes, patternIndex, patternMutes, isPatternOpsMode, startStepIndex, endStepIndex } = state;
+    let colors;
+    // Color order: grid from left-to-right/top-to-bottom, right colomn (patterns) top-to-bottom, top row left-to-right
+    if (isPatternOpsMode) {
+      colors = sequence.map((stepValue, index) =>
+        index >= startStepIndex && index <= endStepIndex
+          ? Launchpad.ACTIVE_GRID_COLORS[stepValue]
+          : Launchpad.INACTIVE_GRID_COLORS[stepValue]);
+
+      for (let i = 0; i < PATTERNS; i++) {
+        colors.push(i === patternIndex ? Launchpad.PATTERN_COLOR : Launchpad.OFF);
+      }
+      colors.push(
+        Launchpad.YELLOW,
+        Launchpad.YELLOW,
+        Launchpad.YELLOW,
+        Launchpad.YELLOW,
+        // Next 2 are for reverse and invert
+        Launchpad.YELLOW,
+        Launchpad.YELLOW,
+        // Last 2 are copy & paste
+        Launchpad.GREEN,
+        Launchpad.RED,
+      );
+    } else {
+      colors = sequence.map(stepValue => Launchpad.GRID_COLORS[stepValue]);
+
+      for (let i = 0; i < PATTERNS; i++) {
+        if (patternMutes[i]) {
+          colors.push(i === patternIndex ? Launchpad.MUTE_COLOR : Launchpad.INACTIVE_MUTE_COLOR);
+        }
+        else {
+          colors.push(i === patternIndex ? Launchpad.PATTERN_COLOR : Launchpad.OFF);
+        }
+      }
+      for (let i = 0; i < TRACKS; i++) {
+        if (trackMutes[i]) {
+          colors.push(i === trackIndex ? Launchpad.MUTE_COLOR : Launchpad.INACTIVE_MUTE_COLOR);
+        }
+        else {
+          colors.push(i === trackIndex ? Launchpad.TRACK_COLOR : Launchpad.OFF);
+        }
+      }
+      for (let i = 0; i < 4; i++) {
+        colors.push(i + 1 === stepValue ? Launchpad.GRID_COLORS[stepValue] : Launchpad.OFF);
+      }
+    }
+    if (colors.length !== 80) {
+      console.log("expected colors.length to be 80, got", colors.length);
+      console.log(colors);
+      return;
+    }
+    outlet(LAUNCHPAD_RAPID_UPDATE, colors);
   }
 
   // ==============================================================================

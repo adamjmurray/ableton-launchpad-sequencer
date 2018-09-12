@@ -1,4 +1,5 @@
 import GUI from '../views/gui';
+import State from '../views/state';
 import { PATTERNS, TRACKS } from '../config';
 
 // The controller for the sequencing application.
@@ -9,6 +10,7 @@ export default class SequencerController {
     this.sequencer = sequencer;
     this.launchpad = launchpad;
     this.gui = new GUI;
+    this.state = new State;
     this.reset(true);
   }
 
@@ -33,13 +35,25 @@ export default class SequencerController {
 
   // Update the Launchpad and Max GUI lights to reflect the current sequencer state
   redraw() {
-    this.launchpad.allOff();
-    this.gui.clearGrid();
-    this.selectValue(this.value, true);
-    this.selectTrack(this.track, true);
-    this.selectPattern(this.pattern);
-    this.gui.scale(this.sequencer.scale);
-    this.gui.stepLength(this.sequencer.stepLength);
+    const { state, launchpad, gui } = this;
+
+    // launchpad.allOff(); // TODO: don't need this if using rapid update
+
+    gui.clearGrid();
+
+
+    state.patternIndex = this.pattern;
+    state.trackIndex = this.track;
+    state.stepValue = this.value;
+    state.sequence = this.selectedPattern.sequence;
+    launchpad.render(state);
+
+    // TODO: This needs to be uncommented and reworked. I'm just testing the rapid LED update POC
+    // this.selectValue(this.value, true);
+    // this.selectTrack(this.track, true);
+    // this.selectPattern(this.pattern);
+    // this.gui.scale(this.sequencer.scale);
+    // this.gui.stepLength(this.sequencer.stepLength);
   }
 
   // Quickly draw the Launchpad lights assuming all lights are currently off

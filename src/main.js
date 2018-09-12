@@ -2,7 +2,7 @@ import './polyfills';
 import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
 import { ROW_LENGTH, TRANSPORT_STOP } from './config';
 
-outlets = 17;
+outlets = 18;
 
 const launchpad = new Launchpad;
 const sequencer = new Sequencer(launchpad);
