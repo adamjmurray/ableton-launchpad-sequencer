@@ -3,7 +3,7 @@ import Defer from '../defer';
 
 export default class Launchpad {
 
-  static get OFF() { return 4; } // 0 value for off doesn't work with rapid update mode. 4 also is (looks like?) off
+  static get OFF() { return this.color(0, 0); }
   static get GREEN() { return this.color(3, 0); }
   static get YELLOW() { return this.color(3, 2); }
   static get ORANGE() { return this.color(2, 3); }
@@ -26,7 +26,7 @@ export default class Launchpad {
   static get INACTIVE_MUTE_COLOR() { return this.color(0, 1); }
 
   static color(green, red) {
-    if ((0 <= green && green <= 3) && (0 <= red && red <= 3)) { return (16 * green) + red; }
+    if ((0 <= green && green <= 3) && (0 <= red && red <= 3)) { return (16 * green) + red + 12; }
   }
 
   constructor() {

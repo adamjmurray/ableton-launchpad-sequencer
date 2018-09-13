@@ -1,5 +1,5 @@
 Rapid LED Update
--
+- Re-architect into EventHandler -> Controller -> Model -> View
 
 Code cleanup
 - Rename anything that's an index to be *Index
