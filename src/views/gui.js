@@ -4,6 +4,9 @@ const COLOR = ALL_COLORS.GUI;
 const { STEP_WIDTH, BUTTON_WIDTH } = GUI_CONFIG;
 
 export default class GUI {
+  constructor() {
+    this.oldlines = [];
+  }
 
   track(trackIndex) {
     outlet(OUTLET.TRACK_INDEX, trackIndex);

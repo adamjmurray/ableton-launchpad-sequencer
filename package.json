@@ -9,7 +9,8 @@
     "@babel/register": "^7.0.0",
     "mocha": "^5.2.0",
     "rollup": "^0.65.2",
-    "rollup-plugin-babel": "^4.0.3"
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-node-resolve": "^3.4.0"
   },
   "scripts": {
     "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",

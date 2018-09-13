@@ -7,8 +7,8 @@ export default class State {
     this.trackIndex = 0;
     this.stepValue = 0;
     this.sequence = Array(NUMBER_OF.STEPS).fill(0);
-    this.trackMutes = Array(TRACKS).fill(false);
-    this.patternMutes = Array(PATTERNS).fill(false);
+    this.trackMutes = Array(NUMBER_OF.TRACKS).fill(false);
+    this.patternMutes = Array(NUMBER_OF.PATTERNS).fill(false);
     this.isPatternOpsMode = false;
     this.startStepIndex = 0;
     this.endStepIndex = 63;
