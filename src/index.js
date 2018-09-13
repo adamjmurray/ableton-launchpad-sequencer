@@ -1,3 +1,5 @@
+import * as Config from './config';
+
 import LaunchpadController from './controllers/launchpad-controller';
 import MIDIController from './controllers/midi-controller';
 import SequencerController from './controllers/sequencer-controller';
@@ -13,15 +15,19 @@ import GUI from './views/gui';
 import Launchpad from './views/launchpad';
 
 export {
+  Config,
+
   LaunchpadController,
   MIDIController,
   SequencerController,
   StorageController,
+
   Pattern,
   Processor,
   Track,
   Scale,
   Sequencer,
+
   GUI,
   Launchpad
 };

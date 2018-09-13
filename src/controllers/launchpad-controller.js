@@ -1,9 +1,8 @@
-import Launchpad from '../views/launchpad';
-import { ROW_LENGTH } from '../config';
+import { COLOR, NUMBER_OF } from '../config';
 
 export default class LaunchpadController {
 
-  // Pattern "Ops" modes
+  // Pattern "Ops" modes (TODO: Move to config? Or make private constants in this file?)
   static get LENGTH_MODE() { return 0; }  // pattern start/end (length)
   static get STEPS_MODE() { return 1; } // pattern step values
 
@@ -125,8 +124,8 @@ export default class LaunchpadController {
   _onGridDown(x, y) {
     if (this.patternOpsMode) {
       if (this.heldGridX != null) {
-        const start = x + (y * ROW_LENGTH);
-        const end = this.heldGridX + (this.heldGridY * ROW_LENGTH);
+        const start = x + (y * NUMBER_OF.COLUMNS);
+        const end = this.heldGridX + (this.heldGridY * NUMBER_OF.COLUMNS);
         this.sequencerController.selectedPattern.setRange(start, end);
         // redraw range:
         launchpad.patternSteps(this.sequencerController.selectedPattern);
@@ -145,18 +144,19 @@ export default class LaunchpadController {
     const { launchpad } = this;
     launchpad.patternOpsMode = enabled;
     if (enabled) {
+      // TODO: this logic should be in the LaunchpadView
       // Top lights change to indicate we're in this mode.
       // Left 4 are for shifting
-      launchpad._top(0, Launchpad.YELLOW);
-      launchpad._top(1, Launchpad.YELLOW);
-      launchpad._top(2, Launchpad.YELLOW);
-      launchpad._top(3, Launchpad.YELLOW);
+      launchpad._top(0, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(1, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(2, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(3, COLOR.LAUNCHPAD.YELLOW);
       // Next 2 are for reverse and invert
-      launchpad._top(4, Launchpad.YELLOW);
-      launchpad._top(5, Launchpad.YELLOW);
+      launchpad._top(4, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(5, COLOR.LAUNCHPAD.YELLOW);
       // Last 2 are copy & paste
-      launchpad._top(6, Launchpad.GREEN);
-      launchpad._top(7, Launchpad.RED);
+      launchpad._top(6, COLOR.LAUNCHPAD.GREEN);
+      launchpad._top(7, COLOR.LAUNCHPAD.RED);
       launchpad.patternSteps(this.sequencerController.selectedPattern);
     } else {
       this.launchpad.allOff();

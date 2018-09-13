@@ -1,6 +1,6 @@
 import './polyfills';
 import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
-import { ROW_LENGTH, TRANSPORT_STOP } from './config';
+import { NUMBER_OF, MIDI } from './config';
 
 outlets = 18;
 
@@ -31,7 +31,7 @@ export function notein(pitch, velocity) {
 };
 
 export function ctlin(cc, val) {
-  if (cc !== TRANSPORT_STOP) {
+  if (cc !== MIDI.TRANSPORT_STOP) {
     launchdpadController.ctlin(cc, val);
   } else {
     sequencerController.stop();
@@ -166,7 +166,7 @@ export function shiftleft() {
 };
 
 export function shiftup() {
-  sequencerController.rotate(ROW_LENGTH);
+  sequencerController.rotate(NUMBER_OF.COLUMNS);
 };
 
 export function shiftright() {
@@ -174,7 +174,7 @@ export function shiftright() {
 };
 
 export function shiftdown() {
-  sequencerController.rotate(-ROW_LENGTH);
+  sequencerController.rotate(-NUMBER_OF.COLUMNS);
 };
 
 //--------------------------------------------------------------

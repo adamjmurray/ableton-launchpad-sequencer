@@ -1,4 +1,6 @@
-import { GATE_DURATIONS, MODS, NOOP, OCTAVES } from '../config';
+import { STEP_VALUE } from '../config';
+
+const NOOP = () => { }; // the "no operation" function
 
 const randomMidiValue = () => Math.floor(Math.random() * 128);
 const randomPitch = randomMidiValue;
@@ -11,13 +13,13 @@ const processors = {
   'pitch gate': (note, value) => { note.duration = 1; note.pitch += (value - 1); },
   'scale gate': (note, value, scale) => { note.duration = 1; note.pitch = scale.map(note.pitch, value - 1); },
   'velocity gate': (note, value) => { note.duration = 1; note.velocity += ((127 - note.velocity) * (value - 1)) / 3; },
-  'duration gate': (note, value) => { note.duration = GATE_DURATIONS[value]; },
+  'duration gate': (note, value) => { note.duration = STEP_VALUE.GATE_DURATION[value]; },
 
   'pitch +': (note, value) => { note.pitch += value; },
   'pitch -': (note, value) => { note.pitch -= value; },
   'scale +': (note, value, scale) => { note.pitch = scale.map(note.pitch, value); },
   'scale -': (note, value, scale) => { note.pitch = scale.map(note.pitch, -value); },
-  'octave': (note, value) => { note.pitch += OCTAVES[value]; },
+  'octave': (note, value) => { note.pitch += STEP_VALUE.OCTAVES[value]; },
 
   'velocity +': (note, value) => { note.velocity += ((127 - note.velocity) * value) / 4; },
   'velocity -': (note, value) => { note.velocity -= (note.velocity * value) / 4; },
@@ -27,8 +29,8 @@ const processors = {
   'duration x': (note, value) => { note.duration *= (value + 1); },
   'duration /': (note, value) => { note.duration /= (value + 1); },
 
-  'modulation': (note, value) => { note.modulation = MODS[value]; },
-  'aftertouch': (note, value) => { note.aftertouch = MODS[value]; },
+  'modulation': (note, value) => { note.modulation = STEP_VALUE.MIDI_CC[value]; },
+  'aftertouch': (note, value) => { note.aftertouch = STEP_VALUE.MIDI_CC[value]; },
 
   'random gate': (note, value) => { if (Math.random() <= (value / 4)) { note.duration = 1; } },
   'random mute': (note, value) => { if (Math.random() <= (value / 4)) { note.duration = 0;; } },

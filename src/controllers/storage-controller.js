@@ -1,4 +1,4 @@
-import { PATTR } from '../config';
+import { OUTLET } from '../config';
 
 // The interface to the pattr persistence system in Max.
 export default class StorageController {
@@ -52,6 +52,6 @@ export default class StorageController {
 
   save() {
     const sequencerJSON = JSON.stringify(this.sequencer);
-    outlet(PATTR, 'global', sequencerJSON);
+    outlet(OUTLET.STORAGE, 'global', sequencerJSON);
   }
 }

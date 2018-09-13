@@ -1,4 +1,4 @@
-import { PATTERNS, DEFAULT_PATTERN_TYPES } from '../config';
+import { DEFAULT, NUMBER_OF } from '../config';
 import Pattern from './pattern';
 
 export default class Track {
@@ -12,7 +12,7 @@ export default class Track {
     this.velocity = 70;
     this.duration = 0.9;
     this.number = this.index + 1;
-    this.patterns = [...Array(PATTERNS)].map((_, index) => new Pattern(index, DEFAULT_PATTERN_TYPES[index]));
+    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
     this.multiplier = 1;
     this.mute = false;
     this.note = {};

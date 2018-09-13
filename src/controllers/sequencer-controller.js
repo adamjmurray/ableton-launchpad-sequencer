@@ -1,6 +1,6 @@
 import GUI from '../views/gui';
 import State from '../views/state';
-import { PATTERNS, TRACKS } from '../config';
+import { NUMBER_OF } from '../config';
 
 // The controller for the sequencing application.
 // Manages state and keeps the views updated.
@@ -164,8 +164,8 @@ export default class SequencerController {
   // @param p the pattern index
   // @param stepValues an array of sequence step values
   setPattern(t, p, stepValues) {
-    if (0 > t || t >= TRACKS
-      || 0 > p || p >= PATTERNS
+    if (0 > t || t >= NUMBER_OF.TRACKS
+      || 0 > p || p >= NUMBER_OF.PATTERNS
       || stepValues.length !== 64) {
       return;
     }

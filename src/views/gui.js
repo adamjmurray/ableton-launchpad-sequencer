@@ -1,56 +1,27 @@
-import {
-  TRACK_INDEX,
-  STEP_VALUE,
-  PATTERN_INDEX,
-  GUI_STEP_WIDTH,
-  GUI_BUTTON_WIDTH,
-  GRID,
-  TRACK_INFO,
-  TRACK_MUTE,
-  TRACK_MULTIPLIER,
-  PATTERN_INFO,
-  PATTERN_MUTE,
-  SCALE,
-  STEP_LENGTH,
-} from '../config';
+import { COLOR as ALL_COLORS, OUTLET, GUI as GUI_CONFIG } from '../config';
+
+const COLOR = ALL_COLORS.GUI;
+const { STEP_WIDTH, BUTTON_WIDTH } = GUI_CONFIG;
 
 export default class GUI {
 
-  // Max's LCD object expects [R,G,B] in 0-255 range
-  static get GRID_COLORS() {
-    return [
-      [150, 150, 150], // off
-      [0, 255, 0],     // green
-      [255, 255, 0],   // yellow
-      [255, 127, 0],   // orange
-      [255, 0, 0],     // red
-      [80, 130, 200]  // current step
-    ];
-  }
-  static get START_END_COLOR() { return [200, 200, 255]; }
-  static get NO_COLOR() { return [53, 53, 53]; } // background color in the GUI
-
-  constructor() {
-    this.oldlines = [];
-  }
-
   track(trackIndex) {
-    outlet(TRACK_INDEX, trackIndex);
+    outlet(OUTLET.TRACK_INDEX, trackIndex);
   }
 
   stepValue(stepValue) {
-    outlet(STEP_VALUE, stepValue);
+    outlet(OUTLET.STEP_VALUE, stepValue);
   }
 
   pattern(patternIndex) {
-    outlet(PATTERN_INDEX, patternIndex);
+    outlet(OUTLET.PATTERN_INDEX, patternIndex);
   }
 
   grid(x, y, value) {
-    const left = (x * GUI_STEP_WIDTH) + 2;
-    const top = (y * GUI_STEP_WIDTH) + 2;
-    this.color(GUI.GRID_COLORS[value]);
-    outlet(GRID, 'paintrect', left, top, left + GUI_BUTTON_WIDTH, top + GUI_BUTTON_WIDTH);
+    const left = (x * STEP_WIDTH) + 2;
+    const top = (y * STEP_WIDTH) + 2;
+    this.color(COLOR.STEP_VALUE[value]);
+    outlet(OUTLET.GRID, 'paintrect', left, top, left + BUTTON_WIDTH, top + BUTTON_WIDTH);
   }
 
   activeStep(x, y) {
@@ -58,42 +29,42 @@ export default class GUI {
   }
 
   clearGrid() {
-    outlet(GRID, 'clear');
+    outlet(OUTLET.GRID, 'clear');
   }
 
   color(color) {
-    outlet(GRID, 'frgb', color);
+    outlet(OUTLET.GRID, 'frgb', color);
   }
 
   drawline(line) {
-    outlet(GRID, 'linesegment', line);
+    outlet(OUTLET.GRID, 'linesegment', line);
   }
 
   trackInfo(trackIndex, track) {
     const trackNumber = trackIndex + 1;
-    outlet(TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration);
+    outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration);
   }
 
   trackMute(track) {
-    outlet(TRACK_MUTE, track.mute);
+    outlet(OUTLET.TRACK_MUTE, track.mute);
   }
 
   trackMultiplier(track) {
-    outlet(TRACK_MULTIPLIER, track.multiplier);
+    outlet(OUTLET.TRACK_MULTIPLIER, track.multiplier);
   }
 
   patternInfo(patternIndex, pattern) {
     // values in the Max GUI are numbers counting from 1, hence all the "+1"s
     const { start } = pattern;
     const { end } = pattern;
-    outlet(PATTERN_INFO, patternIndex + 1, pattern.type, start + 1, end + 1);
+    outlet(OUTLET.PATTERN_INFO, patternIndex + 1, pattern.type, start + 1, end + 1);
 
     // start end/step indicators:
-    const delta = GUI_BUTTON_WIDTH + 3;
-    const startX = (start % 8) * GUI_STEP_WIDTH;
-    const startY = Math.floor(start / 8) * GUI_STEP_WIDTH;
-    const endX = (end % 8) * GUI_STEP_WIDTH;
-    const endY = Math.floor(end / 8) * GUI_STEP_WIDTH;
+    const delta = BUTTON_WIDTH + 3;
+    const startX = (start % 8) * STEP_WIDTH;
+    const startY = Math.floor(start / 8) * STEP_WIDTH;
+    const endX = (end % 8) * STEP_WIDTH;
+    const endY = Math.floor(end / 8) * STEP_WIDTH;
     const lines = [
       [startX + delta, startY, startX, startY],
       [startX, startY, startX, startY + delta],
@@ -103,15 +74,15 @@ export default class GUI {
       [endX + delta, endY + delta, endX, endY + delta]
     ];
 
-    this.color(GUI.NO_COLOR);
+    this.color(COLOR.BACKGROUND);
     this.oldlines.forEach(oldLine => this.drawline(oldLine));
-    this.color(GUI.START_END_COLOR);
+    this.color(COLOR.PATTERN_START_END);
     lines.forEach(line => this.drawline(line));
     this.oldlines = lines;
   }
 
   patternMute(pattern) {
-    outlet(PATTERN_MUTE, pattern.mute);
+    outlet(OUTLET.PATTERN_MUTE, pattern.mute);
   }
 
   scale(scale) {
@@ -121,10 +92,10 @@ export default class GUI {
     for (let pc = 0; pc < 12; pc++) {
       pitchClasses.push(pc, scalePitchClasses.includes(pc) ? 0 : 1);
     }
-    outlet(SCALE, pitchClasses);
+    outlet(OUTLET.SCALE, pitchClasses);
   }
 
   stepLength(length) {
-    outlet(STEP_LENGTH, length);
+    outlet(OUTLET.STEP_DURATION, length);
   }
 }

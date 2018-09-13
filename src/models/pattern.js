@@ -1,5 +1,5 @@
 import Processor from './processor';
-import { ROW_LENGTH, STEPS, VALUES } from '../config';
+import { NUMBER_OF } from '../config';
 import { mod } from '../utils';
 
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
@@ -12,9 +12,9 @@ export default class Pattern {
   constructor(index, type) {
     this.index = index;
     this._processor = new Processor(type);
-    this.sequence = Array(STEPS).fill(0);
+    this.sequence = Array(NUMBER_OF.STEPS).fill(0);
     this.start = 0;
-    this.end = STEPS - 1;
+    this.end = NUMBER_OF.STEPS - 1;
     this.mute = false;
   }
 
@@ -23,8 +23,8 @@ export default class Pattern {
 
   get sequence() { return this._sequence; }
   set sequence(sequence) {
-    const seq = (sequence || []).slice(0, STEPS);
-    this._sequence = seq.concat(Array(STEPS - seq.length).fill(0));
+    const seq = (sequence || []).slice(0, NUMBER_OF.STEPS);
+    this._sequence = seq.concat(Array(NUMBER_OF.STEPS - seq.length).fill(0));
   }
 
   get start() { return this._start; }
@@ -78,7 +78,7 @@ export default class Pattern {
 
   random() {
     this.forEachActiveStep(i =>
-      this._sequence[i] = Math.floor(VALUES * Math.random()));
+      this._sequence[i] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random()));
   }
 
   // fill in value with 25% chance
@@ -92,7 +92,7 @@ export default class Pattern {
 
   firstColumn(value) {
     // TODO: Should this be from start to end be relative to start?
-    for (let i = 0; i < STEPS; i += ROW_LENGTH) {
+    for (let i = 0; i < NUMBER_OF.STEPS; i += NUMBER_OF.COLUMNS) {
       this._sequence[i] = value;
     }
   }
@@ -119,7 +119,7 @@ export default class Pattern {
     this.forEachActiveStep(i => {
       const value = this._sequence[i];
       if (value > 0) {
-        this._sequence[i] = VALUES - value;
+        this._sequence[i] = NUMBER_OF.STEP_VALUES - value;
       }
     });
   }
@@ -135,7 +135,7 @@ export default class Pattern {
   }
 
   isValidIndex(index) {
-    return (0 <= index) && (index < STEPS);
+    return (0 <= index) && (index < NUMBER_OF.STEPS);
   }
 
   getStep(index) {

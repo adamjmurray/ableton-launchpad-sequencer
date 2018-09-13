@@ -1,6 +1,7 @@
-import { Sequencer } from '../../src';
-import { DEFAULT_PATTERN_TYPES, STEPS } from '../../src/config';
+import { Config, Sequencer } from '../../src';
 import assert from 'assert';
+
+const { DEFAULT, NUMBER_OF } = Config;
 
 describe('Sequencer', () => {
 
@@ -44,11 +45,11 @@ describe('Sequencer', () => {
         assert.equal(t.patterns.length, 8);
         for (let i = 0; i < t.patterns.length; i++) {
           const p = t.patterns[i];
-          assert.equal(p.type, DEFAULT_PATTERN_TYPES[i]);
+          assert.equal(p.type, DEFAULT.PATTERN_TYPES[i]);
           assert.equal(p.start, 0);
           assert.equal(p.end, 63);
           assert.equal(p.mute, false);
-          assert.deepEqual(p.sequence, Array(STEPS).fill(0));
+          assert.deepEqual(p.sequence, Array(NUMBER_OF.STEPS).fill(0));
         }
       }
     });

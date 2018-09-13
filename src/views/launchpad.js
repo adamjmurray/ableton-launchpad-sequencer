@@ -1,44 +1,19 @@
-import { LAUNCHPAD_CC, LAUNCHPAD_NOTE, LAUNCHPAD_RAPID_UPDATE, TRACKS, PATTERNS } from '../config';
+import { COLOR as ALL_COLORS, NUMBER_OF, OUTLET } from '../config';
 import Defer from '../defer';
 
+const COLOR = ALL_COLORS.LAUNCHPAD;
+
 export default class Launchpad {
-
-  static get OFF() { return this.color(0, 0); }
-  static get GREEN() { return this.color(3, 0); }
-  static get YELLOW() { return this.color(3, 2); }
-  static get ORANGE() { return this.color(2, 3); }
-  static get RED() { return this.color(0, 3); }
-  static get GRID_COLORS() { return [this.OFF, this.GREEN, this.YELLOW, this.ORANGE, this.RED]; }
-
-  static get STEP_COLOR() { return this.color(1, 1); } // color for current sequencer step, regardless of value
-
-  static get INACTIVE_GREEN() { return this.color(2, 0); }
-  static get INACTIVE_YELLOW() { return this.color(2, 1); }
-  static get INACTIVE_ORANGE() { return this.color(1, 2); }
-  static get INACTIVE_RED() { return this.color(0, 2); }
-  static get INACTIVE_GRID_COLORS() { return [this.OFF, this.INACTIVE_GREEN, this.INACTIVE_YELLOW, this.INACTIVE_ORANGE, this.INACTIVE_RED]; }
-  static get ACTIVE_GRID_COLORS() { return [this.STEP_COLOR, this.GREEN, this.YELLOW, this.ORANGE, this.RED]; }
-
-  static get TRACK_COLOR() { return this.color(1, 2); }
-  static get PATTERN_COLOR() { return this.color(2, 0); }
-
-  static get MUTE_COLOR() { return this.color(0, 3); }
-  static get INACTIVE_MUTE_COLOR() { return this.color(0, 1); }
-
-  static color(green, red) {
-    if ((0 <= green && green <= 3) && (0 <= red && red <= 3)) { return (16 * green) + red + 12; }
-  }
-
   constructor() {
     this.patternOpsMode = false;
   }
 
   ctlout(cc, value) {
-    outlet(LAUNCHPAD_CC, cc, value);
+    outlet(OUTLET.LAUNCHPAD_CC, cc, value);
   }
 
   noteout(pitch, velocity) {
-    outlet(LAUNCHPAD_NOTE, pitch, velocity);
+    outlet(OUTLET.LAUNCHPAD_NOTE, pitch, velocity);
   }
 
   allOff() {
@@ -46,43 +21,43 @@ export default class Launchpad {
   }
 
   track(track) {
-    const color = track.mute ? Launchpad.MUTE_COLOR : Launchpad.TRACK_COLOR;
+    const color = track.mute ? COLOR.MUTE_COLOR : COLOR.TRACK_COLOR;
     this._top(track.index, color);
   }
 
   trackOff(track) {
-    const color = track.mute ? Launchpad.INACTIVE_MUTE_COLOR : Launchpad.OFF;
+    const color = track.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
     this._top(track.index, color);
   }
 
   stepValue(stepValue) {
     if (stepValue > 0) {
-      this._top(stepValue + 3, Launchpad.GRID_COLORS[stepValue]);
+      this._top(stepValue + 3, COLOR.STEP_VALUES[stepValue]);
     }
   }
 
   stepValueOff(stepValue) {
     if (stepValue > 0) {
-      this._top(stepValue + 3, Launchpad.OFF);
+      this._top(stepValue + 3, COLOR.OFF);
     }
   }
 
   pattern(pattern) {
-    const color = pattern.mute ? Launchpad.MUTE_COLOR : Launchpad.PATTERN_COLOR;
+    const color = pattern.mute ? COLOR.MUTE_COLOR : COLOR.PATTERN_COLOR;
     this._right(pattern.index, color);
   }
 
   patternOff(pattern) {
-    const color = pattern.mute ? Launchpad.INACTIVE_MUTE_COLOR : Launchpad.OFF;
+    const color = pattern.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
     this._right(pattern.index, color);
   }
 
   grid(x, y, value) {
-    this._grid(x, y, Launchpad.GRID_COLORS[value]);
+    this._grid(x, y, COLOR.STEP_VALUES[value]);
   }
 
   activeStep(x, y) {
-    this._grid(x, y, Launchpad.STEP_COLOR);
+    this._grid(x, y, COLOR.SEQUENCER_STEP);
   }
 
   patternSteps(pattern, additionalDeferredCallback) {
@@ -91,8 +66,8 @@ export default class Launchpad {
       Defer.eachStep((x, y, index) => {
         const stepValue = pattern.getStep(index);
         const color = start <= index && index <= end
-          ? Launchpad.ACTIVE_GRID_COLORS[stepValue]
-          : Launchpad.INACTIVE_GRID_COLORS[stepValue];
+          ? COLOR.ACTIVE_STEPS[stepValue]
+          : COLOR.INACTIVE_STEPS[stepValue];
         this._grid(x, y, color);
         if (additionalDeferredCallback != null) {
           additionalDeferredCallback(x, y, stepValue);
@@ -101,7 +76,7 @@ export default class Launchpad {
     } else {
       Defer.eachStep((x, y, index) => {
         const stepValue = pattern.getStep(index);
-        this._grid(x, y, Launchpad.GRID_COLORS[stepValue]);
+        this._grid(x, y, COLOR.STEP_VALUES[stepValue]);
         if (additionalDeferredCallback != null) {
           additionalDeferredCallback(x, y, stepValue);
         }
@@ -116,45 +91,45 @@ export default class Launchpad {
     if (isPatternOpsMode) {
       colors = sequence.map((stepValue, index) =>
         index >= startStepIndex && index <= endStepIndex
-          ? Launchpad.ACTIVE_GRID_COLORS[stepValue]
-          : Launchpad.INACTIVE_GRID_COLORS[stepValue]);
+          ? COLOR.ACTIVE_STEPS[stepValue]
+          : COLOR.INACTIVE_STEPS[stepValue]);
 
-      for (let i = 0; i < PATTERNS; i++) {
-        colors.push(i === patternIndex ? Launchpad.PATTERN_COLOR : Launchpad.OFF);
+      for (let i = 0; i < NUMBER_OF.PATTERNS; i++) {
+        colors.push(i === patternIndex ? COLOR.PATTERN_COLOR : COLOR.OFF);
       }
       colors.push(
-        Launchpad.YELLOW,
-        Launchpad.YELLOW,
-        Launchpad.YELLOW,
-        Launchpad.YELLOW,
+        COLOR.YELLOW,
+        COLOR.YELLOW,
+        COLOR.YELLOW,
+        COLOR.YELLOW,
         // Next 2 are for reverse and invert
-        Launchpad.YELLOW,
-        Launchpad.YELLOW,
+        COLOR.YELLOW,
+        COLOR.YELLOW,
         // Last 2 are copy & paste
-        Launchpad.GREEN,
-        Launchpad.RED,
+        COLOR.GREEN,
+        COLOR.RED,
       );
     } else {
-      colors = sequence.map(stepValue => Launchpad.GRID_COLORS[stepValue]);
+      colors = sequence.map(stepValue => COLOR.STEP_VALUES[stepValue]);
 
-      for (let i = 0; i < PATTERNS; i++) {
+      for (let i = 0; i < NUMBER_OF.PATTERNS; i++) {
         if (patternMutes[i]) {
-          colors.push(i === patternIndex ? Launchpad.MUTE_COLOR : Launchpad.INACTIVE_MUTE_COLOR);
+          colors.push(i === patternIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
         }
         else {
-          colors.push(i === patternIndex ? Launchpad.PATTERN_COLOR : Launchpad.OFF);
+          colors.push(i === patternIndex ? COLOR.PATTERN_COLOR : COLOR.OFF);
         }
       }
-      for (let i = 0; i < TRACKS; i++) {
+      for (let i = 0; i < NUMBER_OF.TRACKS; i++) {
         if (trackMutes[i]) {
-          colors.push(i === trackIndex ? Launchpad.MUTE_COLOR : Launchpad.INACTIVE_MUTE_COLOR);
+          colors.push(i === trackIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
         }
         else {
-          colors.push(i === trackIndex ? Launchpad.TRACK_COLOR : Launchpad.OFF);
+          colors.push(i === trackIndex ? COLOR.TRACK_COLOR : COLOR.OFF);
         }
       }
       for (let i = 0; i < 4; i++) {
-        colors.push(i + 1 === stepValue ? Launchpad.GRID_COLORS[stepValue] : Launchpad.OFF);
+        colors.push(i + 1 === stepValue ? COLOR.STEP_VALUES[stepValue] : COLOR.OFF);
       }
     }
     if (colors.length !== 80) {
@@ -162,7 +137,7 @@ export default class Launchpad {
       console.log(colors);
       return;
     }
-    outlet(LAUNCHPAD_RAPID_UPDATE, colors);
+    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, colors);
   }
 
   // ==============================================================================
