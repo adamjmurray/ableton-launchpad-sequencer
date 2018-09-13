@@ -1,24 +1,24 @@
 import * as Config from './config';
 
-import LaunchpadController from './controllers/launchpad-controller';
-import MIDIController from './controllers/midi-controller';
-import SequencerController from './controllers/sequencer-controller';
-import StorageController from './controllers/storage-controller';
+import LaunchpadController from './controllers/LaunchpadController';
+import MidiController from './controllers/MidiController';
+import SequencerController from './controllers/SequencerController';
+import StorageController from './controllers/StorageController';
 
-import Pattern from './models/pattern';
-import Processor from './models/processor';
-import Track from './models/track';
-import Scale from './models/scale';
-import Sequencer from './models/sequencer';
+import Pattern from './models/Pattern';
+import Processor from './models/Processor';
+import Track from './models/Track';
+import Scale from './models/Scale';
+import Sequencer from './models/Sequencer';
 
-import GUI from './views/gui';
-import Launchpad from './views/launchpad';
+import GuiView from './views/GuiView';
+import LaunchpadView from './views/LaunchpadView';
 
 export {
   Config,
 
   LaunchpadController,
-  MIDIController,
+  MidiController,
   SequencerController,
   StorageController,
 
@@ -28,6 +28,6 @@ export {
   Scale,
   Sequencer,
 
-  GUI,
-  Launchpad
+  GuiView,
+  LaunchpadView,
 };

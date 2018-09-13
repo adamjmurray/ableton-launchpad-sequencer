@@ -3,7 +3,7 @@ import { COLOR as ALL_COLORS, OUTLET, GUI as GUI_CONFIG } from '../config';
 const COLOR = ALL_COLORS.GUI;
 const { STEP_WIDTH, BUTTON_WIDTH } = GUI_CONFIG;
 
-export default class GUI {
+export default class GuiView {
   constructor() {
     this.oldlines = [];
   }

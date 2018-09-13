@@ -1,4 +1,4 @@
-import Processor from './processor';
+import Processor from './Processor';
 import { NUMBER_OF } from '../config';
 import { mod } from '../utils';
 

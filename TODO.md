@@ -3,8 +3,6 @@ Rapid LED Update
 
 Code cleanup
 - Rename anything that's an index to be *Index
-- Rename constants to be more descriptive (like outlet numbers)
-- Move color constants elsewhere?
 
 Functionality
 - Undo doesn't work (I think we just need to listen to changes from the pattr object)

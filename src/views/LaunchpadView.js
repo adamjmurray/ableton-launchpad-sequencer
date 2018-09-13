@@ -3,7 +3,7 @@ import Defer from '../defer';
 
 const COLOR = ALL_COLORS.LAUNCHPAD;
 
-export default class Launchpad {
+export default class LaunchpadView {
   constructor() {
     this.patternOpsMode = false;
   }

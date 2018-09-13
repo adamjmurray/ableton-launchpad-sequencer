@@ -1,5 +1,5 @@
-import GUI from '../views/gui';
-import State from '../views/state';
+import GUI from '../views/GuiView';
+import State from '../views/ViewState';
 import { NUMBER_OF } from '../config';
 
 // The controller for the sequencing application.

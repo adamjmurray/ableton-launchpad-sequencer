@@ -1,14 +1,14 @@
-import { MIDIController, Sequencer } from '../../src';
+import { MidiController, Sequencer } from '../../src';
 import assert from 'assert';
 
-describe('MIDIController', () => {
+describe('MidiController', () => {
 
   let sequencer;
   let controller;
 
   beforeEach(() => {
     sequencer = new Sequencer;
-    controller = new MIDIController(sequencer);
+    controller = new MidiController(sequencer);
   });
 
   describe('trackPitchOverride(pitch, enabled)', () => {

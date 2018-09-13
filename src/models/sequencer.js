@@ -1,5 +1,5 @@
-import Scale from './scale';
-import Track from './track';
+import Scale from './Scale';
+import Track from './Track';
 import { DEFAULT, NUMBER_OF, OUTLET } from '../config';
 
 // The top-level container of tracks and their patterns.

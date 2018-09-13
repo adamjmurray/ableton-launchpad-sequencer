@@ -1,5 +1,5 @@
 // Interprets user input from the Launchpad, track MIDI input, and GUI
-export default class MIDIController {
+export default class MidiController {
 
   constructor(sequencer) {
     this.sequencer = sequencer;

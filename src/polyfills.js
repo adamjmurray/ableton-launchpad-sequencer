@@ -22,19 +22,19 @@ console = {
 // Polyfill code from https://developer.mozilla.org
 
 if (!Array.from) {
-  Array.from = (function () {
+  Array.from = (function() {
     var toStr = Object.prototype.toString;
-    var isCallable = function (fn) {
+    var isCallable = function(fn) {
       return typeof fn === 'function' || toStr.call(fn) === '[object Function]';
     };
-    var toInteger = function (value) {
+    var toInteger = function(value) {
       var number = Number(value);
       if (isNaN(number)) { return 0; }
       if (number === 0 || !isFinite(number)) { return number; }
       return (number > 0 ? 1 : -1) * Math.floor(Math.abs(number));
     };
     var maxSafeInteger = Math.pow(2, 53) - 1;
-    var toLength = function (value) {
+    var toLength = function(value) {
       var len = toInteger(value);
       return Math.min(Math.max(len, 0), maxSafeInteger);
     };
@@ -101,7 +101,7 @@ if (!Array.from) {
 
 if (!Array.prototype.fill) {
   Object.defineProperty(Array.prototype, 'fill', {
-    value: function (value) {
+    value: function(value) {
 
       // Steps 1-2.
       if (this == null) {
@@ -147,7 +147,7 @@ if (!Array.prototype.fill) {
 // https://tc39.github.io/ecma262/#sec-array.prototype.includes
 if (!Array.prototype.includes) {
   Object.defineProperty(Array.prototype, 'includes', {
-    value: function (searchElement, fromIndex) {
+    value: function(searchElement, fromIndex) {
 
       if (this == null) {
         throw new TypeError('"this" is null or not defined');

@@ -1,12 +1,12 @@
 import './polyfills';
-import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
+import { LaunchpadView, Sequencer, MidiController, SequencerController, LaunchpadController, StorageController } from './';
 import { NUMBER_OF, MIDI } from './config';
 
 outlets = 18;
 
-const launchpad = new Launchpad;
+const launchpad = new LaunchpadView;
 const sequencer = new Sequencer(launchpad);
-const midiController = new MIDIController(sequencer);
+const midiController = new MidiController(sequencer);
 const sequencerController = new SequencerController(sequencer, launchpad);
 const launchdpadController = new LaunchpadController(launchpad, sequencerController);
 const storageController = new StorageController(sequencer, sequencerController);

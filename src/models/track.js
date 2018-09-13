@@ -1,5 +1,5 @@
 import { DEFAULT, NUMBER_OF } from '../config';
-import Pattern from './pattern';
+import Pattern from './Pattern';
 
 export default class Track {
 
