@@ -16,7 +16,7 @@
     "clean": "rm -f launchpad-sequencer/launchpad-sequencer.js",
     "build": "npx rollup -c",
     "dev": "npx rollup -c -w",
-    "test": "ls -lr * && npx mocha -c -r @babel/register 'test/**/*.test.js'",
+    "test": "npx mocha -c -r @babel/register 'test/**/*.test.js'",
     "tdd": "npx mocha -c -w -R min -r @babel/register 'test/**/*.test.js'"
   },
   "repository": {
