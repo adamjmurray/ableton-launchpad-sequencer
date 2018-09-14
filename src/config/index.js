@@ -1,5 +1,5 @@
 import * as COLOR_GUI from './COLOR.GUI.config';
-import * as COLOR_LAUNCHPAD from './COLOR.LAUNCHPAd.config';
+import * as COLOR_LAUNCHPAD from './COLOR.LAUNCHPAD.config';
 import * as DEFAULT from './DEFAULT.config';
 import * as GUI from './GUI.config';
 import * as MIDI from './MIDI.config';
