@@ -13,7 +13,7 @@ export default class Sequencer {
   // Clear all patterns and set all track and pattern properties to their default values.
   reset() {
     this.stepLength = DEFAULT.STEP_DURATION;
-    this.scale.steps = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    this.scale.pitchClasses = DEFAULT.PITCH_CLASSES;
     this.globalTranspose = 0; // TODO: Do we really need global transpose? (there's the Ableton MIDI effect...)
     this.tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
   }
