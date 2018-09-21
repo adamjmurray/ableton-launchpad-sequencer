@@ -1,4 +1,4 @@
-import { STEP_VALUE } from '../config';
+import { STEP_VALUE } from '../Config';
 
 const NOOP = () => { }; // the "no operation" function
 

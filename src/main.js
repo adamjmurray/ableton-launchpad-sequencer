@@ -1,6 +1,6 @@
 import './polyfills';
 import { LaunchpadView, Sequencer, MidiController, SequencerController, LaunchpadController, StorageController } from './';
-import { NUMBER_OF, MIDI } from './config';
+import { NUMBER_OF, MIDI } from './Config';
 
 outlets = 18;
 

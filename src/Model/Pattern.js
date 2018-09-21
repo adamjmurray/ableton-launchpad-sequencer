@@ -1,5 +1,5 @@
 import Processor from './Processor';
-import { NUMBER_OF } from '../config';
+import { NUMBER_OF } from '../Config';
 import { mod } from '../utils';
 
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
@@ -11,8 +11,16 @@ export default class Pattern {
 
   constructor(index, type) {
     this.index = index;
+    this._defaultProcessorType = type;
     this._processor = new Processor(type);
-    this.sequence = Array(NUMBER_OF.STEPS).fill(0);
+    this._steps = Array(NUMBER_OF.STEPS);
+    this.reset();
+  }
+
+  reset() {
+    // TODO: convert to member vars
+    this._processor.type = this._defaultProcessorType;
+    this.sequence.fill(0); // TODO: rename to steps?
     this.start = 0;
     this.end = NUMBER_OF.STEPS - 1;
     this.mute = false;
@@ -21,11 +29,15 @@ export default class Pattern {
   get type() { return this._processor.type; }
   set type(type) { this._processor.type = type; }
 
-  get sequence() { return this._sequence; }
-  set sequence(sequence) {
-    const seq = (sequence || []).slice(0, NUMBER_OF.STEPS);
-    this._sequence = seq.concat(Array(NUMBER_OF.STEPS - seq.length).fill(0));
+  // TODO: "sequence" is deprecated
+  get sequence() { return this._steps; }
+  set sequence(steps) {
+    //const seq = (sequence || []).slice(0, NUMBER_OF.STEPS);
+    //this._steps = seq.concat(Array(NUMBER_OF.STEPS - seq.length).fill(0));
+    this._steps = steps;
   }
+  get steps() { return this._steps; }
+  set steps(steps) { this._steps = steps; }
 
   get start() { return this._start; }
   set start(index) {
@@ -73,19 +85,19 @@ export default class Pattern {
 
   clear() {
     this.forEachActiveStep(i =>
-      this._sequence[i] = 0);
+      this._steps[i] = 0);
   }
 
   random() {
     this.forEachActiveStep(i =>
-      this._sequence[i] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random()));
+      this._steps[i] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random()));
   }
 
   // fill in value with 25% chance
   randomFill(value) {
     this.forEachActiveStep(i => {
       if (Math.random() < 0.25) {
-        this._sequence[i] = value;
+        this._steps[i] = value;
       }
     });
   }
@@ -93,33 +105,33 @@ export default class Pattern {
   firstColumn(value) {
     // TODO: Should this be from start to end be relative to start?
     for (let i = 0; i < NUMBER_OF.STEPS; i += NUMBER_OF.COLUMNS) {
-      this._sequence[i] = value;
+      this._steps[i] = value;
     }
   }
 
   fill(value) {
     this.forEachActiveStep(i =>
-      this._sequence[i] = value);
+      this._steps[i] = value);
   }
 
   replace(value) {
     this.forEachActiveStep(i => {
-      if (this._sequence[i] > 0) {
-        this._sequence[i] = value;
+      if (this._steps[i] > 0) {
+        this._steps[i] = value;
       }
     });
   }
 
   reverse() {
-    this._sequence.reverse();
+    this._steps.reverse();
   }
 
   // Flips value 1 with 4, and 2 with 3
   invert() {
     this.forEachActiveStep(i => {
-      const value = this._sequence[i];
+      const value = this._steps[i];
       if (value > 0) {
-        this._sequence[i] = NUMBER_OF.STEP_VALUES - value;
+        this._steps[i] = NUMBER_OF.STEP_VALUES - value;
       }
     });
   }
@@ -131,7 +143,7 @@ export default class Pattern {
     const left = sequence.slice(start, rot);
     const right = sequence.slice(rot, end + 1);
     const after = sequence.slice((end + 1));
-    this._sequence = before.concat(right, left, after);
+    this._steps = before.concat(right, left, after);
   }
 
   isValidIndex(index) {
@@ -139,12 +151,12 @@ export default class Pattern {
   }
 
   getStep(index) {
-    return this._sequence[index];
+    return this._steps[index];
   }
 
   setStep(index, value) {
     if (this.isValidIndex(index)) {
-      this._sequence[index] = value;
+      this._steps[index] = value;
     }
   }
 
@@ -180,7 +192,7 @@ export default class Pattern {
       start: this._start,
       end: this._end,
       mute: this.mute,
-      sequence: this._sequence
+      sequence: this._steps
     };
   }
 

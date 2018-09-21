@@ -1,8 +1,9 @@
 import Scale from './Scale';
 import Track from './Track';
-import { DEFAULT, NUMBER_OF, OUTLET } from '../config';
+import { DEFAULT, NUMBER_OF, OUTLET } from '../Config';
 
 // The top-level container of tracks and their patterns.
+// TODO: deprecated
 export default class Sequencer {
 
   constructor() {

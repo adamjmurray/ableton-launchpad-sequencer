@@ -1,18 +1,24 @@
-import { DEFAULT, NUMBER_OF } from '../config';
+import { DEFAULT, NUMBER_OF } from '../Config';
 import Pattern from './Pattern';
 
 export default class Track {
 
   constructor(index, scale) {
+    // TODO: convert all to private member vars
     this.index = index;
     this.scale = scale;
+    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
+    this.reset();
+  }
+
+  reset() {
     this.pitch = 60;
     this.pitchOverride = null; // MIDI input can temporarily override the track pitch
     this.velocityOverride = null;
     this.velocity = 70;
     this.duration = 0.9;
     this.number = this.index + 1;
-    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
+    this.patterns.forEach(pattern => pattern.reset());
     this.multiplier = 1;
     this.mute = false;
     this.note = {};

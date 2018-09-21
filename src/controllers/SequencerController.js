@@ -1,6 +1,5 @@
-import GUI from '../views/GuiView';
-import State from '../views/ViewState';
-import { NUMBER_OF } from '../config';
+import GUI from '../View/GuiView';
+import { NUMBER_OF } from '../Config';
 
 // The controller for the sequencing application.
 // Manages state and keeps the views updated.
@@ -10,7 +9,6 @@ export default class SequencerController {
     this.sequencer = sequencer;
     this.launchpad = launchpad;
     this.gui = new GUI;
-    this.state = new State;
     this.reset(true);
   }
 

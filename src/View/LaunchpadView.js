@@ -1,4 +1,4 @@
-import { COLOR as ALL_COLORS, NUMBER_OF, OUTLET } from '../config';
+import { COLOR as ALL_COLORS, NUMBER_OF, OUTLET } from '../Config';
 import Defer from '../defer';
 
 const COLOR = ALL_COLORS.LAUNCHPAD;
@@ -85,6 +85,7 @@ export default class LaunchpadView {
   }
 
   render(state) {
+    // TODO: update to work with the Device model
     const { sequence, stepValue, trackIndex, trackMutes, patternIndex, patternMutes, isPatternOpsMode, startStepIndex, endStepIndex } = state;
     let colors;
     // Color order: grid from left-to-right/top-to-bottom, right colomn (patterns) top-to-bottom, top row left-to-right

@@ -1,6 +1,6 @@
 // TODO: Deprecated. We should be able to get rid of this when rapid update is done
 
-import { NUMBER_OF } from './config';
+import { NUMBER_OF } from './Config';
 
 const DEFER_DELAY = 20; // How often (in ms) to schedule chunks of work. See Defer class.
 

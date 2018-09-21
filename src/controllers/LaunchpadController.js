@@ -1,4 +1,4 @@
-import { COLOR, NUMBER_OF } from '../config';
+import { COLOR, NUMBER_OF } from '../Config';
 
 export default class LaunchpadController {
 

@@ -1,4 +1,4 @@
-import { OUTLET } from '../config';
+import { OUTLET } from '../Config';
 
 // The interface to the pattr persistence system in Max.
 export default class StorageController {

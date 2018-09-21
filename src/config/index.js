@@ -3,6 +3,7 @@ import * as COLOR_LAUNCHPAD from './COLOR.LAUNCHPAD.config';
 import * as DEFAULT from './DEFAULT.config';
 import * as GUI from './GUI.config';
 import * as MIDI from './MIDI.config';
+import * as MODE from './MODE.config';
 import * as NUMBER_OF from './NUMBER_OF.config';
 import * as OUTLET from './OUTLET.config';
 import * as STEP_VALUE from './STEP_VALUE.config';
@@ -17,6 +18,7 @@ export {
   DEFAULT,
   GUI,
   MIDI,
+  MODE,
   NUMBER_OF,
   OUTLET,
   STEP_VALUE,
