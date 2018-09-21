@@ -6,19 +6,10 @@ const NOOP = () => { }; // the "no operation" function
 
 export default class Model {
 
-  constructor() {
+  constructor(eventHandler = {}) {
     this._scale = new Scale;
     this._tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
-
-    this._onRefresh = NOOP;
-    this._onTrackChange = NOOP;
-    this._onPatternChange = NOOP;
-    this._onValueChange = NOOP;
-    this._onGridChange = NOOP;
-    this._onStepChange = NOOP;
-    this._onClockChange = NOOP;
-    this._onModeChange = NOOP;
-
+    this.eventHandler = eventHandler;
     this.reset();
   }
 
@@ -28,15 +19,24 @@ export default class Model {
     this._scale.pitchClasses = DEFAULT.PITCH_CLASSES;
     this._tracks.forEach(track => track.reset());
     this._selectedTrackIndex = 0;
-    this._selectedPatternIndex = 0;
-    this._selectedStepValue = 1;
+    this._selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
+    this._selectedValue = 1;
     this._activeStepIndex = 0;
     this._mode = MODE.SEQUENCER;
 
     this._onRefresh(this);
   }
 
-  set eventHandler({ onRefresh, onTrackChange, onPatternChange, onValueChange, onGridChange, onStepChange, onClockChange, onModeChange }) {
+  set eventHandler({
+    onRefresh = NOOP,
+    onTrackChange = NOOP,
+    onPatternChange = NOOP,
+    onValueChange = NOOP,
+    onGridChange = NOOP,
+    onStepChange = NOOP,
+    onClockChange = NOOP,
+    onModeChange = NOOP,
+  }) {
     this._onRefresh = onRefresh;
     this._onTrackChange = onTrackChange;
     this._onPatternChange = onPatternChange;
@@ -55,21 +55,21 @@ export default class Model {
     this._globalStepDuration = stepDuration;
   }
 
-  set scale(pitchClasses) {
+  set scalePitchClasses(pitchClasses) {
     this._scale.pitchClasses = pitchClasses;
   }
 
-  get tracks() {
-    return this._tracks;
-  }
+  // get tracks() {
+  //   return this._tracks;
+  // }
 
-  get selectedTrack() {
-    return this._tracks[this._selectedTrackIndex];
-  }
+  // get selectedTrack() {
+  //   return this._tracks[this._selectedTrackIndex];
+  // }
 
-  get selectedTrackIndex() {
-    return this._selectedTrackIndex;
-  }
+  // get selectedTrackIndex() {
+  //   return this._selectedTrackIndex;
+  // }
 
   selectTrack(trackIndex) {
     this._selectedTrackIndex = trackIndex;
@@ -80,25 +80,40 @@ export default class Model {
     return this._patterns;
   }
 
-  get selectedPatternIndex() {
-    return this._selectedPatternIndex;
-  }
+  // get selectedPatternIndex() {
+  //   return this._selectedPatternIndex;
+  // }
 
-  get selectedPattern() {
-    return this.selectedTrack.patterns[this._selectedPatternIndex];
-  }
+  // get selectedPattern() {
+  //   return this.selectedTrack.patterns[this._selectedPatternIndex];
+  // }
 
   selectPattern(patternIndex) {
     this._selectedPatternIndex = patternIndex;
     this._onPatternChange(this);
   }
 
-  get selectedStepValue() {
-    return this._selectedStepValue;
+  get selectedPatternSteps() {
+    // TODO: Have tracks keep track of their own selected pattern?
+    return this
+      ._tracks[this._selectedTrackIndex]
+      .patterns[this._selectedPatternIndex]
+      .steps;
   }
 
-  selectStepValue(stepValue) {
-    this._selectedStepValue = stepValue;
+  set selectedPatternSteps(steps) {
+    this
+      ._tracks[this._selectedTrackIndex]
+      .patterns[this._selectedPatternIndex]
+      .steps = steps;
+  }
+
+  // get selectedValue() {
+  //   return this._selectedValue;
+  // }
+
+  selectValue(stepValue) {
+    this._selectedValue = stepValue;
     this._onValueChange(this);
   }
 
@@ -163,6 +178,7 @@ export default class Model {
     //   sequencerController.invert();
     // };
     this._model.patterns[patternIndex].invert();
+    this._onGridChange();
   }
 
   // export function replace() {
@@ -171,21 +187,6 @@ export default class Model {
 
   shiftPattern(amount, patternIndex = this._model.selectedPatternIndex) {
     this._model.patterns[patternIndex].rotate(amount); // TODO: rename to shift?
-    // TODO: we can handle all of these by passing in the appropiate amount from main/Router
-    // export function shiftleft() {
-    //   sequencerController.rotate(1);
-    // };
-
-    // export function shiftup() {
-    //   sequencerController.rotate(NUMBER_OF.COLUMNS);
-    // };
-
-    // export function shiftright() {
-    //   sequencerController.rotate(-1);
-    // };
-
-    // export function shiftdown() {
-    //   sequencerController.rotate(-NUMBER_OF.COLUMNS);
-    // };
+    this._onGridChange();
   }
 }

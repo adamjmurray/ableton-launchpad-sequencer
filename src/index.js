@@ -1,12 +1,7 @@
-// This file is to ease testing by importing everything via the 'src' folder.
-// It's not intended or use outside the tests.
-
 import * as Config from './Config';
-
-import LaunchpadController from './controllers/LaunchpadController';
-import MidiController from './controllers/MidiController';
-import SequencerController from './controllers/SequencerController';
-import StorageController from './controllers/StorageController';
+import Controller from './Controller';
+import Model from './Model';
+import View from './View';
 
 import Pattern from './Model/Pattern';
 import Processor from './Model/Processor';
@@ -19,11 +14,9 @@ import LaunchpadView from './View/LaunchpadView';
 
 export {
   Config,
-
-  LaunchpadController,
-  MidiController,
-  SequencerController,
-  StorageController,
+  Controller,
+  Model,
+  View,
 
   Pattern,
   Processor,

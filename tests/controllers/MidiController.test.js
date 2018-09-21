@@ -1,7 +1,7 @@
 import { MidiController, Sequencer } from '../../src';
 import assert from 'assert';
 
-describe('MidiController', () => {
+describe.skip('MidiController', () => {
 
   let sequencer;
   let controller;

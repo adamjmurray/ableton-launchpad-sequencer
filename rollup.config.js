@@ -10,6 +10,5 @@ export default {
   plugins: [
     babel(),
     resolve(), // allow `import './folder'` to resolve './folder/index.js'
-    { renderChunk: code => code.replace(/\nexport.*/, '') }, // remove top-level exports
   ],
 };

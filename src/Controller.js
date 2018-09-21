@@ -1,12 +1,11 @@
-import Model from './Model';
 import { NUMBER_OF } from './Config';
 
 // const SAVE_DELAY = 2500; // ms
 
 export default class Controller {
 
-  constructor() {
-    this._model = new Model();
+  constructor(model) {
+    this._model = model;
   }
 
   // // but this isn't called form the outside ...
@@ -22,63 +21,17 @@ export default class Controller {
   //   this.saveAfterDelay.schedule(SAVE_DELAY);
   // }
 
-  // //--------------------------------------------------------------
-  // // Persistence
-  // //
-
-  copyPattern(patternIndex = this._model.selectedPatternIndex) {
-    // TODO
-    // export function copy() {
-    //   sequencerController.copyPattern();
-    // };
+  sync() {
+    this._model.sync();
   }
-
-  pastePattern(patternIndex = this._model.selectedPatternIndex) {
-    // TODO:
-    // export function paste() {
-    //   sequencerController.pastePattern();
-    // };
-  }
-
-
-  // Not supporting import/export anymore
-  // export function importFile(filepath) {
-  //   storageController.import(filepath);
-  // };
-
-  // export function exportFile(filepath) {
-  //   storageController.export(filepath);
-  // };
-
-
-  // TODO: handle completely internally? And/or continue to save on transport stop...
-  // export function save() {
-  //   storageController.save();
-  // };
-
 
   load(jsonString) {
     const json = JSON.parse(jsonString);
     this._model.loadJSON(json);
-    // TODO: update views
-    // export function load(path, ...values) {
-    //   storageController.load(path, ...Array.from(values));
-    // };
   }
 
   reset() {
-    // reset() {
-    //   sequencerController.reset();
-    // }
     this._model.reset();
-    // TODO: update views
-  }
-
-  refreshViews() {
-    // bang() {
-    //   sequencerController.redraw();
-    // };
-    this.onSync();
   }
 
   handleLaunchpadNote(pitch, velocity) {
@@ -112,182 +65,101 @@ export default class Controller {
   }
 
   handleClockTick(clockIndex) {
-    // export function clock(clockIndex) {
-    //   sequencerController.setClock(clockIndex);
-    // };
     this._model.activeStepIndex = clockIndex % NUMBER_OF.STEPS;
   }
 
 
-  setGlobalStepLength(stepLength) {
-    // export function stepLength(stepLength) {
-    //   sequencerController.setStepLength(stepLength);
-    // };
+  setGlobalStepDuration(stepDuration) {
+    this._model.globalStepDuration = stepDuration;
   }
 
-  setScale(pitchClasses) {
-    this._model.scale = pitchClasses;
-    // export function setScale(...pitchClasses) {
-    //   sequencerController.setScale(pitchClasses);
-    // };
+  setScale(...pitchClasses) {
+    this._model.scalePitchClasses = pitchClasses;
   }
 
-  // //--------------------------------------------------------------
-  // // GUI Launchpad Buttons
-  // //
+
   selectTrack(trackIndex) {
-    // export function track(trackIndex) {
-    //   sequencerController.selectTrack(trackIndex);
-    // };
     this._model.selectTrack(trackIndex);
   }
 
-  selectStepValue(value) {
-    this._model.selectStepValue(value);
-    // export function stepValue(value) {
-    //   sequencerController.selectValue(value);
-    // };
+  selectValue(value) {
+    this._model.selectValue(value);
   }
 
   selectPattern(patternIndex) {
     this._model.selectedPattern(patternIndex);
-    // export function pattern(patternIndex) {
-    //   sequencerController.selectPattern(patternIndex);
-    // };
   }
 
   handleGridPress(x, y) {
     // TODO: Here we need to deal with "pattern ops mode"
     // Handle toggling logic here?
-
-    // export function grid(x, y) {
-    //   sequencerController.setGridValue(x, y);
-    // };
   }
 
-  // //--------------------------------------------------------------
-  // // Track Settings
-  // //
-  setTrackBasePitch(pitch) {
-    // export function basePitch(pitch) {
-    //   sequencerController.setSelectedTrackPitch(pitch);
-    // };
+
+  setSlectedTrackBasePitch(pitch) {
+
   }
 
-  setTrackBaseVelocity(velocity) {
-    // export function baseVelocity(velocity) {
-    //   sequencerController.setSelectedTrackVelocity(velocity);
-    // };
+  setSlectedTrackBaseVelocity(velocity) {
+
   }
 
-  setTrackGate(multiplier) {
-    // export function durationScale(scale) {
-    //   sequencerController.setSelectedTrackDurationScale(scale);
-    // };
+  setSlectedTrackGate(multiplier) {
+
   }
 
-  setTrackMute(mute) {
-    // export function trackMute(mute) {
-    //   sequencerController.setSelectedTrackMute(mute);
-    // };
+  setSlectedTrackMute(mute) {
+
   }
 
-  setTrackStepLengthMultiplier(multiplier) {
-    // export function trackMultiplier(multiplier) {
-    //   sequencerController.setSelectedTrackStepLengthMultiplier(multiplier);
-    // };
+  setSlectedTrackDurationMultiplier(multiplier) {
+    ;
   }
 
-  // //--------------------------------------------------------------
-  // // Pattern Settings
-  // //
-  setPatternStartStep(stepIndex) {
-    // export function startStep(stepNumber) {
-    //   sequencerController.setSelectedPatternStartStep(stepNumber - 1);
-    // };
+
+  setSelectedPatternStartStep(stepIndex) {
+
   }
 
-  setPatternEndStep(stepIndex) {
-    // export function endStep(stepNumber) {
-    //   sequencerController.setSelectedPatternEndStep(stepNumber - 1);
-    // };
-  }
+  setSelectedPatternEndStep(stepIndex) {
 
-  setPatternType(type, patternIndex = this._model.selectedPatternIndex) {
-    // export function patternType(type) {
-    //   sequencerController.setSelectedPatternType(type);
-    // };
   }
 
   setPatternMute(mute, patternIndex = this._model.selectedPatternIndex) {
-    // export function patternMute(mute) {
-    //   sequencerController.setSelectedPatternMute(mute);
-    // };
+
   }
 
-  // NOTE: getting rid of most of these. I want all functionality (besides track settings) to be controllable on the hardware
-  // //--------------------------------------------------------------
-  // // Pattern Operations
-  // //
-  // export function random() {
-  //   sequencerController.random();
-  // };
-
-  // export function randomFill() {
-  //   sequencerController.randomFill();
-  // };
-
-  // export function randomThin() {
-  //   sequencerController.randomFill(0);
-  // };
-
-  // export function fill() {
-  //   sequencerController.fill();
-  // };
-
-  // export function clear() {
-  //   sequencerController.fill(0);
-  // };
-
-  // export function firstColumn() {
-  //   sequencerController.firstColumn();
-  // };
-
-  reversePattern(patternIndex = this._model.selectedPatternIndex) {
-    // export function reverse() {
-    //   sequencerController.reverse();
-    // };
-    this._model.patterns[patternIndex].reverse();
+  reverseSelectedPattern() {
+    this._model.reversePattern();
   }
 
-  invertPattern(patternIndex = this._model.selectedPatternIndex) {
-    // export function invert() {
-    //   sequencerController.invert();
-    // };
-    this._model.patterns[patternIndex].invert();
+  invertSelectedPattern() {
+    this._model.invertPattern();
   }
 
-  // export function replace() {
-  //   sequencerController.replace();
-  // };
+  shiftSelectedPatternLeft() {
+    this._model.shiftPattern(1); // Do the signs these numbers seem backwards?
+  }
 
-  shiftPattern(amount, patternIndex = this._model.selectedPatternIndex) {
-    this._model.patterns[patternIndex].rotate(amount); // TODO: rename to shift?
-    // TODO: we can handle all of these by passing in the appropiate amount from main/Router
-    // export function shiftleft() {
-    //   sequencerController.rotate(1);
-    // };
+  shiftSelectedPatternRight() {
+    this._model.shiftPattern(-1);
+  }
 
-    // export function shiftup() {
-    //   sequencerController.rotate(NUMBER_OF.COLUMNS);
-    // };
+  shiftSelectedPatternUp() {
+    this._model.shiftPattern(NUMBER_OF.COLUMNS);
+  }
 
-    // export function shiftright() {
-    //   sequencerController.rotate(-1);
-    // };
+  shiftSelectedPatternDown() {
+    this._model.shiftPattern(-NUMBER_OF.COLUMNS);
+  }
 
-    // export function shiftdown() {
-    //   sequencerController.rotate(-NUMBER_OF.COLUMNS);
-    // };
+  copyStepsFromSelectedPattern() {
+    this._stepsClipboard = this._model.selectedPatternSteps.slice(); // slice to freeze this state
+  }
+
+  pasteStepsToSelectedPattern() {
+    if (this._stepsClipboard) {
+      this._model.selectedPatternSteps = this._stepsClipboard;
+    }
   }
 }

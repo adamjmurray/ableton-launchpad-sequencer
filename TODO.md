@@ -14,10 +14,11 @@ Functionality
     send B => octave up ??
     stop => random mute
     bottom 3 => 3 "scale gates"
-- optimize around arps and drum seqs
-  - ability to lock scale for when using drums seqs
-  - actually... we could have a arp vs drum mode, that would set different track defaults and other behaviors...
+  - optimize around arps and drum seqs
+- Change utils.mod into a polyfill for Number.prototype.mod
 - Undo doesn't work (I think we just need to listen to changes from the pattr object)
 - Consider splitting up the blob into a bunch of pattrs
   - Pattern grids probably need to be an atomic list, which might be a blob
   - Most other settings like step length, etc, should be pattrs
+- Add a subdivide feature and make it the send A or B pattern type
+- When 2 gates hit at the same time, add more scale steps (i.e. trreat like scale +)
