@@ -17,7 +17,7 @@ export default class Model {
     this.tracks.forEach(track => track.reset());
     this.selectedTrackIndex = 0;
     this.selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
-    this.selectedValue = 1;
+    this.selectedValue = DEFAULT.VALUE;
     this.selectedStepIndex = 0;
     this.activeStepIndex = 0; // TODO rename to clock
     this.mode = MODE.SEQUENCER;

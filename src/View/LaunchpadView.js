@@ -54,6 +54,11 @@ export default class LaunchpadView {
     this.setTopButtonColor(trackIndex, colorForTrackButton(trackIndex, model));
   }
 
+  renderValueButton(value, model) {
+    this.setTopButtonColor(value + 3,
+      value === model.selectedValue ? COLOR.STEP_VALUES[value] : COLOR.OFF);
+  }
+
   renderPatternButton(patternIndex, model) {
     this.setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
   }

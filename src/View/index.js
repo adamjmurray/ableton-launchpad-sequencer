@@ -1,3 +1,4 @@
+import { DEFAULT } from '../config';
 import GuiView from './GuiView';
 import LaunchpadView from './LaunchpadView';
 
@@ -8,7 +9,7 @@ export default class View {
     this._launchpadView = new LaunchpadView;
     this._selectedTrackIndex = 0;
     this._selectedPatternIndex = 0;
-    this._selectedValue = 1;
+    this._selectedValue = DEFAULT.VALUE;
   }
 
   render(model) {
@@ -23,7 +24,7 @@ export default class View {
       this._launchpadView.renderTrackButton(previousIndex, model);
       this._launchpadView.renderTrackButton(newIndex, model);
       // TODO: Update GUI
-      this._selectedTrackIndex = model.selectedTrackIndex;
+      this._selectedTrackIndex = newIndex;
     }
   }
 
@@ -34,12 +35,19 @@ export default class View {
       this._launchpadView.renderPatternButton(previousIndex, model);
       this._launchpadView.renderPatternButton(newIndex, model);
       // TODO: Update GUI
-      this._selectedPatternIndex = model.selectedPatternIndex;
+      this._selectedPatternIndex = newIndex;
     }
   }
 
   onValueChange(model) {
-
+    const previousValue = this._selectedValue;
+    const newValue = model.selectedValue;
+    if (newValue !== previousValue) {
+      this._launchpadView.renderValueButton(previousValue, model);
+      this._launchpadView.renderValueButton(newValue, model);
+      // TODO: Update GUI
+      this._selectedValue = newValue;
+    }
   }
 
   onGridChange(model) {
