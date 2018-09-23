@@ -1,5 +1,5 @@
 import GUI from '../View/GuiView';
-import { NUMBER_OF } from '../Config';
+import { NUMBER_OF } from '../config';
 
 // The controller for the sequencing application.
 // Manages state and keeps the views updated.

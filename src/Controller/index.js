@@ -1,4 +1,4 @@
-import { DEFAULT, GESTURE, MODE, NUMBER_OF } from '../Config';
+import { STEP_VALUE, GESTURE, MODE, NUMBER_OF } from '../config';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
@@ -131,6 +131,8 @@ export default class Controller {
     else if (isPressed) {
       this.handleGuiGridPress(x, y);
     }
+    this._topButtonGesture.reset();
+    this._rightButtonGesture.reset();
   }
 
   handleTrackNote(pitch, velocity) {
@@ -162,7 +164,7 @@ export default class Controller {
   }
 
   selectOrToggleValue(value) {
-    this._model.selectValue((this._model.selectedValue === value) ? DEFAULT.VALUE : value);
+    this._model.selectValue((this._model.selectedValue === value) ? STEP_VALUE.OFF : value);
     this._view.onValueChange(this._model);
   }
 
@@ -176,7 +178,7 @@ export default class Controller {
     const model = this._model;
     const steps = model.selectedPattern.steps;
     const value = model.selectedValue;
-    steps[stepIndex] = (steps[stepIndex] === value) ? DEFAULT.VALUE : value;
+    steps[stepIndex] = (steps[stepIndex] === value) ? STEP_VALUE.OFF : value;
     model.selectedStepIndex = stepIndex;
     this._view.onStepChange(model);
   }

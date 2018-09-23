@@ -1,6 +1,5 @@
 import GuiView from './GuiView';
 import LaunchpadView from './LaunchpadView';
-import { COLOR } from '../Config';
 
 export default class View {
 

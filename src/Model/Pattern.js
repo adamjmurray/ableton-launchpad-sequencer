@@ -1,5 +1,5 @@
 import Processor from './Processor';
-import { NUMBER_OF } from '../Config';
+import { NUMBER_OF } from '../config';
 
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
 //

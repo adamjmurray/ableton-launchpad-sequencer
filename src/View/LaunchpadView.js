@@ -1,6 +1,4 @@
-import { COLOR as ALL_COLORS, NUMBER_OF, OUTLET } from '../Config';
-
-const COLOR = ALL_COLORS.LAUNCHPAD;
+import { LAUNCHPAD_COLOR as COLOR, DEFAULT, NUMBER_OF, OUTLET } from '../config';
 
 const colorForTrackButton = (trackIndex, model, track = model.tracks[trackIndex]) => {
   const muted = track.muted;
@@ -27,7 +25,7 @@ export default class LaunchpadView {
   constructor() {
     this._selectedTrackIndex = 0;
     this._selectedPatternIndex = 0;
-    this._selectedValue = 1;
+    this._selectedValue = DEFAULT.STEP_VALUE;
   }
 
   ctlout(cc, value) {

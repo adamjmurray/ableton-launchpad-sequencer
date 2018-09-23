@@ -1,4 +1,4 @@
-import { GESTURE } from '../Config';
+import { GESTURE } from '../config';
 
 export default class PressGesture {
 

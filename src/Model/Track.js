@@ -1,4 +1,4 @@
-import { DEFAULT, NUMBER_OF } from '../Config';
+import { DEFAULT, NUMBER_OF } from '../config';
 import Pattern from './Pattern';
 
 export default class Track {

@@ -1,5 +1,6 @@
 import './polyfills';
-import * as Config from './Config';
+import * as Config from './config';
+
 import Controller from './Controller';
 import Model from './Model';
 import View from './View';
@@ -14,6 +15,7 @@ import LaunchpadView from './View/LaunchpadView';
 
 export {
   Config,
+
   Controller,
   Model,
   View,

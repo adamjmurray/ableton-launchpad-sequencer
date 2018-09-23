@@ -1,4 +1,4 @@
-import { DEFAULT } from '../Config';
+import { DEFAULT } from '../config';
 
 // A subset of the 12-note chromatic scale.
 // Determines which notes are used in the "scale +" and "scale -" patterns.

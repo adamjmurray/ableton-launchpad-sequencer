@@ -1,8 +1,6 @@
-import { DEFAULT, MODE, NUMBER_OF } from '../Config';
+import { DEFAULT, MODE, NUMBER_OF } from '../config';
 import Scale from './Scale';
 import Track from './Track';
-
-const NOOP = () => { }; // the "no operation" function
 
 export default class Model {
 

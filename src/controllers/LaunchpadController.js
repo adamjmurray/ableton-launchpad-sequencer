@@ -1,4 +1,4 @@
-import { COLOR, NUMBER_OF } from '../Config';
+import { LAUNCHPAD_COLOR, NUMBER_OF } from '../config';
 
 export default class LaunchpadController {
 
@@ -147,16 +147,16 @@ export default class LaunchpadController {
       // TODO: this logic should be in the LaunchpadView
       // Top lights change to indicate we're in this mode.
       // Left 4 are for shifting
-      launchpad._top(0, COLOR.LAUNCHPAD.YELLOW);
-      launchpad._top(1, COLOR.LAUNCHPAD.YELLOW);
-      launchpad._top(2, COLOR.LAUNCHPAD.YELLOW);
-      launchpad._top(3, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(0, LAUNCHPAD_COLOR.YELLOW);
+      launchpad._top(1, LAUNCHPAD_COLOR.YELLOW);
+      launchpad._top(2, LAUNCHPAD_COLOR.YELLOW);
+      launchpad._top(3, LAUNCHPAD_COLOR.YELLOW);
       // Next 2 are for reverse and invert
-      launchpad._top(4, COLOR.LAUNCHPAD.YELLOW);
-      launchpad._top(5, COLOR.LAUNCHPAD.YELLOW);
+      launchpad._top(4, LAUNCHPAD_COLOR.YELLOW);
+      launchpad._top(5, LAUNCHPAD_COLOR.YELLOW);
       // Last 2 are copy & paste
-      launchpad._top(6, COLOR.LAUNCHPAD.GREEN);
-      launchpad._top(7, COLOR.LAUNCHPAD.RED);
+      launchpad._top(6, LAUNCHPAD_COLOR.GREEN);
+      launchpad._top(7, LAUNCHPAD_COLOR.RED);
       launchpad.patternSteps(this.sequencerController.selectedPattern);
     } else {
       this.launchpad.allOff();
