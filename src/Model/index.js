@@ -6,45 +6,23 @@ const NOOP = () => { }; // the "no operation" function
 
 export default class Model {
 
-  constructor(eventHandler = {}) {
+  constructor() {
     this._scale = new Scale;
     this._tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
-    this.eventHandler = eventHandler;
     this.reset();
   }
 
   reset() {
-    this._globalStepDuration = DEFAULT.STEP_DURATION;
-    this._globalTranspose = 0;
-    this._scale.pitchClasses = DEFAULT.PITCH_CLASSES;
-    this._tracks.forEach(track => track.reset());
-    this._selectedTrackIndex = 0;
-    this._selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
-    this._selectedValue = 1;
-    this._activeStepIndex = 0;
-    this._mode = MODE.SEQUENCER;
-
-    this._onRefresh(this);
-  }
-
-  set eventHandler({
-    onRefresh = NOOP,
-    onTrackChange = NOOP,
-    onPatternChange = NOOP,
-    onValueChange = NOOP,
-    onGridChange = NOOP,
-    onStepChange = NOOP,
-    onClockChange = NOOP,
-    onModeChange = NOOP,
-  }) {
-    this._onRefresh = onRefresh;
-    this._onTrackChange = onTrackChange;
-    this._onPatternChange = onPatternChange;
-    this._onValueChange = onValueChange;
-    this._onGridChange = onGridChange;
-    this._onStepChange = onStepChange;
-    this._onClockChange = onClockChange;
-    this._onModeChange = onModeChange;
+    this.globalStepDuration = DEFAULT.STEP_DURATION;
+    // this.globalTranspose = 0;
+    this.scale.pitchClasses = DEFAULT.PITCH_CLASSES;
+    this.tracks.forEach(track => track.reset());
+    this.selectedTrackIndex = 0;
+    this.selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
+    this.selectedValue = 1;
+    this.selectedStepIndex = 0;
+    this.activeStepIndex = 0; // TODO rename to clock
+    this.mode = MODE.SEQUENCER;
   }
 
   set globalTranspose(amount) {
@@ -63,9 +41,9 @@ export default class Model {
   //   return this._tracks;
   // }
 
-  // get selectedTrack() {
-  //   return this._tracks[this._selectedTrackIndex];
-  // }
+  get selectedTrack() {
+    return this._tracks[this._selectedTrackIndex];
+  }
 
   // get selectedTrackIndex() {
   //   return this._selectedTrackIndex;
@@ -76,6 +54,27 @@ export default class Model {
     this._onTrackChange(this);
   }
 
+
+  setTrackBasePitch(pitch, trackIndex = this._selectedTrackIndex) {
+
+  }
+
+  setTrackBaseVelocity(velocity, trackIndex = this._selectedTrackIndex) {
+
+  }
+
+  setTrackGate(multiplier, trackIndex = this._selectedTrackIndex) {
+
+  }
+
+  setTrackMute(mute, trackIndex = this._selectedTrackIndex) {
+    this._tracks[trackIndex].mute = mute;
+  }
+
+  setTrackDurationMultiplier(multiplier, trackIndex = this._selectedTrackIndex) {
+    ;
+  }
+
   get patterns() {
     return this._patterns;
   }
@@ -84,13 +83,12 @@ export default class Model {
   //   return this._selectedPatternIndex;
   // }
 
-  // get selectedPattern() {
-  //   return this.selectedTrack.patterns[this._selectedPatternIndex];
-  // }
+  get selectedPattern() {
+    return this.selectedTrack.patterns[this._selectedPatternIndex];
+  }
 
   selectPattern(patternIndex) {
     this._selectedPatternIndex = patternIndex;
-    this._onPatternChange(this);
   }
 
   get selectedPatternSteps() {
@@ -108,9 +106,9 @@ export default class Model {
       .steps = steps;
   }
 
-  // get selectedValue() {
-  //   return this._selectedValue;
-  // }
+  get selectedValue() {
+    return this._selectedValue;
+  }
 
   selectValue(stepValue) {
     this._selectedValue = stepValue;

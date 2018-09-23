@@ -7,19 +7,18 @@ export default class Track {
     // TODO: convert all to private member vars
     this.index = index;
     this.scale = scale;
-    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
+    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(DEFAULT.PATTERN_TYPES[index]));
     this.reset();
   }
 
   reset() {
     this.pitch = 60;
-    this.pitchOverride = null; // MIDI input can temporarily override the track pitch
-    this.velocityOverride = null;
+    // this.pitchOverride = null; // MIDI input can temporarily override the track pitch
+    // this.velocityOverride = null;
     this.velocity = 70;
-    this.duration = 0.9;
-    this.number = this.index + 1;
+    this.gate = 0.9;
     this.patterns.forEach(pattern => pattern.reset());
-    this.multiplier = 1;
+    this.durationMultiplier = 1;
     this.mute = false;
     this.note = {};
   }
@@ -32,7 +31,7 @@ export default class Track {
     const { note } = this; // avoids creating and garbage collecting objects each clock tick
     note.pitch = this.pitchOverride != null ? this.pitchOverride : this.pitch;
     note.velocity = this.velocityOverride != null ? this.velocityOverride : this.velocity;
-    note.duration = 0; // no note unless a gate or "duration +" pattern turns it on
+    note.gate = 0; // no note unless a gate or "duration +" pattern turns it on
     // note.interval = null # for whenever an interval pattern exists
     // note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick
 
@@ -44,31 +43,31 @@ export default class Track {
       }
     });
 
-    note.duration *= this.duration * this.multiplier; // track.duration and multiplier scales the note's duration
+    note.gate *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's gate
     return note;
   }
 
   clockForMultiplier(clock) {
     // step lengths are longer, so we only trigger every few clock ticks
-    if (clock % this.multiplier === 0) return clock /= this.multiplier;
+    if (clock % this.durationMultiplier === 0) return clock /= this.durationMultiplier;
   }
 
   toJSON() {
     return {
       pitch: this.pitch,
       velocity: this.velocity,
-      duration: this.duration,
-      multiplier: this.multiplier,
+      gate: this.gate,
+      durationMultiplier: this.durationMultiplier,
       mute: this.mute,
       patterns: this.patterns
     };
   }
 
-  fromJSON({ pitch, velocity, duration, multiplier, mute, patterns }) {
+  fromJSON({ pitch, velocity, gate, durationMultiplier, mute, patterns }) {
     if (pitch != null) { this.pitch = pitch; }
     if (velocity != null) { this.velocity = velocity; }
-    if (duration != null) { this.duration = duration; }
-    if (multiplier != null) { this.multiplier = multiplier; }
+    if (gate != null) { this.gate = gate; }
+    if (durationMultiplier != null) { this.durationMultiplier = durationMultiplier; }
     if (mute != null) { this.mute = mute; }
     if (patterns != null) {
       patterns.forEach((pattern, index) => this.patterns[index].fromJSON(pattern));

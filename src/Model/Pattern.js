@@ -9,129 +9,84 @@ import { mod } from '../utils';
 //
 export default class Pattern {
 
-  constructor(index, type) {
-    this.index = index;
-    this._defaultProcessorType = type;
+  constructor(type) {
     this._processor = new Processor(type);
-    this._steps = Array(NUMBER_OF.STEPS);
+    this.steps = Array(NUMBER_OF.STEPS);
     this.reset();
   }
 
   reset() {
-    // TODO: convert to member vars
-    this._processor.type = this._defaultProcessorType;
-    this.sequence.fill(0); // TODO: rename to steps?
-    this.start = 0;
-    this.end = NUMBER_OF.STEPS - 1;
+    this.steps.fill(0); // TODO: rename to steps?
+    this.startStepIndex = 0;
+    this.endStepIndex = NUMBER_OF.STEPS - 1;
     this.mute = false;
   }
 
-  get type() { return this._processor.type; }
-  set type(type) { this._processor.type = type; }
-
-  // TODO: "sequence" is deprecated
-  get sequence() { return this._steps; }
-  set sequence(steps) {
-    //const seq = (sequence || []).slice(0, NUMBER_OF.STEPS);
-    //this._steps = seq.concat(Array(NUMBER_OF.STEPS - seq.length).fill(0));
-    this._steps = steps;
+  get type() {
+    return this._processor.type;
   }
-  get steps() { return this._steps; }
-  set steps(steps) { this._steps = steps; }
-
-  get start() { return this._start; }
-  set start(index) {
-    if (this.isValidIndex(index)) {
-      // this._start = parseInt(index); // TODO: do we need to do this?
-      this._start = index;
-      if (this._start > this._end) {
-        this._end = this._start;
-      }
-      this._updateLength();
-    }
-  }
-
-  get end() { return this._end; }
-  set end(index) {
-    if (this.isValidIndex(index)) {
-      this._end = index;
-      if (this._start > this._end) {
-        this._start = this._end;
-      }
-      this._updateLength();
-    }
+  set type(type) {
+    this._processor.type = type;
   }
 
   setRange(index1, index2) {
-    if (isValidIndex(index1) && isValidIndex(index2)) {
-      // this._start = parseInt(start);
-      // this._end = parseInt(end);
-      this._start = Math.min(index1, index2);
-      this._end = Math.max(index1, index2);
-      this._updateLength();
-    }
+    this.startStepIndex = Math.min(index1, index2);
+    this.endStepIndex = Math.max(index1, index2);
   }
 
-  _updateLength() {
-    this.length = (this._end - this._start) + 1;
-  }
-
-  forEachActiveStep(cb) {
-    const { start, end } = this;
-    for (let i = start; i <= end; i++) {
-      cb(i);
-    }
+  get length() {
+    return (this._end - this._start) + 1;
   }
 
   clear() {
     this.forEachActiveStep(i =>
-      this._steps[i] = 0);
+      this.steps[i] = 0);
   }
 
-  random() {
-    this.forEachActiveStep(i =>
-      this._steps[i] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random()));
+  randomize() {
+    const { steps } = this;
+    steps.forEach((_, index) =>
+      steps[index] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random())
+    );
   }
 
   // fill in value with 25% chance
   randomFill(value) {
-    this.forEachActiveStep(i => {
+    const { steps } = this;
+    steps.forEach((_, index) => {
       if (Math.random() < 0.25) {
-        this._steps[i] = value;
+        steps[index] = value;
       }
     });
   }
 
-  firstColumn(value) {
-    // TODO: Should this be from start to end be relative to start?
-    for (let i = 0; i < NUMBER_OF.STEPS; i += NUMBER_OF.COLUMNS) {
-      this._steps[i] = value;
-    }
-  }
-
   fill(value) {
-    this.forEachActiveStep(i =>
-      this._steps[i] = value);
+    const { steps } = this;
+    steps.forEach((_, index) =>
+      steps[index] = value
+    );
   }
 
   replace(value) {
-    this.forEachActiveStep(i => {
-      if (this._steps[i] > 0) {
-        this._steps[i] = value;
+    const { steps } = this;
+    steps.forEach((_, index) => {
+      if (steps[index] > 0) {
+        steps[index] = value;
       }
     });
   }
 
   reverse() {
-    this._steps.reverse();
+    this.steps.reverse();
   }
 
   // Flips value 1 with 4, and 2 with 3
   invert() {
-    this.forEachActiveStep(i => {
-      const value = this._steps[i];
+    const { steps } = this;
+    steps.forEach((_, index) => {
+      const value = steps[index];
       if (value > 0) {
-        this._steps[i] = NUMBER_OF.STEP_VALUES - value;
+        steps[index] = NUMBER_OF.STEP_VALUES - value;
       }
     });
   }
@@ -143,22 +98,18 @@ export default class Pattern {
     const left = sequence.slice(start, rot);
     const right = sequence.slice(rot, end + 1);
     const after = sequence.slice((end + 1));
-    this._steps = before.concat(right, left, after);
+    this.steps = before.concat(right, left, after);
   }
 
-  isValidIndex(index) {
-    return (0 <= index) && (index < NUMBER_OF.STEPS);
-  }
+  // getStep(index) {
+  //   return this.steps[index];
+  // }
 
-  getStep(index) {
-    return this._steps[index];
-  }
-
-  setStep(index, value) {
-    if (this.isValidIndex(index)) {
-      this._steps[index] = value;
-    }
-  }
+  // setStep(index, value) {
+  //   if (this.isValidIndex(index)) {
+  //     this.steps[index] = value;
+  //   }
+  // }
 
   // Given a clock index (in steps) return the active step in this pattern,
   // taking into account the start and end step.
@@ -189,17 +140,17 @@ export default class Pattern {
   toJSON() {
     return {
       type: this.type,
-      start: this._start,
-      end: this._end,
+      start: this.startStepIndex,
+      end: this.endStepIndex,
       mute: this.mute,
-      sequence: this._steps
+      sequence: this.steps
     };
   }
 
   fromJSON({ type, start, end, mute, sequence }) {
     if (type != null) this.type = type;
-    if (start != null) this.start = start;
-    if (end != null) this.end = end;
+    if (start != null) this.startStepIndex = start;
+    if (end != null) this.endStepIndex = end;
     if (mute != null) this.mute = mute;
     if (sequence != null) this.sequence = sequence;
   }

@@ -8,7 +8,7 @@ export default class View {
     this._launchpadView = new LaunchpadView;
   }
 
-  onRefresh(model) {
+  refresh(model) {
     // TODO: update everything
   }
 

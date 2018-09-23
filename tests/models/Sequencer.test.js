@@ -40,16 +40,16 @@ describe('Sequencer', () => {
       for (const t of sequencer.tracks) {
         assert.equal(t.pitch, 60);
         assert.equal(t.velocity, 70);
-        assert.equal(t.duration, 0.9);
+        assert.equal(t.gate, 0.9);
         assert.equal(t.mute, false);
         assert.equal(t.patterns.length, 8);
         for (let i = 0; i < t.patterns.length; i++) {
           const p = t.patterns[i];
           assert.equal(p.type, DEFAULT.PATTERN_TYPES[i]);
-          assert.equal(p.start, 0);
-          assert.equal(p.end, 63);
+          assert.equal(p.startStepIndex, 0);
+          assert.equal(p.endStepIndex, 63);
           assert.equal(p.mute, false);
-          assert.deepEqual(p.sequence, Array(NUMBER_OF.STEPS).fill(0));
+          assert.deepEqual(p.steps, Array(NUMBER_OF.STEPS).fill(0));
         }
       }
     });

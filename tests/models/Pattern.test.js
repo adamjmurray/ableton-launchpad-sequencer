@@ -7,10 +7,10 @@ describe('Pattern', () => {
   describe('invert()', () => {
     it('flips the steps values 1<=>4 and 2<=>3', () => {
       const pattern = new Pattern;
-      pattern.sequence = [...Array(NUMBER_OF.STEPS)].map((_, i) => i % NUMBER_OF.STEP_VALUES)
-      const expected = pattern.sequence.map(v => v > 0 ? NUMBER_OF.STEP_VALUES - v : 0);
+      pattern.steps = [...Array(NUMBER_OF.STEPS)].map((_, i) => i % NUMBER_OF.STEP_VALUES)
+      const expected = pattern.steps.map(v => v > 0 ? NUMBER_OF.STEP_VALUES - v : 0);
       pattern.invert();
-      assert.deepEqual(pattern.sequence, expected);
+      assert.deepEqual(pattern.steps, expected);
     })
   });
 
