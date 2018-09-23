@@ -1,5 +1,4 @@
-import './polyfills';
-import { Config, Controller, Model, View } from './';
+import { Config, Controller, Model, View } from '.';
 
 const controller = new Controller(new Model, new View);
 

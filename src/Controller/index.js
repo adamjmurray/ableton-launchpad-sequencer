@@ -1,5 +1,7 @@
 import { DEFAULT, GESTURE, MODE, NUMBER_OF } from '../Config';
-import { PressGesture, RangeSelectionGesture } from './PressGesture';
+import PressGesture from './PressGesture';
+import RangeSelectionGesture from './RangeSelectionGesture';
+
 // const SAVE_DELAY = 2500; // ms
 
 function xyToIndex(x, y) {
