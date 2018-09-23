@@ -1,11 +1,33 @@
 import { COLOR as ALL_COLORS, NUMBER_OF, OUTLET } from '../Config';
-import Defer from '../defer';
 
 const COLOR = ALL_COLORS.LAUNCHPAD;
 
+const colorForTrackButton = (trackIndex, model, track = model.tracks[trackIndex]) => {
+  const muted = track.muted;
+  const selected = trackIndex === model.selectedTrackIndex;
+  if (muted) {
+    return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
+  } else {
+    return selected ? COLOR.TRACK_COLOR : COLOR.OFF
+  }
+}
+
+const colorForPatternButton = (patternIndex, model, pattern = model.patterns[patternIndex]) => {
+  const muted = pattern.muted;
+  const selected = patternIndex === model.selectedPatternIndex;
+  if (muted) {
+    return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
+  } else {
+    return selected ? COLOR.PATTERN_COLOR : COLOR.OFF
+  }
+}
+
 export default class LaunchpadView {
+
   constructor() {
-    this.patternOpsMode = false;
+    this._selectedTrackIndex = 0;
+    this._selectedPatternIndex = 0;
+    this._selectedValue = 1;
   }
 
   ctlout(cc, value) {
@@ -22,34 +44,42 @@ export default class LaunchpadView {
 
   track(track) {
     const color = track.mute ? COLOR.MUTE_COLOR : COLOR.TRACK_COLOR;
-    this._top(track.index, color);
+    this.setTopButtonColor(track.index, color);
   }
 
   trackOff(track) {
     const color = track.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
-    this._top(track.index, color);
+    this.setTopButtonColor(track.index, color);
+  }
+
+  renderTrackButton(trackIndex, model) {
+    this.setTopButtonColor(trackIndex, colorForTrackButton(trackIndex, model));
+  }
+
+  renderPatternButton(patternIndex, model) {
+    this.setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
   }
 
   stepValue(stepValue) {
     if (stepValue > 0) {
-      this._top(stepValue + 3, COLOR.STEP_VALUES[stepValue]);
+      this.setTopButtonColor(stepValue + 3, COLOR.STEP_VALUES[stepValue]);
     }
   }
 
   stepValueOff(stepValue) {
     if (stepValue > 0) {
-      this._top(stepValue + 3, COLOR.OFF);
+      this.setTopButtonColor(stepValue + 3, COLOR.OFF);
     }
   }
 
   pattern(pattern) {
     const color = pattern.mute ? COLOR.MUTE_COLOR : COLOR.PATTERN_COLOR;
-    this._right(pattern.index, color);
+    this.setRightButtonColor(pattern.index, color);
   }
 
   patternOff(pattern) {
     const color = pattern.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
-    this._right(pattern.index, color);
+    this.setRightButtonColor(pattern.index, color);
   }
 
   grid(x, y, value) {
@@ -60,31 +90,31 @@ export default class LaunchpadView {
     this._grid(x, y, COLOR.SEQUENCER_STEP);
   }
 
-  patternSteps(pattern, additionalDeferredCallback) {
-    if (this.patternOpsMode) {   // Use the grid to show the pattern length by lighting up all the steps from the start to the end step
-      const { start, end } = pattern;
-      Defer.eachStep((x, y, index) => {
-        const stepValue = pattern.getStep(index);
-        const color = start <= index && index <= end
-          ? COLOR.ACTIVE_STEPS[stepValue]
-          : COLOR.INACTIVE_STEPS[stepValue];
-        this._grid(x, y, color);
-        if (additionalDeferredCallback != null) {
-          additionalDeferredCallback(x, y, stepValue);
-        }
-      });
-    } else {
-      Defer.eachStep((x, y, index) => {
-        const stepValue = pattern.getStep(index);
-        this._grid(x, y, COLOR.STEP_VALUES[stepValue]);
-        if (additionalDeferredCallback != null) {
-          additionalDeferredCallback(x, y, stepValue);
-        }
-      });
-    }
-  }
+  // patternSteps(pattern, additionalDeferredCallback) {
+  //   if (this.patternOpsMode) {   // Use the grid to show the pattern length by lighting up all the steps from the start to the end step
+  //     const { start, end } = pattern;
+  //     Defer.eachStep((x, y, index) => {
+  //       const stepValue = pattern.getStep(index);
+  //       const color = start <= index && index <= end
+  //         ? COLOR.ACTIVE_STEPS[stepValue]
+  //         : COLOR.INACTIVE_STEPS[stepValue];
+  //       this._grid(x, y, color);
+  //       if (additionalDeferredCallback != null) {
+  //         additionalDeferredCallback(x, y, stepValue);
+  //       }
+  //     });
+  //   } else {
+  //     Defer.eachStep((x, y, index) => {
+  //       const stepValue = pattern.getStep(index);
+  //       this._grid(x, y, COLOR.STEP_VALUES[stepValue]);
+  //       if (additionalDeferredCallback != null) {
+  //         additionalDeferredCallback(x, y, stepValue);
+  //       }
+  //     });
+  //   }
+  // }
 
-  render(state) {
+  render(model) {
     // TODO: update to work with the Device model
     const { sequence, stepValue, trackIndex, trackMutes, patternIndex, patternMutes, isPatternOpsMode, startStepIndex, endStepIndex } = state;
     let colors;
@@ -121,14 +151,18 @@ export default class LaunchpadView {
           colors.push(i === patternIndex ? COLOR.PATTERN_COLOR : COLOR.OFF);
         }
       }
-      for (let i = 0; i < NUMBER_OF.TRACKS; i++) {
-        if (trackMutes[i]) {
-          colors.push(i === trackIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
-        }
-        else {
-          colors.push(i === trackIndex ? COLOR.TRACK_COLOR : COLOR.OFF);
-        }
-      }
+      model.tracks.forEach((track, index) => {
+        colors.push(colorForTrackButton(index, model, track));
+      })
+      // for (let i = 0; i < NUMBER_OF.TRACKS; i++) {
+      //   model.tracks[i];
+      //   if (trackMutes[i]) {
+      //     colors.push(i === trackIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
+      //   }
+      //   else {
+      //     colors.push(i === trackIndex ? COLOR.TRACK_COLOR : COLOR.OFF);
+      //   }
+      // }
       for (let i = 0; i < 4; i++) {
         colors.push(i + 1 === stepValue ? COLOR.STEP_VALUES[stepValue] : COLOR.OFF);
       }
@@ -144,7 +178,7 @@ export default class LaunchpadView {
   // ==============================================================================
   // private
 
-  _top(index, color) {
+  setTopButtonColor(index, color) {
     if (0 <= index && index <= 7) {
       this.ctlout(104 + index, color);
     }
@@ -156,7 +190,7 @@ export default class LaunchpadView {
     }
   }
 
-  _right(index, color) {
+  setRightButtonColor(index, color) {
     if (0 <= index && index <= 7) {
       this.noteout((16 * index) + 8, color);
     }

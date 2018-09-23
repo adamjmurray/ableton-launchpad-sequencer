@@ -25,63 +25,14 @@ export default class Model {
     this.mode = MODE.SEQUENCER;
   }
 
-  set globalTranspose(amount) {
-    this._globalTranspose = amount;
-  }
-
-  set globalStepDuration(stepDuration) {
-    this._globalStepDuration = stepDuration;
-  }
-
-  set scalePitchClasses(pitchClasses) {
-    this._scale.pitchClasses = pitchClasses;
-  }
-
-  // get tracks() {
-  //   return this._tracks;
-  // }
-
   get selectedTrack() {
     return this._tracks[this._selectedTrackIndex];
   }
-
-  // get selectedTrackIndex() {
-  //   return this._selectedTrackIndex;
-  // }
 
   selectTrack(trackIndex) {
     this._selectedTrackIndex = trackIndex;
     this._onTrackChange(this);
   }
-
-
-  setTrackBasePitch(pitch, trackIndex = this._selectedTrackIndex) {
-
-  }
-
-  setTrackBaseVelocity(velocity, trackIndex = this._selectedTrackIndex) {
-
-  }
-
-  setTrackGate(multiplier, trackIndex = this._selectedTrackIndex) {
-
-  }
-
-  setTrackMute(mute, trackIndex = this._selectedTrackIndex) {
-    this._tracks[trackIndex].mute = mute;
-  }
-
-  setTrackDurationMultiplier(multiplier, trackIndex = this._selectedTrackIndex) {
-    ;
-  }
-
-  get patterns() {
-    return this._patterns;
-  }
-
-  // get selectedPatternIndex() {
-  //   return this._selectedPatternIndex;
-  // }
 
   get selectedPattern() {
     return this.selectedTrack.patterns[this._selectedPatternIndex];
@@ -91,45 +42,8 @@ export default class Model {
     this._selectedPatternIndex = patternIndex;
   }
 
-  get selectedPatternSteps() {
-    // TODO: Have tracks keep track of their own selected pattern?
-    return this
-      ._tracks[this._selectedTrackIndex]
-      .patterns[this._selectedPatternIndex]
-      .steps;
-  }
-
-  set selectedPatternSteps(steps) {
-    this
-      ._tracks[this._selectedTrackIndex]
-      .patterns[this._selectedPatternIndex]
-      .steps = steps;
-  }
-
-  get selectedValue() {
-    return this._selectedValue;
-  }
-
-  selectValue(stepValue) {
-    this._selectedValue = stepValue;
-    this._onValueChange(this);
-  }
-
-  setStep(stepIndex, stepValue, pattern = this.selectedPattern) {
-    const { steps } = pattern;
-    // TODO: should we handle the toggling logic in the controller?
-    steps[stepIndex] = steps[stepIndex] === stepValue ? 0 : stepValue;
-    this._onStepChange(this); // either need to pass in the stepIndex or keep track of selectedStepIndex (I prefer the latter for consistency)
-  }
-
-  get activeStepIndex() {
-    return this._activeStepIndex;
-  }
-
-  // TODO: rename to clock-something?
-  set activeStepIndex(stepIndex) {
-    this._activeStepIndex = stepIndex;
-    this._onClockChange(this);
+  selectValue(value) {
+    this._selectedValue = value;
   }
 
   getNotes(clockIndex) {
@@ -155,36 +69,5 @@ export default class Model {
     //   }
     // }
     // });
-  }
-
-  get mode() {
-    return this._mode;
-  }
-
-  set mode(mode) {
-    this._mode = mode;
-    this._onModeChange(this);
-  }
-
-  reversePattern(patternIndex = this._selectedPatternIndex) {
-    this._patterns[patternIndex].reverse();
-    this._onGridChange();
-  }
-
-  invertPattern(patternIndex = this._model.selectedPatternIndex) {
-    // export function invert() {
-    //   sequencerController.invert();
-    // };
-    this._model.patterns[patternIndex].invert();
-    this._onGridChange();
-  }
-
-  // export function replace() {
-  //   sequencerController.replace();
-  // };
-
-  shiftPattern(amount, patternIndex = this._model.selectedPatternIndex) {
-    this._model.patterns[patternIndex].rotate(amount); // TODO: rename to shift?
-    this._onGridChange();
   }
 }

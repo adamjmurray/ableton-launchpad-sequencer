@@ -6,9 +6,8 @@ import View from './View';
 
 import Pattern from './Model/Pattern';
 import Processor from './Model/Processor';
-import Track from './Model/Track';
 import Scale from './Model/Scale';
-import Sequencer from './Model/Sequencer';
+import Track from './Model/Track';
 
 import GuiView from './View/GuiView';
 import LaunchpadView from './View/LaunchpadView';
@@ -21,9 +20,8 @@ export {
 
   Pattern,
   Processor,
-  Track,
   Scale,
-  Sequencer,
+  Track,
 
   GuiView,
   LaunchpadView,

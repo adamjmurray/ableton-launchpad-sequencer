@@ -90,7 +90,7 @@ export default class Pattern {
     });
   }
 
-  rotate(amount) {
+  shift(amount) {
     const { sequence, start, end, length } = this;
     const rot = start + amount.mod(length);
     const before = sequence.slice(0, start);

@@ -1,25 +1,42 @@
 import GuiView from './GuiView';
 import LaunchpadView from './LaunchpadView';
+import { COLOR } from '../Config';
 
 export default class View {
 
   constructor() {
     this._guiView = new GuiView;
     this._launchpadView = new LaunchpadView;
+    this._selectedTrackIndex = 0;
+    this._selectedPatternIndex = 0;
+    this._selectedValue = 1;
   }
 
-  refresh(model) {
-    // TODO: update everything
+  render(model) {
+    this._guiView.render(model);
+    this._launchpadView.render(model);
   }
 
   onTrackChange(model) {
-    // TODO: update track buttons
-    this.onGridChange(model);
+    const previousIndex = this._selectedTrackIndex;
+    const newIndex = model.selectedTrackIndex;
+    if (newIndex !== previousIndex) {
+      this._launchpadView.renderTrackButton(previousIndex, model);
+      this._launchpadView.renderTrackButton(newIndex, model);
+      // TODO: Update GUI
+      this._selectedTrackIndex = model.selectedTrackIndex;
+    }
   }
 
   onPatternChange(model) {
-    // TODO: update pattern buttons
-    this.onGridChange(model);
+    const previousIndex = this._selectedPatternIndex;
+    const newIndex = model.selectedPatternIndex;
+    if (newIndex !== previousIndex) {
+      this._launchpadView.renderPatternButton(previousIndex, model);
+      this._launchpadView.renderPatternButton(newIndex, model);
+      // TODO: Update GUI
+      this._selectedPatternIndex = model.selectedPatternIndex;
+    }
   }
 
   onValueChange(model) {
@@ -27,7 +44,8 @@ export default class View {
   }
 
   onGridChange(model) {
-
+    // TODO: redraw grid
+    this._launchpadView.render(model); // fast LED updating requires a full re-render
   }
 
   onStepChange(model) {
@@ -39,7 +57,7 @@ export default class View {
   }
 
   onModeChange(model) {
-
+    this._launchpadView.render(model);
   }
 
   // // might not need this unless we're updating the scale GUI to reflect incoming track MIDI
@@ -47,15 +65,4 @@ export default class View {
   // onScaleChange(model) {
 
   // }
-
-
-
-
-  renderGlobalSettings() {
-    // support rendering individual settings?
-  }
-
-  renderTrackSettings() {
-
-  }
 }

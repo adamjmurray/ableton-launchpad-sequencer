@@ -33,13 +33,13 @@ export default class Controller {
   // }
 
   refreshViews() {
-    this._view.refresh(this._model);
+    this._view.render(this._model);
   }
 
   load(jsonString) {
     const json = JSON.parse(jsonString);
     this._model.loadJSON(json);
-    this._view.refresh(this._model);
+    this._view.render(this._model);
   }
 
   reset() {
@@ -48,7 +48,7 @@ export default class Controller {
     this._rightButtonGesture.reset();
     this._gridButtonGesture.reset();
     this._heldTopButton = false;
-    this._view.refresh(this._model);
+    this._view.render(this._model);
   }
 
   handleLaunchpadCC(cc, value) {
@@ -181,24 +181,24 @@ export default class Controller {
     this._view.onStepChange(model);
   }
 
-  setSlectedTrackPitch(pitch) {
+  setSelectedTrackPitch(pitch) {
     this._model.selectedTrack.pitch = pitch;
   }
 
-  setSlectedTrackVelocity(velocity) {
+  setSelectedTrackVelocity(velocity) {
     this._model.selectedTrack.velocity = velocity;
   }
 
-  setSlectedTrackGate(gate) {
+  setSelectedTrackGate(gate) {
     this._model.selectedTrack.gate = gate;
   }
 
-  setSlectedTrackMute(mute) {
+  setSelectedTrackMute(mute) {
     this._model.selectedTrack.mute = mute;
     this._view.onTrackChange(this._model);
   }
 
-  setSlectedTrackDurationMultiplier(durationMultiplier) {
+  setSelectedTrackDurationMultiplier(durationMultiplier) {
     this._model.selectedTrack.durationMultiplier = durationMultiplier;
   }
 
@@ -218,32 +218,32 @@ export default class Controller {
   }
 
   reverseSelectedPattern() {
-    this._model.reversePattern();
+    this._model.selectedPattern.reverse();
     this._view.onGridChange(this._model);
   }
 
   invertSelectedPattern() {
-    this._model.invertPattern();
+    this._model.selectedPattern.invert();
     this._view.onGridChange(this._model);
   }
 
   shiftSelectedPatternLeft() {
-    this._model.shiftPattern(1); // Do the signs these numbers seem backwards?
+    this._model.selectedPattern.shift(1); // Do the signs these numbers seem backwards?
     this._view.onGridChange(this._model);
   }
 
   shiftSelectedPatternRight() {
-    this._model.shiftPattern(-1);
+    this._model.selectedPattern.shift(-1);
     this._view.onGridChange(this._model);
   }
 
   shiftSelectedPatternUp() {
-    this._model.shiftPattern(NUMBER_OF.COLUMNS);
+    this._model.selectedPattern.shift(NUMBER_OF.COLUMNS);
     this._view.onGridChange(this._model);
   }
 
   shiftSelectedPatternDown() {
-    this._model.shiftPattern(-NUMBER_OF.COLUMNS);
+    this._model.selectedPattern.shift(-NUMBER_OF.COLUMNS);
     this._view.onGridChange(this._model);
   }
 
