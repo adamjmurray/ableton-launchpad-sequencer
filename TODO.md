@@ -10,6 +10,7 @@ Rearchitecture / Rapid LED Update
     stop => random mute
     bottom 3 => 3 "scale gates"
   - optimize around arps and drum seqs
+- Combine Pattern and Processor files
 - Remove unwanted features from GUI
 - Rebuild GUI using a project and lots of subpatchers
 - Undo doesn't work (I think we just need to listen to changes from the pattr object)
