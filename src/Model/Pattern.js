@@ -1,6 +1,5 @@
 import Processor from './Processor';
 import { NUMBER_OF } from '../Config';
-import { mod } from '../utils';
 
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
 //
@@ -91,9 +90,9 @@ export default class Pattern {
     });
   }
 
-  rotate(steps) {
+  rotate(amount) {
     const { sequence, start, end, length } = this;
-    const rot = start + mod(steps, length);
+    const rot = start + amount.mod(length);
     const before = sequence.slice(0, start);
     const left = sequence.slice(start, rot);
     const right = sequence.slice(rot, end + 1);
@@ -114,7 +113,7 @@ export default class Pattern {
   // Given a clock index (in steps) return the active step in this pattern,
   // taking into account the start and end step.
   stepIndexForClock(clock) {
-    return this._start + mod(clock, this.length);
+    return this._start + clock.mod(this.length);
   }
 
   getStepForClock(clock) {

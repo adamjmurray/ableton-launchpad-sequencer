@@ -1,4 +1,3 @@
-import { mod } from '../utils';
 import { DEFAULT } from '../Config';
 
 // A subset of the 12-note chromatic scale.
@@ -62,7 +61,7 @@ export default class Scale {
     const nearestIndex = this.nearestPitchClassIndex(pitch);
     const mappedIndex = nearestIndex + scaleOffset;
     const octave = 12 * (Math.floor(pitch / 12) + Math.floor(mappedIndex / scaleLength));
-    const wrappedIndex = mod(mappedIndex, scaleLength);
+    const wrappedIndex = mappedIndex.mod(scaleLength);
     const mappedPitch = this._pitchClasses[wrappedIndex] + octave;
 
     this._memo[memoIdx] = mappedPitch;

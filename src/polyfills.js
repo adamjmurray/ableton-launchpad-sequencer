@@ -1,4 +1,4 @@
-console = {
+console = console || {
   log(...values) {
     values.forEach(message => {
       if (message && message.toString) {
@@ -19,7 +19,15 @@ console = {
   }
 }
 
-// Polyfill code from https://developer.mozilla.org
+// modulo function that always returns a positive number
+if (!Number.prototype.mod) {
+  Number.prototype.mod = function(divisor) {
+    const value = this % divisor;
+    return value >= 0 ? value : value + divisor;
+  };
+}
+
+// Remaining polyfill code from https://developer.mozilla.org
 
 if (!Array.from) {
   Array.from = (function() {

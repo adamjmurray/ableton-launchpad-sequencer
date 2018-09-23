@@ -1,3 +1,4 @@
+import './polyfills';
 import * as Config from './Config';
 import Controller from './Controller';
 import Model from './Model';
