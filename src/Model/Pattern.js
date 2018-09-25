@@ -112,12 +112,12 @@ export default class Pattern {
 
   // Given a clock index (in steps) return the active step in this pattern,
   // taking into account the start and end step.
-  stepIndexForClock(clock) {
-    return this._start + clock.mod(this.length);
+  stepIndexForClock(clockIndex) {
+    return this._start + clockIndex.mod(this.length);
   }
 
-  getStepForClock(clock) {
-    return this.getStep(this.stepIndexForClock(clock));
+  getStepForClock(clockIndex) {
+    return this.steps[this.stepIndexFromClock(clockIndex)];
   }
 
   // Given a note in the form of a JS object:

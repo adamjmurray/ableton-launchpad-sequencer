@@ -19,6 +19,22 @@ export default class GuiView {
     outlet(OUTLET.PATTERN_INDEX, patternIndex);
   }
 
+  renderTrackButton(trackIndex) {
+    outlet(OUTLET.TRACK_INDEX, trackIndex);
+  }
+
+  renderPatternButton(patternIndex) {
+    outlet(OUTLET.PATTERN_INDEX, patternIndex);
+  }
+
+  renderValueButton(value) {
+    outlet(OUTLET.STEP_VALUE, stepValue);
+  }
+
+  render(mode) {
+
+  }
+
   grid(x, y, value) {
     const left = (x * STEP_WIDTH) + 2;
     const top = (y * STEP_WIDTH) + 2;

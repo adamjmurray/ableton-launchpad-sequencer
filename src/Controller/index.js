@@ -16,7 +16,8 @@ export default class Controller {
     this._topButtonGesture = new PressGesture;
     this._rightButtonGesture = new PressGesture;
     this._gridButtonGesture = new RangeSelectionGesture;
-    this.refreshViews();
+    // this.refreshViews(); // TODO: We can't call outlets when we're initializing the js script
+    // We'll need a "loadbang" from Max (I think it may already be setup this way in the patch?)
   }
 
   // // but this isn't called form the outside ...
@@ -37,8 +38,14 @@ export default class Controller {
   }
 
   load(jsonString) {
-    const json = JSON.parse(jsonString);
-    this._model.loadJSON(json);
+    let json;
+    try {
+      json = JSON.parse(jsonString);
+    } catch (err) {
+      console.error(err, jsonString);
+      return;
+    }
+    this._model.fromJSON(json);
     this._view.render(this._model);
   }
 
@@ -99,7 +106,7 @@ export default class Controller {
     if (isPressed) {
       if (model.mode === MODE.PATTERN_EDIT) {
         this._model.mode = MODE.SEQUENCER;
-        this._view.refresh(this._model);
+        this._view.render(this._model);
         // Should we select the pattern too?
       }
       else {
@@ -110,7 +117,7 @@ export default class Controller {
             if (this._heldTopButton) {
               this._model.mode = MODE.PATTERN_EDIT;
               this._gridButtonGesture.reset();
-              this._view.refresh(this._model);
+              this._view.render(this._model);
             } else {
               return this.setSelectedPatternMute(!this._model.selectedPattern.mute);
             }
@@ -129,7 +136,7 @@ export default class Controller {
       }
     }
     else if (isPressed) {
-      this.handleGuiGridPress(x, y);
+      this.handleGridPress(x, y);
     }
     this._topButtonGesture.reset();
     this._rightButtonGesture.reset();
@@ -145,35 +152,34 @@ export default class Controller {
   }
 
   handleClockTick(clockIndex) {
-    this._model.activeStepIndex = clockIndex % NUMBER_OF.STEPS;
+    this._model.clockIndex = clockIndex;
+    this._view.onClockChange(this._model);
   }
-
 
   setGlobalStepDuration(stepDuration) {
     this._model.globalStepDuration = stepDuration;
   }
 
   setScale(...pitchClasses) {
-    this._model.scalePitchClasses = pitchClasses;
+    this._model.scale.pitchClasses = pitchClasses;
   }
 
-
   selectTrack(trackIndex) {
-    this._model.selectTrack(trackIndex);
+    this._model.selectedTrackIndex = trackIndex;
     this._view.onTrackChange(this._model);
   }
 
   selectOrToggleValue(value) {
-    this._model.selectValue((this._model.selectedValue === value) ? STEP_VALUE.OFF : value);
+    this._model.selectedValue = (this._model.selectedValue === value) ? STEP_VALUE.OFF : value;
     this._view.onValueChange(this._model);
   }
 
   selectPattern(patternIndex) {
-    this._model.selectedPattern(patternIndex);
+    this._model.selectedPatternIndex = patternIndex;
     this._view.onPatternChange(this._model);
   }
 
-  handleGuiGridPress(x, y) {
+  handleGridPress(x, y) {
     const stepIndex = xyToIndex(x, y);
     const model = this._model;
     const steps = model.selectedPattern.steps;

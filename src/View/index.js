@@ -10,6 +10,7 @@ export default class View {
     this._selectedTrackIndex = 0;
     this._selectedPatternIndex = 0;
     this._selectedValue = DEFAULT.VALUE;
+    this._clockIndex = -1;
   }
 
   render(model) {
@@ -23,7 +24,7 @@ export default class View {
     if (newIndex !== previousIndex) {
       this._launchpadView.renderTrackButton(previousIndex, model);
       this._launchpadView.renderTrackButton(newIndex, model);
-      // TODO: Update GUI
+      this._guiView.renderTrackButton(newIndex);
       this._selectedTrackIndex = newIndex;
     }
   }
@@ -34,7 +35,7 @@ export default class View {
     if (newIndex !== previousIndex) {
       this._launchpadView.renderPatternButton(previousIndex, model);
       this._launchpadView.renderPatternButton(newIndex, model);
-      // TODO: Update GUI
+      this._guiView.renderPatternButton(newIndex);
       this._selectedPatternIndex = newIndex;
     }
   }
@@ -45,7 +46,7 @@ export default class View {
     if (newValue !== previousValue) {
       this._launchpadView.renderValueButton(previousValue, model);
       this._launchpadView.renderValueButton(newValue, model);
-      // TODO: Update GUI
+      this._guiView.renderValueButton(newValue);
       this._selectedValue = newValue;
     }
   }
@@ -60,7 +61,16 @@ export default class View {
   }
 
   onClockChange(model) {
-    // TODO: keep track of previous clock value so we can update that button as well
+    const previousClockIndex = this._clockIndex;
+    const newClockIndex = model.clockIndex;
+    if (newClockIndex !== previousClockIndex) {
+      const pattern = model.selectedPattern;
+      const previousStepIndex = pattern.getStepIndexForClock(previousClockIndex);
+      const newStepIndex = pattern.getStepIndexForClock(newClockIndex);
+      this._launchpadView.renderStep(previousStepIndex, model);
+      this._launchpadView.renderSequencerStep(newStepIndex);
+      // TODO: GUI
+    }
   }
 
   onModeChange(model) {

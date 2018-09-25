@@ -1,46 +1,45 @@
 import { Config, Controller, Model, View } from '.';
 
-const controller = new Controller(new Model, new View);
-
 outlets = Config.NUMBER_OF.OUTLETS;
 
-bang = controller.refreshViews;
-reset = controller.reset;
-load = controller.load;
+const controller = new Controller(new Model, new View);
 
-setScale = controller.setScale;
-stepLength = controller.setGlobalStepDuration;
+export function bang() { controller.refreshViews(); }
+export function reset() { controller.reset(); }
+export function load(path, jsonString) { if (path === 'global') controller.load(jsonString); }
 
-basePitch = controller.setSlectedTrackPitch;
-baseVelocity = controller.setSelectedTrackVelocity;
-durationScale = controller.setSlectedTrackGate;
-trackMultiplier = controller.setSelectedTrackDurationMultiplier;
-trackMute = controller.setSelectedTrackMute;
+export function setScale(...pitchClasses) { controller.setScale(pitchClasses); }
+export function stepLength(stepLength) { controller.setGlobalStepDuration(stepLength); }
+
+export function basePitch(pitch) { controller.setSlectedTrackPitch(pitch); }
+export function baseVelocity(velocity) { controller.setSelectedTrackVelocity(velocity); }
+export function durationScale(scale) { controller.setSlectedTrackGate(scale); }
+export function trackMultiplier() { controller.setSelectedTrackDurationMultiplier; }
+export function trackMute(mute) { controller.setSelectedTrackMute(mute); }
 
 // TODO: subtract the 1 in Max land
-startStep = stepNumber => controller.setSelectedPatternStartStepIndex(stepNumber - 1);
-endStep = stepNumber => controller.setSelectedPatternEndStepIndex(stepNumber - 1);
-patternMute = controller.setSelectedPatternMute;
+export function startStep(stepNumber) { controller.setSelectedPatternStartStepIndex(stepNumber - 1); }
+export function endStep(stepNumber) { controller.setSelectedPatternEndStepIndex(stepNumber - 1); }
+export function patternMute(mute) { controller.setSelectedPatternMute(mute); }
 
-track = controller.selectTrack;
-pattern = controller.selectPattern;
-stepValue = controller.selectOrToggleValue;
+export function track(trackIndex) { controller.selectTrack(trackIndex); }
+export function pattern(patternIndex) { controller.selectPattern(patternIndex); }
+export function stepValue(value) { controller.selectOrToggleValue(value); }
 
-notein = controller.handleLaunchpadNote;
-ctlin = controller.handleLaunchpadCC;
-note = controller.handleTrackNote;
-clock = controller.handleClockTick;
-grid = (x, y) => controller.handleGridPress(x, y, true);
+export function notein(pitch, velocity) { controller.handleLaunchpadNote(pitch, velocity); }
+export function ctlin(cc, val) { controller.handleLaunchpadCC(cc, val); }
+export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
+export function clock(clockIndex) { controller.handleClockTick(clockIndex); }
+export function grid(x, y) { controller.handleGridPress(x, y); }
 
-shiftleft = controller.shiftSelectedPatternLeft;
-shiftright = controller.shiftSelectedPatternRight;
-shiftup = controller.shiftSelectedPatternUp;
-shiftdown = controller.shiftSelectedPatternDown;
-reverse = controller.reverseSelectedPattern;
-invert = controller.invertSelectedPattern;
-copy = controller.copyStepsFromSelectedPattern;
-paste = controller.pasteStepsToSelectedPattern;
-
+export function shiftleft() { controller.shiftSelectedPatternLeft(); }
+export function shiftright() { controller.shiftSelectedPatternRight(); }
+export function shiftup() { controller.shiftSelectedPatternUp(); }
+export function shiftdown() { controller.shiftSelectedPatternDown(); }
+export function reverse() { controller.reverseSelectedPattern(); }
+export function invert() { controller.invertSelectedPattern(); }
+export function copy() { controller.copyStepsFromSelectedPattern(); }
+export function paste() { controller.pasteStepsToSelectedPattern(); }
 
 console.log(
   `________________________________________________________________________________

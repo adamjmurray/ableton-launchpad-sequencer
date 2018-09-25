@@ -1,23 +1,29 @@
-console = console || {
-  log(...values) {
+if (typeof console === 'undefined') {
+  const logToMaxConsoleWith = log => (...values) => {
     values.forEach(message => {
       if (message && message.toString) {
         var s = message.toString();
         if (s.indexOf("[object ") >= 0) {
           s = JSON.stringify(message);
         }
-        post(s);
+        log(s);
       }
       else if (message === null) {
-        post("<null>");
+        log("<null>");
       }
       else {
-        post(message);
+        log(message);
       }
     });
-    post("\n");
+    log("\n");
   }
+
+  console = {
+    log: logToMaxConsoleWith((string) => post(string)),
+    error: logToMaxConsoleWith((string) => error(string)),
+  };
 }
+
 
 // modulo function that always returns a positive number
 Number.prototype.mod = function(divisor) {

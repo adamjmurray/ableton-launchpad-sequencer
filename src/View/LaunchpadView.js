@@ -1,32 +1,45 @@
-import { LAUNCHPAD_COLOR as COLOR, DEFAULT, NUMBER_OF, OUTLET } from '../config';
+import { LAUNCHPAD_COLOR as COLOR, MODE, NUMBER_OF, OUTLET } from '../config';
 
-const colorForTrackButton = (trackIndex, model, track = model.tracks[trackIndex]) => {
-  const muted = track.muted;
+const colorForTrackButton = (trackIndex, model) => {
+  const muted = model.tracks[trackIndex].muted;
   const selected = trackIndex === model.selectedTrackIndex;
   if (muted) {
     return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
   } else {
     return selected ? COLOR.TRACK_COLOR : COLOR.OFF
   }
-}
+};
 
-const colorForPatternButton = (patternIndex, model, pattern = model.patterns[patternIndex]) => {
-  const muted = pattern.muted;
+const colorForPatternButton = (patternIndex, model) => {
+  const muted = model.selectedTrack.patterns[patternIndex].muted;
   const selected = patternIndex === model.selectedPatternIndex;
   if (muted) {
     return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
   } else {
     return selected ? COLOR.PATTERN_COLOR : COLOR.OFF
   }
+};
+
+const colorForGridButton = (stepIndex, model, sequencerStepIndex = model.selectedPattern.stepIndexForClock(model.clockIndex)) => {
+  if (stepIndex === sequencerStepIndex) {
+    return COLOR.SEQUENCER_STEP;
+  }
+  const { selectedPattern } = model;
+  const { startStepIndex, endStepIndex } = selectedPattern;
+  const value = selectedPattern.steps[stepIndex];
+  return startStepIndex <= stepIndex && stepIndex <= endStepIndex
+    ? COLOR.ACTIVE_STEPS[value]
+    : COLOR.INACTIVE_STEPS[value];
+};
+
+const colorsForGridButtons = (model) => {
+  const selectedPattern = model.selectedPattern;
+  const sequencerStepIndex = selectedPattern.stepIndexForClock(model.clockIndex);
+  return model.selectedPattern.steps.map((_, stepIndex) =>
+    colorForGridButton(stepIndex, model, sequencerStepIndex));
 }
 
 export default class LaunchpadView {
-
-  constructor() {
-    this._selectedTrackIndex = 0;
-    this._selectedPatternIndex = 0;
-    this._selectedValue = DEFAULT.STEP_VALUE;
-  }
 
   ctlout(cc, value) {
     outlet(OUTLET.LAUNCHPAD_CC, cc, value);
@@ -61,6 +74,10 @@ export default class LaunchpadView {
 
   renderPatternButton(patternIndex, model) {
     this.setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
+  }
+
+  renderStep(stepIndex, model) {
+    this.setGridColor(stepIndex, colorForGridButton(stepIndex, model));
   }
 
   stepValue(stepValue) {
@@ -118,19 +135,13 @@ export default class LaunchpadView {
   // }
 
   render(model) {
-    // TODO: update to work with the Device model
-    const { sequence, stepValue, trackIndex, trackMutes, patternIndex, patternMutes, isPatternOpsMode, startStepIndex, endStepIndex } = state;
-    let colors;
     // Color order: grid from left-to-right/top-to-bottom, right colomn (patterns) top-to-bottom, top row left-to-right
-    if (isPatternOpsMode) {
-      colors = sequence.map((stepValue, index) =>
-        index >= startStepIndex && index <= endStepIndex
-          ? COLOR.ACTIVE_STEPS[stepValue]
-          : COLOR.INACTIVE_STEPS[stepValue]);
-
-      for (let i = 0; i < NUMBER_OF.PATTERNS; i++) {
-        colors.push(i === patternIndex ? COLOR.PATTERN_COLOR : COLOR.OFF);
-      }
+    let colors =
+      colorsForGridButtons(model)
+        .concat(
+          model.selectedTrack.patterns.map((_, patternIndex) => colorForPatternButton(patternIndex, model))
+        );
+    if (model.mode === MODE.PATTERN_EDIT) {
       colors.push(
         COLOR.YELLOW,
         COLOR.YELLOW,
@@ -144,30 +155,12 @@ export default class LaunchpadView {
         COLOR.RED,
       );
     } else {
-      colors = sequence.map(stepValue => COLOR.STEP_VALUES[stepValue]);
-
-      for (let i = 0; i < NUMBER_OF.PATTERNS; i++) {
-        if (patternMutes[i]) {
-          colors.push(i === patternIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
-        }
-        else {
-          colors.push(i === patternIndex ? COLOR.PATTERN_COLOR : COLOR.OFF);
-        }
-      }
-      model.tracks.forEach((track, index) => {
-        colors.push(colorForTrackButton(index, model, track));
+      model.tracks.forEach((_, trackIndex) => {
+        colors.push(colorForTrackButton(trackIndex, model));
       })
-      // for (let i = 0; i < NUMBER_OF.TRACKS; i++) {
-      //   model.tracks[i];
-      //   if (trackMutes[i]) {
-      //     colors.push(i === trackIndex ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR);
-      //   }
-      //   else {
-      //     colors.push(i === trackIndex ? COLOR.TRACK_COLOR : COLOR.OFF);
-      //   }
-      // }
-      for (let i = 0; i < 4; i++) {
-        colors.push(i + 1 === stepValue ? COLOR.STEP_VALUES[stepValue] : COLOR.OFF);
+      const selectValue = model.selectedValue;
+      for (let value = 1; value < 5; value++) {
+        colors.push(value === selectValue ? COLOR.STEP_VALUES[value] : COLOR.OFF);
       }
     }
     if (colors.length !== 80) {
@@ -187,7 +180,9 @@ export default class LaunchpadView {
     }
   }
 
-  _grid(x, y, color) {
+  setGridColor(stepIndex, color) {
+    const x = stepIndex % NUMBER_OF.COLUMNS;
+    const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
     if ((0 <= x && x <= 7) && (0 <= y && y <= 7)) {
       this.noteout((16 * y) + x, color);
     }

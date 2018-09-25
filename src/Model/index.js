@@ -5,8 +5,8 @@ import Track from './Track';
 export default class Model {
 
   constructor() {
-    this._scale = new Scale;
-    this._tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
+    this.scale = new Scale;
+    this.tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
     this.reset();
   }
 
@@ -18,34 +18,20 @@ export default class Model {
     this.selectedTrackIndex = 0;
     this.selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
     this.selectedValue = DEFAULT.VALUE;
-    this.selectedStepIndex = 0;
-    this.activeStepIndex = 0; // TODO rename to clock
+    this.clockIndex = 0;
     this.mode = MODE.SEQUENCER;
   }
 
   get selectedTrack() {
-    return this._tracks[this._selectedTrackIndex];
-  }
-
-  selectTrack(trackIndex) {
-    this._selectedTrackIndex = trackIndex;
-    this._onTrackChange(this);
+    return this.tracks[this.selectedTrackIndex];
   }
 
   get selectedPattern() {
-    return this.selectedTrack.patterns[this._selectedPatternIndex];
+    return this.selectedTrack.patterns[this.selectedPatternIndex];
   }
 
-  selectPattern(patternIndex) {
-    this._selectedPatternIndex = patternIndex;
-  }
-
-  selectValue(value) {
-    this._selectedValue = value;
-  }
-
-  getNotes(clockIndex) {
-    const notes = this._tracks.map((track) => track.noteForClock(clockIndex));
+  notesForCurrentClockIndex() {
+    const notes = this.tracks.map((track) => track.noteForClock(this.clockIndex));
     return notes.reduce((dedupedNotes, note) => {
       if (note && !dedupedNotes.find(n => n.pitch === note.pitch)) {
         dedupedNotes.push(note);
@@ -67,5 +53,19 @@ export default class Model {
     //   }
     // }
     // });
+  }
+
+  fromJSON({ scale, stepLength, tracks }) {
+    if (scale != null) {
+      this.scale.pitchClasses = scale;
+    }
+    if (stepLength != null) {
+      this.globalStepDuration = stepLength;
+    }
+    if (tracks != null) {
+      tracks.forEach((track, index) =>
+        this.tracks[index].fromJSON(track)
+      );
+    }
   }
 }
