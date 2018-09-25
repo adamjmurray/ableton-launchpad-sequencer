@@ -3,7 +3,8 @@ console = new MaxConsole();
 
 import { Config, Controller, Model, View } from '.';
 outlets = Config.NUMBER_OF.OUTLETS;
-const controller = new Controller(new Model, new View);
+const model = new Model;
+const controller = new Controller(model, new View(model));
 
 export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
