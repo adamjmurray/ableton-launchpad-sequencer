@@ -68,7 +68,7 @@ export default class Controller {
     if (x > 7) {
       this._handleLaunchpadRightButton(y, velocity > 0);
     } else {
-      this._handleLaunchpadGridButton(xyToIndex(x, y), velocity > 0);
+      this._handleLaunchpadGridButton(x, y, velocity > 0);
     }
   }
 
@@ -103,10 +103,11 @@ export default class Controller {
   }
 
   _handleLaunchpadRightButton(index, isPressed) {
+    const model = this._model;
     if (isPressed) {
       if (model.mode === MODE.PATTERN_EDIT) {
-        this._model.mode = MODE.SEQUENCER;
-        this._view.render(this._model);
+        model.mode = MODE.SEQUENCER;
+        this._view.render(model);
         // Should we select the pattern too?
       }
       else {
@@ -115,11 +116,11 @@ export default class Controller {
             return this.selectPattern(index);
           case GESTURE.TRIPLE_PRESS:
             if (this._heldTopButton) {
-              this._model.mode = MODE.PATTERN_EDIT;
+              model.mode = MODE.PATTERN_EDIT;
               this._gridButtonGesture.reset();
-              this._view.render(this._model);
+              this._view.render(model);
             } else {
-              return this.setSelectedPatternMute(!this._model.selectedPattern.mute);
+              return this.setSelectedPatternMute(!model.selectedPattern.mute);
             }
         }
       }
@@ -127,7 +128,8 @@ export default class Controller {
     this._topButtonGesture.reset();
   }
 
-  _handleLaunchpadGridButton(index, isPressed) {
+  _handleLaunchpadGridButton(x, y, isPressed) {
+    const stepIndex = xyToIndex(x, y)
     if (this._model.mode === MODE.PATTERN_EDIT) {
       const range = this._gridButtonGesture.interpretRangeSelection(index, isPressed);
       if (range) {
@@ -136,7 +138,7 @@ export default class Controller {
       }
     }
     else if (isPressed) {
-      this.handleGridPress(x, y);
+      this.setStepToSelectedValue(stepIndex);
     }
     this._topButtonGesture.reset();
     this._rightButtonGesture.reset();
@@ -179,13 +181,14 @@ export default class Controller {
     this._view.onPatternChange(this._model);
   }
 
-  handleGridPress(x, y) {
-    const stepIndex = xyToIndex(x, y);
+  handleGridClick(x, y) {
+    this.setStepToSelectedValue(xyToIndex(x, y));
+  }
+
+  setStepToSelectedValue(stepIndex) {
     const model = this._model;
-    const steps = model.selectedPattern.steps;
-    const value = model.selectedValue;
-    steps[stepIndex] = (steps[stepIndex] === value) ? STEP_VALUE.OFF : value;
     model.selectedStepIndex = stepIndex;
+    model.selectedPattern.steps[stepIndex] = model.selectedValue;
     this._view.onStepChange(model);
   }
 

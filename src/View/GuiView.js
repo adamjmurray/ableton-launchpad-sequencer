@@ -28,7 +28,7 @@ export default class GuiView {
   }
 
   renderValueButton(value) {
-    outlet(OUTLET.STEP_VALUE, stepValue);
+    outlet(OUTLET.STEP_VALUE, value);
   }
 
   render(mode) {

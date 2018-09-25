@@ -22,9 +22,11 @@ export default class View {
     const previousIndex = this._selectedTrackIndex;
     const newIndex = model.selectedTrackIndex;
     if (newIndex !== previousIndex) {
-      this._launchpadView.renderTrackButton(previousIndex, model);
-      this._launchpadView.renderTrackButton(newIndex, model);
+      //this._launchpadView.renderTrackButton(previousIndex, model);
+      //this._launchpadView.renderTrackButton(newIndex, model);
+      this._launchpadView.render(model);
       this._guiView.renderTrackButton(newIndex);
+      // TODO: render GUI grid
       this._selectedTrackIndex = newIndex;
     }
   }
@@ -33,9 +35,11 @@ export default class View {
     const previousIndex = this._selectedPatternIndex;
     const newIndex = model.selectedPatternIndex;
     if (newIndex !== previousIndex) {
-      this._launchpadView.renderPatternButton(previousIndex, model);
-      this._launchpadView.renderPatternButton(newIndex, model);
+      // this._launchpadView.renderPatternButton(previousIndex, model);
+      // this._launchpadView.renderPatternButton(newIndex, model);
+      this._launchpadView.render(model);
       this._guiView.renderPatternButton(newIndex);
+      // TODO: render GUI grid
       this._selectedPatternIndex = newIndex;
     }
   }
@@ -57,7 +61,7 @@ export default class View {
   }
 
   onStepChange(model) {
-    // Do we need to pass in the stepIndex or should we put a selectedStepIndex in the model?
+    this._launchpadView.renderStepButton(model.selectedStepIndex, model);
   }
 
   onClockChange(model) {

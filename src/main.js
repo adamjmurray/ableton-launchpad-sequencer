@@ -31,7 +31,7 @@ export function notein(pitch, velocity) { controller.handleLaunchpadNote(pitch, 
 export function ctlin(cc, val) { controller.handleLaunchpadCC(cc, val); }
 export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
 export function clock(clockIndex) { controller.handleClockTick(clockIndex); }
-export function grid(x, y) { controller.handleGridPress(x, y); }
+export function grid(x, y) { controller.handleGridClick(x, y); }
 
 export function shiftleft() { controller.shiftSelectedPatternLeft(); }
 export function shiftright() { controller.shiftSelectedPatternRight(); }

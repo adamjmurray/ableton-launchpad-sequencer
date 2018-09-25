@@ -21,15 +21,18 @@ const colorForPatternButton = (patternIndex, model) => {
 };
 
 const colorForGridButton = (stepIndex, model, sequencerStepIndex = model.selectedPattern.stepIndexForClock(model.clockIndex)) => {
-  if (stepIndex === sequencerStepIndex) {
-    return COLOR.SEQUENCER_STEP;
-  }
   const { selectedPattern } = model;
-  const { startStepIndex, endStepIndex } = selectedPattern;
   const value = selectedPattern.steps[stepIndex];
-  return startStepIndex <= stepIndex && stepIndex <= endStepIndex
-    ? COLOR.ACTIVE_STEPS[value]
-    : COLOR.INACTIVE_STEPS[value];
+  if (model.mode === MODE.SEQUENCER) {
+    return stepIndex === sequencerStepIndex
+      ? COLOR.SEQUENCER_STEP
+      : COLOR.STEP_VALUES[value];
+  } else {
+    const { startStepIndex, endStepIndex } = selectedPattern;
+    return startStepIndex <= stepIndex && stepIndex <= endStepIndex
+      ? COLOR.ACTIVE_STEPS[value]
+      : COLOR.INACTIVE_STEPS[value];
+  }
 };
 
 const colorsForGridButtons = (model) => {
@@ -53,6 +56,7 @@ export default class LaunchpadView {
     this.ctlout(0, 0);
   }
 
+  // TODO: remove the dead code in here
   track(track) {
     const color = track.mute ? COLOR.MUTE_COLOR : COLOR.TRACK_COLOR;
     this.setTopButtonColor(track.index, color);
@@ -68,27 +72,23 @@ export default class LaunchpadView {
   }
 
   renderValueButton(value, model) {
-    this.setTopButtonColor(value + 3,
-      value === model.selectedValue ? COLOR.STEP_VALUES[value] : COLOR.OFF);
+    if (value > 0) {
+      this.setTopButtonColor(value + 3,
+        value === model.selectedValue ? COLOR.STEP_VALUES[value] : COLOR.OFF);
+    }
   }
 
   renderPatternButton(patternIndex, model) {
     this.setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
   }
 
-  renderStep(stepIndex, model) {
+  renderStepButton(stepIndex, model) {
     this.setGridColor(stepIndex, colorForGridButton(stepIndex, model));
   }
 
   stepValue(stepValue) {
     if (stepValue > 0) {
       this.setTopButtonColor(stepValue + 3, COLOR.STEP_VALUES[stepValue]);
-    }
-  }
-
-  stepValueOff(stepValue) {
-    if (stepValue > 0) {
-      this.setTopButtonColor(stepValue + 3, COLOR.OFF);
     }
   }
 
@@ -164,8 +164,7 @@ export default class LaunchpadView {
       }
     }
     if (colors.length !== 80) {
-      console.log("expected colors.length to be 80, got", colors.length);
-      console.log(colors);
+      console.error("expected colors.length to be 80, got", colors.length, colors);
       return;
     }
     outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, colors);

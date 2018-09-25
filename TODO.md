@@ -1,6 +1,6 @@
 Rearchitecture / Rapid LED Update
 - Finish view logic
-- Test in the Device
+- I don't think gestures are working
 - Can we pick 8 pattern types and just hard code them:
   - on the launchpad right column:
     vol => velocity (70, 85, 100, 115, 127)
@@ -19,3 +19,4 @@ Rearchitecture / Rapid LED Update
   - Most other settings like step length, etc, should be pattrs
 - Add a subdivide feature and make it the send A or B pattern type (replace octave up)
 - When 2 gates hit at the same time, add more scale steps (i.e. treat like scale +)
+  - Or if we're in "drum" mode it could increase the velocity (so make it an option, or just have an arp and drum mode that does the right thing)
