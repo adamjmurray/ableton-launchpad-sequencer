@@ -44,103 +44,58 @@ const colorsForGridButtons = (model) => {
 
 export default class LaunchpadView {
 
-  ctlout(cc, value) {
-    outlet(OUTLET.LAUNCHPAD_CC, cc, value);
+  _setTopButtonColor(index, color) {
+    if (0 <= index && index <= 7) {
+      outlet(OUTLET.LAUNCHPAD_CC, 104 + index, color);
+    }
   }
 
-  noteout(pitch, velocity) {
-    outlet(OUTLET.LAUNCHPAD_NOTE, pitch, velocity);
+  _setRightButtonColor(index, color) {
+    if (0 <= index && index <= 7) {
+      outlet(OUTLET.LAUNCHPAD_NOTE, (16 * index) + 8, color);
+    }
   }
 
-  allOff() {
-    this.ctlout(0, 0);
+  _setGridColor(stepIndex, color) {
+    const x = stepIndex % NUMBER_OF.COLUMNS;
+    const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
+    if ((0 <= x && x <= 7) && (0 <= y && y <= 7)) {
+      outlet(OUTLET.LAUNCHPAD_NOTE, (16 * y) + x, color);
+    }
   }
 
-  // TODO: remove the dead code in here
-  track(track) {
-    const color = track.mute ? COLOR.MUTE_COLOR : COLOR.TRACK_COLOR;
-    this.setTopButtonColor(track.index, color);
-  }
-
-  trackOff(track) {
-    const color = track.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
-    this.setTopButtonColor(track.index, color);
+  clear() {
+    outlet(OUTLET.LAUNCHPAD_CC, 0, 0);
   }
 
   renderTrackButton(trackIndex, model) {
-    this.setTopButtonColor(trackIndex, colorForTrackButton(trackIndex, model));
+    this._setTopButtonColor(trackIndex, colorForTrackButton(trackIndex, model));
   }
 
   renderValueButton(value, model) {
     if (value > 0) {
-      this.setTopButtonColor(value + 3,
+      this._setTopButtonColor(value + 3,
         value === model.selectedValue ? COLOR.STEP_VALUES[value] : COLOR.OFF);
     }
   }
 
   renderPatternButton(patternIndex, model) {
-    this.setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
+    this._setRightButtonColor(patternIndex, colorForPatternButton(patternIndex, model));
   }
 
   renderStepButton(stepIndex, model) {
-    this.setGridColor(stepIndex, colorForGridButton(stepIndex, model));
+    this._setGridColor(stepIndex, colorForGridButton(stepIndex, model));
   }
-
-  stepValue(stepValue) {
-    if (stepValue > 0) {
-      this.setTopButtonColor(stepValue + 3, COLOR.STEP_VALUES[stepValue]);
-    }
-  }
-
-  pattern(pattern) {
-    const color = pattern.mute ? COLOR.MUTE_COLOR : COLOR.PATTERN_COLOR;
-    this.setRightButtonColor(pattern.index, color);
-  }
-
-  patternOff(pattern) {
-    const color = pattern.mute ? COLOR.INACTIVE_MUTE_COLOR : COLOR.OFF;
-    this.setRightButtonColor(pattern.index, color);
-  }
-
-  grid(x, y, value) {
-    this._grid(x, y, COLOR.STEP_VALUES[value]);
-  }
-
-  activeStep(x, y) {
-    this._grid(x, y, COLOR.SEQUENCER_STEP);
-  }
-
-  // patternSteps(pattern, additionalDeferredCallback) {
-  //   if (this.patternOpsMode) {   // Use the grid to show the pattern length by lighting up all the steps from the start to the end step
-  //     const { start, end } = pattern;
-  //     Defer.eachStep((x, y, index) => {
-  //       const stepValue = pattern.getStep(index);
-  //       const color = start <= index && index <= end
-  //         ? COLOR.ACTIVE_STEPS[stepValue]
-  //         : COLOR.INACTIVE_STEPS[stepValue];
-  //       this._grid(x, y, color);
-  //       if (additionalDeferredCallback != null) {
-  //         additionalDeferredCallback(x, y, stepValue);
-  //       }
-  //     });
-  //   } else {
-  //     Defer.eachStep((x, y, index) => {
-  //       const stepValue = pattern.getStep(index);
-  //       this._grid(x, y, COLOR.STEP_VALUES[stepValue]);
-  //       if (additionalDeferredCallback != null) {
-  //         additionalDeferredCallback(x, y, stepValue);
-  //       }
-  //     });
-  //   }
-  // }
 
   render(model) {
-    // Color order: grid from left-to-right/top-to-bottom, right colomn (patterns) top-to-bottom, top row left-to-right
-    let colors =
-      colorsForGridButtons(model)
-        .concat(
-          model.selectedTrack.patterns.map((_, patternIndex) => colorForPatternButton(patternIndex, model))
-        );
+    // Color order: grid from left-to-right/top-to-bottom, right column (patterns) top-to-bottom, top row left-to-right
+    let colors = [
+      ...colorsForGridButtons(model),
+      ...(
+        model.selectedTrack.patterns.map((_, patternIndex) =>
+          colorForPatternButton(patternIndex, model))
+      ),
+    ];
     if (model.mode === MODE.PATTERN_EDIT) {
       colors.push(
         COLOR.YELLOW,
@@ -169,28 +124,4 @@ export default class LaunchpadView {
     }
     outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, colors);
   }
-
-  // ==============================================================================
-  // private
-
-  setTopButtonColor(index, color) {
-    if (0 <= index && index <= 7) {
-      this.ctlout(104 + index, color);
-    }
-  }
-
-  setGridColor(stepIndex, color) {
-    const x = stepIndex % NUMBER_OF.COLUMNS;
-    const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
-    if ((0 <= x && x <= 7) && (0 <= y && y <= 7)) {
-      this.noteout((16 * y) + x, color);
-    }
-  }
-
-  setRightButtonColor(index, color) {
-    if (0 <= index && index <= 7) {
-      this.noteout((16 * index) + 8, color);
-    }
-  }
 }
-
