@@ -1,7 +1,8 @@
+import MaxConsole from './MaxConsole';
+console = new MaxConsole();
+
 import { Config, Controller, Model, View } from '.';
-
 outlets = Config.NUMBER_OF.OUTLETS;
-
 const controller = new Controller(new Model, new View);
 
 export function bang() { controller.refreshViews(); }
