@@ -3,7 +3,6 @@ import { LAUNCHPAD_COLOR as COLOR, MODE, NUMBER_OF, OUTLET } from '../config';
 export default class LaunchpadView {
 
   constructor(model) {
-    // TODO: Make model public?
     this._model = model;
   }
 
@@ -124,9 +123,12 @@ export default class LaunchpadView {
     const { selectedPattern } = model;
     const value = selectedPattern.steps[stepIndex];
     if (model.mode === MODE.SEQUENCER) {
-      return stepIndex === sequencerStepIndex
-        ? COLOR.SEQUENCER_STEP
-        : COLOR.STEP_VALUES[value];
+      // return stepIndex === sequencerStepIndex
+      //   ? COLOR.SEQUENCER_STEP
+      //   : COLOR.STEP_VALUES[value];
+      // TODO: sequencer step (clock step?) isn't working well so disabling for now
+      // it should never be rendered when the transport is off IMO
+      return COLOR.STEP_VALUES[value];
     } else {
       const { startStepIndex, endStepIndex } = selectedPattern;
       return startStepIndex <= stepIndex && stepIndex <= endStepIndex

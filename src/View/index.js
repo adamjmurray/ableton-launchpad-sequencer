@@ -5,6 +5,7 @@ import LaunchpadView from './LaunchpadView';
 export default class View {
 
   constructor(model) {
+    this._model = model;
     this._guiView = new GuiView(model);
     this._launchpadView = new LaunchpadView(model);
     this._selectedTrackIndex = 0;
@@ -13,36 +14,38 @@ export default class View {
     this._clockIndex = -1;
   }
 
-  render(model) {
-    this._guiView.render(model);
-    this._launchpadView.render(model);
+  render() {
+    this._guiView.render();
+    this._launchpadView.render();
   }
 
-  onTrackChange(model) {
+  renderTrack() {
     const previousIndex = this._selectedTrackIndex;
-    const newIndex = model.selectedTrackIndex;
+    const newIndex = this._model.selectedTrackIndex;
     if (newIndex !== previousIndex) {
       this._launchpadView.render();
-      this._guiView.renderTrackButton(newIndex);
-      // TODO: render GUI grid
+      this._guiView.renderTrack();
+      this._guiView.renderGrid();
       this._selectedTrackIndex = newIndex;
     }
+    // TODO: render mute state
   }
 
-  onPatternChange(model) {
+  renderPattern() {
     const previousIndex = this._selectedPatternIndex;
-    const newIndex = model.selectedPatternIndex;
+    const newIndex = this._model.selectedPatternIndex;
     if (newIndex !== previousIndex) {
       this._launchpadView.render();
-      this._guiView.renderPatternButton(newIndex);
-      // TODO: render GUI grid
+      this._guiView.renderPattern();
+      this._guiView.renderGrid();
       this._selectedPatternIndex = newIndex;
     }
+    // TODO: render mute state
   }
 
-  onValueChange(model) {
+  renderValue() {
     const previousValue = this._selectedValue;
-    const newValue = model.selectedValue;
+    const newValue = this._model.selectedValue;
     if (newValue !== previousValue) {
       this._launchpadView.renderValueButton(previousValue);
       this._launchpadView.renderValueButton(newValue);
@@ -51,21 +54,22 @@ export default class View {
     }
   }
 
-  onGridChange(model) {
-    this._launchpadView.render();
-    // TODO: redraw GUI
+  renderGrid() {
+    this._launchpadView.render(); // full render is faster than updating each grid button
+    this._guiView.renderGrid();
   }
 
-  onStepChange(model) {
-    this._launchpadView.renderStepButton(model.selectedStepIndex);
-    // TODO: GUI
+  renderStep() {
+    const { selectedStepIndex } = this._model;
+    this._launchpadView.renderStepButton(selectedStepIndex);
+    this._guiView.renderStep(selectedStepIndex);
   }
 
-  onClockChange(model) {
+  renderClock() {
     const previousClockIndex = this._clockIndex;
-    const newClockIndex = model.clockIndex;
+    const newClockIndex = this._model.clockIndex;
     if (newClockIndex !== previousClockIndex) {
-      const pattern = model.selectedPattern;
+      const pattern = this._model.selectedPattern;
       const previousStepIndex = pattern.getStepIndexForClock(previousClockIndex);
       const newStepIndex = pattern.getStepIndexForClock(newClockIndex);
       this._launchpadView.renderStep(previousStepIndex);
@@ -74,7 +78,7 @@ export default class View {
     }
   }
 
-  onModeChange(model) {
+  onModeChange() {
     this._launchpadView.render();
   }
 

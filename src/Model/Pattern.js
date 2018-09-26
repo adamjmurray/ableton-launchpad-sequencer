@@ -34,7 +34,7 @@ export default class Pattern {
   }
 
   get length() {
-    return (this._end - this._start) + 1;
+    return (this.endStepIndex - this.startStepIndex) + 1;
   }
 
   clear() {
@@ -91,12 +91,12 @@ export default class Pattern {
   }
 
   shift(amount) {
-    const { sequence, start, end, length } = this;
+    const { steps, startStepIndex: start, endStepIndex: end, length } = this;
     const rot = start + amount.mod(length);
-    const before = sequence.slice(0, start);
-    const left = sequence.slice(start, rot);
-    const right = sequence.slice(rot, end + 1);
-    const after = sequence.slice((end + 1));
+    const before = steps.slice(0, start);
+    const left = steps.slice(start, rot);
+    const right = steps.slice(rot, end + 1);
+    const after = steps.slice(end + 1);
     this.steps = before.concat(right, left, after);
   }
 
@@ -113,7 +113,7 @@ export default class Pattern {
   // Given a clock index (in steps) return the active step in this pattern,
   // taking into account the start and end step.
   stepIndexForClock(clockIndex) {
-    return this._start + clockIndex.mod(this.length);
+    return this.startStepIndex + clockIndex.mod(this.length);
   }
 
   getStepForClock(clockIndex) {

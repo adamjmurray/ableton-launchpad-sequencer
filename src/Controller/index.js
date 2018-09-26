@@ -34,7 +34,7 @@ export default class Controller {
   // }
 
   refreshViews() {
-    this._view.render(this._model);
+    this._view.render();
   }
 
   load(jsonString) {
@@ -46,7 +46,7 @@ export default class Controller {
       return;
     }
     this._model.fromJSON(json);
-    this._view.render(this._model);
+    this._view.render();
   }
 
   reset() {
@@ -55,7 +55,7 @@ export default class Controller {
     this._rightButtonGesture.reset();
     this._gridButtonGesture.reset();
     this._heldTopButton = false;
-    this._view.render(this._model);
+    this._view.render();
   }
 
   handleLaunchpadCC(cc, value) {
@@ -107,7 +107,7 @@ export default class Controller {
     if (isPressed) {
       if (model.mode === MODE.PATTERN_EDIT) {
         model.mode = MODE.SEQUENCER;
-        this._view.render(model);
+        this._view.render();
         // Should we select the pattern too?
       }
       else {
@@ -118,7 +118,7 @@ export default class Controller {
             if (this._heldTopButton) {
               model.mode = MODE.PATTERN_EDIT;
               this._gridButtonGesture.reset();
-              this._view.render(model);
+              this._view.render();
             } else {
               return this.setSelectedPatternMute(!model.selectedPattern.mute);
             }
@@ -134,7 +134,7 @@ export default class Controller {
       const range = this._gridButtonGesture.interpretRangeSelection(index, isPressed);
       if (range) {
         model.selectedPattern.setRange(...range);
-        this._view.onGridChange(this._model);
+        this._view.renderGrid();
       }
     }
     else if (isPressed) {
@@ -155,7 +155,7 @@ export default class Controller {
 
   handleClockTick(clockIndex) {
     this._model.clockIndex = clockIndex;
-    this._view.onClockChange(this._model);
+    this._view.renderClock();
   }
 
   setGlobalStepDuration(stepDuration) {
@@ -168,17 +168,19 @@ export default class Controller {
 
   selectTrack(trackIndex) {
     this._model.selectedTrackIndex = trackIndex;
-    this._view.onTrackChange(this._model);
+    this._view.renderTrack(); // I'm debating renaming this to renderSelectedTrack() vs passing in a trackIndex
+    // Also, if we store the index of each track/pattern in the object, maybe we could just pass in a track
+    // and stop storing a reference to the model in the view. I keep thinking we should completely decouple them.
   }
 
   selectOrToggleValue(value) {
     this._model.selectedValue = (this._model.selectedValue === value) ? STEP_VALUE.OFF : value;
-    this._view.onValueChange(this._model);
+    this._view.renderValue();
   }
 
   selectPattern(patternIndex) {
     this._model.selectedPatternIndex = patternIndex;
-    this._view.onPatternChange(this._model);
+    this._view.renderPattern();
   }
 
   handleGridClick(x, y) {
@@ -187,9 +189,9 @@ export default class Controller {
 
   setStepToSelectedValue(stepIndex) {
     const model = this._model;
-    model.selectedStepIndex = stepIndex;
     model.selectedPattern.steps[stepIndex] = model.selectedValue;
-    this._view.onStepChange(model);
+    model.selectedStepIndex = stepIndex;
+    this._view.renderStep();
   }
 
   setSelectedTrackPitch(pitch) {
@@ -206,7 +208,7 @@ export default class Controller {
 
   setSelectedTrackMute(mute) {
     this._model.selectedTrack.mute = mute;
-    this._view.onTrackChange(this._model);
+    // TODO: Just need to update the track buttons, not render the whole track: renderTrackMutes()?
   }
 
   setSelectedTrackDurationMultiplier(durationMultiplier) {
@@ -215,47 +217,47 @@ export default class Controller {
 
   setSelectedPatternStartStepIndex(stepIndex) {
     this._model.selectedPattern.startStepIndex = stepIndex;
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   setSelectedPatternEndStepIndex(stepIndex) {
     this._model.selectedPattern.endStepIndex = stepIndex;
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   setSelectedPatternMute(mute) {
     this._model.selectedPattern.mute = mute;
-    this._view.onPatternChange(this._model);
+    // TODO: Just need to update the track buttons, not render the whole track: renderTrackMutes()?
   }
 
   reverseSelectedPattern() {
     this._model.selectedPattern.reverse();
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   invertSelectedPattern() {
     this._model.selectedPattern.invert();
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   shiftSelectedPatternLeft() {
-    this._model.selectedPattern.shift(1); // Do the signs these numbers seem backwards?
-    this._view.onGridChange(this._model);
+    this._model.selectedPattern.shift(1);
+    this._view.renderGrid();
   }
 
   shiftSelectedPatternRight() {
     this._model.selectedPattern.shift(-1);
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   shiftSelectedPatternUp() {
     this._model.selectedPattern.shift(NUMBER_OF.COLUMNS);
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   shiftSelectedPatternDown() {
     this._model.selectedPattern.shift(-NUMBER_OF.COLUMNS);
-    this._view.onGridChange(this._model);
+    this._view.renderGrid();
   }
 
   copyStepsFromSelectedPattern() {
@@ -265,7 +267,7 @@ export default class Controller {
   pasteStepsToSelectedPattern() {
     if (this._stepsClipboard) {
       this._model.selectedPattern.steps = this._stepsClipboard;
-      this._view.onGridChange(this._model);
+      this._view.renderGrid();
     }
   }
 }

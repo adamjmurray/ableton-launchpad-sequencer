@@ -19,7 +19,7 @@ export default class Model {
     this.selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)
     this.selectedValue = DEFAULT.VALUE;
     this.selectedStepIndex = -1;
-    this.clockIndex = 0;
+    this.clockIndex = -1;
     this.mode = MODE.SEQUENCER;
   }
 
