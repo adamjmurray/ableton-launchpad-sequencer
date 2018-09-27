@@ -20,8 +20,8 @@ export function trackMultiplier() { controller.setSelectedTrackDurationMultiplie
 export function trackMute(mute) { controller.setSelectedTrackMute(mute); }
 
 // TODO: subtract the 1 in Max land
-export function startStep(stepNumber) { controller.setSelectedPatternStartStepIndex(stepNumber - 1); }
-export function endStep(stepNumber) { controller.setSelectedPatternEndStepIndex(stepNumber - 1); }
+export function startStep(stepNumber) { controller.setSelectedPatternStart(stepNumber - 1); }
+export function endStep(stepNumber) { controller.setSelectedPatternEnd(stepNumber - 1); }
 export function patternMute(mute) { controller.setSelectedPatternMute(mute); }
 
 export function track(trackIndex) { controller.selectTrack(trackIndex); }

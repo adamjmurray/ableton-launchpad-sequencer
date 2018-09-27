@@ -28,7 +28,11 @@ export default class View {
       this._guiView.renderGrid();
       this._selectedTrackIndex = newIndex;
     }
-    // TODO: render mute state
+  }
+
+  renderSelectedTrackMute() {
+    this._launchpadView.renderTrackButton(this._model.selectedTrackIndex);
+    this._guiView.renderTrack();
   }
 
   renderPattern() {
@@ -40,7 +44,11 @@ export default class View {
       this._guiView.renderGrid();
       this._selectedPatternIndex = newIndex;
     }
-    // TODO: render mute state
+  }
+
+  renderSelectedPatternMute() {
+    this._launchpadView.renderPatternButton(this._model.selectedPatternIndex);
+    this._guiView.renderPattern();
   }
 
   renderValue() {

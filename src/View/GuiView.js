@@ -38,6 +38,7 @@ export default class GuiView {
     // then we probably don't need any of this:
     const trackNumber = trackIndex + 1;
     outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration);
+    outlet(OUTLET.TRACK_MUTE, track.mute);
   }
 
   renderValueButton() {
@@ -54,6 +55,7 @@ export default class GuiView {
     const { type, startStepIndex, endStepIndex } = pattern;
     outlet(OUTLET.PATTERN_INFO,
       patternIndex + 1, type, startStepIndex + 1, endStepIndex + 1);
+    outlet(OUTLET.PATTERN_MUTE, pattern.mute);
   }
 
   renderGrid() {

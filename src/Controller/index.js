@@ -16,8 +16,6 @@ export default class Controller {
     this._topButtonGesture = new PressGesture;
     this._rightButtonGesture = new PressGesture;
     this._gridButtonGesture = new RangeSelectionGesture;
-    // this.refreshViews(); // TODO: We can't call outlets when we're initializing the js script
-    // We'll need a "loadbang" from Max (I think it may already be setup this way in the patch?)
   }
 
   // // but this isn't called form the outside ...
@@ -169,8 +167,6 @@ export default class Controller {
   selectTrack(trackIndex) {
     this._model.selectedTrackIndex = trackIndex;
     this._view.renderTrack(); // I'm debating renaming this to renderSelectedTrack() vs passing in a trackIndex
-    // Also, if we store the index of each track/pattern in the object, maybe we could just pass in a track
-    // and stop storing a reference to the model in the view. I keep thinking we should completely decouple them.
   }
 
   selectOrToggleValue(value) {
@@ -208,26 +204,26 @@ export default class Controller {
 
   setSelectedTrackMute(mute) {
     this._model.selectedTrack.mute = mute;
-    // TODO: Just need to update the track buttons, not render the whole track: renderTrackMutes()?
+    this._view.renderSelectedTrackMute();
   }
 
   setSelectedTrackDurationMultiplier(durationMultiplier) {
     this._model.selectedTrack.durationMultiplier = durationMultiplier;
   }
 
-  setSelectedPatternStartStepIndex(stepIndex) {
+  setSelectedPatternStart(stepIndex) {
     this._model.selectedPattern.startStepIndex = stepIndex;
     this._view.renderGrid();
   }
 
-  setSelectedPatternEndStepIndex(stepIndex) {
+  setSelectedPatternEnd(stepIndex) {
     this._model.selectedPattern.endStepIndex = stepIndex;
     this._view.renderGrid();
   }
 
   setSelectedPatternMute(mute) {
     this._model.selectedPattern.mute = mute;
-    // TODO: Just need to update the track buttons, not render the whole track: renderTrackMutes()?
+    this._view.renderSelectedPatternMute();
   }
 
   reverseSelectedPattern() {

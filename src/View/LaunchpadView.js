@@ -91,9 +91,9 @@ export default class LaunchpadView {
 
   _colorForTrackButton(trackIndex) {
     const model = this._model;
-    const muted = model.tracks[trackIndex].muted;
+    const mute = model.tracks[trackIndex].mute;
     const selected = trackIndex === model.selectedTrackIndex;
-    if (muted) {
+    if (mute) {
       return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
     } else {
       return selected ? COLOR.TRACK_COLOR : COLOR.OFF
@@ -106,9 +106,9 @@ export default class LaunchpadView {
 
   _colorForPatternButton(patternIndex) {
     const model = this._model;
-    const muted = model.selectedTrack.patterns[patternIndex].muted;
+    const mute = model.selectedTrack.patterns[patternIndex].mute;
     const selected = patternIndex === model.selectedPatternIndex;
-    if (muted) {
+    if (mute) {
       return selected ? COLOR.MUTE_COLOR : COLOR.INACTIVE_MUTE_COLOR;
     } else {
       return selected ? COLOR.PATTERN_COLOR : COLOR.OFF
