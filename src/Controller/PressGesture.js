@@ -16,7 +16,6 @@ export default class PressGesture {
     if (index === this._previousIndex) {
       this._repeatPressCount++;
       if (this._repeatPressCount === 3) {
-        this.setSlectedPatternMute()
         this._repeatPressCount = 0;
         return GESTURE.TRIPLE_PRESS;
       }

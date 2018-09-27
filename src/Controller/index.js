@@ -1,4 +1,4 @@
-import { STEP_VALUE, GESTURE, MODE, NUMBER_OF } from '../config';
+import { GESTURE, LAUNCHPAD, MODE, NUMBER_OF, STEP_VALUE } from '../config';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
@@ -57,7 +57,7 @@ export default class Controller {
   }
 
   handleLaunchpadCC(cc, value) {
-    this._handleLaunchpadTopButton(cc - 104, value > 0);
+    this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
   }
 
   handleLaunchpadNote(pitch, velocity) {

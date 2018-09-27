@@ -14,6 +14,48 @@ describe('Controller', () => {
     controller = new Controller(model, view);
   });
 
+  const assertViewsUpdatedForTrackMuteChange = (track) => {
+    assert.equal(mockOutlet.calls.length, 4);
+    assert.deepStrictEqual(
+      mockOutlet.calls[0],
+      [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
+    );
+    assert.deepStrictEqual(
+      mockOutlet.calls[1],
+      [OUTLET.TRACK_INDEX, track.index]
+    );
+    assert.deepStrictEqual(
+      mockOutlet.calls[2],
+      [OUTLET.TRACK_INFO, track.index + 1, track.pitch, track.velocity, track.gate]
+    );
+    assert.deepStrictEqual(
+      mockOutlet.calls[3],
+      [OUTLET.TRACK_MUTE, track.mute]
+    );
+  }
+
+  describe('handleLaunchpadCC(cc, value)', () => {
+    it('handles a triple press as a track mute toggle', () => {
+      const trackIndex = 1;
+      const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
+      const PRESS = 127;
+      const LIFT = 0;
+      controller.handleLaunchpadCC(trackCC, PRESS);
+      controller.handleLaunchpadCC(trackCC, LIFT);
+      controller.handleLaunchpadCC(trackCC, PRESS);
+      controller.handleLaunchpadCC(trackCC, LIFT);
+      mockOutlet.reset();
+
+      controller.handleLaunchpadCC(trackCC, PRESS);
+      assert.equal(model.selectedTrack.index, trackIndex);
+      assertViewsUpdatedForTrackMuteChange(model.selectedTrack);
+      mockOutlet.reset();
+
+      controller.handleLaunchpadCC(trackCC, LIFT);
+      assert.equal(mockOutlet.calls.length, 0);
+    });
+  });
+
   describe('selectTrack(index)', () => {
     it("sets the model's selectedTrack and selectedTrackIndex", () => {
       controller.selectTrack(1);
@@ -41,24 +83,7 @@ describe('Controller', () => {
       mockOutlet.reset();
 
       controller.setSelectedTrackMute(true);
-
-      assert.equal(mockOutlet.calls.length, 4);
-      assert.deepStrictEqual(
-        mockOutlet.calls[0],
-        [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + trackIndex, LAUNCHPAD_COLOR.MUTE_COLOR]
-      );
-      assert.deepStrictEqual(
-        mockOutlet.calls[1],
-        [OUTLET.TRACK_INDEX, trackIndex]
-      );
-      assert.deepStrictEqual(
-        mockOutlet.calls[2],
-        [OUTLET.TRACK_INFO, trackIndex + 1, 60, 70, 0.9]
-      );
-      assert.deepStrictEqual(
-        mockOutlet.calls[3],
-        [OUTLET.TRACK_MUTE, true]
-      );
+      assertViewsUpdatedForTrackMuteChange(model.selectedTrack);
     });
   });
 
