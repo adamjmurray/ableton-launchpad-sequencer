@@ -37,7 +37,8 @@ export default class GuiView {
     // If we have dedicated pattrs / GUI elements (by having a copy of the GUI for each track/pattern via bpatchers),
     // then we probably don't need any of this:
     const trackNumber = trackIndex + 1;
-    outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration);
+    // TODO: what about rendering the durationMultiplier?
+    outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.gate);
     outlet(OUTLET.TRACK_MUTE, track.mute);
   }
 

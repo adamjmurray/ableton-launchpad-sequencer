@@ -7,7 +7,7 @@ export default class Track {
     // TODO: convert all to private member vars
     this.index = index;
     this.scale = scale;
-    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(DEFAULT.PATTERN_TYPES[index]));
+    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
     this.reset();
   }
 

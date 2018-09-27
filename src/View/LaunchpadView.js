@@ -1,4 +1,4 @@
-import { LAUNCHPAD_COLOR as COLOR, MODE, NUMBER_OF, OUTLET } from '../config';
+import { LAUNCHPAD, LAUNCHPAD_COLOR as COLOR, MODE, NUMBER_OF, OUTLET } from '../config';
 
 export default class LaunchpadView {
 
@@ -71,7 +71,7 @@ export default class LaunchpadView {
 
   _setTopButtonColor(index, color) {
     if (0 <= index && index <= 7) {
-      outlet(OUTLET.LAUNCHPAD_CC, 104 + index, color);
+      outlet(OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + index, color);
     }
   }
 

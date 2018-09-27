@@ -8,7 +8,8 @@ import { NUMBER_OF } from '../config';
 //
 export default class Pattern {
 
-  constructor(type) {
+  constructor(index, type) {
+    this.index = index;
     this._processor = new Processor(type);
     this.steps = Array(NUMBER_OF.STEPS);
     this.reset();
