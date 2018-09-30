@@ -4,7 +4,7 @@
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.1.0",
+    "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/register": "^7.0.0",
     "mocha": "^5.2.0",
