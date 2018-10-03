@@ -99,6 +99,20 @@ describe('Controller', () => {
       controller.handleLaunchpadNote(patternButtonPitch, PRESS);
       assert.equal(model.mode, MODE.PATTERN_EDIT);
     });
+
+    it('can set the pattern start and end step from pattern edit mode', () => {
+      enterPatternEditMode();
+      controller.handleLaunchpadNote(16, PRESS); // stepIndex 8
+      assert.equal(model.selectedPattern.startStepIndex, 0);
+      assert.equal(model.selectedPattern.endStepIndex, 63);
+      controller.handleLaunchpadNote(39, PRESS); // stepIndex 23
+      controller.handleLaunchpadNote(16, LIFT); // stepIndex 8
+      controller.handleLaunchpadNote(39, LIFT); // stepIndex 23
+      assert.equal(model.selectedPattern.startStepIndex, 8);
+      assert.equal(model.selectedPattern.endStepIndex, 23);
+    });
+
+    // TODO: setting grid steps
   });
 
   describe('selectTrack(index)', () => {

@@ -148,11 +148,11 @@ export default class Controller {
   }
 
   _handleLaunchpadGridButton(x, y, isPressed) {
-    const stepIndex = xyToIndex(x, y)
+    const stepIndex = xyToIndex(x, y);
     if (this._model.mode === MODE.PATTERN_EDIT) {
-      const range = this._gridButtonGesture.interpretRangeSelection(index, isPressed);
+      const range = this._gridButtonGesture.interpretRangeSelection(stepIndex, isPressed);
       if (range) {
-        model.selectedPattern.setRange(...range);
+        this._model.selectedPattern.setRange(...range);
         this._view.renderGrid();
       }
     }

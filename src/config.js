@@ -2,12 +2,12 @@ export const GUI_COLOR = Object.freeze({ // Max's LCD object uses the format [R,
   BACKGROUND: Object.freeze([53, 53, 53]),
   PATTERN_START_END: Object.freeze([200, 200, 255]), // the color of the bracket marking the first and last step in the pattern:
   STEP_VALUE: Object.freeze([ // maps step values to GUI colors
-    [150, 150, 150], // off
-    [0, 255, 0],     // green
-    [255, 255, 0],   // yellow
-    [255, 127, 0],   // orange
-    [255, 0, 0],     // red
-    [80, 130, 200]   // current step (TODO: why doesn't the launchpad colors use this format i.e. put this at end of array?)
+    Object.freeze([150, 150, 150]), // off
+    Object.freeze([0, 255, 0]),     // green
+    Object.freeze([255, 255, 0]),   // yellow
+    Object.freeze([255, 127, 0]),   // orange
+    Object.freeze([255, 0, 0]),     // red
+    Object.freeze([80, 130, 200]),   // current step (TODO: why doesn't the launchpad colors use this format i.e. put this at end of array?)
   ]),
 });
 

@@ -34,6 +34,10 @@ export default class Pattern {
     this.endStepIndex = Math.max(index1, index2);
   }
 
+  get range() {
+    return [this.startStepIndex, this.endStepIndex];
+  }
+
   get length() {
     return (this.endStepIndex - this.startStepIndex) + 1;
   }

@@ -8,16 +8,16 @@ export default class RangeSelectionGesture {
     this._pressedIndexes.fill(false);
   }
 
-  _minPressedIndex() {
+  get _minPressedIndex() {
     const indexes = this._pressedIndexes;
-    for (var i = 0; i < indexes.length.STEPS; i++) {
+    for (var i = 0; i < indexes.length; i++) {
       if (indexes[i]) {
         return i;
       }
     }
   }
 
-  _maxPressedIndex() {
+  get _maxPressedIndex() {
     const indexes = this._pressedIndexes;
     for (var i = indexes.length - 1; i >= 0; i--) {
       if (indexes[i]) {
@@ -28,10 +28,10 @@ export default class RangeSelectionGesture {
 
   interpretRangeSelection(index, isPressed) {
     this._pressedIndexes[index] = isPressed;
-    const minPressedIndex = this._minPressedIndex;
-    const maxPressedIndex = this._maxPressedIndex;
-    if (minPressedIndex != null && maxPressedIndex != null) {
-      return [minPressedIndex, maxPressedIndex];
+    if (this._pressedIndexes.filter(i => i).length < 2) {
+      // less than 2 buttons pressed, so there is no range
+      return;
     }
+    return [this._minPressedIndex, this._maxPressedIndex];
   }
 }

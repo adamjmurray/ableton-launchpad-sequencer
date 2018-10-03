@@ -1,6 +1,6 @@
 Rearchitecture / Rapid LED Update
-- Changing pattern start/end from launchpad
-- Get the clock handling working
+- Clock handling
+- Track MIDI input
 - Can we pick 8 pattern types and just hard code them:
   - on the launchpad right column:
     vol => velocity (70, 85, 100, 115, 127)
@@ -12,7 +12,6 @@ Rearchitecture / Rapid LED Update
   - optimize around arps and drum seqs
 - Could the launchpad pattern edit mode be used to set the pitch and velocity of a track (by holding a LP button while playing a note on the track's MIDI input?)
   - This might be too much, but what about setting the gate and duration multiplier? I could see the feedback being the rows lighting up to show higher values (possibly with column wrap-around - could maybe even simulate a dial by going from bottom left across the top of the grid and then down to bottom right / and pushing a button on the grid will go to the nearest dial location). Maybe some of the pattern buttons can be used for all this, but then how to exit pattern edit mode?
-- Combine Pattern and Processor files?
 - Remove unwanted features from GUI
 - Rebuild GUI using a project and lots of subpatchers
 - Undo doesn't work (I think we just need to listen to changes from the pattr object)
