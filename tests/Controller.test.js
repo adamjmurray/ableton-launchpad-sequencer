@@ -59,20 +59,43 @@ describe('Controller', () => {
   });
 
   describe('handleLaunchpadNote(pitch, velocity)', () => {
-    it('handles a triple press of the right column while a top row button is held down as a toggle for pattern edit mode', () => {
-      const trackIndex = 1;
+    const enterPatternEditMode = ({ trackIndex = 1, patternIndex = 0 } = {}) => {
       const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
-      const patternIndex = 1;
-      const patternButtonPitch = 8;
+      const patternButtonPitch = (patternIndex + 1) * 8;
 
       controller.handleLaunchpadCC(trackCC, PRESS);
       controller.handleLaunchpadNote(patternButtonPitch, PRESS);
       controller.handleLaunchpadNote(patternButtonPitch, LIFT);
       controller.handleLaunchpadNote(patternButtonPitch, PRESS);
       controller.handleLaunchpadNote(patternButtonPitch, LIFT);
-      mockOutlet.reset();
-      assert.equal(model.mode, MODE.SEQUENCER);
 
+      assert.equal(model.mode, MODE.SEQUENCER);
+      mockOutlet.reset();
+
+      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+
+      return { trackCC, patternButtonPitch };
+    }
+
+    it('handles a triple press of the right column while a top row button is held down as a toggle for pattern edit mode', () => {
+      enterPatternEditMode();
+      assert.equal(model.mode, MODE.PATTERN_EDIT);
+    });
+
+    it('exits pattern edit mode when a pattern press happens again', () => {
+      const { trackCC, patternButtonPitch } = enterPatternEditMode();
+      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
+      controller.handleLaunchpadCC(trackCC, LIFT);
+      assert.equal(model.mode, MODE.PATTERN_EDIT);
+      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      assert.equal(model.mode, MODE.SEQUENCER);
+    });
+
+    it('does not exit pattern edit mode if another pattern press happens while a top row button is held', () => {
+      const { patternButtonPitch } = enterPatternEditMode();
+      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
+      assert.equal(model.mode, MODE.PATTERN_EDIT);
+      // trackButton is still held after enterPatternEditMode()
       controller.handleLaunchpadNote(patternButtonPitch, PRESS);
       assert.equal(model.mode, MODE.PATTERN_EDIT);
     });

@@ -122,9 +122,10 @@ export default class Controller {
     const model = this._model;
     if (isPressed) {
       if (model.mode === MODE.PATTERN_EDIT) {
-        model.mode = MODE.SEQUENCER;
-        this._view.render();
-        // Should we select the pattern too?
+        if (!this._heldTopButton) {
+          model.mode = MODE.SEQUENCER;
+          this._view.render();
+        }
       }
       else {
         switch (this._rightButtonGesture.interpretPress(index)) {
