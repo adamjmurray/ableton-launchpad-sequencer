@@ -115,22 +115,21 @@ export default class LaunchpadView {
     }
   };
 
-  _colorForGridButton(
-    stepIndex,
-    sequencerStepIndex = this._model.selectedPattern.stepIndexForClock(this._model.clockIndex)
-  ) {
+  _colorForGridButton(stepIndex) {
     const model = this._model;
     const { selectedPattern } = model;
     const value = selectedPattern.steps[stepIndex];
+    const { startStepIndex, endStepIndex } = selectedPattern;
     if (model.mode === MODE.SEQUENCER) {
       // return stepIndex === sequencerStepIndex
       //   ? COLOR.SEQUENCER_STEP
       //   : COLOR.STEP_VALUES[value];
       // TODO: sequencer step (clock step?) isn't working well so disabling for now
       // it should never be rendered when the transport is off IMO
-      return COLOR.STEP_VALUES[value];
+      return startStepIndex <= stepIndex && stepIndex <= endStepIndex
+        ? COLOR.STEP_VALUES[value]
+        : COLOR.INACTIVE_STEPS[value];
     } else {
-      const { startStepIndex, endStepIndex } = selectedPattern;
       return startStepIndex <= stepIndex && stepIndex <= endStepIndex
         ? COLOR.ACTIVE_STEPS[value]
         : COLOR.INACTIVE_STEPS[value];
