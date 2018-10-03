@@ -1,10 +1,13 @@
 import { Config, Controller, Model, View } from '../src';
-const { OUTLET, LAUNCHPAD, LAUNCHPAD_COLOR } = Config;
+const { OUTLET, LAUNCHPAD, LAUNCHPAD_COLOR, MODE } = Config;
 import assert from 'assert';
 
 let model;
 let view;
 let controller;
+
+const PRESS = 127;
+const LIFT = 0;
 
 describe('Controller', () => {
 
@@ -38,8 +41,7 @@ describe('Controller', () => {
     it('handles a triple press as a track mute toggle', () => {
       const trackIndex = 1;
       const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
-      const PRESS = 127;
-      const LIFT = 0;
+
       controller.handleLaunchpadCC(trackCC, PRESS);
       controller.handleLaunchpadCC(trackCC, LIFT);
       controller.handleLaunchpadCC(trackCC, PRESS);
@@ -53,6 +55,26 @@ describe('Controller', () => {
 
       controller.handleLaunchpadCC(trackCC, LIFT);
       assert.equal(mockOutlet.calls.length, 0);
+    });
+  });
+
+  describe('handleLaunchpadNote(pitch, velocity)', () => {
+    it('handles a triple press of the right column while a top row button is held down as a toggle for pattern edit mode', () => {
+      const trackIndex = 1;
+      const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
+      const patternIndex = 1;
+      const patternButtonPitch = 8;
+
+      controller.handleLaunchpadCC(trackCC, PRESS);
+      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
+      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
+      mockOutlet.reset();
+      assert.equal(model.mode, MODE.SEQUENCER);
+
+      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      assert.equal(model.mode, MODE.PATTERN_EDIT);
     });
   });
 
@@ -76,7 +98,6 @@ describe('Controller', () => {
   });
 
   describe('setSelectedTrackMute(mute)', () => {
-
     it('updates views', () => {
       const trackIndex = 2;
       controller.selectTrack(trackIndex);

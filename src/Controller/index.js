@@ -74,22 +74,40 @@ export default class Controller {
     if (isPressed) {
       if (this._model.mode === MODE.PATTERN_EDIT) {
         switch (index) {
-          case 0: return this.shiftSelectedPatternUp();
-          case 1: return this.shiftSelectedPatternDown();
-          case 2: return this.shiftSelectedPatternLeft();
-          case 3: return this.shiftSelectedPatternRight();
-          case 4: return this.reverseSelectedPattern();
-          case 5: return this.invertSelectedPattern();
-          case 6: return this.copyStepsFromSelectedPattern();
-          case 7: return this.pasteStepsToSelectedPattern();
+          case 0:
+            this.shiftSelectedPatternUp();
+            break;
+          case 1:
+            this.shiftSelectedPatternDown();
+            break;
+          case 2:
+            this.shiftSelectedPatternLeft();
+            break;
+          case 3:
+            this.shiftSelectedPatternRight();
+            break;
+          case 4:
+            this.reverseSelectedPattern();
+            break;
+          case 5:
+            this.invertSelectedPattern();
+            break;
+          case 6:
+            this.copyStepsFromSelectedPattern();
+            break;
+          case 7:
+            this.pasteStepsToSelectedPattern();
+            break;
         }
       } else {
         if (index <= 3) {
           switch (this._topButtonGesture.interpretPress(index)) {
             case GESTURE.SELECT:
-              return this.selectTrack(index);
+              this.selectTrack(index);
+              break;
             case GESTURE.TRIPLE_PRESS:
-              return this.setSelectedTrackMute(!this._model.selectedTrack.mute);
+              this.setSelectedTrackMute(!this._model.selectedTrack.mute);
+              break;
           }
         } else {
           this.selectOrToggleValue(index - 3);
@@ -111,15 +129,17 @@ export default class Controller {
       else {
         switch (this._rightButtonGesture.interpretPress(index)) {
           case GESTURE.SELECT:
-            return this.selectPattern(index);
+            this.selectPattern(index);
+            break;
           case GESTURE.TRIPLE_PRESS:
             if (this._heldTopButton) {
               model.mode = MODE.PATTERN_EDIT;
               this._gridButtonGesture.reset();
               this._view.render();
             } else {
-              return this.setSelectedPatternMute(!model.selectedPattern.mute);
+              this.setSelectedPatternMute(!model.selectedPattern.mute);
             }
+            break;
         }
       }
     }

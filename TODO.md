@@ -1,9 +1,5 @@
 Rearchitecture / Rapid LED Update
-- Rebuild pattern edit mode support
-  - Changing pattern start/end from launchpad
-    - Views update propertly
-  - top buttons trigger the expected operations
-  - exiting the mode
+- Changing pattern start/end from launchpad
 - Get the clock handling working
 - Can we pick 8 pattern types and just hard code them:
   - on the launchpad right column:
