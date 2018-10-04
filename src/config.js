@@ -76,7 +76,7 @@ export const LAUNCHPAD = Object.freeze({
   TOP_ROW_CC: 104
 });
 
-export const MIDI = Object.freeze({ // TODO: Do we need this anymore?
+export const MIDI = Object.freeze({
   TRANSPORT_STOP: 123, // MIDI CC number
 });
 

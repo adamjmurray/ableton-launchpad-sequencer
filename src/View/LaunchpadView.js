@@ -115,35 +115,36 @@ export default class LaunchpadView {
     }
   };
 
-  _colorForGridButton(stepIndex) {
+  get _stepIndexForClock() {
+    const { clockIndex, selectedPattern } = this._model;
+    return clockIndex < 0 ? -1 : selectedPattern.stepIndexForClock(clockIndex);
+  }
+
+  _colorForGridButton(stepIndex, sequencerStepIndex = this._stepIndexForClock) {
     const model = this._model;
     const { selectedPattern } = model;
     const value = selectedPattern.steps[stepIndex];
     const { startStepIndex, endStepIndex } = selectedPattern;
-    if (model.mode === MODE.SEQUENCER) {
-      // return stepIndex === sequencerStepIndex
-      //   ? COLOR.SEQUENCER_STEP
-      //   : COLOR.STEP_VALUES[value];
-      // TODO: sequencer step (clock step?) isn't working well so disabling for now
-      // it should never be rendered when the transport is off IMO
-      return startStepIndex <= stepIndex && stepIndex <= endStepIndex
-        ? COLOR.STEP_VALUES[value]
-        : COLOR.INACTIVE_STEPS[value];
-    } else {
-      if (startStepIndex <= stepIndex && stepIndex <= endStepIndex) {
-        return COLOR.STEP_VALUES[value];
-      } else {
+    switch (model.mode) {
+      case MODE.SEQUENCER:
+        if (stepIndex === sequencerStepIndex) {
+          return COLOR.SEQUENCER_STEP;
+        }
+        return startStepIndex <= stepIndex && stepIndex <= endStepIndex
+          ? COLOR.STEP_VALUES[value]
+          : COLOR.INACTIVE_STEPS[value];
+
+      case MODE.PATTERN_EDIT:
+        if (startStepIndex <= stepIndex && stepIndex <= endStepIndex) {
+          return COLOR.STEP_VALUES[value];
+        }
         return COLOR.OFF;
-      }
     }
   };
 
   _colorsForGridButtons() {
-    // TODO: move this into render()?
-    const model = this._model;
-    const selectedPattern = model.selectedPattern;
-    const sequencerStepIndex = selectedPattern.stepIndexForClock(model.clockIndex);
-    return model.selectedPattern.steps.map((_, stepIndex) =>
+    const sequencerStepIndex = this._stepIndexForClock;
+    return this._model.selectedPattern.steps.map((_, stepIndex) =>
       this._colorForGridButton(stepIndex, sequencerStepIndex));
   }
 }

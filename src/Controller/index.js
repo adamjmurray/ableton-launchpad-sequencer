@@ -1,4 +1,4 @@
-import { GESTURE, LAUNCHPAD, MODE, NUMBER_OF, STEP_VALUE } from '../config';
+import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, STEP_VALUE } from '../config';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
@@ -57,7 +57,12 @@ export default class Controller {
   }
 
   handleLaunchpadCC(cc, value) {
-    this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
+    if (cc !== MIDI.TRANSPORT_STOP) {
+      this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
+    } else {
+      this.handleClockTick(-1);
+      this._view.render(); // transport stop clears the launchpad grid
+    }
   }
 
   handleLaunchpadNote(pitch, velocity) {
@@ -173,8 +178,10 @@ export default class Controller {
   }
 
   handleClockTick(clockIndex) {
-    this._model.clockIndex = clockIndex;
-    this._view.renderClock();
+    if (clockIndex !== this._model.clockIndex) {
+      this._model.clockIndex = clockIndex;
+      this._view.renderClock();
+    }
   }
 
   setGlobalStepDuration(stepDuration) {

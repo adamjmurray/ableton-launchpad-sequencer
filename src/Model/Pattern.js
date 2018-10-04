@@ -121,8 +121,8 @@ export default class Pattern {
     return this.startStepIndex + clockIndex.mod(this.length);
   }
 
-  getStepForClock(clockIndex) {
-    return this.steps[this.stepIndexFromClock(clockIndex)];
+  stepForClock(clockIndex) {
+    return this.steps[this.stepIndexForClock(clockIndex)];
   }
 
   // Given a note in the form of a JS object:

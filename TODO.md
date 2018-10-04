@@ -2,7 +2,7 @@
 
 ## Soon
 - Restore clock handling
-  - View rendering
+  - GUI rendering
   - Outputting the step values
   - Can we pick 8 pattern types and hard code them, from top to bottom:
     - vol => velocity (70, 85, 100, 115, 127 - or probably should be relative to track velocity)

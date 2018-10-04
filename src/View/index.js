@@ -66,11 +66,12 @@ export default class View {
     const newClockIndex = this._model.clockIndex;
     if (newClockIndex !== previousClockIndex) {
       const pattern = this._model.selectedPattern;
-      const previousStepIndex = pattern.getStepIndexForClock(previousClockIndex);
-      const newStepIndex = pattern.getStepIndexForClock(newClockIndex);
-      this._launchpadView.renderStep(previousStepIndex);
-      this._launchpadView.renderSequencerStep(newStepIndex);
+      const previousStepIndex = pattern.stepIndexForClock(previousClockIndex);
+      const newStepIndex = pattern.stepIndexForClock(newClockIndex);
+      this._launchpadView.renderStepButton(previousStepIndex);
+      this._launchpadView.renderStepButton(newStepIndex);
       // TODO: GUI
+      this._clockIndex = newClockIndex;
     }
   }
 
