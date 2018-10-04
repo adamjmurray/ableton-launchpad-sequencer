@@ -39,6 +39,7 @@ export function shiftright() { controller.shiftSelectedPatternRight(); }
 export function shiftup() { controller.shiftSelectedPatternUp(); }
 export function shiftdown() { controller.shiftSelectedPatternDown(); }
 export function reverse() { controller.reverseSelectedPattern(); }
+export function random() { controller.randomizeSelectedPattern(); }
 export function invert() { controller.invertSelectedPattern(); }
 export function copy() { controller.copyStepsFromSelectedPattern(); }
 export function paste() { controller.pasteStepsToSelectedPattern(); }

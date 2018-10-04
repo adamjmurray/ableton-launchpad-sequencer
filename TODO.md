@@ -1,39 +1,37 @@
 # TODO
 
 ## Soon
-- Restore clock handling
-  - GUI rendering
-- Scale support / Track MIDI input
-  - The track pitch setting becomes offset from the lowest "scale" note
-  - The scale settings needs to include the base pitch with a GUI for changing it
-  - Whatever notes come into the track MIDI input will temporarily override the scale notes
-- Change pattern edit mode's invert button to randomize the pattern
-  - Make every other tap revert in case it's hit accidentally
-- Similarly make pasting a pattern button revert on every other tap
-- Make paste button not light up unless there's a pattern to paste
-  - Put clipboard in model?
-- Remove unwanted features from GUI
-  - Import
-  - Export
-  - Reset (you can just load in a fresh device)
-  - Sync (changing track or pattern should re-sync)
-  - Help? (temporarily)
-  - First column
-  - Replace
-  - fill
-  - clear pattern? (it's kind of nice but you can't use it on the LP and I want feature parity as much as possible)
-  - All but the standard randomize
-  - invert
-  - pattern type
-- Rebuild GUI using a project and lots of subpatchers
-- When 2 gates hit at the same time, have an option to either add more scale steps or increase the velocity. I'm thinking this is better for arp tracks and drum tracks respectively
+- Bugs
+  - Fix sequencer step rendering in GUI
+- Features
+  - Scale support / Track MIDI input
+    - Everything works off of absolute pitches determined by the "scale"
+    - Add a base pitch to the global scale settings
+    - The track pitch setting becomes a number offset from the lowest "scale" note
+    - Whatever notes come into the track MIDI input temporarily override the scale notes
+  - Pattern edit mode
+    - Change pattern edit mode's invert button to randomize the pattern
+      - Make every other tap revert in case it's hit accidentally
+    - Similarly make pasting a pattern button revert on every other tap
+      - Make paste button not light up unless there's a pattern to paste (put clipboard in model?)
+  - When 2 gates hit at the same time, have an option to either add more scale steps or increase the velocity. I'm thinking this is better for arp tracks and drum tracks respectively
+- GUI improvements
+  - Rebuild GUI using a project and lots of subpatchers
+  - Remove unwanted features from GUI
+    - Reset (you can just load in a fresh device)
+    - Sync (changing track or pattern should re-sync)
+  - Update help
+  - Improve layout
+  - Improve color scheme
+  - Don't show pattern or track indexes
+  - We can simplify the GUI rendering for pattern and track "info"
+- Persistence
+  - Split up the single pattr blob into a bunch of pattrs
+  - Probably want to use poly objects to model the lists of tracks and patterns
+  - See if it fixes undo
+  - Debounce changes to the grid state (i.e. update the patter after a delay)
 
 ## Later:
-- Undo doesn't work. I think we just need to listen to changes from the pattr object. Might want to chnage the pattr strategy to fix though:
-- Consider splitting up the single pattr blob into a bunch of pattrs
-  - Pattern grids probably need to be an atomic list, which might be a blob.
-    - We can save this on a delay to avoid too many undo points.
-  - Most other settings like step length, etc, should be numbers or  strings
 - Add track edit mode (hold a pattern button and tap a track 3 times) and provide the ability to edit:
   - Using the pattern buttons to select option and then a grid button to change:
     - Track pitch

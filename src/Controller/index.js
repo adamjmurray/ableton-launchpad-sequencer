@@ -279,6 +279,11 @@ export default class Controller {
     this._view.renderGrid();
   }
 
+  randomizeSelectedPattern() {
+    this._model.selectedPattern.randomize();
+    this._view.renderGrid();
+  }
+
   invertSelectedPattern() {
     this._model.selectedPattern.invert();
     this._view.renderGrid();
