@@ -1,5 +1,5 @@
 import { Config, Controller, Model, View } from '../src';
-const { OUTLET, LAUNCHPAD, LAUNCHPAD_COLOR, MODE } = Config;
+const { OUTLET, LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF } = Config;
 import assert from 'assert';
 
 let model;
@@ -9,6 +9,80 @@ let controller;
 const PRESS = 127;
 const LIFT = 0;
 
+const toTrackCC = (trackIndex) => LAUNCHPAD.TOP_ROW_CC + trackIndex;
+const toPatternButtonPitch = (patternIndex) => patternIndex * 16 + 8;
+const toStepButtonPitch = (stepIndex) => {
+  const x = stepIndex % NUMBER_OF.COLUMNS;
+  const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
+  return x + (16 * y);
+};
+
+const pressTrackButton = (trackIndex) =>
+  controller.handleLaunchpadCC(toTrackCC(trackIndex), PRESS);
+const liftTrackButton = (trackIndex) =>
+  controller.handleLaunchpadCC(toTrackCC(trackIndex), LIFT);
+const pressAndLiftTrackButton = (trackIndex) => {
+  pressTrackButton(trackIndex);
+  liftTrackButton(trackIndex);
+}
+
+const pressPatternButton = (patternIndex) =>
+  controller.handleLaunchpadNote(toPatternButtonPitch(patternIndex), PRESS);
+const liftPatternButton = (patternIndex) =>
+  controller.handleLaunchpadNote(toPatternButtonPitch(patternIndex), LIFT);
+const pressAndLiftPatternButton = (patternIndex) => {
+  pressPatternButton(patternIndex);
+  liftPatternButton(patternIndex);
+}
+
+const pressStepButton = (stepIndex) =>
+  controller.handleLaunchpadNote(toStepButtonPitch(stepIndex), PRESS);
+const liftStepButton = (stepIndex) =>
+  controller.handleLaunchpadNote(toStepButtonPitch(stepIndex), LIFT);
+const pressAndLiftStepButton = (stepIndex) => {
+  pressStepButton(stepIndex);
+  liftStepButton(stepIndex);
+};
+
+const enterPatternEditMode = ({
+  trackIndex = 0,
+  patternIndex = 0,
+  liftTrackButton: liftTB = true,
+  liftPatternButton: liftPB = true,
+} = {}) => {
+  pressTrackButton(trackIndex);
+  pressAndLiftPatternButton(patternIndex);
+  pressAndLiftPatternButton(patternIndex);
+
+  pressPatternButton(patternIndex);
+  if (liftTB) {
+    liftTrackButton(trackIndex);
+  }
+  if (liftPB) {
+    liftPatternButton(patternIndex);
+  }
+}
+
+const assertViewsUpdatedForTrackMuteChange = (track) => {
+  assert.equal(mockOutlet.calls.length, 4);
+  assert.deepStrictEqual(
+    mockOutlet.calls[0],
+    [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
+  );
+  assert.deepStrictEqual(
+    mockOutlet.calls[1],
+    [OUTLET.TRACK_INDEX, track.index]
+  );
+  assert.deepStrictEqual(
+    mockOutlet.calls[2],
+    [OUTLET.TRACK_INFO, track.index + 1, track.pitch, track.velocity, track.gate]
+  );
+  assert.deepStrictEqual(
+    mockOutlet.calls[3],
+    [OUTLET.TRACK_MUTE, track.mute]
+  );
+}
+
 describe('Controller', () => {
 
   beforeEach(() => {
@@ -17,97 +91,52 @@ describe('Controller', () => {
     controller = new Controller(model, view);
   });
 
-  const assertViewsUpdatedForTrackMuteChange = (track) => {
-    assert.equal(mockOutlet.calls.length, 4);
-    assert.deepStrictEqual(
-      mockOutlet.calls[0],
-      [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
-    );
-    assert.deepStrictEqual(
-      mockOutlet.calls[1],
-      [OUTLET.TRACK_INDEX, track.index]
-    );
-    assert.deepStrictEqual(
-      mockOutlet.calls[2],
-      [OUTLET.TRACK_INFO, track.index + 1, track.pitch, track.velocity, track.gate]
-    );
-    assert.deepStrictEqual(
-      mockOutlet.calls[3],
-      [OUTLET.TRACK_MUTE, track.mute]
-    );
-  }
-
   describe('handleLaunchpadCC(cc, value)', () => {
     it('handles a triple press as a track mute toggle', () => {
       const trackIndex = 1;
-      const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
 
-      controller.handleLaunchpadCC(trackCC, PRESS);
-      controller.handleLaunchpadCC(trackCC, LIFT);
-      controller.handleLaunchpadCC(trackCC, PRESS);
-      controller.handleLaunchpadCC(trackCC, LIFT);
+      pressAndLiftTrackButton(trackIndex);
+      pressAndLiftTrackButton(trackIndex);
       mockOutlet.reset();
 
-      controller.handleLaunchpadCC(trackCC, PRESS);
+      pressTrackButton(trackIndex);
       assert.equal(model.selectedTrack.index, trackIndex);
       assertViewsUpdatedForTrackMuteChange(model.selectedTrack);
       mockOutlet.reset();
 
-      controller.handleLaunchpadCC(trackCC, LIFT);
+      liftTrackButton(trackIndex);
       assert.equal(mockOutlet.calls.length, 0);
     });
   });
 
   describe('handleLaunchpadNote(pitch, velocity)', () => {
-    const enterPatternEditMode = ({ trackIndex = 1, patternIndex = 0 } = {}) => {
-      const trackCC = LAUNCHPAD.TOP_ROW_CC + trackIndex;
-      const patternButtonPitch = (patternIndex + 1) * 8;
-
-      controller.handleLaunchpadCC(trackCC, PRESS);
-      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
-      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
-      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
-      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
-
-      assert.equal(model.mode, MODE.SEQUENCER);
-      mockOutlet.reset();
-
-      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
-
-      return { trackCC, patternButtonPitch };
-    }
-
     it('handles a triple press of the right column while a top row button is held down as a toggle for pattern edit mode', () => {
       enterPatternEditMode();
       assert.equal(model.mode, MODE.PATTERN_EDIT);
     });
 
     it('exits pattern edit mode when a pattern press happens again', () => {
-      const { trackCC, patternButtonPitch } = enterPatternEditMode();
-      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
-      controller.handleLaunchpadCC(trackCC, LIFT);
-      assert.equal(model.mode, MODE.PATTERN_EDIT);
-      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      enterPatternEditMode();
+      pressPatternButton(6);
       assert.equal(model.mode, MODE.SEQUENCER);
+      // and it selects the pattern
+      assert.equal(model.selectedPattern.index, 6);
     });
 
     it('does not exit pattern edit mode if another pattern press happens while a top row button is held', () => {
-      const { patternButtonPitch } = enterPatternEditMode();
-      controller.handleLaunchpadNote(patternButtonPitch, LIFT);
+      enterPatternEditMode({ liftTrackButton: false });
       assert.equal(model.mode, MODE.PATTERN_EDIT);
-      // trackButton is still held after enterPatternEditMode()
-      controller.handleLaunchpadNote(patternButtonPitch, PRESS);
+      pressPatternButton(0);
       assert.equal(model.mode, MODE.PATTERN_EDIT);
     });
 
     it('can set the pattern start and end step from pattern edit mode', () => {
       enterPatternEditMode();
-      controller.handleLaunchpadNote(16, PRESS); // stepIndex 8
+      pressStepButton(8);
       assert.equal(model.selectedPattern.startStepIndex, 0);
       assert.equal(model.selectedPattern.endStepIndex, 63);
-      controller.handleLaunchpadNote(39, PRESS); // stepIndex 23
-      controller.handleLaunchpadNote(16, LIFT); // stepIndex 8
-      controller.handleLaunchpadNote(39, LIFT); // stepIndex 23
+      pressAndLiftStepButton(23);
+      liftStepButton(8);
       assert.equal(model.selectedPattern.startStepIndex, 8);
       assert.equal(model.selectedPattern.endStepIndex, 23);
     });

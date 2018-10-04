@@ -130,9 +130,11 @@ export default class LaunchpadView {
         ? COLOR.STEP_VALUES[value]
         : COLOR.INACTIVE_STEPS[value];
     } else {
-      return startStepIndex <= stepIndex && stepIndex <= endStepIndex
-        ? COLOR.ACTIVE_STEPS[value]
-        : COLOR.INACTIVE_STEPS[value];
+      if (startStepIndex <= stepIndex && stepIndex <= endStepIndex) {
+        return COLOR.STEP_VALUES[value];
+      } else {
+        return COLOR.OFF;
+      }
     }
   };
 

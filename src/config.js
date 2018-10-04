@@ -43,7 +43,6 @@ export const LAUNCHPAD_COLOR = Object.freeze({
   MUTE_COLOR: LP_MUTE_COLOR,
   INACTIVE_MUTE_COLOR: LP_INACTIVE_MUTE_COLOR, // mute color when the track/pattern is not selected (maybe rename this DESELECTED_MUTE_COLOR?)
   STEP_VALUES: Object.freeze([LP_OFF, LP_GREEN, LP_YELLOW, LP_ORANGE, LP_RED]), // maps step value to color
-  ACTIVE_STEPS: Object.freeze([LP_SEQUENCER_STEP, LP_GREEN, LP_YELLOW, LP_ORANGE, LP_RED]), // maps step value to color in "pattern ops mode" for steps in the pattern's start/end range
   INACTIVE_STEPS: Object.freeze([LP_OFF, LP_INACTIVE_GREEN, LP_INACTIVE_YELLOW, LP_INACTIVE_ORANGE, LP_INACTIVE_RED]), // maps step value to color in "pattern ops mode" for steps outside the pattern's start/end range
 });
 

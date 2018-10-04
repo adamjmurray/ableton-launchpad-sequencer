@@ -1,23 +1,67 @@
-Rearchitecture / Rapid LED Update
-- Clock handling
-- Track MIDI input
-- Can we pick 8 pattern types and just hard code them:
-  - on the launchpad right column:
-    vol => velocity (70, 85, 100, 115, 127)
-    pan => duration (1, 2, 4, 8, 16 step lengths)
-    send A => octave up
-    send B => modulation
-    stop => random mute
-    bottom 3 => 3 "scale gates"
-  - optimize around arps and drum seqs
-- Could the launchpad pattern edit mode be used to set the pitch and velocity of a track (by holding a LP button while playing a note on the track's MIDI input?)
-  - This might be too much, but what about setting the gate and duration multiplier? I could see the feedback being the rows lighting up to show higher values (possibly with column wrap-around - could maybe even simulate a dial by going from bottom left across the top of the grid and then down to bottom right / and pushing a button on the grid will go to the nearest dial location). Maybe some of the pattern buttons can be used for all this, but then how to exit pattern edit mode?
+# TODO
+
+## Soon
+- Restore clock handling
+  - View rendering
+  - Outputting the step values
+  - Can we pick 8 pattern types and hard code them, from top to bottom:
+    - vol => velocity (70, 85, 100, 115, 127 - or probably should be relative to track velocity)
+    - pan => duration (1, 2, 4, 8, 16 step lengths)
+    - send A => octave up
+    - send B => modulation
+    - stop => random mute
+    - bottom 3 => 3 "scale gates"
+- Scale support / Track MIDI input
+  - The track pitch setting becomes offset from the lowest "scale" note
+  - The scale settings needs to include the base pitch with a GUI for changing it
+  - Whatever notes come into the track MIDI input will temporarily override the scale notes
+- Change pattern edit mode's invert button to randomize the pattern
+  - Make every other tap revert in case it's hit accidentally
+- Similarly make pasting a pattern button revert on every other tap
+- Make paste button not light up unless there's a pattern to paste
+  - Put clipboard in model?
 - Remove unwanted features from GUI
+  - Import
+  - Export
+  - Reset (you can just load in a fresh device)
+  - Sync (changing track or pattern should re-sync)
+  - Help? (temporarily)
+  - First column
+  - Replace
+  - fill
+  - clear pattern? (it's kind of nice but you can't use it on the LP and I want feature parity as much as possible)
+  - All but the standard randomize
+  - invert
+  - pattern type
 - Rebuild GUI using a project and lots of subpatchers
-- Undo doesn't work (I think we just need to listen to changes from the pattr object)
-- *** Consider splitting up the blob into a bunch of pattrs
-  - Pattern grids probably need to be an atomic list, which might be a blob
-  - Most other settings like step length, etc, should be pattrs
+- When 2 gates hit at the same time, have an option to either add more scale steps or increase the velocity. I'm thinking this is better for arp tracks and drum tracks respectively
+
+## Later:
+- Undo doesn't work. I think we just need to listen to changes from the pattr object. Might want to chnage the pattr strategy to fix though:
+- Consider splitting up the single pattr blob into a bunch of pattrs
+  - Pattern grids probably need to be an atomic list, which might be a blob.
+    - We can save this on a delay to avoid too many undo points.
+  - Most other settings like step length, etc, should be numbers or  strings
+- Add track edit mode (hold a pattern button and tap a track 3 times) and provide the ability to edit:
+  - Using the pattern buttons to select option and then a grid button to change:
+    - Track pitch
+    - Track velocity
+      - Pitch and velocity have 128 values but there are only 64 grid buttons so we need a way to set all 128 OR we can pick a range of sensible values (that's 5+ octaves and we could do odd-numbered velocities or something like)
+    - gate
+    - step duration multiplier
+    - global step length?
+    - clear track? (make sure it's undoable)
+    - other future functionality, like:
+      - option for multiple gates to add scale steps vs velocity (see below)
+      - change the CC out for the modation pattern
+  - Using the value buttons
+    - track reverse
+    - track randomize (every other tap reverts, see above)
+    - track copy
+    - track paste  (every other tap reverts, see above)
+- Support non octave repeating scales in GUI (so it works like track MIDI input where you can set any notes arbitrarily)
+  - The GUI probably needs an expandable full keyboard view
+  - Set velocities of each note via the GUI?
+  - Track MIDI input will directly control the "scale" notes and that's it (get rid of all the other functionality)
+- expandable GUI view to show all patterns in a track, 1 row per pattern
 - Add a subdivide feature and make it the send A or B pattern type (replace octave up)
-- When 2 gates hit at the same time, add more scale steps (i.e. treat like scale +)
-  - Or if we're in "drum" mode it could increase the velocity (so make it an option, or just have an arp and drum mode that does the right thing)

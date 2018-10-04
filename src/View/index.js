@@ -8,8 +8,6 @@ export default class View {
     this._model = model;
     this._guiView = new GuiView(model);
     this._launchpadView = new LaunchpadView(model);
-    this._selectedTrackIndex = 0;
-    this._selectedPatternIndex = 0;
     this._selectedValue = DEFAULT.VALUE;
     this._clockIndex = -1;
   }
@@ -20,14 +18,9 @@ export default class View {
   }
 
   renderTrack() {
-    const previousIndex = this._selectedTrackIndex;
-    const newIndex = this._model.selectedTrackIndex;
-    if (newIndex !== previousIndex) {
-      this._launchpadView.render();
-      this._guiView.renderTrack();
-      this._guiView.renderGrid();
-      this._selectedTrackIndex = newIndex;
-    }
+    this._launchpadView.render();
+    this._guiView.renderTrack();
+    this._guiView.renderGrid();
   }
 
   renderSelectedTrackMute() {
@@ -36,14 +29,9 @@ export default class View {
   }
 
   renderPattern() {
-    const previousIndex = this._selectedPatternIndex;
-    const newIndex = this._model.selectedPatternIndex;
-    if (newIndex !== previousIndex) {
-      this._launchpadView.render();
-      this._guiView.renderPattern();
-      this._guiView.renderGrid();
-      this._selectedPatternIndex = newIndex;
-    }
+    this._launchpadView.render();
+    this._guiView.renderPattern();
+    this._guiView.renderGrid();
   }
 
   renderSelectedPatternMute() {

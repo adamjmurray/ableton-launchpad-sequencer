@@ -124,7 +124,7 @@ export default class Controller {
       if (model.mode === MODE.PATTERN_EDIT) {
         if (!this._heldTopButton) {
           model.mode = MODE.SEQUENCER;
-          this._view.render();
+          this.selectPattern(index, { forceRender: true });
         }
       }
       else {
@@ -186,8 +186,10 @@ export default class Controller {
   }
 
   selectTrack(trackIndex) {
-    this._model.selectedTrackIndex = trackIndex;
-    this._view.renderTrack(); // I'm debating renaming this to renderSelectedTrack() vs passing in a trackIndex
+    if (trackIndex !== this._model.selectedTrackIndex) {
+      this._model.selectedTrackIndex = trackIndex;
+      this._view.renderTrack(); // I'm debating renaming this to renderSelectedTrack() vs passing in a trackIndex
+    }
   }
 
   selectOrToggleValue(value) {
@@ -195,9 +197,11 @@ export default class Controller {
     this._view.renderValue();
   }
 
-  selectPattern(patternIndex) {
-    this._model.selectedPatternIndex = patternIndex;
-    this._view.renderPattern();
+  selectPattern(patternIndex, { forceRender = false } = {}) {
+    if (forceRender || patternIndex !== this._model.selectedPatternIndex) {
+      this._model.selectedPatternIndex = patternIndex;
+      this._view.renderPattern();
+    }
   }
 
   handleGridClick(x, y) {
