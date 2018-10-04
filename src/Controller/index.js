@@ -1,4 +1,4 @@
-import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, STEP_VALUE } from '../config';
+import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE } from '../config';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
@@ -181,6 +181,22 @@ export default class Controller {
     if (clockIndex !== this._model.clockIndex) {
       this._model.clockIndex = clockIndex;
       this._view.renderClock();
+    }
+    if (clockIndex >= 0) {
+      this._model.tracks.forEach((track) => {
+        const note = track.noteForClock(clockIndex);
+        if (note.enabled && !note.mute) {
+          if (note.duration > 0) {
+            outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
+          }
+          if (note.modulation != null) {
+            outlet(OUTLET.CC, 1, note.modulation);
+          }
+          if (note.aftertouch != null) {
+            outlet(OUTLET.AFTERTOUCH, note.aftertouch);
+          }
+        }
+      });
     }
   }
 

@@ -10,11 +10,22 @@ const randomDuration = () => Math.random() * 8;
 // The note modifying behavior for each pattern type.
 // These may assume we filtered out stepValue 0 in processNote() as a NOOP
 const processors = {
-  'pitch gate': (note, value) => { note.duration = 1; note.pitch += (value - 1); },
-  'scale gate': (note, value, scale) => { note.duration = 1; note.pitch = scale.map(note.pitch, value - 1); },
-  'velocity gate': (note, value) => { note.duration = 1; note.velocity += ((127 - note.velocity) * (value - 1)) / 3; },
-  'duration gate': (note, value) => { note.duration = STEP_VALUE.GATE_DURATION[value]; },
-
+  'pitch gate': (note, value) => {
+    note.enabled = true;
+    note.pitch += (value - 1);
+  },
+  'scale gate': (note, value, scale) => {
+    note.enabled = true;
+    note.pitch = scale.map(note.pitch, value - 1);
+  },
+  'velocity gate': (note, value) => {
+    note.enabled = true;
+    note.velocity += ((127 - note.velocity) * (value - 1)) / 3;
+  },
+  'duration gate': (note, value) => {
+    note.enabled = true;
+    note.duration = STEP_VALUE.GATE_DURATION[value];
+  },
   'pitch +': (note, value) => { note.pitch += value; },
   'pitch -': (note, value) => { note.pitch -= value; },
   'scale +': (note, value, scale) => { note.pitch = scale.map(note.pitch, value); },
@@ -24,6 +35,7 @@ const processors = {
   'velocity +': (note, value) => { note.velocity += ((127 - note.velocity) * value) / 4; },
   'velocity -': (note, value) => { note.velocity -= (note.velocity * value) / 4; },
 
+  'duration =': (note, value) => { note.duration = STEP_VALUE.DURATION[value]; },
   'duration +': (note, value) => { note.duration += value; },
   'duration -': (note, value) => { note.duration -= value; },
   'duration x': (note, value) => { note.duration *= (value + 1); },
@@ -33,8 +45,7 @@ const processors = {
   'aftertouch': (note, value) => { note.aftertouch = STEP_VALUE.MIDI_CC[value]; },
 
   'random gate': (note, value) => { if (Math.random() <= (value / 4)) { note.duration = 1; } },
-  'random mute': (note, value) => { if (Math.random() <= (value / 4)) { note.duration = 0;; } },
-  'random skip': (note, value) => { if (Math.random() <= (value / 4)) { note.skip = true; } },
+  'random mute': (note, value) => { if (Math.random() <= (value / 4)) { note.mute = true; } },
   'chaos': (note, value) => {
     switch (value) {
       case 1: note.pitch = randomPitch(); break;

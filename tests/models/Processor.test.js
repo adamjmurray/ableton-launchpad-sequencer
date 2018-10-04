@@ -52,42 +52,42 @@ describe('Processor', () => {
     describe('random mute', () => {
       beforeEach(() => processor.type = 'random mute');
 
-      it("sets note.duration to 0 with a 25% chance, when the step value is 1", () => {
-        expectRandomCondition({ processor, value: 1, expectedChance: 25 }, note => note.duration === 0);
+      it("sets note.mute to true with a 25% chance, when the step value is 1", () => {
+        expectRandomCondition({ processor, value: 1, expectedChance: 25 }, note => note.mute);
       });
 
-      it("sets note.duration to 0 with a 50% chance, when the step value is 2", () => {
-        expectRandomCondition({ processor, value: 2, expectedChance: 50 }, note => note.duration === 0);
+      it("sets note.mute to true with a 50% chance, when the step value is 2", () => {
+        expectRandomCondition({ processor, value: 2, expectedChance: 50 }, note => note.mute);
       });
 
-      it("sets note.duration to 0 with a 75% chance, when the step value is 3", () => {
-        expectRandomCondition({ processor, value: 3, expectedChance: 75 }, note => note.duration === 0);
+      it("sets note.mute to true with a 75% chance, when the step value is 3", () => {
+        expectRandomCondition({ processor, value: 3, expectedChance: 75 }, note => note.mute);
       });
 
-      it("sets note.duration to 0 with a 100% chance, when the step value is 3", () => {
-        expectRandomCondition({ processor, value: 4, expectedChance: 100 }, note => note.duration === 0);
-      });
-    });
-
-    describe('random skip', () => {
-      beforeEach(() => processor.type = 'random skip');
-
-      it("sets note.skip to true with a 25% chance, when the step value is 1", () => {
-        expectRandomCondition({ processor, value: 1, expectedChance: 25 }, note => note.skip);
-      });
-
-      it("sets note.skip to true with a 50% chance, when the step value is 2", () => {
-        expectRandomCondition({ processor, value: 2, expectedChance: 50 }, note => note.skip);
-      });
-
-      it("sets note.skip to true with a 75% chance, when the step value is 3", () => {
-        expectRandomCondition({ processor, value: 3, expectedChance: 75 }, note => note.skip);
-      });
-
-      it("sets note.skip to true with a 100% chance, when the step value is 4", () => {
-        expectRandomCondition({ processor, value: 4, expectedChance: 100 }, note => note.skip);
+      it("sets note.mute to true with a 100% chance, when the step value is 3", () => {
+        expectRandomCondition({ processor, value: 4, expectedChance: 100 }, note => note.mute);
       });
     });
+
+    // describe('random skip', () => {
+    //   beforeEach(() => processor.type = 'random skip');
+
+    //   it("sets note.skip to true with a 25% chance, when the step value is 1", () => {
+    //     expectRandomCondition({ processor, value: 1, expectedChance: 25 }, note => note.skip);
+    //   });
+
+    //   it("sets note.skip to true with a 50% chance, when the step value is 2", () => {
+    //     expectRandomCondition({ processor, value: 2, expectedChance: 50 }, note => note.skip);
+    //   });
+
+    //   it("sets note.skip to true with a 75% chance, when the step value is 3", () => {
+    //     expectRandomCondition({ processor, value: 3, expectedChance: 75 }, note => note.skip);
+    //   });
+
+    //   it("sets note.skip to true with a 100% chance, when the step value is 4", () => {
+    //     expectRandomCondition({ processor, value: 4, expectedChance: 100 }, note => note.skip);
+    //   });
+    // });
 
     describe('type: chaos', () => {
       let note;

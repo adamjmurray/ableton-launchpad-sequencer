@@ -1,5 +1,5 @@
 import { Config, Controller, Model, View } from '../src';
-const { OUTLET, LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF } = Config;
+const { LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF, OUTLET, PATTERN } = Config;
 import assert from 'assert';
 
 let model;
@@ -142,6 +142,57 @@ describe('Controller', () => {
     });
 
     // TODO: setting grid steps
+  });
+
+  describe('handleClockTick(clockIndex)', () => {
+    it('does not generate notes for empty tracks', () => {
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), []);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
+    });
+
+
+    it('generates notes for positive clock ticks when gate pattern steps have values', () => {
+      model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
+        [60, 70, 0.9],
+      ]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
+    });
+
+    it('generates notes for all track', () => {
+      model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
+      model.tracks[1].patterns[PATTERN.GATE1].steps[0] = 2;
+      model.tracks[2].patterns[PATTERN.GATE2].steps[0] = 3;
+      model.tracks[3].patterns[PATTERN.GATE3].steps[0] = 4;
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
+        [60, 70, 0.9],
+        [61, 70, 0.9],
+        [62, 70, 0.9],
+        [63, 70, 0.9],
+      ]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
+    });
+
+    it('can set velocity and duration', () => {
+      model.tracks[0].gate = 1;
+      model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
+      model.tracks[0].patterns[PATTERN.VELOCITY].steps[0] = 4;
+      model.tracks[0].patterns[PATTERN.DURATION].steps[0] = 1;
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
+        [60, 127, 2],
+      ]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
+    });
   });
 
   describe('selectTrack(index)', () => {

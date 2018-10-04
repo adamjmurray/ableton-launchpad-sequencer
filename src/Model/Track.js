@@ -1,4 +1,5 @@
 import { DEFAULT, NUMBER_OF } from '../config';
+import Note from './Note';
 import Pattern from './Pattern';
 
 export default class Track {
@@ -20,30 +21,21 @@ export default class Track {
     this.patterns.forEach(pattern => pattern.reset());
     this.durationMultiplier = 1;
     this.mute = false;
-    this.note = {};
+    this._note = new Note();
   }
 
   noteForClock(rawClock) {
     if (this.mute && !this.pitchOverride) return; // pitch override also overrides mute
     const clock = this.clockForMultiplier(rawClock);
-    if (clock == null) return;
+    if (clock == null || clock < 0) return;
 
-    const { note } = this; // avoids creating and garbage collecting objects each clock tick
-    note.pitch = this.pitchOverride != null ? this.pitchOverride : this.pitch;
-    note.velocity = this.velocityOverride != null ? this.velocityOverride : this.velocity;
-    note.gate = 0; // no note unless a gate or "duration +" pattern turns it on
-    // note.interval = null # for whenever an interval pattern exists
-    // note.skip = null # by not doing this, the last pattern can skip the first on the next clock tick
+    const note = this._note; // avoids creating and garbage collecting objects each clock tick
+    note.reset();
+    note.pitch = this.pitch;
+    note.velocity = this.velocity;
 
-    this.patterns.forEach(pattern => {
-      if (note.skip) { // random skip caused next pattern to be skipped
-        note.skip = null;
-      } else {
-        pattern.processNote(note, clock, this.scale);
-      }
-    });
-
-    note.gate *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's gate
+    this.patterns.forEach(pattern => pattern.processNote(note, clock, this.scale));
+    note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
     return note;
   }
 

@@ -12,7 +12,6 @@ export default class Model {
 
   reset() {
     this.globalStepDuration = DEFAULT.STEP_DURATION;
-    // this.globalTranspose = 0;
     this.scale.pitchClasses = DEFAULT.PITCH_CLASSES;
     this.tracks.forEach(track => track.reset());
     this.selectedTrackIndex = 0;

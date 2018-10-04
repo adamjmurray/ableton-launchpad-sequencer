@@ -1,16 +1,6 @@
-class MockFunction {
-  constructor() {
-    this.reset();
-  }
-  reset() {
-    this.calls = [];
-  }
-  mock() {
-    return (...args) => this.calls.push(args);
-  }
-}
+import MockOutlet from './MockOutlet';
 
-global.mockOutlet = new MockFunction();
+global.mockOutlet = new MockOutlet();
 global.outlet = mockOutlet.mock();
 
 beforeEach(() => mockOutlet.reset());

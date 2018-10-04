@@ -50,8 +50,8 @@ export const DEFAULT = Object.freeze({
   STEP_DURATION: '16th',
   PATTERN_TYPES: Object.freeze([ // maps pattern index to the default type for that pattern
     'velocity +',
-    'duration +',
-    'modulate', // TODO implement subdivide (can probably ditch modulation or maybe ditch octave)
+    'duration =',
+    'modulation',
     'octave',
     'random mute',
     'scale gate',
@@ -116,10 +116,22 @@ export const OUTLET = Object.freeze({
   LAUNCHPAD_RAPID_UPDATE: 17,
 });
 
+export const PATTERN = Object.freeze({ // maps pattern types to pattern indexes
+  VELOCITY: 0,
+  DURATION: 1,
+  MODULATION: 2,
+  OCTAVE: 3,
+  MUTE: 4,
+  GATE1: 5,
+  GATE2: 6,
+  GATE3: 7,
+});
+
 // Maps step values to device values
 export const STEP_VALUE = Object.freeze({
   OFF: 0,
   GATE_DURATION: Object.freeze([null, 1, 2, 4, 8]),
+  DURATION: Object.freeze([1, 2, 4, 8, 16]),
   OCTAVES: Object.freeze([null, 12, 24, -12, -24]),
   MIDI_CC: Object.freeze([null, 0, 42, 85, 127]),
 });

@@ -135,7 +135,7 @@ export default class Pattern {
   //
   processNote(note, clock, scale) {
     if (this.mute) return;
-    const value = this.getStepForClock(clock);
+    const value = this.stepForClock(clock);
     if (value > 0) { // Assumption: 0 is always a NOOP
       this._processor.process(note, value, scale);
     }

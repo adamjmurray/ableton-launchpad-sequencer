@@ -3,14 +3,6 @@
 ## Soon
 - Restore clock handling
   - GUI rendering
-  - Outputting the step values
-  - Can we pick 8 pattern types and hard code them, from top to bottom:
-    - vol => velocity (70, 85, 100, 115, 127 - or probably should be relative to track velocity)
-    - pan => duration (1, 2, 4, 8, 16 step lengths)
-    - send A => octave up
-    - send B => modulation
-    - stop => random mute
-    - bottom 3 => 3 "scale gates"
 - Scale support / Track MIDI input
   - The track pitch setting becomes offset from the lowest "scale" note
   - The scale settings needs to include the base pitch with a GUI for changing it
