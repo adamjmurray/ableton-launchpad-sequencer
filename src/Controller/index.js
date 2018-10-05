@@ -16,6 +16,8 @@ export default class Controller {
     this._topButtonGesture = new PressGesture;
     this._rightButtonGesture = new PressGesture;
     this._gridButtonGesture = new RangeSelectionGesture;
+    this._patternStepsClipboard = null;
+    this._patternStepsUndo = null;
   }
 
   // // but this isn't called form the outside ...
@@ -78,6 +80,7 @@ export default class Controller {
   _handleLaunchpadTopButton(index, isPressed) {
     if (isPressed) {
       if (this._model.mode === MODE.PATTERN_EDIT) {
+        const gesture = this._topButtonGesture.interpretPress(index);
         switch (index) {
           case 0:
             this.shiftSelectedPatternUp();
@@ -95,13 +98,23 @@ export default class Controller {
             this.reverseSelectedPattern();
             break;
           case 5:
-            this.invertSelectedPattern();
+            if (gesture === GESTURE.DOUBLE_PRESS) {
+              this._undoSelectedPatternSteps();
+            } else {
+              this._recordSelectedPatternStepsForUndo();
+              this.randomizeSelectedPattern();
+            }
             break;
           case 6:
             this.copyStepsFromSelectedPattern();
             break;
           case 7:
-            this.pasteStepsToSelectedPattern();
+            if (gesture === GESTURE.DOUBLE_PRESS) {
+              this._undoSelectedPatternSteps();
+            } else {
+              this._recordSelectedPatternStepsForUndo();
+              this.pasteStepsToSelectedPattern();
+            }
             break;
         }
       } else {
@@ -112,6 +125,7 @@ export default class Controller {
               break;
             case GESTURE.TRIPLE_PRESS:
               this.setSelectedTrackMute(!this._model.selectedTrack.mute);
+              this._topButtonGesture.reset(); // so we can reuse this gesture in pattern edit mode
               break;
           }
         } else {
@@ -310,12 +324,24 @@ export default class Controller {
   }
 
   copyStepsFromSelectedPattern() {
-    this._stepsClipboard = this._model.selectedPattern.steps.slice(); // slice to freeze this state
+    this._patternStepsClipboard = this._model.selectedPattern.steps.slice(); // slice to freeze this state
   }
 
   pasteStepsToSelectedPattern() {
-    if (this._stepsClipboard) {
-      this._model.selectedPattern.steps = this._stepsClipboard;
+    if (this._patternStepsClipboard) {
+      this._model.selectedPattern.steps = this._patternStepsClipboard;
+      this._view.renderGrid();
+    }
+  }
+
+  _recordSelectedPatternStepsForUndo() {
+    this._patternStepsUndo = this._model.selectedPattern.steps.slice(); // slice to freeze this state
+  }
+
+  _undoSelectedPatternSteps() {
+    if (this._patternStepsUndo) {
+      this._model.selectedPattern.steps = this._patternStepsUndo;
+      this._patternStepsUndo = null;
       this._view.renderGrid();
     }
   }

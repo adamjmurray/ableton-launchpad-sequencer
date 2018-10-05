@@ -15,8 +15,10 @@ export default class PressGesture {
   interpretPress(index) {
     if (index === this._previousIndex) {
       this._repeatPressCount++;
-      if (this._repeatPressCount === 3) {
-        this._repeatPressCount = 0;
+      if (this._repeatPressCount % 2 === 0) {
+        return GESTURE.DOUBLE_PRESS;
+      }
+      if (this._repeatPressCount % 3 === 0) {
         return GESTURE.TRIPLE_PRESS;
       }
 

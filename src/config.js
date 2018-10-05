@@ -65,6 +65,7 @@ export const DEFAULT = Object.freeze({
 
 export const GESTURE = Object.freeze({
   SELECT: 'select',
+  DOUBLE_PRESS: 'double press',
   TRIPLE_PRESS: 'triple press',
 });
 

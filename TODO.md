@@ -8,10 +8,8 @@
     - The track pitch setting becomes a number offset from the lowest "scale" note
     - Whatever notes come into the track MIDI input temporarily override the scale notes
   - Pattern edit mode
-    - Change pattern edit mode's invert button to randomize the pattern
-      - Make every other tap revert in case it's hit accidentally
-    - Similarly make pasting a pattern button revert on every other tap
-      - Make paste button not light up unless there's a pattern to paste (put clipboard in model?)
+    - Make reverse and randomize only apply to selected range
+    - Make paste button not light up unless there's a pattern to paste (put clipboard in model?)
   - When 2 gates hit at the same time, have an option to either add more scale steps or increase the velocity. I'm thinking this is better for arp tracks and drum tracks respectively
 - GUI improvements
   - Rebuild GUI using a project and lots of subpatchers
