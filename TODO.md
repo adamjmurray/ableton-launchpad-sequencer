@@ -1,8 +1,6 @@
 # TODO
 
 ## Soon
-- Bugs
-  - Fix sequencer step rendering in GUI
 - Features
   - Scale support / Track MIDI input
     - Everything works off of absolute pitches determined by the "scale"

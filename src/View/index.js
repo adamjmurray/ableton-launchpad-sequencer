@@ -70,7 +70,8 @@ export default class View {
       const newStepIndex = pattern.stepIndexForClock(newClockIndex);
       this._launchpadView.renderStepButton(previousStepIndex);
       this._launchpadView.renderStepButton(newStepIndex);
-      // TODO: GUI
+      this._guiView.renderStep(previousStepIndex);
+      this._guiView.renderStep(newStepIndex);
       this._clockIndex = newClockIndex;
     }
   }

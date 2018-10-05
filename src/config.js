@@ -9,6 +9,7 @@ export const GUI_COLOR = Object.freeze({ // Max's LCD object uses the format [R,
     Object.freeze([255, 0, 0]),     // red
     Object.freeze([80, 130, 200]),   // current step (TODO: why doesn't the launchpad colors use this format i.e. put this at end of array?)
   ]),
+  SEQUENCER_STEP: Object.freeze([80, 130, 200]),  // TODO: can we replace the last item in STEP_VALUE above?
 });
 
 const lpColor = (green, red) => (16 * green) + red + 12; // + 12 is the flag for 'on' (see Launchpad programmer's reference)

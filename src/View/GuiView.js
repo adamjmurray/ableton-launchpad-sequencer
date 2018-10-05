@@ -13,22 +13,11 @@ export default class GuiView {
     outlet(OUTLET.GRID, 'clear');
   }
 
-  // track(trackIndex) {
-  //   outlet(OUTLET.TRACK_INDEX, trackIndex);
-  // }
-
-  // stepValue(stepValue) {
-  //   outlet(OUTLET.STEP_VALUE, stepValue);
-  // }
-
-  // pattern(patternIndex) {
-  //   outlet(OUTLET.PATTERN_INDEX, patternIndex);
-  // }
-
-  // renderTrackButton(trackIndex) {
-  //   outlet(OUTLET.TRACK_INDEX, trackIndex);
-  // }
-
+  // TODO: Let's split this up into renderTrackButton, renderPatternButton, etc.
+  // This would be for mute state changes.
+  // renderTrack() could automatically render the grid when the track changes.
+  // We should be able to get rid of track info later when everything is properly pattr-ified
+  // And similarly for pattern rendering logic
   renderTrack() {
     const track = this._model.selectedTrack;
     const trackIndex = this._model.selectedTrackIndex;
@@ -85,35 +74,31 @@ export default class GuiView {
     lines.forEach(line => this.drawline(line));
     this._oldlines = lines;
 
-    pattern.steps.forEach((value, index) => {
-      const x = index % NUMBER_OF.COLUMNS;
-      const y = Math.floor(index / NUMBER_OF.COLUMNS);
-      this.drawStep(x, y, value);
-    });
+    const sequencerStepIndex = this._stepIndexForClock;
+    pattern.steps.forEach((_, stepIndex) => this.renderStep(stepIndex, sequencerStepIndex));
   }
 
   render() {
     this.renderTrack();
+    this.renderValueButton();
     this.renderPattern();
     this.renderGrid();
   }
 
-  renderStep(stepIndex) {
+  get _stepIndexForClock() {
+    const { clockIndex, selectedPattern } = this._model;
+    return clockIndex < 0 ? -1 : selectedPattern.stepIndexForClock(clockIndex);
+  }
+
+  renderStep(stepIndex, sequencerStepIndex = this._stepIndexForClock) {
     const x = stepIndex % NUMBER_OF.COLUMNS;
     const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
     const value = this._model.selectedPattern.steps[stepIndex];
-    this.drawStep(x, y, value);
-  }
-
-  drawStep(x, y, value) {
+    const color = stepIndex === sequencerStepIndex ? COLOR.SEQUENCER_STEP : COLOR.STEP_VALUE[value];
     const left = (x * STEP_WIDTH) + 2;
     const top = (y * STEP_WIDTH) + 2;
-    this.setColor(COLOR.STEP_VALUE[value]);
+    this.setColor(color);
     outlet(OUTLET.GRID, 'paintrect', left, top, left + BUTTON_WIDTH, top + BUTTON_WIDTH);
-  }
-
-  activeStep(x, y) {
-    this.grid(x, y, 5);
   }
 
   setColor(color) {
