@@ -48,51 +48,55 @@ export default class Pattern {
   }
 
   randomize() {
-    const { steps } = this;
-    steps.forEach((_, index) =>
-      steps[index] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random())
-    );
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    for (let i = start; i <= end; i++) {
+      steps[i] = Math.floor(NUMBER_OF.STEP_VALUES * Math.random())
+    }
   }
 
   // fill in value with 25% chance
   randomFill(value) {
-    const { steps } = this;
-    steps.forEach((_, index) => {
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    for (let i = start; i <= end; i++) {
       if (Math.random() < 0.25) {
-        steps[index] = value;
+        steps[i] = value;
       }
-    });
+    }
   }
 
   fill(value) {
-    const { steps } = this;
-    steps.forEach((_, index) =>
-      steps[index] = value
-    );
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    for (let i = start; i <= end; i++) {
+      steps[i] = value
+    }
   }
 
   replace(value) {
-    const { steps } = this;
-    steps.forEach((_, index) => {
-      if (steps[index] > 0) {
-        steps[index] = value;
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    for (let i = start; i <= end; i++) {
+      if (steps[i] > 0) {
+        steps[i] = value;
       }
-    });
+    }
   }
 
   reverse() {
-    this.steps.reverse();
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    const before = steps.slice(0, start);
+    const activeSteps = steps.slice(start, end + 1);
+    const after = steps.slice(end + 1);
+    this.steps = before.concat(activeSteps.reverse(), after);
   }
 
   // Flips value 1 with 4, and 2 with 3
   invert() {
-    const { steps } = this;
-    steps.forEach((_, index) => {
-      const value = steps[index];
+    const { steps, startStepIndex: start, endStepIndex: end } = this;
+    for (let i = start; i <= end; i++) {
+      const value = steps[i];
       if (value > 0) {
-        steps[index] = NUMBER_OF.STEP_VALUES - value;
+        steps[i] = NUMBER_OF.STEP_VALUES - value;
       }
-    });
+    }
   }
 
   shift(amount) {
@@ -104,17 +108,6 @@ export default class Pattern {
     const after = steps.slice(end + 1);
     this.steps = before.concat(right, left, after);
   }
-
-  // getStep(index) {
-  //   return this.steps[index];
-  // }
-
-  // setStep(index, value) {
-  //   if (this.isValidIndex(index)) {
-  //     this.steps[index] = value;
-  //   }
-  // }
-
   // Given a clock index (in steps) return the active step in this pattern,
   // taking into account the start and end step.
   stepIndexForClock(clockIndex) {
