@@ -11,6 +11,10 @@ outletNames.forEach((name, index) => setoutletassist(index, name));
 const model = new Model;
 const controller = new Controller(model, new View(model));
 
+export function pattr(...args) {
+  console.log(...args);
+}
+
 export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
 export function load(path, jsonString) { if (path === 'global') controller.load(jsonString); }
@@ -24,7 +28,6 @@ export function durationScale(scale) { controller.setSlectedTrackGate(scale); }
 export function trackMultiplier() { controller.setSelectedTrackDurationMultiplier; }
 export function trackMute(mute) { controller.setSelectedTrackMute(mute); }
 
-// TODO: subtract the 1 in Max land
 export function startStep(stepNumber) { controller.setSelectedPatternStart(stepNumber - 1); }
 export function endStep(stepNumber) { controller.setSelectedPatternEnd(stepNumber - 1); }
 export function patternMute(mute) { controller.setSelectedPatternMute(mute); }
