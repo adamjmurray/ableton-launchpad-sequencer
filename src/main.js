@@ -2,7 +2,12 @@ import MaxConsole from './MaxConsole';
 console = new MaxConsole();
 
 import { Config, Controller, Model, View } from '.';
-outlets = Config.NUMBER_OF.OUTLETS;
+
+const { OUTLET } = Config;
+const outletNames = Object.keys(OUTLET);
+outlets = outletNames.length;
+outletNames.forEach((name, index) => setoutletassist(index, name));
+
 const model = new Model;
 const controller = new Controller(model, new View(model));
 

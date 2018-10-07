@@ -25,6 +25,7 @@
   - Debounce changes to the grid state (i.e. update the patter after a delay)
 
 ## Later:
+- Preset/"Scene" system (within the device). You can apparently save these with the device using pattrstorage
 - Add track edit mode (hold a pattern button and tap a track 3 times) and provide the ability to edit:
   - Using the pattern buttons to select option and then a grid button to change:
     - Track pitch

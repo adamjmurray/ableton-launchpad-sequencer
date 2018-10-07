@@ -94,7 +94,6 @@ export const NUMBER_OF = Object.freeze({
   ROWS: 8, // number of steps per row in the pattern grid
   COLUMNS: 8, // number of steps per column in the pattern grid
   STEP_VALUES: 5, // number of step values (off, green, yellow, orange, and red)
-  OUTLETS: 18, // number of outlets from the [js] object running this script
 });
 
 export const OUTLET = Object.freeze({

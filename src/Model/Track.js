@@ -5,9 +5,8 @@ import Pattern from './Pattern';
 export default class Track {
 
   constructor(index, scale) {
-    // TODO: convert all to private member vars
     this.index = index;
-    this.scale = scale;
+    this.scale = scale; // TODO: pass this into noteForClock() instead
     this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
     this.reset();
   }
