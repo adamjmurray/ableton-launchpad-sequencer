@@ -11,36 +11,32 @@ outletNames.forEach((name, index) => setoutletassist(index, name));
 const model = new Model;
 const controller = new Controller(model, new View(model));
 
-export function pattr(...args) {
-  console.log(...args);
-}
-
 export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
-export function load(path, jsonString) { if (path === 'global') controller.load(jsonString); }
+export function setmodel(...args) { contoroler.setModel(...args); }
 
-export function setScale(...pitchClasses) { controller.setScale(pitchClasses); }
-export function stepLength(stepLength) { controller.setGlobalStepDuration(stepLength); }
+export function scale(...pcs) { controller.setScale(pcs); }
+export function duration(duration) { controller.setDuration(duration); }
 
-export function basePitch(pitch) { controller.setSlectedTrackPitch(pitch); }
-export function baseVelocity(velocity) { controller.setSelectedTrackVelocity(velocity); }
-export function durationScale(scale) { controller.setSlectedTrackGate(scale); }
-export function trackMultiplier() { controller.setSelectedTrackDurationMultiplier; }
-export function trackMute(mute) { controller.setSelectedTrackMute(mute); }
+export function pitch(pitch) { controller.setTrackPitch(pitch); }
+export function velocity(velocity) { controller.setTrackVelocity(velocity); }
+export function gate(gate) { controller.setTrackGate(gate); }
+export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
+export function trackmute(mute) { controller.setTrackMute(mute); }
 
-export function startStep(stepNumber) { controller.setSelectedPatternStart(stepNumber - 1); }
-export function endStep(stepNumber) { controller.setSelectedPatternEnd(stepNumber - 1); }
-export function patternMute(mute) { controller.setSelectedPatternMute(mute); }
+export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }
+export function end(stepNumber) { controller.setPatternEnd(stepNumber - 1); }
+export function patternmute(mute) { controller.setPatternMute(mute); }
+export function grid(x, y) { controller.handleGridClick(x, y); }
 
 export function track(trackIndex) { controller.selectTrack(trackIndex); }
 export function pattern(patternIndex) { controller.selectPattern(patternIndex); }
-export function stepValue(value) { controller.selectOrToggleValue(value); }
+export function value(value) { controller.selectOrToggleValue(value); }
 
-export function notein(pitch, velocity) { controller.handleLaunchpadNote(pitch, velocity); }
-export function ctlin(cc, val) { controller.handleLaunchpadCC(cc, val); }
+export function lpnote(pitch, velocity) { controller.handleLaunchpadNote(pitch, velocity); }
+export function lpcc(cc, value) { controller.handleLaunchpadCC(cc, value); }
 export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
-export function clock(clockIndex) { controller.handleClockTick(clockIndex); }
-export function grid(x, y) { controller.handleGridClick(x, y); }
+export function clock(index) { controller.handleClockTick(index); }
 
 export function shiftleft() { controller.shiftSelectedPatternLeft(); }
 export function shiftright() { controller.shiftSelectedPatternRight(); }
@@ -48,7 +44,6 @@ export function shiftup() { controller.shiftSelectedPatternUp(); }
 export function shiftdown() { controller.shiftSelectedPatternDown(); }
 export function reverse() { controller.reverseSelectedPattern(); }
 export function random() { controller.randomizeSelectedPattern(); }
-export function invert() { controller.invertSelectedPattern(); }
 export function copy() { controller.copyStepsFromSelectedPattern(); }
 export function paste() { controller.pasteStepsToSelectedPattern(); }
 

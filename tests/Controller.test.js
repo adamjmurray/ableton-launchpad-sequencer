@@ -64,22 +64,18 @@ const enterPatternEditMode = ({
 }
 
 const assertViewsUpdatedForTrackMuteChange = (track) => {
-  assert.equal(mockOutlet.calls.length, 4);
+  assert.equal(mockOutlet.calls.length, 3);
   assert.deepStrictEqual(
     mockOutlet.calls[0],
     [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[1],
-    [OUTLET.TRACK_INDEX, track.index]
+    [OUTLET.GUI, 'track', 'mute', track.mute]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[2],
-    [OUTLET.TRACK_INFO, track.index + 1, track.pitch, track.velocity, track.gate]
-  );
-  assert.deepStrictEqual(
-    mockOutlet.calls[3],
-    [OUTLET.TRACK_MUTE, track.mute]
+    [OUTLET.STORAGE, `tracks[${track.index}]::mute`, track.mute]
   );
 }
 
@@ -220,7 +216,7 @@ describe('Controller', () => {
       controller.selectTrack(trackIndex);
       mockOutlet.reset();
 
-      controller.setSelectedTrackMute(true);
+      controller.setTrackMute(true);
       assertViewsUpdatedForTrackMuteChange(model.selectedTrack);
     });
   });

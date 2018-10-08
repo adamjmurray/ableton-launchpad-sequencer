@@ -2,6 +2,22 @@ import { GUI_COLOR as COLOR, GUI, NUMBER_OF, OUTLET } from '../config';
 
 const { STEP_WIDTH, BUTTON_WIDTH } = GUI;
 
+// These need to match the [route] objects connected to the GUI outlet in the Max patch.
+const GRID = 'grid';
+const DURATION = 'duration';
+const SCALE = 'scale';
+const TRACK = 'track';
+const PATTERN = 'pattern';
+const VALUE = 'value';
+const INDEX = 'index';
+const PITCH = 'pitch';
+const VELOCITY = 'velocity';
+const GATE = 'gate';
+const MULTIPLIER = 'multiplier';
+const MUTE = 'mute';
+const START = 'start';
+const END = 'end';
+
 export default class GuiView {
 
   constructor(model) {
@@ -9,47 +25,82 @@ export default class GuiView {
     this._oldlines = [];
   }
 
-  clear() {
+  clearGrid() {
     outlet(OUTLET.GRID, 'clear');
   }
 
-  // TODO: Let's split this up into renderTrackButton, renderPatternButton, etc.
-  // This would be for mute state changes.
-  // renderTrack() could automatically render the grid when the track changes.
-  // We should be able to get rid of track info later when everything is properly pattr-ified
-  // And similarly for pattern rendering logic
-  renderTrack() {
-    const track = this._model.selectedTrack;
-    const trackIndex = this._model.selectedTrackIndex;
-    outlet(OUTLET.TRACK_INDEX, trackIndex);
-
-    // If we have dedicated pattrs / GUI elements (by having a copy of the GUI for each track/pattern via bpatchers),
-    // then we probably don't need any of this:
-    const trackNumber = trackIndex + 1;
-    // TODO: what about rendering the durationMultiplier?
-    outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.gate);
-    outlet(OUTLET.TRACK_MUTE, track.mute);
+  renderDuration(duration) {
+    outlet(OUTLET.GUI, DURATION, duration);
   }
 
-  renderValueButton() {
-    outlet(OUTLET.STEP_VALUE, this._model.selectedValue);
+  renderScale(pitchClasses) {
+    outlet(OUTLET.GUI, SCALE, scale.pitchClasses);
   }
 
-  renderPattern() {
-    const pattern = this._model.selectedPattern;
-    const patternIndex = this._model.selectedPatternIndex;
-    outlet(OUTLET.PATTERN_INDEX, patternIndex);
-
-    // If we have dedicated pattrs / GUI elements (by having a copy of the GUI for each track/pattern via bpatchers),
-    // then we probably don't need any of this:
-    const { type, startStepIndex, endStepIndex } = pattern;
-    outlet(OUTLET.PATTERN_INFO,
-      patternIndex + 1, type, startStepIndex + 1, endStepIndex + 1);
-    outlet(OUTLET.PATTERN_MUTE, pattern.mute);
+  renderTrack(track) {
+    this.renderTrackIndex(track.index);
+    this.renderTrackPitch(track.pitch);
+    this.renderTrackVelocity(track.velocity);
+    this.renderTrackGate(track.gate);
+    this.renderTrackMultiplier(track.durationMultiplier);
+    this.renderTrackMute(track.mute);
   }
 
-  renderGrid() {
-    const pattern = this._model.selectedPattern;
+  renderTrackIndex(index) {
+    outlet(OUTLET.GUI, TRACK, INDEX, index);
+  }
+
+  renderTrackPitch(pitch) {
+    outlet(OUTLET.GUI, TRACK, PITCH, pitch);
+  }
+
+  renderTrackVelocity(velocity) {
+    outlet(OUTLET.GUI, TRACK, VELOCITY, velocity);
+  }
+
+  renderTrackGate(gate) {
+    outlet(OUTLET.GUI, TRACK, GATE, gate);
+  }
+
+  renderTrackMultiplier(multiplier) {
+    outlet(OUTLET.GUI, TRACK, MULTIPLIER, multiplier);
+  }
+
+  renderTrackMute(mute) {
+    outlet(OUTLET.GUI, TRACK, MUTE, mute);
+  }
+
+  renderValueButton(value) {
+    outlet(OUTLET.GUI, VALUE, value);
+  }
+
+  renderPattern(pattern) {
+    this.renderPatternIndex(pattern.index);
+    this.renderPatternStart(pattern.start, false);
+    this.renderPatternEnd(pattern.end, false);
+    this.renderPatternMute(pattern.mute);
+    this.renderGrid(pattern);
+  }
+
+  renderPatternIndex(index) {
+    outlet(OUTLET.GUI, PATTERN, INDEX, index);
+  }
+
+  renderPatternStart(start, renderGrid = true) {
+    outlet(OUTLET.GUI, PATTERN, START, start);
+    if (renderGrid) this.renderGrid();
+  }
+
+  renderPatternEnd(end, renderGrid = true) {
+    outlet(OUTLET.GUI, PATTERN, END, end);
+    if (renderGrid) this.renderGrid();
+  }
+
+  renderPatternMute(mute) {
+    outlet(OUTLET.GUI, PATTERN, MUTE, mute);
+  }
+
+  renderGrid(pattern = this._model.selectedPattern) {
     const { startStepIndex: start, endStepIndex: end } = pattern
 
     // Draw start end/step indicators:
@@ -79,9 +130,9 @@ export default class GuiView {
   }
 
   render() {
-    this.renderTrack();
+    this.renderTrack(this._model.selectedTrack);
     this.renderValueButton();
-    this.renderPattern();
+    this.renderPattern(this._model.selectedPattern);
     this.renderGrid();
   }
 
@@ -98,59 +149,27 @@ export default class GuiView {
     const left = (x * STEP_WIDTH) + 2;
     const top = (y * STEP_WIDTH) + 2;
     this.setColor(color);
-    outlet(OUTLET.GRID, 'paintrect', left, top, left + BUTTON_WIDTH, top + BUTTON_WIDTH);
+    outlet(OUTLET.GUI, GRID, 'paintrect', left, top, left + BUTTON_WIDTH, top + BUTTON_WIDTH);
   }
 
   setColor(color) {
-    outlet(OUTLET.GRID, 'frgb', color);
+    outlet(OUTLET.GUI, GRID, 'frgb', color);
   }
 
   drawline(line) {
-    outlet(OUTLET.GRID, 'linesegment', line);
+    outlet(OUTLET.GUI, GRID, 'linesegment', line);
   }
 
-  // trackInfo(trackIndex, track) {
-  //   const trackNumber = trackIndex + 1;
-  //   outlet(OUTLET.TRACK_INFO, trackNumber, track.pitch, track.velocity, track.duration);
-  // }
-
   trackMute(track) {
-    outlet(OUTLET.TRACK_MUTE, track.mute);
+    outlet(OUTLET.GUI, TRACK, MUTE, track.mute);
   }
 
   trackMultiplier(track) {
-    outlet(OUTLET.TRACK_MULTIPLIER, track.multiplier);
+    outlet(OUTLET.GUI, TRACK, MULTIPLIER, track.multiplier);
   }
 
-  // patternInfo(patternIndex, pattern) {
-  //   // values in the Max GUI are numbers counting from 1, hence all the "+1"s
-  //   const { start } = pattern;
-  //   const { end } = pattern;
-  //   outlet(OUTLET.PATTERN_INFO, patternIndex + 1, pattern.type, start + 1, end + 1);
-
-  //   // start end/step indicators:
-  //   const delta = BUTTON_WIDTH + 3;
-  //   const startX = (start % 8) * STEP_WIDTH;
-  //   const startY = Math.floor(start / 8) * STEP_WIDTH;
-  //   const endX = (end % 8) * STEP_WIDTH;
-  //   const endY = Math.floor(end / 8) * STEP_WIDTH;
-  //   const lines = [
-  //     [startX + delta, startY, startX, startY],
-  //     [startX, startY, startX, startY + delta],
-  //     [startX, startY + delta, startX + delta, startY + delta],
-  //     [endX, endY, endX + delta, endY],
-  //     [endX + delta, endY, endX + delta, endY + delta],
-  //     [endX + delta, endY + delta, endX, endY + delta]
-  //   ];
-  //   this.setColor(COLOR.BACKGROUND);
-  //   this._oldlines.forEach(oldLine => this.drawline(oldLine));
-  //   this.setColor(COLOR.PATTERN_START_END);
-  //   lines.forEach(line => this.drawline(line));
-  //   this._oldlines = lines;
-  // }
-
   patternMute(pattern) {
-    outlet(OUTLET.PATTERN_MUTE, pattern.mute);
+    outlet(OUTLET.GUI, PATTERN, MUTE, pattern.mute);
   }
 
   scale(scale) {
@@ -160,10 +179,10 @@ export default class GuiView {
     for (let pc = 0; pc < 12; pc++) {
       pitchClasses.push(pc, scalePitchClasses.includes(pc) ? 0 : 1);
     }
-    outlet(OUTLET.SCALE, pitchClasses);
+    outlet(OUTLET.GUI, SCALE, pitchClasses);
   }
 
   stepLength(length) {
-    outlet(OUTLET.STEP_DURATION, length);
+    outlet(OUTLET.GUI, DURATION, length);
   }
 }

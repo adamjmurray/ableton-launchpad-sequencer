@@ -61,6 +61,7 @@ export const DEFAULT = Object.freeze({
   ]),
   PITCH_CLASSES: Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), // full chromatic scale
   VALUE: 1,
+  SAVE_DELAY: 2000,
 });
 
 export const GESTURE = Object.freeze({
@@ -97,24 +98,14 @@ export const NUMBER_OF = Object.freeze({
 });
 
 export const OUTLET = Object.freeze({
-  LAUNCHPAD_NOTE: 0,
-  LAUNCHPAD_CC: 1,
-  NOTE: 2,
-  CC: 3,
-  AFTERTOUCH: 4,
-  STORAGE: 5,
-  TRACK_INDEX: 6,
-  STEP_VALUE: 7,
-  PATTERN_INDEX: 8,
-  GRID: 9,
-  TRACK_INFO: 10,
-  TRACK_MUTE: 11,
-  PATTERN_INFO: 12,
-  PATTERN_MUTE: 13,
-  SCALE: 14,
-  STEP_DURATION: 15,
-  TRACK_MULTIPLIER: 16,
-  LAUNCHPAD_RAPID_UPDATE: 17,
+  NOTE: 0,
+  CC: 1,
+  AFTERTOUCH: 2,
+  LAUNCHPAD_NOTE: 3,
+  LAUNCHPAD_CC: 4,
+  LAUNCHPAD_RAPID_UPDATE: 5,
+  GUI: 6,
+  STORAGE: 7,
 });
 
 export const PATTERN = Object.freeze({ // maps pattern types to pattern indexes

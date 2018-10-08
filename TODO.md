@@ -1,6 +1,11 @@
 # TODO
 
 ## Soon
+- Persistence
+  - Finish integrating pattr with the JS code
+    - Test with global duration first to make sure endo/redo and persistence is all going to work
+  - Debounce changes to the grid state (i.e. update the patter after a delay)
+
 - Features
   - Scale support / Track MIDI input
     - Everything works off of absolute pitches determined by the "scale"
@@ -18,11 +23,6 @@
   - Improve color scheme
   - Don't show pattern or track indexes
   - We can simplify the GUI rendering for pattern and track "info"
-- Persistence
-  - Split up the single pattr blob into a bunch of pattrs
-  - Probably want to use poly objects to model the lists of tracks and patterns
-  - See if it fixes undo
-  - Debounce changes to the grid state (i.e. update the patter after a delay)
 
 ## Later:
 - Preset/"Scene" system (within the device). You can apparently save these with the device using pattrstorage

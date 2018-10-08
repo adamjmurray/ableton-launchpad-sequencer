@@ -19,24 +19,57 @@ export default class View {
 
   renderTrack() {
     this._launchpadView.render();
-    this._guiView.renderTrack();
+    this._guiView.renderTrack(this._model.selectedTrack);
     this._guiView.renderGrid();
   }
 
-  renderSelectedTrackMute() {
+  renderDuration(duration) {
+    this._guiView.renderDuration(duration);
+  }
+
+  renderScale(pitchClasses) {
+    this._guiView.renderScale(pitchClasses);
+  }
+
+  renderTrackPitch() {
+    this._guiView.renderTrackPitch(this._model.selectedTrack.pitch);
+  }
+
+  renderTrackVelocity() {
+    this._guiView.renderTrackVelocity(this._model.selectedTrack.velocity);
+  }
+
+  renderTrackGate() {
+    this._guiView.renderTrackGate(this._model.selectedTrack.gate);
+  }
+
+  renderTrackMultiplier() {
+    this._guiView.renderTrackMultiplier(this._model.selectedTrack.durationMultiplier);
+  }
+
+  renderTrackMute() {
     this._launchpadView.renderTrackButton(this._model.selectedTrackIndex);
-    this._guiView.renderTrack();
+    this._guiView.renderTrackMute(this._model.selectedTrack.mute);
   }
 
   renderPattern() {
+    this._guiView.renderPattern(this._model.selectedPattern);
     this._launchpadView.render();
-    this._guiView.renderPattern();
-    this._guiView.renderGrid();
   }
 
-  renderSelectedPatternMute() {
+  renderPatternStart() {
+    this._guiView.renderPatternEnd(this._model.selectedPattern.startStepIndex);
+    this._launchpadView.render();
+  }
+
+  renderPatternEnd() {
+    this._guiView.renderPatternEnd(this._model.selectedPattern.endStepIndex);
+    this._launchpadView.render();
+  }
+
+  renderPatternMute() {
+    this._guiView.renderPatternMute(this._model.selectedPattern.mute);
     this._launchpadView.renderPatternButton(this._model.selectedPatternIndex);
-    this._guiView.renderPattern();
   }
 
   renderValue() {
@@ -55,10 +88,9 @@ export default class View {
     this._guiView.renderGrid();
   }
 
-  renderStep() {
-    const { selectedStepIndex } = this._model;
-    this._launchpadView.renderStepButton(selectedStepIndex);
-    this._guiView.renderStep(selectedStepIndex);
+  renderStep(stepIndex) {
+    this._launchpadView.renderStepButton(stepIndex);
+    this._guiView.renderStep(stepIndex);
   }
 
   renderClock() {
@@ -74,10 +106,6 @@ export default class View {
       this._guiView.renderStep(newStepIndex);
       this._clockIndex = newClockIndex;
     }
-  }
-
-  onModeChange() {
-    this._launchpadView.render();
   }
 
   // // might not need this unless we're updating the scale GUI to reflect incoming track MIDI
