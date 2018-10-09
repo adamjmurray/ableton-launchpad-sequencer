@@ -34,7 +34,7 @@ export default class GuiView {
   }
 
   renderScale(pitchClasses) {
-    outlet(OUTLET.GUI, SCALE, scale.pitchClasses);
+    outlet(OUTLET.GUI, SCALE, pitchClasses);
   }
 
   renderTrack(track) {

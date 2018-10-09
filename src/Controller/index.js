@@ -33,18 +33,23 @@ export default class Controller {
     this._gridButtonGesture.reset();
     this._heldTopButton = false;
     this._view.render();
+    this._storage.storeAll(this._model);
   }
 
+
   setModel(path, ...values) {
-    console.log('SKIPPING setModel', path, values);
-    return;
     // TODO: Make sure we can store the model correctly before we handle loading values
     // TODO: Need to implement a bunch of render logic
     if (path === 'duration') {
-      this.setDuration(values[0]);
+      console.log('setting duration', values[0]);
+
+      this.setDuration(values[0], false);
     } else if (path === 'scale') {
-      this.setScale(values);
+      console.log('setting scale', values);
+
+      this.setScale(values, false);
     } else {
+      return;
       const match = modelPathMatcher.exec(path);
       if (match) {
         const trackIndex = match[1] && parseInt(match[1], 10);
@@ -172,7 +177,7 @@ export default class Controller {
               this._gridButtonGesture.reset();
               this._view.render();
             } else {
-              this.setSelectedPatternMute(!model.selectedPattern.mute);
+              this.setPatternMute(!model.selectedPattern.mute);
             }
             break;
         }
@@ -237,7 +242,7 @@ export default class Controller {
     }
   }
 
-  setScale(...pitchClasses) {
+  setScale(pitchClasses, store = true) {
     this._model.scale.pitchClasses = pitchClasses;
     this._view.renderScale(pitchClasses);
     if (store) {

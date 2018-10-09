@@ -80,17 +80,17 @@ export default class StorageView {
 
   storeAll(model) {
     this.storeDuration(model.globalStepDuration);
-    this.storeScale(model.scale);
+    this.storeScale(model.scale.pitchClasses);
     model.tracks.forEach((track, trackIndex) => {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);
       this.storeTrackGate(trackIndex, track.gate);
-      this.storeTrackMultiplier(trackIndex, track.multiplier);
+      this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
       this.storeTrackMute(trackIndex, track.mute);
       track.patterns.forEach((pattern, patternIndex) => {
         this.storePatternSteps(trackIndex, patternIndex, pattern.steps);
-        this.storePatternStart(trackIndex, patternIndex, pattern.start);
-        this.storePatternEnd(trackIndex, patternIndex, pattern.end);
+        this.storePatternStart(trackIndex, patternIndex, pattern.startStepIndex);
+        this.storePatternEnd(trackIndex, patternIndex, pattern.endStepIndex);
         this.storePatternMute(trackIndex, patternIndex, pattern.mute);
       });
     });

@@ -13,9 +13,9 @@ const controller = new Controller(model, new View(model));
 
 export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
-export function setmodel(...args) { contoroler.setModel(...args); }
+export function setmodel(...args) { controller.setModel(...args); }
 
-export function scale(...pcs) { controller.setScale(pcs); }
+export function setscale(...pcs) { controller.setScale(pcs); }
 export function duration(duration) { controller.setDuration(duration); }
 
 export function pitch(pitch) { controller.setTrackPitch(pitch); }

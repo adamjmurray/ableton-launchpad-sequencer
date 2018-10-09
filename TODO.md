@@ -1,6 +1,9 @@
 # TODO
 
 ## Soon
+- leave a comment about how global step duration works since the JS code doesn't really
+  do anything about it
+
 - Persistence
   - Finish integrating pattr with the JS code
     - Test with global duration first to make sure endo/redo and persistence is all going to work
