@@ -3,11 +3,8 @@ import StorageController from './StorageController';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
-// const SAVE_DELAY = 2500; // ms
-
-function xyToIndex(x, y) {
-  return (y * NUMBER_OF.COLUMNS) + x;
-}
+const xyToIndex = (x, y) => x + (y * NUMBER_OF.COLUMNS);
+const modelPathMatcher = /^tracks\[(\d+)\]::(patterns\[(\d+)\]::)?([^:]+)$/;
 
 export default class Controller {
 
@@ -36,26 +33,17 @@ export default class Controller {
     this._storage.storeAll(this._model);
   }
 
-
   setModel(path, ...values) {
-    // TODO: Make sure we can store the model correctly before we handle loading values
-    // TODO: Need to implement a bunch of render logic
     if (path === 'duration') {
-      console.log('setting duration', values[0]);
-
       this.setDuration(values[0], false);
     } else if (path === 'scale') {
-      console.log('setting scale', values);
-
       this.setScale(values, false);
     } else {
-      return;
       const match = modelPathMatcher.exec(path);
       if (match) {
         const trackIndex = match[1] && parseInt(match[1], 10);
         const patternIndex = match[3] && parseInt(match[3], 10);
-        const property = match[5];
-        // console.log({ trackIndex, patternIndex, property, values });
+        const property = match[4];
         if (trackIndex != null) {
           if (patternIndex != null) {
             switch (property) {

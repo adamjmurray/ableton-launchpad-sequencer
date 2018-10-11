@@ -1,6 +1,11 @@
 # TODO
 
 ## Soon
+- Fix scale GUI
+- Syncing from pattrstorage when step 1 is set is rendering the active step (clock) marker
+  - Also clock is rendering wrong in GUI on load (probably related to next issue...)
+- Initial selected states (track, pattern, value) is not rendering in GUI on load (probably because it's not in the pattrstorage model, not sure how best to handle)
+
 - leave a comment about how global step duration works since the JS code doesn't really
   do anything about it
 
