@@ -12,7 +12,7 @@ export const GUI_COLOR = Object.freeze({ // Max's LCD object uses the format [R,
   SEQUENCER_STEP: Object.freeze([80, 130, 200]),  // TODO: can we replace the last item in STEP_VALUE above?
 });
 
-const lpColor = (green, red) => (16 * green) + red + 12; // + 12 is the flag for 'on' (see Launchpad programmer's reference)
+const lpColor = (green, red) => (16 * green) + red + 4; // + 4 ensures writes to both buffers in case the Launchpad is in double buffering mode
 const LP_OFF = lpColor(0, 0);
 const LP_GREEN = lpColor(3, 0);
 const LP_YELLOW = lpColor(3, 2);
