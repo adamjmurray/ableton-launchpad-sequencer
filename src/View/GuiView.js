@@ -131,7 +131,7 @@ export default class GuiView {
 
   render() {
     this.renderTrack(this._model.selectedTrack);
-    this.renderValueButton();
+    this.renderValueButton(this._model.selectedValue);
     this.renderPattern(this._model.selectedPattern);
     this.renderGrid();
   }
