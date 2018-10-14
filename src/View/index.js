@@ -58,7 +58,7 @@ export default class View {
   }
 
   renderPatternStart() {
-    this._guiView.renderPatternEnd(this._model.selectedPattern.startStepIndex);
+    this._guiView.renderPatternStart(this._model.selectedPattern.startStepIndex);
     this._launchpadView.render();
   }
 

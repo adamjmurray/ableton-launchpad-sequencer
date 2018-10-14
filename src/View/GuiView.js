@@ -76,8 +76,8 @@ export default class GuiView {
 
   renderPattern(pattern) {
     this.renderPatternIndex(pattern.index);
-    this.renderPatternStart(pattern.start, false);
-    this.renderPatternEnd(pattern.end, false);
+    this.renderPatternStart(pattern.startStepIndex, false);
+    this.renderPatternEnd(pattern.endStepIndex, false);
     this.renderPatternMute(pattern.mute);
     this.renderGrid(pattern);
   }
@@ -87,12 +87,12 @@ export default class GuiView {
   }
 
   renderPatternStart(start, renderGrid = true) {
-    outlet(OUTLET.GUI, PATTERN, START, start);
+    outlet(OUTLET.GUI, PATTERN, START, start + 1);
     if (renderGrid) this.renderGrid();
   }
 
   renderPatternEnd(end, renderGrid = true) {
-    outlet(OUTLET.GUI, PATTERN, END, end);
+    outlet(OUTLET.GUI, PATTERN, END, end + 1);
     if (renderGrid) this.renderGrid();
   }
 

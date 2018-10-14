@@ -11,15 +11,25 @@ export default class Pattern {
   constructor(index, type) {
     this.index = index;
     this._processor = new Processor(type);
-    this.steps = Array(NUMBER_OF.STEPS);
     this.reset();
   }
 
   reset() {
-    this.steps.fill(0); // TODO: rename to steps?
+    this._steps = Array(NUMBER_OF.STEPS).fill(0);
     this.startStepIndex = 0;
     this.endStepIndex = NUMBER_OF.STEPS - 1;
     this.mute = false;
+  }
+
+  get steps() {
+    return this._steps;
+  }
+
+  set steps(steps) {
+    // ensure this._steps remains valid
+    for (var i = 0; i < NUMBER_OF.STEPS; i++) {
+      this._steps[i] = steps[i] || 0;
+    }
   }
 
   get type() {
@@ -137,8 +147,8 @@ export default class Pattern {
   toJSON() {
     return {
       type: this.type,
-      start: this.startStepIndex,
-      end: this.endStepIndex,
+      startStepIndex: this.startStepIndex,
+      endStepIndex: this.endStepIndex,
       mute: this.mute,
       sequence: this.steps
     };

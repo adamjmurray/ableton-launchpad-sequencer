@@ -1,18 +1,16 @@
 # TODO
 
 ## Soon
+- Undo bugs (could be Max bugs? see the print popover). Try this:
+  - change step length and velocity
+  - undo -> undoes both
+  - redo -> redoes only step length
+- Performance issues changing start and end steps. Try debouncing the LuanchpadView.render()
 - Fix scale GUI
-- Syncing from pattrstorage when step 1 is set is rendering the active step (clock) marker
-  - Also clock is rendering wrong in GUI on load (probably related to next issue...)
-- Initial selected states (track, pattern, value) is not rendering in GUI on load (probably because it's not in the pattrstorage model, not sure how best to handle)
+- Initial selected states (track, pattern, value) is not rendering in GUI on load
 
 - leave a comment about how global step duration works since the JS code doesn't really
   do anything about it
-
-- Persistence
-  - Finish integrating pattr with the JS code
-    - Test with global duration first to make sure endo/redo and persistence is all going to work
-  - Debounce changes to the grid state (i.e. update the patter after a delay)
 
 - Features
   - Scale support / Track MIDI input
