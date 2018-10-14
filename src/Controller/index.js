@@ -266,7 +266,7 @@ export default class Controller {
     const steps = model.selectedPattern.steps;
     steps[stepIndex] = model.selectedValue;
     this._view.renderStep(stepIndex);
-    this._storage.storePatternStepsAfterDelay(model.selectedTrackIndex, model.SelectedPatternIndex, steps);
+    this._storage.storePatternStepsAfterDelay(model.selectedTrackIndex, model.selectedPatternIndex, steps);
   }
 
   setTrackPitch(pitch, trackIndex = this._model.selectedTrackIndex, store = true) {
