@@ -15,7 +15,7 @@ export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
 export function setmodel(...args) { controller.setModel(...args); }
 
-export function setscale(...pcs) { controller.setScale(pcs); }
+export function scale(...pitchClasses) { controller.setScale(pitchClasses); }
 export function duration(duration) { controller.setDuration(duration); }
 
 export function pitch(pitch) { controller.setTrackPitch(pitch); }
