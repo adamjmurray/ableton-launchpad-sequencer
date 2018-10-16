@@ -127,3 +127,18 @@ export const STEP_VALUE = Object.freeze({
   OCTAVES: Object.freeze([null, 12, 24, -12, -24]),
   MIDI_CC: Object.freeze([null, 0, 42, 85, 127]),
 });
+
+export const STORAGE = Object.freeze({
+  DURATION: 'duration',
+  SCALE: 'scale',
+  TRACKS: 'tracks',
+  PITCH: 'pitch',
+  VELOCITY: 'velocity',
+  GATE: 'gate',
+  MULTIPLIER: 'multiplier',
+  MUTE: 'mute',
+  PATTERNS: 'patterns',
+  STEPS: 'steps',
+  START: 'start',
+  END: 'end',
+})

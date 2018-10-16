@@ -1,44 +1,49 @@
-import { DEFAULT, OUTLET } from '../config';
+import { DEFAULT, OUTLET, STORAGE } from '../config';
+
+const {
+  DURATION,
+  SCALE,
+  TRACKS,
+  PITCH,
+  VELOCITY,
+  GATE,
+  MULTIPLIER,
+  MUTE,
+  PATTERNS,
+  STEPS,
+  START,
+  END,
+} = STORAGE;
 
 // Maybe this could all go into View and Controller can call the store*() methods directly
 export default class StorageView {
 
   storeDuration(duration) {
-    outlet(OUTLET.STORAGE, 'duration', duration);
+    outlet(OUTLET.STORAGE, DURATION, duration);
   }
 
   storeScale(scale) {
-    outlet(OUTLET.STORAGE, 'scale', scale);
+    outlet(OUTLET.STORAGE, SCALE, scale);
   }
 
   storeTrackPitch(trackIndex, pitch) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::pitch`,
-      pitch);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PITCH, pitch);
   }
 
   storeTrackVelocity(trackIndex, velocity) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::velocity`,
-      velocity);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, VELOCITY, velocity);
   }
 
   storeTrackGate(trackIndex, gate) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::gate`,
-      gate);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE, gate);
   }
 
-  storeTrackMultiplier(trackIndex, velocity) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::velocity`,
-      velocity);
+  storeTrackMultiplier(trackIndex, multiplier) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MULTIPLIER, multiplier);
   }
 
   storeTrackMute(trackIndex, mute) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::mute`,
-      mute);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MUTE, mute);
   }
 
   storePatternSteps(trackIndex, patternIndex, steps) {
@@ -46,9 +51,7 @@ export default class StorageView {
       this._saveAfterDelay.cancel();
       this._saveAfterDelay = null;
     }
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::patterns[${patternIndex}]::steps`,
-      steps);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, STEPS, steps);
   }
 
   storePatternStepsAfterDelay(trackIndex, patternIndex, steps) {
@@ -61,21 +64,15 @@ export default class StorageView {
   }
 
   storePatternStart(trackIndex, patternIndex, start) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::patterns[${patternIndex}]::start`,
-      start);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, START, start);
   }
 
   storePatternEnd(trackIndex, patternIndex, end) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::patterns[${patternIndex}]::end`,
-      end);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, END, end);
   }
 
   storePatternMute(trackIndex, patternIndex, mute) {
-    outlet(OUTLET.STORAGE,
-      `tracks[${trackIndex}]::patterns[${patternIndex}]::mute`,
-      mute);
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, MUTE, mute);
   }
 
   storeAll(model) {

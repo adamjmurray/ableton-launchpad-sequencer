@@ -75,7 +75,7 @@ const assertViewsUpdatedForTrackMuteChange = (track) => {
   );
   assert.deepStrictEqual(
     mockOutlet.calls[2],
-    [OUTLET.STORAGE, `tracks[${track.index}]::mute`, track.mute]
+    [OUTLET.STORAGE, 'tracks', track.index, 'mute', track.mute]
   );
 }
 

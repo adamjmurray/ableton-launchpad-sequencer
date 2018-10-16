@@ -1,10 +1,24 @@
-import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE } from '../config';
+import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE, STORAGE } from '../config';
 import StorageController from './StorageController';
 import PressGesture from './PressGesture';
 import RangeSelectionGesture from './RangeSelectionGesture';
 
+const {
+  DURATION,
+  SCALE,
+  TRACKS,
+  PITCH,
+  VELOCITY,
+  GATE,
+  MULTIPLIER,
+  MUTE,
+  PATTERNS,
+  STEPS,
+  START,
+  END,
+} = STORAGE;
+
 const xyToIndex = (x, y) => x + (y * NUMBER_OF.COLUMNS);
-const modelPathMatcher = /^tracks\[(\d+)\]::(patterns\[(\d+)\]::)?([^:]+)$/;
 
 export default class Controller {
 
@@ -33,36 +47,27 @@ export default class Controller {
     this._storage.storeAll(this._model);
   }
 
-  setModel(path, ...values) {
-    if (path === 'duration') {
-      this.setDuration(values[0], false);
-    } else if (path === 'scale') {
-      this.setScale(values, false);
-    } else {
-      const match = modelPathMatcher.exec(path);
-      if (match) {
-        const trackIndex = match[1] && parseInt(match[1], 10);
-        const patternIndex = match[3] && parseInt(match[3], 10);
-        const property = match[4];
-        if (trackIndex != null) {
-          if (patternIndex != null) {
-            switch (property) {
-              case 'steps': return this.setPatternSteps(values, trackIndex, patternIndex, false);
-              case 'start': return this.setPatternStart(values[0], trackIndex, patternIndex, false);
-              case 'end': return this.setPatternEnd(values[0], trackIndex, patternIndex, false);
-              case 'mute': return this.setPatternMute(values[0], trackIndex, patternIndex, false);
+  setModel(data) {
+    switch (data[0]) {
+      case DURATION: return this.setDuration(data[1], false);
+      case SCALE: return this.setScale(data.slice(1), false);
+      case TRACKS:
+        const trackIndex = data[1];
+        switch (data[2]) {
+          case PITCH: return this.setTrackPitch(data[3], trackIndex, false);
+          case VELOCITY: return this.setTrackVelocity(data[3], trackIndex, false);
+          case GATE: return this.setTrackGate(data[3], trackIndex, false);
+          case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
+          case MUTE: return this.setTrackMute(data[3], trackIndex, false);
+          case PATTERNS:
+            const patternIndex = data[3];
+            switch (data[4]) {
+              case STEPS: return this.setPatternSteps(data.slice(5), trackIndex, patternIndex, false);
+              case START: return this.setPatternStart(data[5], trackIndex, patternIndex, false);
+              case END: return this.setPatternEnd(data[5], trackIndex, patternIndex, false);
+              case MUTE: return this.setPatternMute(data[5], trackIndex, patternIndex, false);
             }
-          } else {
-            switch (property) {
-              case 'pitch': return this.setTrackPitch(values[0], trackIndex, false);
-              case 'velocity': return this.setTrackVelocity(values[0], trackIndex, false);
-              case 'gate': return this.setTrackGate(values[0], trackIndex, false);
-              case 'multiplier': return this.setTrackMultiplier(values[0], trackIndex, false);
-              case 'mute': return this.setTrackMute(values[0], trackIndex, false);
-            }
-          }
         }
-      }
     }
   }
 
