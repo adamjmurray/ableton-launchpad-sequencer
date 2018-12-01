@@ -1,14 +1,8 @@
 # TODO
 
 ## Soon
-- Undo bugs (could be Max bugs? see the print popover). Try this:
-  - change step length and velocity
-  - undo -> undoes both
-  - redo -> redoes only step length
-- Performance issues changing start and end steps. Try debouncing the LuanchpadView.render()
 - Fix scale GUI
 - Initial selected states (track, pattern, value) is not rendering in GUI on load
-
 - leave a comment about how global step duration works since the JS code doesn't really
   do anything about it
 
