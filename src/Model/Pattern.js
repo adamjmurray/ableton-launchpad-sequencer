@@ -53,8 +53,7 @@ export default class Pattern {
   }
 
   clear() {
-    this.forEachActiveStep(i =>
-      this.steps[i] = 0);
+    this._steps = Array(NUMBER_OF.STEPS).fill(0);
   }
 
   randomize() {

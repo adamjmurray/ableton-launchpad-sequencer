@@ -401,6 +401,12 @@ export default class Controller {
     );
   }
 
+  clearSelectedPattern() {
+    this._modifySelectedPatternSteps(
+      pattern => pattern.clear()
+    );
+  }
+
   shiftSelectedPatternLeft() {
     this._modifySelectedPatternSteps(
       pattern => pattern.shift(1)

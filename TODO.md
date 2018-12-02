@@ -7,7 +7,8 @@
 - Can the value button be toggled off on the Launchpad? Logic seems buggy.
 
 - Features
-  - Restore clear selected pattern feature
+  - On copy double press on the Launchpad, clear the pattern (act like cut instead of copy)
+    Another press will restore the pattern
   - Scale support / Track MIDI input
     - Everything works off of absolute pitches determined by the "scale"
     - Add a base pitch to the global scale settings
