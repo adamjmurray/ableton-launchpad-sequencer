@@ -23,7 +23,6 @@
     - Maybe hide some/all of these in the help tab?
   - Update help. Do it in a tab?
   - Improve layout
-  - Improve color scheme
 
 ## Later:
 - Preset/"Scene" system (within the device). You can apparently save these with the device using pattrstorage
