@@ -2,11 +2,12 @@
 
 ## Soon
 - Fix scale GUI
-- Initial selected states (track, pattern, value) is not rendering in GUI on load
-- leave a comment about how global step duration works since the JS code doesn't really
-  do anything about it
+- Dragging a fresh instance of the amxd does not start with the default values
+  Do I need to use initial value settings for all the pattrs?
+- Can the value button be toggled off on the Launchpad? Logic seems buggy.
 
 - Features
+  - Restore clear selected pattern feature
   - Scale support / Track MIDI input
     - Everything works off of absolute pitches determined by the "scale"
     - Add a base pitch to the global scale settings
@@ -14,15 +15,14 @@
     - Whatever notes come into the track MIDI input temporarily override the scale notes
   - When 2 gates hit at the same time, have an option to either add more scale steps or increase the velocity. I'm thinking this is better for arp tracks and drum tracks respectively
 - GUI improvements
-  - Rebuild GUI using a project and lots of subpatchers
   - Remove unwanted features from GUI
     - Reset (you can just load in a fresh device)
     - Sync (changing track or pattern should re-sync)
+    - Debug
+    - Maybe hide some/all of these in the help tab?
   - Update help. Do it in a tab?
   - Improve layout
   - Improve color scheme
-  - Don't show pattern or track indexes
-  - We can simplify the GUI rendering for pattern and track "info"
 
 ## Later:
 - Preset/"Scene" system (within the device). You can apparently save these with the device using pattrstorage

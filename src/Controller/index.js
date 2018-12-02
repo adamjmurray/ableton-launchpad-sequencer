@@ -33,6 +33,14 @@ export default class Controller {
     this._patternStepsUndo = null;
   }
 
+
+  // Render any transient view states that are not persisted and won't be restored by setModel()
+  initViews() {
+    this._view.renderTrackIndex();
+    this._view.renderPatternIndex();
+    this._view.renderValue();
+  }
+
   refreshViews() {
     this._view.render();
   }
@@ -228,6 +236,8 @@ export default class Controller {
   }
 
   setDuration(stepDuration, store = true) {
+    // Note: The global step duration behavior is handled within the Max patch,
+    // so the JavaScript code doesn't need to do anything besides render and store the current value.
     this._model.globalStepDuration = stepDuration;
     this._view.renderDuration(stepDuration);
     if (store) {

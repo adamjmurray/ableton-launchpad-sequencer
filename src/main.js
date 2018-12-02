@@ -11,6 +11,7 @@ outletNames.forEach((name, index) => setoutletassist(index, name));
 const model = new Model;
 const controller = new Controller(model, new View(model));
 
+export function init() { controller.initViews(); }
 export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
 export function setmodel(...data) { controller.setModel(data); }
