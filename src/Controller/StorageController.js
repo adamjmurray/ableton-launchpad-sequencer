@@ -63,12 +63,12 @@ export default class StorageView {
     this._saveAfterDelay.schedule(DEFAULT.SAVE_DELAY);
   }
 
-  storePatternStart(trackIndex, patternIndex, start) {
-    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, START, start);
+  storePatternStart(trackIndex, patternIndex, startIndex) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, START, startIndex);
   }
 
-  storePatternEnd(trackIndex, patternIndex, end) {
-    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, END, end);
+  storePatternEnd(trackIndex, patternIndex, endIndex) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, PATTERNS, patternIndex, END, endIndex);
   }
 
   storePatternMute(trackIndex, patternIndex, mute) {

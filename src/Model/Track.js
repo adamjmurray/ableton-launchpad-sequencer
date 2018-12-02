@@ -12,11 +12,9 @@ export default class Track {
   }
 
   reset() {
-    this.pitch = 60;
-    // this.pitchOverride = null; // MIDI input can temporarily override the track pitch
-    // this.velocityOverride = null;
-    this.velocity = 70;
-    this.gate = 0.9;
+    this.pitch = DEFAULT.PITCH;
+    this.velocity = DEFAULT.VELOCITY;
+    this.gate = DEFAULT.GATE;
     this.patterns.forEach(pattern => pattern.reset());
     this.durationMultiplier = 1;
     this.mute = false;

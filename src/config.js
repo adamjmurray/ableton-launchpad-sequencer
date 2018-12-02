@@ -60,6 +60,9 @@ export const DEFAULT = Object.freeze({
     'scale gate',
   ]),
   PITCH_CLASSES: Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), // full chromatic scale
+  PITCH: 60,
+  VELOCITY: 70,
+  GATE: 0.9,
   VALUE: 1,
   SAVE_DELAY: 2000,
 });

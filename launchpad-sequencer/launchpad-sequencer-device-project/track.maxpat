@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 462.0, 320.0, 1137.0, 778.0 ],
+		"rect" : [ 259.0, 106.0, 1137.0, 683.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -189,9 +189,10 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 675.33331298828125, 206.898590087890625, 63.0, 22.0 ],
-					"restore" : [ 0.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_initial" : [ 0.0 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "mute[33]",
 							"parameter_mmax" : 1.0,
 							"parameter_shortname" : "mute",
@@ -201,6 +202,7 @@
 					}
 ,
 					"saved_object_attributes" : 					{
+						"initial" : [ 0.0 ],
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
 					}
@@ -218,9 +220,10 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 550.6922607421875, 206.898590087890625, 84.0, 22.0 ],
-					"restore" : [ 1.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_initial" : [ 1.0 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "multiplier",
 							"parameter_mmax" : 128.0,
 							"parameter_mmin" : 1.0,
@@ -231,6 +234,7 @@
 					}
 ,
 					"saved_object_attributes" : 					{
+						"initial" : [ 1.0 ],
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
 					}
@@ -248,9 +252,10 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 426.0, 206.898590087890625, 59.0, 22.0 ],
-					"restore" : [ 0.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_initial" : [ 0.9 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "gate",
 							"parameter_mmax" : 16.0,
 							"parameter_shortname" : "gate",
@@ -260,6 +265,7 @@
 					}
 ,
 					"saved_object_attributes" : 					{
+						"initial" : [ 0.9 ],
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
 					}
@@ -277,9 +283,10 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 301.333343505859375, 206.898590087890625, 76.0, 22.0 ],
-					"restore" : [ 0.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_initial" : [ 70 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "velocity",
 							"parameter_shortname" : "velocity",
 							"parameter_type" : 1
@@ -288,6 +295,7 @@
 					}
 ,
 					"saved_object_attributes" : 					{
+						"initial" : [ 70 ],
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
 					}
@@ -305,9 +313,10 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 175.666671752929688, 206.898590087890625, 61.0, 22.0 ],
-					"restore" : [ 0.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_initial" : [ 60 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "pitch",
 							"parameter_shortname" : "pitch",
 							"parameter_type" : 1
@@ -316,6 +325,7 @@
 					}
 ,
 					"saved_object_attributes" : 					{
+						"initial" : [ 60 ],
 						"parameter_enable" : 1,
 						"parameter_mappable" : 0
 					}
@@ -997,43 +1007,43 @@
 			}
  ],
 		"parameters" : 		{
+			"obj-12::obj-33" : [ "mute[38]", "mute", 0 ],
 			"obj-1::obj-24" : [ "end", "end", 0 ],
-			"obj-2::obj-33" : [ "mute[37]", "mute", 0 ],
-			"obj-11::obj-33" : [ "mute[30]", "mute", 0 ],
-			"obj-2::obj-2" : [ "steps[11]", "steps", 0 ],
-			"obj-10::obj-24" : [ "end[7]", "end", 0 ],
-			"obj-12::obj-2" : [ "steps[5]", "steps", 0 ],
-			"obj-12::obj-24" : [ "end[6]", "end", 0 ],
-			"obj-9::obj-33" : [ "mute[35]", "mute", 0 ],
-			"obj-10::obj-2" : [ "steps[7]", "steps", 0 ],
-			"obj-3::obj-33" : [ "mute[36]", "mute", 0 ],
+			"obj-10::obj-33" : [ "mute[2]", "mute", 0 ],
 			"obj-1::obj-22" : [ "start", "start", 0 ],
-			"obj-4::obj-24" : [ "end[9]", "end", 0 ],
 			"obj-12::obj-22" : [ "start[16]", "start", 0 ],
+			"obj-12::obj-2" : [ "steps[12]", "steps", 0 ],
+			"obj-10::obj-22" : [ "start[22]", "start", 0 ],
+			"obj-11::obj-24" : [ "end[13]", "end", 0 ],
+			"obj-3::obj-33" : [ "mute[5]", "mute", 0 ],
 			"obj-55" : [ "velocity", "velocity", 0 ],
+			"obj-4::obj-33" : [ "mute[4]", "mute", 0 ],
 			"obj-56" : [ "pitch", "pitch", 0 ],
-			"obj-9::obj-2" : [ "steps[8]", "steps", 0 ],
 			"obj-1::obj-2" : [ "steps", "steps", 0 ],
-			"obj-10::obj-22" : [ "start[11]", "start", 0 ],
-			"obj-4::obj-22" : [ "start[18]", "start", 0 ],
+			"obj-11::obj-33" : [ "mute[1]", "mute", 0 ],
 			"obj-52" : [ "mute[33]", "mute", 0 ],
-			"obj-11::obj-2" : [ "steps[6]", "steps", 0 ],
+			"obj-10::obj-2" : [ "steps[14]", "steps", 0 ],
 			"obj-54" : [ "gate", "gate", 0 ],
-			"obj-4::obj-33" : [ "mute[20]", "mute", 0 ],
 			"obj-2::obj-22" : [ "start[20]", "start", 0 ],
-			"obj-4::obj-2" : [ "steps[9]", "steps", 0 ],
-			"obj-11::obj-24" : [ "end[5]", "end", 0 ],
-			"obj-9::obj-24" : [ "end[8]", "end", 0 ],
+			"obj-4::obj-24" : [ "end[16]", "end", 0 ],
+			"obj-2::obj-2" : [ "steps[17]", "steps", 0 ],
+			"obj-10::obj-24" : [ "end[14]", "end", 0 ],
+			"obj-9::obj-33" : [ "mute[3]", "mute", 0 ],
+			"obj-4::obj-22" : [ "start[24]", "start", 0 ],
+			"obj-3::obj-22" : [ "start[25]", "start", 0 ],
+			"obj-2::obj-33" : [ "mute[6]", "mute", 0 ],
 			"obj-2::obj-24" : [ "end[11]", "end", 0 ],
+			"obj-4::obj-2" : [ "steps[16]", "steps", 0 ],
+			"obj-12::obj-24" : [ "end[12]", "end", 0 ],
+			"obj-11::obj-22" : [ "start[21]", "start", 0 ],
 			"obj-3::obj-24" : [ "end[10]", "end", 0 ],
-			"obj-10::obj-33" : [ "mute[31]", "mute", 0 ],
 			"obj-3::obj-2" : [ "steps[10]", "steps", 0 ],
-			"obj-12::obj-33" : [ "mute[34]", "mute", 0 ],
-			"obj-9::obj-22" : [ "start[17]", "start", 0 ],
+			"obj-9::obj-24" : [ "end[15]", "end", 0 ],
+			"obj-9::obj-22" : [ "start[23]", "start", 0 ],
+			"obj-11::obj-2" : [ "steps[13]", "steps", 0 ],
 			"obj-53" : [ "multiplier", "multiplier", 0 ],
-			"obj-11::obj-22" : [ "start[10]", "start", 0 ],
+			"obj-9::obj-2" : [ "steps[15]", "steps", 0 ],
 			"obj-1::obj-33" : [ "mute", "mute", 0 ],
-			"obj-3::obj-22" : [ "start[19]", "start", 0 ],
 			"parameterbanks" : 			{
 
 			}

@@ -2,8 +2,6 @@
 
 ## Soon
 - Fix scale GUI
-- Dragging a fresh instance of the amxd does not start with the default values
-  Do I need to use initial value settings for all the pattrs?
 - Can the value button be toggled off on the Launchpad? Logic seems buggy.
 
 - Features
