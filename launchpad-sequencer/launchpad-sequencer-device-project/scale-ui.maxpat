@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 133.0, 252.0, 571.0, 446.0 ],
+		"rect" : [ 770.0, 625.0, 571.0, 446.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -182,7 +182,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 225.0, 235.0, 84.0, 53.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 0.0, 0.0, 98.0, 60.0 ],
+					"presentation_rect" : [ 0.0, 0.0, 77.0, 49.0 ],
 					"range" : 12,
 					"varname" : "kslider"
 				}
