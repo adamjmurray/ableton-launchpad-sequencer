@@ -25,6 +25,15 @@ export default class GuiView {
     this._oldlines = [];
   }
 
+  render() {
+    this.renderDuration(this._model.globalStepDuration);
+    this.renderScale(this._model.scale.pitchClasses);
+    this.renderTrack(this._model.selectedTrack);
+    this.renderValueButton(this._model.selectedValue);
+    this.renderPattern(this._model.selectedPattern);
+    this.renderGrid();
+  }
+
   clearGrid() {
     outlet(OUTLET.GRID, 'clear');
   }
@@ -34,7 +43,7 @@ export default class GuiView {
   }
 
   renderScale(pitchClasses) {
-    outlet(OUTLET.GUI, SCALE, pitchClasses);
+    outlet(OUTLET.GUI, SCALE, pitchClasses.length ? pitchClasses : -1);
   }
 
   renderTrack(track) {
@@ -129,13 +138,6 @@ export default class GuiView {
     pattern.steps.forEach((_, stepIndex) => this.renderStep(stepIndex, sequencerStepIndex));
   }
 
-  render() {
-    this.renderTrack(this._model.selectedTrack);
-    this.renderValueButton(this._model.selectedValue);
-    this.renderPattern(this._model.selectedPattern);
-    this.renderGrid();
-  }
-
   get _stepIndexForClock() {
     const { clockIndex, selectedPattern } = this._model;
     return clockIndex < 0 ? -1 : selectedPattern.stepIndexForClock(clockIndex);
@@ -158,31 +160,5 @@ export default class GuiView {
 
   drawline(line) {
     outlet(OUTLET.GUI, GRID, 'linesegment', line);
-  }
-
-  trackMute(track) {
-    outlet(OUTLET.GUI, TRACK, MUTE, track.mute);
-  }
-
-  trackMultiplier(track) {
-    outlet(OUTLET.GUI, TRACK, MULTIPLIER, track.multiplier);
-  }
-
-  patternMute(pattern) {
-    outlet(OUTLET.GUI, PATTERN, MUTE, pattern.mute);
-  }
-
-  scale(scale) {
-    const scalePitchClasses = scale.pitchClasses;
-    // GUI expects a list [{index}, {1/0}, ...] for index 0..11 (each other arg 1/0 is 1 of step enabled or 0 if not)
-    const pitchClasses = [];
-    for (let pc = 0; pc < 12; pc++) {
-      pitchClasses.push(pc, scalePitchClasses.includes(pc) ? 0 : 1);
-    }
-    outlet(OUTLET.GUI, SCALE, pitchClasses);
-  }
-
-  stepLength(length) {
-    outlet(OUTLET.GUI, DURATION, length);
   }
 }

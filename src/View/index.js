@@ -117,10 +117,4 @@ export default class View {
       this._clockIndex = newClockIndex;
     }
   }
-
-  // // might not need this unless we're updating the scale GUI to reflect incoming track MIDI
-  // // Otherwise I'm hoping it will be hooked up to pattr and not need explicit updating, even on load
-  // onScaleChange(model) {
-
-  // }
 }

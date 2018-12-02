@@ -1,8 +1,9 @@
 # TODO
 
 ## Soon
-- Fix scale GUI
 - Can the value button be toggled off on the Launchpad? Logic seems buggy.
+- Rename this file to ROADMAP
+- Update the DEVELOPERS file
 
 - Features
   - On copy double press on the Launchpad, clear the pattern (act like cut instead of copy)

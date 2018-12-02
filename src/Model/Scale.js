@@ -4,7 +4,7 @@ import { DEFAULT } from '../config';
 // Determines which notes are used in the "scale +" and "scale -" patterns.
 export default class Scale {
 
-  constructor(pitchClasses = DEFAULT.PITCH_CLASSES) {
+  constructor(pitchClasses = DEFAULT.PITCH_CLASSES.slice()) { // create a copy so we don't modify the default
     this.pitchClasses = pitchClasses;
   }
 
