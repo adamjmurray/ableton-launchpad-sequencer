@@ -67,11 +67,11 @@ const assertViewsUpdatedForTrackMuteChange = (track) => {
   assert.equal(mockOutlet.calls.length, 3);
   assert.deepStrictEqual(
     mockOutlet.calls[0],
-    [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
+    [OUTLET.GUI, 'track', 'mute', track.mute]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[1],
-    [OUTLET.GUI, 'track', 'mute', track.mute]
+    [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[2],
