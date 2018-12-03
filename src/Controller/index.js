@@ -204,12 +204,7 @@ export default class Controller {
   }
 
   handleTrackNote(pitch, velocity) {
-    // TODO: port from MidiController
-    // But I want to drastically simplify:
-    // - Only track muting, not pattern muting (or maybe just allow for muting the 3 gate patterns in each track)
-    // - No set base track pitch
-    // - Bigger range for setting the scale (in the middle of the keyboard)
-    // - Global transpose should be relative to scale (i.e. allow you to adjust the arpeggio)
+    // TODO
   }
 
   handleClockTick(clockIndex) {
