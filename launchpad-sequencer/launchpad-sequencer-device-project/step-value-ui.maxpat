@@ -40,19 +40,6 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"comment" : "",
-					"id" : "obj-3",
-					"index" : 0,
-					"maxclass" : "inlet",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 432.0, 304.0, 30.0, 30.0 ]
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"comment" : "",
 					"id" : "obj-2",
 					"index" : 0,
 					"maxclass" : "inlet",
@@ -186,7 +173,7 @@
 			}
 , 			{
 				"box" : 				{
-					"activebgcolor" : [ 0.678431, 0.698039, 0.717647, 1.0 ],
+					"activebgcolor" : [ 0.333333333333333, 0.333333333333333, 0.333333333333333, 1.0 ],
 					"activebgoncolor" : [ 0.68, 0.7, 0.72, 1.0 ],
 					"annotation" : "Selects the active step value. Pressing buttons in the pattern grid will toggle between off and the active step value. You can also toggle this selector to off, and then any grid buttons pressed with turn off.",
 					"bgoncolor" : [ 0.572549, 0.615686, 0.658824, 1.0 ],
@@ -217,24 +204,8 @@
 
 					}
 ,
+					"textcolor" : [ 0.823529411764706, 0.823529411764706, 0.823529411764706, 1.0 ],
 					"varname" : "live.tab[2]"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontface" : 0,
-					"fontname" : "Ableton Sans Medium",
-					"fontsize" : 9.5,
-					"id" : "obj-16",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 342.0, 385.94830322265625, 62.0, 18.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 69.0, 1.0, 54.0, 18.0 ],
-					"text" : " step value",
-					"textcolor" : [ 0.901961028575897, 0.901961028575897, 0.901961028575897, 1.0 ]
 				}
 
 			}
@@ -338,13 +309,6 @@
 					"destination" : [ "obj-8", 0 ],
 					"midpoints" : [ 103.100006103515625, 371.0, 311.5, 371.0 ],
 					"source" : [ "obj-25", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-16", 0 ],
-					"source" : [ "obj-3", 0 ]
 				}
 
 			}
