@@ -10,18 +10,21 @@ Requires Node.js
 
     npm run build
 
-### Auto-building during development
+### Rebuild on file changes
 
     npm run dev
 
-### Running tests
+### Testing
 
-    npm test            # or...
-    npm run watch-test  # to automatically rerun on file changes
+    npm test
+
+### Retest on file changes
+
+    npm run tdd
 
 ### Building for distribution
 
-This part is a little tricky because it requires a few manaul steps. After building:
+TODO: Update these steps
 
 0. open the example Live set
 0. open the launchpad-sequencer
@@ -31,6 +34,3 @@ This part is a little tricky because it requires a few manaul steps. After build
   * Freeze the Max patcher
   * Save the Max patcher
 0. Save the Live set
-
-TODO: I used to have a script to copy files around and zip up a release. Decide on what to do about this now...
-This might be easier with Max 7/8 projects feature?

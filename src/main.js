@@ -1,208 +1,53 @@
-import './polyfills';
-import { Launchpad, Sequencer, MIDIController, SequencerController, LaunchpadController, StorageController } from './index';
-import { ROW_LENGTH, TRANSPORT_STOP } from './config';
+import MaxConsole from './MaxConsole';
+console = new MaxConsole();
 
-outlets = 17;
+import { Config, Controller, Model, View } from '.';
 
-const launchpad = new Launchpad;
-const sequencer = new Sequencer(launchpad);
-const midiController = new MIDIController(sequencer);
-const sequencerController = new SequencerController(sequencer, launchpad);
-const launchdpadController = new LaunchpadController(launchpad, sequencerController);
-const storageController = new StorageController(sequencer, sequencerController);
+const { OUTLET } = Config;
+const outletNames = Object.keys(OUTLET);
+outlets = outletNames.length;
+outletNames.forEach((name, index) => setoutletassist(index, name));
 
-// The code in this file redirects all incoming messages from the Max patcher to an appropriate controller method.
-//--------------------------------------------------------------
-// Core Max messages
-//
-export function bang() {
-  sequencerController.redraw();
-};
+const model = new Model;
+const controller = new Controller(model, new View(model));
 
-export function reset() {
-  sequencerController.reset();
-};
+export function init() { controller.initViews(); }
+export function bang() { controller.refreshViews(); }
+export function reset() { controller.reset(); }
+export function setmodel(...data) { controller.setModel(data); }
 
-//--------------------------------------------------------------
-// Launchpad MIDI in
-//
-export function notein(pitch, velocity) {
-  launchdpadController.notein(pitch, velocity);
-};
+export function scale(...pitchClasses) { controller.setScale(pitchClasses); }
+export function duration(duration) { controller.setDuration(duration); }
 
-export function ctlin(cc, val) {
-  if (cc !== TRANSPORT_STOP) {
-    launchdpadController.ctlin(cc, val);
-  } else {
-    sequencerController.stop();
-    save(); // this is a good time to save state without affecting realtime audio performance
-  }
-};
+export function pitch(pitch) { controller.setTrackPitch(pitch); }
+export function velocity(velocity) { controller.setTrackVelocity(velocity); }
+export function gate(gate) { controller.setTrackGate(gate); }
+export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
+export function trackmute(mute) { controller.setTrackMute(mute); }
 
-//--------------------------------------------------------------
-// Live Track MIDI in
-//
-export function note(pitch, velocity) {
-  midiController.note(pitch, velocity);
-};
+export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }
+export function end(stepNumber) { controller.setPatternEnd(stepNumber - 1); }
+export function patternmute(mute) { controller.setPatternMute(mute); }
+export function grid(x, y) { controller.handleGridClick(x, y); }
 
-//--------------------------------------------------------------
-// Global
-//
-export function stepLength(stepLength) {
-  sequencerController.setStepLength(stepLength);
-};
+export function track(trackIndex) { controller.selectTrack(trackIndex); }
+export function pattern(patternIndex) { controller.selectPattern(patternIndex); }
+export function value(value) { controller.selectOrToggleValue(value); }
 
-export function clock(clockIndex) {
-  sequencerController.setClock(clockIndex);
-};
+export function lpnote(pitch, velocity) { controller.handleLaunchpadNote(pitch, velocity); }
+export function lpcc(cc, value) { controller.handleLaunchpadCC(cc, value); }
+export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
+export function clock(index) { controller.handleClockTick(index); }
 
-export function setScale(...pitchClasses) {
-  sequencerController.setScale(pitchClasses);
-};
-
-//--------------------------------------------------------------
-// GUI Launchpad Buttons
-//
-export function track(trackIndex) {
-  sequencerController.selectTrack(trackIndex);
-};
-
-export function stepValue(value) {
-  sequencerController.selectValue(value);
-};
-
-export function pattern(patternIndex) {
-  sequencerController.selectPattern(patternIndex);
-};
-
-export function grid(x, y) {
-  sequencerController.setGridValue(x, y);
-};
-
-//--------------------------------------------------------------
-// Track Settings
-//
-export function basePitch(pitch) {
-  sequencerController.setSelectedTrackPitch(pitch);
-};
-
-export function baseVelocity(velocity) {
-  sequencerController.setSelectedTrackVelocity(velocity);
-};
-
-export function durationScale(scale) {
-  sequencerController.setSelectedTrackDurationScale(scale);
-};
-
-export function trackMute(mute) {
-  sequencerController.setSelectedTrackMute(mute);
-};
-
-export function trackMultiplier(multiplier) {
-  sequencerController.setSelectedTrackStepLengthMultiplier(multiplier);
-};
-
-//--------------------------------------------------------------
-// Pattern Settings
-//
-export function startStep(stepNumber) {
-  sequencerController.setSelectedPatternStartStep(stepNumber - 1);
-};
-
-export function endStep(stepNumber) {
-  sequencerController.setSelectedPatternEndStep(stepNumber - 1);
-};
-
-export function patternType(type) {
-  sequencerController.setSelectedPatternType(type);
-};
-
-export function patternMute(mute) {
-  sequencerController.setSelectedPatternMute(mute);
-};
-
-//--------------------------------------------------------------
-// Pattern Operations
-//
-export function random() {
-  sequencerController.random();
-};
-
-export function randomFill() {
-  sequencerController.randomFill();
-};
-
-export function randomThin() {
-  sequencerController.randomFill(0);
-};
-
-export function fill() {
-  sequencerController.fill();
-};
-
-export function clear() {
-  sequencerController.fill(0);
-};
-
-export function firstColumn() {
-  sequencerController.firstColumn();
-};
-
-export function reverse() {
-  sequencerController.reverse();
-};
-
-export function invert() {
-  sequencerController.invert();
-};
-
-export function replace() {
-  sequencerController.replace();
-};
-
-export function shiftleft() {
-  sequencerController.rotate(1);
-};
-
-export function shiftup() {
-  sequencerController.rotate(ROW_LENGTH);
-};
-
-export function shiftright() {
-  sequencerController.rotate(-1);
-};
-
-export function shiftdown() {
-  sequencerController.rotate(-ROW_LENGTH);
-};
-
-//--------------------------------------------------------------
-// Persistence
-//
-export function copy() {
-  sequencerController.copyPattern();
-};
-
-export function paste() {
-  sequencerController.pastePattern();
-};
-
-export function save() {
-  storageController.save();
-};
-
-export function load(path, ...values) {
-  storageController.load(path, ...Array.from(values));
-};
-
-export function importFile(filepath) {
-  storageController.import(filepath);
-};
-
-export function exportFile(filepath) {
-  storageController.export(filepath);
-};
+export function shiftleft() { controller.shiftSelectedPatternLeft(); }
+export function shiftright() { controller.shiftSelectedPatternRight(); }
+export function shiftup() { controller.shiftSelectedPatternUp(); }
+export function shiftdown() { controller.shiftSelectedPatternDown(); }
+export function reverse() { controller.reverseSelectedPattern(); }
+export function random() { controller.randomizeSelectedPattern(); }
+export function clear() { controller.clearSelectedPattern(); }
+export function copy() { controller.copyStepsFromSelectedPattern(); }
+export function paste() { controller.pasteStepsToSelectedPattern(); }
 
 console.log(
   `________________________________________________________________________________
