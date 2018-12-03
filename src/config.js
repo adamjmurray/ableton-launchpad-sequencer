@@ -1,5 +1,5 @@
 export const GUI_COLOR = Object.freeze({ // Max's LCD object uses the format [R,G,B] in 0-255 range
-  BACKGROUND: Object.freeze([53, 53, 53]),
+  BACKGROUND: Object.freeze([27, 27, 27]),
   PATTERN_START_END: Object.freeze([200, 200, 255]), // the color of the bracket marking the first and last step in the pattern:
   STEP_VALUE: Object.freeze([ // maps step values to GUI colors
     Object.freeze([150, 150, 150]), // off
@@ -74,8 +74,8 @@ export const GESTURE = Object.freeze({
 });
 
 export const GUI = Object.freeze({
-  STEP_WIDTH: 19,
-  BUTTON_WIDTH: 13,
+  STEP_WIDTH: 18,
+  BUTTON_WIDTH: 12,
 });
 
 export const LAUNCHPAD = Object.freeze({

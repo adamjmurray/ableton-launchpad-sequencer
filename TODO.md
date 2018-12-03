@@ -4,7 +4,6 @@
 - Can the value button be toggled off on the Launchpad? Logic seems buggy.
 - Rename this file to ROADMAP
 - Update the DEVELOPERS file
-
 - Features
   - On copy double press on the Launchpad, clear the pattern (act like cut instead of copy)
     Another press will restore the pattern
@@ -21,7 +20,6 @@
     - Debug
     - Maybe hide some/all of these in the help tab?
   - Update help. Do it in a tab?
-  - Improve layout
 
 ## Later:
 - Preset/"Scene" system (within the device). You can apparently save these with the device using pattrstorage
