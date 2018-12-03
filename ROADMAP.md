@@ -1,6 +1,7 @@
 ## 1.0
-- Test: Can the value button be toggled off on the Launchpad? Logic seems buggy.
-- Restore scale support
+- Test Launchpad thoroughly
+  - Can the value button be toggled off on the Launchpad? Logic seems buggy.
+- Update README
 - Figure out release process and update the DEVELOPERS file
 
 ## 1.1:
@@ -17,6 +18,7 @@
   - 2 modes for summing simultaneous gates on a step:
     - increase pitch
     - increase velocities
+- Right-click to clear step value in GUI
 
 ## 1.2
 - Help tab (in-device documentation)

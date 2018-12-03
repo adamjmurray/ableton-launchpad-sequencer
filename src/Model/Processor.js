@@ -1,4 +1,4 @@
-import { STEP_VALUE } from '../config';
+import { NUMBER_OF, STEP_VALUE } from '../config';
 
 const NOOP = () => { }; // the "no operation" function
 
@@ -11,16 +11,26 @@ const randomDuration = () => Math.random() * 8;
 // These may assume we filtered out stepValue 0 in processNote() as a NOOP
 const processors = {
   'pitch gate': (note, value) => {
+    // If the note is already enabled by another gate track treat the value as-is,
+    // otherwise, value 1 should trigger the track base pitch so we pass 0 in for the second arg:
+    const offset = note.enabled ? value : value - 1;
+    note.pitch += offset;
     note.enabled = true;
-    note.pitch += (value - 1);
   },
   'scale gate': (note, value, scale) => {
+    // If the note is already enabled by another gate track treat the value as-is,
+    // otherwise, value 1 should trigger the track base pitch so we pass 0 in for the second arg:
+    const offset = note.enabled ? value : value - 1;
+    note.pitch = scale.map(note.pitch, offset);
     note.enabled = true;
-    note.pitch = scale.map(note.pitch, value - 1);
   },
   'velocity gate': (note, value) => {
+    // If the note is already enabled by another gate track treat the value as-is,
+    // otherwise, value 1 should trigger the track base velocity so we pass 0 in for the second arg:
+    const offset = note.enabled ? value : value - 1;
+    const numValues = NUMBER_OF.STEP_VALUES - (note.enabled ? 1 : 2);
+    note.velocity += ((127 - note.velocity) * offset) / numValues;
     note.enabled = true;
-    note.velocity += ((127 - note.velocity) * (value - 1)) / 3;
   },
   'duration gate': (note, value) => {
     note.enabled = true;
