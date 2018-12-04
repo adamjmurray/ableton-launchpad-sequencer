@@ -1,7 +1,3 @@
-## 1.0
-- Update README
-- Figure out release process and update the DEVELOPERS file
-
 ## 1.1:
 - Control step value pitches and base velocity from MIDI input
 - Improve performance changing pattern start/end step
@@ -18,9 +14,13 @@
     - increase velocities
 - Right-click to clear step value in GUI
 - Track and pattern mute indicators in the GUI live.tab components (via an overlay)
+- Improve robostness of changing value buttons while the sequencer is running: Sometimes the button LEDs get stuck due to an apparent MIDI throughput issue.
+- Does a step value of 1 on the Duration pattern do anything?
 
 ## 1.2
-- Help tab (in-device documentation)
+- Documentation
+  - Thorough annotations for Live's Info view
+  - Help tab in the device
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:

@@ -36,13 +36,13 @@ When you are editing the launchpad sequencer device, updating button lights on t
 1. Create a new release branch: release/{version-number}
 2. Open the example Live set
 3. For each device (launchpad-sequencer, launchpad-sequencer-io-ch1, and launchpad-sequencer-io-ch3):
-  * Edit the device
-  * Freeze the Max patch
-  * Save the Max patch
+    * Edit the device
+    * Freeze the Max patch
+    * Save the Max patch
 4. Save the Live set
 5. Run
 
-    npm run release
+      npm run release
 
 6. Check in the generated launchpad-sequencer.zip
 7. Push the changes
