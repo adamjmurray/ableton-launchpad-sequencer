@@ -6,6 +6,9 @@ Requires Node.js
 
     npm install
 
+
+## Development tasks
+
 ### Building the code
 
     npm run build
@@ -22,7 +25,13 @@ Requires Node.js
 
     npm run tdd
 
-### Building for distribution
+
+## Notes
+
+When you are editing the launchpad sequencer device, updating button lights on the Launchpad doesn't always work as expected. Specifically when you change values, it may fail to turn the previous value's button off. If in doubt, close the device in Max and test inside Live.
+
+
+## Releasing a new version
 
 TODO: Update these steps
 

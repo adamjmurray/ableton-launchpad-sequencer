@@ -146,7 +146,7 @@ export default class Controller {
               break;
             case GESTURE.TRIPLE_PRESS:
               this.setTrackMute(!this._model.selectedTrack.mute);
-              this._topButtonGesture.reset(); // so we can reuse this gesture in pattern edit mode
+              this._topButtonGesture.reset();
               break;
           }
         } else {
@@ -180,6 +180,7 @@ export default class Controller {
             } else {
               this.setPatternMute(!model.selectedPattern.mute);
             }
+            this._rightButtonGesture.reset();
             break;
         }
       }

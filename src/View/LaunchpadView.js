@@ -15,7 +15,7 @@ export default class LaunchpadView {
   }
 
   renderValueButton(value) {
-    if (value > 0) { // TODO: doesn't this prevent the button from ever being toggled off?
+    if (value > 0) {
       this._setTopButtonColor(value + 3, this._colorForValueButton(value));
     }
   }

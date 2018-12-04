@@ -1,6 +1,4 @@
 ## 1.0
-- Test Launchpad thoroughly
-  - Can the value button be toggled off on the Launchpad? Logic seems buggy.
 - Update README
 - Figure out release process and update the DEVELOPERS file
 
@@ -19,6 +17,7 @@
     - increase pitch
     - increase velocities
 - Right-click to clear step value in GUI
+- Track and pattern mute indicators in the GUI live.tab components (via an overlay)
 
 ## 1.2
 - Help tab (in-device documentation)
