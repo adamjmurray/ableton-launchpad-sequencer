@@ -20,6 +20,7 @@ export default class View {
   renderTrack() {
     this._launchpadView.render();
     this._guiView.renderTrack(this._model.selectedTrack);
+    this._guiView.renderPattern(this._model.selectedPattern);
     this._guiView.renderGrid();
   }
 

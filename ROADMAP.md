@@ -1,8 +1,8 @@
 ## Known Issues
-- Pattern GUI (start/end/mute) doesn't update when changing tracks
+- Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
 
 ## 1.1:
-- On 'copy' double press on the Launchpad, clear the pattern ('cut'). Press again to undo.
+- When double tapping 'copy' on the Launchpad, clear the pattern i.e. 'cut'. Press again to undo.
 - Track-level operations / settings:
   - reverse
   - randomize
@@ -16,10 +16,8 @@
     - add pitches
     - add velocities
     - add durations
-- Modulation and Aftertouch latch option (currently it always latches)
+  - Modulation and Aftertouch latch option (add an "L" button next to the pattern descriptions)
 - Control scale and base velocity from MIDI input
-- Improve robostness of changing value buttons while the sequencer is running: Sometimes the button LEDs get stuck due to an apparent MIDI throughput issue.
-- Improve performance changing pattern start/end step
 
 ## 1.2
 - Per-track scales
