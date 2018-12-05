@@ -1,6 +1,5 @@
 ## 1.1:
-- Control step value pitches and base velocity from MIDI input
-- Improve performance changing pattern start/end step
+- Replace octave pattern with aftertouch (and make that "snd A" on the launchpad, so modulation will be "snd B")
 - On 'copy' double press on the Launchpad, clear the pattern ('cut'). Press again to undo.
 - Track-level operations / settings:
   - reverse
@@ -8,16 +7,18 @@
   - copy
   - paste
   - clear
-  - CC value for the modulation pattern
-  - 2 modes for summing simultaneous gates on a step:
-    - increase pitch
-    - increase velocities
+  - Modes for handling simultaneous gates on a step:
+    - lowest pitch
+    - highest pitch
+    - random pitch
+    - add pitches
+    - add velocities
+    - add durations
+- Control step value pitches and base velocity from MIDI input
 - Improve robostness of changing value buttons while the sequencer is running: Sometimes the button LEDs get stuck due to an apparent MIDI throughput issue.
+- Improve performance changing pattern start/end step
 
 ## 1.2
-- Documentation
-  - Thorough annotations for Live's Info view
-  - Help tab in the device
 - Per-track scales
   - Setup the example Live set to have a combination of arpeggios and drums by using an instrument rack
 - Track edit mode for the Launchpad
@@ -29,18 +30,26 @@
       - Re-tap the pattern button to toggle pages
     - gate
     - step duration multiplier
-    - CC value for the modulation pattern
     - modes for summing simultaneous gates
     - global step length (since there's no other way to edit this on the Launchpad)
+    - scale
+    - future placeholder: reassignable pattern types
   - Use the value buttons to:
     - track reverse
     - track randomize (every other tap reverts)
     - track copy (every other tap clears)
     - track paste  (every other tap reverts)
+- Documentation
+  - Thorough annotations for Live's Info view
+  - Help tab in the device
+
+## 1.3
+- Allow the modulation/aftertouch patterns to be reassignable to other operations (octave up, subdivide, pitch/scale/octave/velocity/duration down)
+  - support in track edit mode
+- Subdivide pattern type
 
 ## Future
 - Expandable full keyboard view to pick arbitrary notes for the step values instead of the scale
 - Expandable GUI view to show all patterns in a track, 1 row per pattern
-- Add a subdivide feature and replace octave up
 - Ableton Push support
 - Preset/"Scene" system (within the device)
