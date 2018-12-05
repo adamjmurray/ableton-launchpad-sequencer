@@ -12,15 +12,14 @@
   - 2 modes for summing simultaneous gates on a step:
     - increase pitch
     - increase velocities
-- Right-click to clear step value in GUI
-- Track and pattern mute indicators in the GUI live.tab components (via an overlay)
 - Improve robostness of changing value buttons while the sequencer is running: Sometimes the button LEDs get stuck due to an apparent MIDI throughput issue.
-- Does a step value of 1 on the Duration pattern do anything?
 
 ## 1.2
 - Documentation
   - Thorough annotations for Live's Info view
   - Help tab in the device
+- Per-track scales
+  - Setup the example Live set to have a combination of arpeggios and drums by using an instrument rack
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:

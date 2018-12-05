@@ -52,9 +52,12 @@ export default class View {
     this._guiView.renderTrackMultiplier(this._model.selectedTrack.durationMultiplier);
   }
 
-  renderTrackMute() {
-    this._guiView.renderTrackMute(this._model.selectedTrack.mute);
-    this._launchpadView.renderTrackButton(this._model.selectedTrackIndex);
+  renderTrackMute(trackIndex, mute) {
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._guiView.renderTrackMute(mute);
+    }
+    this._guiView.renderTrackSelectorMute(trackIndex, mute);
+    this._launchpadView.renderTrackButton(trackIndex);
   }
 
   renderPatternIndex() {
@@ -77,9 +80,12 @@ export default class View {
     this._launchpadView.render();
   }
 
-  renderPatternMute() {
-    this._guiView.renderPatternMute(this._model.selectedPattern.mute);
-    this._launchpadView.renderPatternButton(this._model.selectedPatternIndex);
+  renderPatternMute(patternIndex, mute) {
+    if (patternIndex === this._model.selectedPatternIndex) {
+      this._guiView.renderPatternMute(mute);
+    }
+    this._guiView.renderPatternSelectorMute(patternIndex, mute);
+    this._launchpadView.renderPatternButton(patternIndex);
   }
 
   renderValue() {

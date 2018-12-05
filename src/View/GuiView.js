@@ -15,6 +15,7 @@ const VELOCITY = 'velocity';
 const GATE = 'gate';
 const MULTIPLIER = 'multiplier';
 const MUTE = 'mute';
+const INDEX_MUTE = 'index-mute';
 const START = 'start';
 const END = 'end';
 
@@ -32,6 +33,8 @@ export default class GuiView {
     this.renderValueButton(this._model.selectedValue);
     this.renderPattern(this._model.selectedPattern);
     this.renderGrid();
+    this._model.tracks.forEach((track) =>
+      this.renderTrackSelectorMute(track.index, track.mute));
   }
 
   clearGrid() {
@@ -53,6 +56,8 @@ export default class GuiView {
     this.renderTrackGate(track.gate);
     this.renderTrackMultiplier(track.durationMultiplier);
     this.renderTrackMute(track.mute);
+    this._model.selectedTrack.patterns.forEach((pattern) =>
+      this.renderPatternSelectorMute(pattern.index, pattern.mute));
   }
 
   renderTrackIndex(index) {
@@ -77,6 +82,10 @@ export default class GuiView {
 
   renderTrackMute(mute) {
     outlet(OUTLET.GUI, TRACK, MUTE, mute);
+  }
+
+  renderTrackSelectorMute(trackIndex, mute) {
+    outlet(OUTLET.GUI, TRACK, INDEX_MUTE, trackIndex, mute);
   }
 
   renderValueButton(value) {
@@ -107,6 +116,10 @@ export default class GuiView {
 
   renderPatternMute(mute) {
     outlet(OUTLET.GUI, PATTERN, MUTE, mute);
+  }
+
+  renderPatternSelectorMute(patternIndex, mute) {
+    outlet(OUTLET.GUI, PATTERN, INDEX_MUTE, patternIndex, mute);
   }
 
   renderGrid(pattern = this._model.selectedPattern) {

@@ -322,9 +322,7 @@ export default class Controller {
 
   setTrackMute(mute, trackIndex = this._model.selectedTrackIndex, store = true) {
     this._model.tracks[trackIndex].mute = mute;
-    if (trackIndex === this._model.selectedTrackIndex) {
-      this._view.renderTrackMute();
-    }
+    this._view.renderTrackMute(trackIndex, mute);
     if (store) {
       this._storage.storeTrackMute(trackIndex, mute);
     }
@@ -363,8 +361,8 @@ export default class Controller {
 
   setPatternMute(mute, trackIndex = this._model.selectedTrackIndex, patternIndex = this._model.selectedPatternIndex, store = true) {
     this._model.tracks[trackIndex].patterns[patternIndex].mute = mute;
-    if (trackIndex === this._model.selectedTrackIndex && patternIndex === this._model.selectedPatternIndex) {
-      this._view.renderPatternMute();
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._view.renderPatternMute(patternIndex, mute);
     }
     if (store) {
       this._storage.storePatternMute(trackIndex, patternIndex, mute);

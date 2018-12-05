@@ -64,17 +64,21 @@ const enterPatternEditMode = ({
 }
 
 const assertViewsUpdatedForTrackMuteChange = (track) => {
-  assert.equal(mockOutlet.calls.length, 3);
+  assert.equal(mockOutlet.calls.length, 4);
   assert.deepStrictEqual(
     mockOutlet.calls[0],
     [OUTLET.GUI, 'track', 'mute', track.mute]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[1],
-    [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
+    [OUTLET.GUI, 'track', 'index-mute', track.index, track.mute]
   );
   assert.deepStrictEqual(
     mockOutlet.calls[2],
+    [OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + track.index, LAUNCHPAD_COLOR.MUTE_COLOR]
+  );
+  assert.deepStrictEqual(
+    mockOutlet.calls[3],
     [OUTLET.STORAGE, 'tracks', track.index, 'mute', track.mute]
   );
 }
