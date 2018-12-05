@@ -52,8 +52,8 @@ export const DEFAULT = Object.freeze({
   PATTERN_TYPES: Object.freeze([ // maps pattern index to the default type for that pattern
     'velocity +',
     'duration =',
+    'aftertouch',
     'modulation',
-    'octave',
     'random mute',
     'scale gate',
     'scale gate',

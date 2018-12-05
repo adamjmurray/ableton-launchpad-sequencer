@@ -1,5 +1,7 @@
+## Known Issues
+- Pattern GUI (start/end/mute) doesn't update when changing tracks
+
 ## 1.1:
-- Replace octave pattern with aftertouch (and make that "snd A" on the launchpad, so modulation will be "snd B")
 - On 'copy' double press on the Launchpad, clear the pattern ('cut'). Press again to undo.
 - Track-level operations / settings:
   - reverse
@@ -14,7 +16,8 @@
     - add pitches
     - add velocities
     - add durations
-- Control step value pitches and base velocity from MIDI input
+- Modulation and Aftertouch latch option (currently it always latches)
+- Control scale and base velocity from MIDI input
 - Improve robostness of changing value buttons while the sequencer is running: Sometimes the button LEDs get stuck due to an apparent MIDI throughput issue.
 - Improve performance changing pattern start/end step
 
@@ -30,7 +33,7 @@
       - Re-tap the pattern button to toggle pages
     - gate
     - step duration multiplier
-    - modes for summing simultaneous gates
+    - modes for summing simultaneous gates + modulation and aftertouch latch setting
     - global step length (since there's no other way to edit this on the Launchpad)
     - scale
     - future placeholder: reassignable pattern types
