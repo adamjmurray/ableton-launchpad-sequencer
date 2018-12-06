@@ -28,16 +28,16 @@
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
-    1. track pitch
+    - track pitch
       - Re-tap the pattern button to toggle between 2 pages to access all 128 values
-    2. track velocity
+    - track velocity
       - Re-tap the pattern button to toggle pages
-    3. gate
-    4. step duration multiplier
-    5. Modes for handling simultaneous gates on a step
-    6. modulation and aftertouch latch setting
-    7. ignore scale
-    8. global step length (there's no other way to edit this on the Launchpad)
+    - gate
+    - step duration multiplier
+    - Modes for handling simultaneous gates on a step
+    - modulation and aftertouch latch setting
+    - ignore scale
+    - global step length (there's no other way to edit this on the Launchpad)
   - Use the value buttons to do track operations (same as pattern edit mode):
     - track reverse
     - track randomize (every other tap reverts)
