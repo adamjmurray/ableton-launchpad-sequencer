@@ -5,6 +5,10 @@ import Controller from './Controller';
 import Model from './Model';
 import View from './View';
 
+import PressGesture from './Controller/PressGesture';
+import RangeSelectionGesture from './Controller/RangeSelectionGesture';
+import StorageController from './Controller/StorageController';
+
 import Pattern from './Model/Pattern';
 import Processor from './Model/Processor';
 import Scale from './Model/Scale';
@@ -19,6 +23,10 @@ export {
   Controller,
   Model,
   View,
+
+  PressGesture,
+  RangeSelectionGesture,
+  StorageController,
 
   Pattern,
   Processor,

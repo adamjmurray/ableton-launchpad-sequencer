@@ -7,7 +7,7 @@ export default class PressGesture {
   }
 
   reset() {
-    this._previousIndex = null;
+    this._previousIndex = NaN;
     this._repeatPressCount = 0;
   }
 
