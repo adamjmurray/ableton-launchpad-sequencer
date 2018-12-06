@@ -1,5 +1,4 @@
 import { PressGesture, Config } from '../../src';
-import assert from 'assert';
 const { GESTURE } = Config;
 
 describe('PressGesture', () => {

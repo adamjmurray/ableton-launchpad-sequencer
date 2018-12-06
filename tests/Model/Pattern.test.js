@@ -1,6 +1,4 @@
 import { Config, Pattern } from '../../src';
-import assert from 'assert';
-
 const { NUMBER_OF } = Config;
 
 describe('Pattern', () => {

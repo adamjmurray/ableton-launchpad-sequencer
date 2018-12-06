@@ -1,5 +1,4 @@
 import { Scale } from '../../src';
-import assert from 'assert';
 
 describe('Scale', () => {
   describe('pitchClasses', () => {

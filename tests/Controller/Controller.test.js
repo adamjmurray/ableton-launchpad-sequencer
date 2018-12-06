@@ -1,6 +1,5 @@
-import { Config, Controller, Model, View } from '../src';
+import { Config, Controller, Model, View } from '../../src';
 const { LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF, OUTLET, PATTERN } = Config;
-import assert from 'assert';
 
 let model;
 let view;

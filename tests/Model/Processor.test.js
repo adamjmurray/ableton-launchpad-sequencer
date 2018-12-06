@@ -1,5 +1,4 @@
 import { Processor } from '../../src';
-import assert from 'assert';
 
 const ITERATIONS = 500;
 const EXPECTED_UNIQUE_VALUES = 50;
