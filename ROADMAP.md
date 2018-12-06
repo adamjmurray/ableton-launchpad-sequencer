@@ -2,7 +2,6 @@
 - Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
 
 ## 1.1:
-- When double tapping 'copy' on the Launchpad, clear the pattern i.e. 'cut'. Press again to undo.
 - Track-level operations / settings:
   - reverse
   - randomize

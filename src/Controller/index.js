@@ -127,7 +127,14 @@ export default class Controller {
             }
             break;
           case 6:
-            this.copyStepsFromSelectedPattern();
+            if (gesture === GESTURE.SELECT) {
+              this.copyStepsFromSelectedPattern();
+            } else if (gesture === GESTURE.DOUBLE_PRESS) {
+              this._recordSelectedPatternStepsForUndo();
+              this.clearSelectedPattern();
+            } else {
+              this._undoSelectedPatternSteps();
+            }
             break;
           case 7:
             if (gesture === GESTURE.DOUBLE_PRESS) {
