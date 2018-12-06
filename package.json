@@ -13,10 +13,12 @@
     "rollup-plugin-node-resolve": "^3.4.0"
   },
   "scripts": {
-    "clean": "rm -f launchpad-sequencer/launchpad-sequencer-device-project/launchpad-sequencer.js",
     "build": "npx rollup -c",
+    "ci": "npm run test-strict && npm run build",
+    "clean": "rm -f launchpad-sequencer/launchpad-sequencer-device-project/launchpad-sequencer.js",
     "dev": "npx rollup -c -w",
     "test": "npx mocha -c -r @babel/register tests/setup 'tests/**/*.test.js'",
+    "test-strict": "npx mocha --forbid-only -c -r @babel/register tests/setup 'tests/**/*.test.js'",
     "tdd": "npx mocha -c -w -R min -r @babel/register tests/setup 'tests/**/*.test.js'",
     "release": "npm run build && zip -r launchpad-sequencer.zip example-project launchpad-sequencer/launchpad-sequencer.amxd launchpad-sequencer/launchpad-sequencer-io-ch1.amxd launchpad-sequencer/launchpad-sequencer-io-ch3.amxd"
   },
