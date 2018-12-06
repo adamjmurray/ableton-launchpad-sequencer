@@ -1,7 +1,9 @@
 import { Processor } from '../../src';
 import assert from 'assert';
 
-const ITERATIONS = 100;
+const ITERATIONS = 500;
+const EXPECTED_UNIQUE_VALUES = 50;
+
 const expectRandomCondition = ({ processor, value, expectedChance }, condition) => {
   let count = 0;
   for (let i = 0; i < ITERATIONS; i++) {
@@ -103,8 +105,7 @@ describe('Processor', () => {
           assertIsMidiPitch(pitch);
           pitches[pitch] = true;
         }
-        // since this is random, we might get a few duplicate pitches, but not more than half
-        assert(numKeys(pitches) > ITERATIONS / 2);
+        assert(numKeys(pitches) > EXPECTED_UNIQUE_VALUES);
       });
 
       it("randomly sets the velocity to an integer in [0..127] when the step value is 2", () => {
@@ -114,8 +115,7 @@ describe('Processor', () => {
           assertIsMidiVelocity(velocity);
           velocities[velocity] = true;
         }
-        // since this is random, we might get a few duplicate pitches, but not more than half
-        assert(numKeys(velocities) > ITERATIONS / 2);
+        assert(numKeys(velocities) > EXPECTED_UNIQUE_VALUES);
       });
 
       it("randomly sets the duration to a number between 0 and 8 when the step value is 3", () => {
@@ -125,8 +125,7 @@ describe('Processor', () => {
           assertInRange(duration, 0, 8);
           durations[duration] = true;
         }
-        // since this is random, we might get a few duplicate pitches, but not more than half
-        assert(numKeys(durations) > ITERATIONS / 2);
+        assert(numKeys(durations) > EXPECTED_UNIQUE_VALUES);
       });
 
       it("randomly sets pitch, velocity, and duration when the step value is 4", () => {
@@ -142,9 +141,9 @@ describe('Processor', () => {
           velocities[velocity] = true;
           durations[duration] = true;
         }
-        assert(numKeys(pitches) > ITERATIONS / 2);
-        assert(numKeys(velocities) > ITERATIONS / 2);
-        assert(numKeys(durations) > ITERATIONS / 2);
+        assert(numKeys(pitches) > EXPECTED_UNIQUE_VALUES);
+        assert(numKeys(velocities) > EXPECTED_UNIQUE_VALUES);
+        assert(numKeys(durations) > EXPECTED_UNIQUE_VALUES);
       });
     });
   });
