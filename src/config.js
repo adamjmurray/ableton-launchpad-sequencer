@@ -55,14 +55,16 @@ export const DEFAULT = Object.freeze({
     'aftertouch',
     'modulation',
     'random mute',
-    'scale gate',
-    'scale gate',
-    'scale gate',
+    'gate',
+    'gate',
+    'gate',
   ]),
   PITCH_CLASSES: Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), // full chromatic scale
   PITCH: 60,
   VELOCITY: 70,
   GATE: 0.9,
+  GATE_MODE: 'pitch',
+  GATE_SUMMING_MODE: 'add',
   VALUE: 1,
   SAVE_DELAY: 2000,
 });
@@ -89,9 +91,21 @@ export const MIDI = Object.freeze({
 export const MODE = Object.freeze({
   SEQUENCER: 'SEQUENCER',
   PATTERN_EDIT: 'PATTERN_EDIT',
+  GATE: Object.freeze({
+    PITCH: 'pitch',
+    VELOCITY: 'velocity',
+  }),
+  GATE_SUMMING: Object.freeze({
+    ADD: 'add',
+    LOWEST: 'low',
+    HIGHEST: 'high',
+    RANDOM: 'rand',
+    SCALED_ADD: 'sc.add',
+  }),
 });
 
 export const NUMBER_OF = Object.freeze({
+  GATES: 3, // number of gate-type patterns in a track
   TRACKS: 4, // number of tracks in the device
   PATTERNS: 8,  // number of patterns per track
   STEPS: 64, // number of sequencer steps per pattern
@@ -139,6 +153,7 @@ export const STORAGE = Object.freeze({
   VELOCITY: 'velocity',
   GATE: 'gate',
   MULTIPLIER: 'multiplier',
+  GATE_SUMMING_MODE: 'gatesumming',
   MUTE: 'mute',
   PATTERNS: 'patterns',
   STEPS: 'steps',

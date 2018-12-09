@@ -140,7 +140,9 @@ export default class Pattern {
     if (this.mute) return;
     const value = this.stepForClock(clock);
     if (value > 0) { // Assumption: 0 is always a NOOP
-      this._processor.process(note, value, scale);
+      // Assumption: pattern indexes 5-7 are the gate types:
+      const gateIndex = this.index - 5;
+      this._processor.process(note, value, scale, gateIndex);
     }
   }
 

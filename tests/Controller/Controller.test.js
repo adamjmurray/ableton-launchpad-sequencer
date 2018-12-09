@@ -162,7 +162,7 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
     });
 
-    it('generates notes for all track', () => {
+    it('generates notes for all tracks', () => {
       model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
       model.tracks[1].patterns[PATTERN.GATE1].steps[0] = 2;
       model.tracks[2].patterns[PATTERN.GATE2].steps[0] = 3;

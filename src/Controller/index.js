@@ -223,7 +223,7 @@ export default class Controller {
     if (clockIndex >= 0) {
       this._model.tracks.forEach((track) => {
         const note = track.noteForClock(clockIndex);
-        if (note.enabled && !note.mute) {
+        if (note.enabled) {
           if (note.duration > 0) {
             outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
           }
@@ -324,6 +324,16 @@ export default class Controller {
     }
     if (store) {
       this._storage.storeTrackMultiplier(trackIndex, multiplier);
+    }
+  }
+
+  setTrackGateSummingMode(mode, trackIndex = this._model.selectedTrackIndex, store = true) {
+    this._model.tracks[trackIndex].gateSummingMode = mode;
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._view.renderTrackGateSummingMode(mode);
+    }
+    if (store) {
+      this._storage.storeTrackGateSummingMode(trackIndex, mode);
     }
   }
 

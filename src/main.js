@@ -23,6 +23,7 @@ export function pitch(pitch) { controller.setTrackPitch(pitch); }
 export function velocity(velocity) { controller.setTrackVelocity(velocity); }
 export function gate(gate) { controller.setTrackGate(gate); }
 export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
+export function gatesumming(mode) { controller.setTrackGateSummingMode(mode); }
 export function trackmute(mute) { controller.setTrackMute(mute); }
 
 export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }

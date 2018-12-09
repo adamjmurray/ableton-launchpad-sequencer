@@ -4,12 +4,8 @@
 - Redoing a change to pattern steps doesn't work
 
 ## 1.1
-- Track "gate Summing" modes for handling simultaneous gate values on a step:
-  - add
-  - lowest
-  - highest
-  - random
 - Global Modulation and Aftertouch latch option (add an "L" button next to the pattern descriptions)
+- Fix playhead only starts at time 0 bug
 
 ## 1.2
 - Constrain all notes to scale pitches so arpeggiations work as expected

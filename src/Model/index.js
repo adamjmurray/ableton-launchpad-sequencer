@@ -37,21 +37,6 @@ export default class Model {
       }
       return notes;
     }, []);
-    // TODO: apply global transpose (maybe pass into noteForClock?)
-    // this.tracks.forEach((track) => {
-    // const note = track.noteForClock(clockIndex);
-    // if (note) {
-    //   if ((note.duration > 0) && (note.velocity > 0)) {
-    //     outlet(OUTLET.NOTE, note.pitch + this.globalTranspose, note.velocity, note.duration);
-    //   }
-    //   if (note.modulation != null) {
-    //     outlet(OUTLET.CC, 1, note.modulation);
-    //   }
-    //   if (note.aftertouch != null) {
-    //     outlet(OUTLET.AFTERTOUCH, note.aftertouch);
-    //   }
-    // }
-    // });
   }
 
   fromJSON({ scale, stepLength, tracks }) {

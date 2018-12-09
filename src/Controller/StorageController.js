@@ -8,6 +8,7 @@ const {
   VELOCITY,
   GATE,
   MULTIPLIER,
+  GATE_SUMMING_MODE,
   MUTE,
   PATTERNS,
   STEPS,
@@ -40,6 +41,10 @@ export default class StorageView {
 
   storeTrackMultiplier(trackIndex, multiplier) {
     outlet(OUTLET.STORAGE, TRACKS, trackIndex, MULTIPLIER, multiplier);
+  }
+
+  storeTrackGateSummingMode(trackIndex, mode) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE_SUMMING_MODE, mode);
   }
 
   storeTrackMute(trackIndex, mute) {
@@ -82,6 +87,7 @@ export default class StorageView {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);
       this.storeTrackGate(trackIndex, track.gate);
+      this.storeTrackGateSummingMode(trackIndex, track.gateSummingMode);
       this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
       this.storeTrackMute(trackIndex, track.mute);
       track.patterns.forEach((pattern, patternIndex) => {

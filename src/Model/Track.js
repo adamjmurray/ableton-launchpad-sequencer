@@ -19,6 +19,8 @@ export default class Track {
     this.pitch = DEFAULT.PITCH;
     this.velocity = DEFAULT.VELOCITY;
     this.gate = DEFAULT.GATE;
+    this.gateMode = DEFAULT.GATE_MODE;
+    this.gateSummingMode = DEFAULT.GATE_SUMMING_MODE;
     this.patterns.forEach(pattern => pattern.reset());
     this.durationMultiplier = 1;
     this.mute = false;
@@ -36,7 +38,14 @@ export default class Track {
     note.velocity = this.velocity;
 
     this.patterns.forEach(pattern => pattern.processNote(note, clock, this.scale));
-    note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
+
+    const gateValue = note.gateValue(this.gateSummingMode);
+    if (gateValue >= 0 && !note.mute) {
+      note.enabled = true;
+      // TODO: handle pitch vs velocity gate mode (assuming pitch for now):
+      note.pitch = this.scale.map(note.pitch, gateValue);
+      note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
+    }
     return note;
   }
 

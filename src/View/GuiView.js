@@ -13,6 +13,7 @@ const INDEX = 'index';
 const PITCH = 'pitch';
 const VELOCITY = 'velocity';
 const GATE = 'gate';
+const GATE_SUMMING_MODE = 'gatesumming';
 const MULTIPLIER = 'multiplier';
 const MUTE = 'mute';
 const INDEX_MUTE = 'index-mute';
@@ -54,6 +55,7 @@ export default class GuiView {
     this.renderTrackPitch(track.pitch);
     this.renderTrackVelocity(track.velocity);
     this.renderTrackGate(track.gate);
+    this.renderTrackGateSummingMode(track.gateSummingMode);
     this.renderTrackMultiplier(track.durationMultiplier);
     this.renderTrackMute(track.mute);
     this._model.selectedTrack.patterns.forEach((pattern) =>
@@ -74,6 +76,10 @@ export default class GuiView {
 
   renderTrackGate(gate) {
     outlet(OUTLET.GUI, TRACK, GATE, gate);
+  }
+
+  renderTrackGateSummingMode(mode) {
+    outlet(OUTLET.GUI, TRACK, GATE_SUMMING_MODE, mode);
   }
 
   renderTrackMultiplier(multiplier) {
