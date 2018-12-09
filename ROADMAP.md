@@ -1,21 +1,15 @@
 ## Known Issues
 - The first time you start Live's transport, if the playhead is not at the beginning (time 0) the sequencer will not start
 - Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
+- Redoing a change to pattern steps doesn't work
 
 ## 1.1
-- Track-level operations / settings:
-  - reverse
-  - randomize
-  - copy
-  - paste
-  - clear
-    - Note: Check how many undo points these operations create. If it creates 8, probably can't do anything about it besides make a feature request to C74 and list in Known Issues for now.
-  - "Gate Summing" modes for handling simultaneous gate values on a step:
-    - add
-    - lowest
-    - highest
-    - random
-  - Modulation and Aftertouch latch option (add an "L" button next to the pattern descriptions)
+- Track "gate Summing" modes for handling simultaneous gate values on a step:
+  - add
+  - lowest
+  - highest
+  - random
+- Global Modulation and Aftertouch latch option (add an "L" button next to the pattern descriptions)
 
 ## 1.2
 - Constrain all notes to scale pitches so arpeggiations work as expected
@@ -25,6 +19,7 @@
   - pitch (good for arps, melodies, and multi-drum patterns)
   - velocity (good for single drum patterns or repetitive bass notes or sound FX)
     - Note: "Gate Summing" will operate on the note property corresponding to the type of gate
+    - add a new summing mode ('/add'? or 'sc.add'?) to scale the values so a max  value on all tracks is needed to hit max velocity
 - Allow scale UI to select the root and change track pitch to octave + scale offset
   - When the scale is being overriden, this will remain a pitch input
     - It's probably easiest to use the track pitch model either way, and get the scale offset from pitch % 12

@@ -104,44 +104,44 @@ export default class Controller {
         const gesture = this._topButtonGesture.interpretPress(index);
         switch (index) {
           case 0:
-            this.shiftSelectedPatternUp();
+            this.shiftPatternUp();
             break;
           case 1:
-            this.shiftSelectedPatternDown();
+            this.shiftPatternDown();
             break;
           case 2:
-            this.shiftSelectedPatternLeft();
+            this.shiftPatternLeft();
             break;
           case 3:
-            this.shiftSelectedPatternRight();
+            this.shiftPatternRight();
             break;
           case 4:
-            this.reverseSelectedPattern();
+            this.reversePattern();
             break;
           case 5:
             if (gesture === GESTURE.DOUBLE_PRESS) {
-              this._undoSelectedPatternSteps();
+              this._undoPatternStepsChange();
             } else {
-              this._recordSelectedPatternStepsForUndo();
-              this.randomizeSelectedPattern();
+              this._recordPatternStepsForUndo();
+              this.randomizePattern();
             }
             break;
           case 6:
             if (gesture === GESTURE.SELECT) {
-              this.copyStepsFromSelectedPattern();
+              this.copyPatternSteps();
             } else if (gesture === GESTURE.DOUBLE_PRESS) {
-              this._recordSelectedPatternStepsForUndo();
-              this.clearSelectedPattern();
+              this._recordPatternStepsForUndo();
+              this.clearPattern();
             } else {
-              this._undoSelectedPatternSteps();
+              this._undoPatternStepsChange();
             }
             break;
           case 7:
             if (gesture === GESTURE.DOUBLE_PRESS) {
-              this._undoSelectedPatternSteps();
+              this._undoPatternStepsChange();
             } else {
-              this._recordSelectedPatternStepsForUndo();
-              this.pasteStepsToSelectedPattern();
+              this._recordPatternStepsForUndo();
+              this.pastePatternSteps();
             }
             break;
         }
@@ -376,82 +376,110 @@ export default class Controller {
     }
   }
 
-  _modifySelectedPatternSteps(modify) {
-    const model = this._model;
-    const pattern = model.selectedPattern;
+  _modifyPatternSteps(pattern, modify) {
     modify(pattern);
     this._view.renderGrid();
-    this._storage.storePatternSteps(this._model.selectedTrackIndex, pattern.index, pattern.steps);
+    this._storage.storePatternSteps(pattern.trackIndex, pattern.index, pattern.steps);
   }
 
-  reverseSelectedPattern() {
-    this._modifySelectedPatternSteps(
+  reversePattern(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.reverse()
     );
   }
 
-  randomizeSelectedPattern() {
-    this._modifySelectedPatternSteps(
+  randomizePattern(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.randomize()
     );
   }
 
-  invertSelectedPattern() {
-    this._modifySelectedPatternSteps(
+  invertPattern(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.invert()
     );
   }
 
-  clearSelectedPattern() {
-    this._modifySelectedPatternSteps(
+  clearPattern(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.clear()
     );
   }
 
-  shiftSelectedPatternLeft() {
-    this._modifySelectedPatternSteps(
+  shiftPatternLeft(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.shift(1)
     );
   }
 
-  shiftSelectedPatternRight() {
-    this._modifySelectedPatternSteps(
+  shiftPatternRight(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.shift(-1)
     );
   }
 
-  shiftSelectedPatternUp() {
-    this._modifySelectedPatternSteps(
+  shiftPatternUp(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.shift(NUMBER_OF.COLUMNS)
     );
   }
 
-  shiftSelectedPatternDown() {
-    this._modifySelectedPatternSteps(
+  shiftPatternDown(pattern = this._model.selectedPattern) {
+    this._modifyPatternSteps(pattern,
       pattern => pattern.shift(-NUMBER_OF.COLUMNS)
     );
   }
 
-  copyStepsFromSelectedPattern() {
-    this._patternStepsClipboard = this._model.selectedPattern.steps.slice(); // slice to freeze this state
+  copyPatternSteps(pattern = this._model.selectedPattern) {
+    this._patternStepsClipboard = pattern.steps.slice(); // slice to freeze this state
   }
 
-  pasteStepsToSelectedPattern() {
+  pastePatternSteps(pattern = this._model.selectedPattern) {
     if (this._patternStepsClipboard) {
-      this._modifySelectedPatternSteps(
+      this._modifyPatternSteps(pattern,
         pattern => pattern.steps = this._patternStepsClipboard.slice() // slice to prevent a shared steps array between patterns
       );
     }
   }
 
-  _recordSelectedPatternStepsForUndo() {
-    this._patternStepsUndo = this._model.selectedPattern.steps.slice(); // slice to freeze this state
+  _recordPatternStepsForUndo(pattern = this._model.selectedPattern) {
+    this._patternStepsUndo = pattern.steps.slice(); // slice to freeze this state
   }
 
-  _undoSelectedPatternSteps() {
+  _undoPatternStepsChange(pattern = this._model.selectedPattern) {
     if (this._patternStepsUndo) {
-      this._modifySelectedPatternSteps(
+      this._modifyPatternSteps(pattern,
         pattern => pattern.steps = this._patternStepsUndo
+      );
+      this._patternStepsUndo = null;
+    }
+  }
+
+  reverseTrack(track = this._model.selectedTrack) {
+    track.patterns.forEach(pattern =>
+      this.reversePattern(pattern));
+  }
+
+  randomizeTrack(track = this._model.selectedTrack) {
+    track.patterns.forEach(pattern =>
+      this.randomizePattern(pattern));
+  }
+
+  clearTrack(track = this._model.selectedTrack) {
+    track.patterns.forEach(pattern =>
+      this.clearPattern(pattern));
+  }
+
+  copyTrackSteps(track = this._model.selectedTrack) {
+    this._trackStepsClipboard = track.patterns.map(pattern => pattern.steps.slice()); // slice to freeze this state
+  }
+
+  pasteTrackSteps(track = this._model.selectedTrack) {
+    if (this._trackStepsClipboard) {
+      this._trackStepsClipboard.forEach((patternSteps, patternIndex) =>
+        this._modifyPatternSteps(track.patterns[patternIndex],
+          pattern => pattern.steps = patternSteps.slice() // slice to prevent a shared steps array between patterns
+        )
       );
     }
   }

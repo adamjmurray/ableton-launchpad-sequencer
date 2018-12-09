@@ -8,7 +8,8 @@ import { NUMBER_OF } from '../config';
 //
 export default class Pattern {
 
-  constructor(index, type) {
+  constructor({ trackIndex, index, type } = {}) {
+    this.trackIndex = trackIndex;
     this.index = index;
     this._processor = new Processor(type);
     this.reset();

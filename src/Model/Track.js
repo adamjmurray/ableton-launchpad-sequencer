@@ -7,7 +7,11 @@ export default class Track {
   constructor(index, scale) {
     this.index = index;
     this.scale = scale; // TODO: pass this into noteForClock() instead
-    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, index) => new Pattern(index, DEFAULT.PATTERN_TYPES[index]));
+    this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, patternIndex) => new Pattern({
+      trackIndex: index,
+      index: patternIndex,
+      type: DEFAULT.PATTERN_TYPES[patternIndex],
+    }));
     this.reset();
   }
 

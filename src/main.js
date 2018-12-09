@@ -39,15 +39,21 @@ export function lpcc(cc, value) { controller.handleLaunchpadCC(cc, value); }
 export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
 export function clock(index) { controller.handleClockTick(index); }
 
-export function shiftleft() { controller.shiftSelectedPatternLeft(); }
-export function shiftright() { controller.shiftSelectedPatternRight(); }
-export function shiftup() { controller.shiftSelectedPatternUp(); }
-export function shiftdown() { controller.shiftSelectedPatternDown(); }
-export function reverse() { controller.reverseSelectedPattern(); }
-export function random() { controller.randomizeSelectedPattern(); }
-export function clear() { controller.clearSelectedPattern(); }
-export function copy() { controller.copyStepsFromSelectedPattern(); }
-export function paste() { controller.pasteStepsToSelectedPattern(); }
+export function shiftleft() { controller.shiftPatternLeft(); }
+export function shiftright() { controller.shiftPatternRight(); }
+export function shiftup() { controller.shiftPatternUp(); }
+export function shiftdown() { controller.shiftPatternDown(); }
+export function reverse() { controller.reversePattern(); }
+export function random() { controller.randomizePattern(); }
+export function clear() { controller.clearPattern(); }
+export function copy() { controller.copyPatternSteps(); }
+export function paste() { controller.pastePatternSteps(); }
+
+export function trackreverse() { controller.reverseTrack(); }
+export function trackrandom() { controller.randomizeTrack(); }
+export function trackclear() { controller.clearTrack(); }
+export function trackcopy() { controller.copyTrackSteps(); }
+export function trackpaste() { controller.pasteTrackSteps(); }
 
 console.log(
   `________________________________________________________________________________
