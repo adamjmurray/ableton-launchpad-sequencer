@@ -73,7 +73,7 @@ export default class Controller {
           case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
           case GATE_SUMMING_MODE: return this.setTrackGateSummingMode(data[3], trackIndex, false);
           case MAX_AFTERTOUCH: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
-          case MAX_MODULATION: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
+          case MAX_MODULATION: return this.setTrackMaxModulation(data[3], trackIndex, false);
           case MUTE: return this.setTrackMute(data[3], trackIndex, false);
           case PATTERNS:
             const patternIndex = data[3];
