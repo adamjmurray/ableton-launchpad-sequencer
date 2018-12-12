@@ -5,6 +5,7 @@ let model;
 let view;
 let controller;
 
+const MOD_CC = 1;
 const PRESS = 127;
 const LIFT = 0;
 
@@ -147,10 +148,7 @@ describe('Controller', () => {
     it('does not generate notes for empty tracks', () => {
       controller.handleClockTick(0);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), []);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
     });
-
 
     it('generates notes for positive clock ticks when gate pattern steps have values', () => {
       model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
@@ -158,8 +156,6 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
         [60, 70, 0.9],
       ]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
     });
 
     it('generates notes for all tracks', () => {
@@ -175,8 +171,6 @@ describe('Controller', () => {
         [62, 70, 0.9],
         [63, 70, 0.9],
       ]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
     });
 
     it('can set velocity and duration', () => {
@@ -189,8 +183,39 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
         [60, 127, 2],
       ]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), []);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), []);
+    });
+
+    it('generates modulation and aftertouch values of 0 for empty steps', () => {
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 0]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[0]]);
+    });
+
+    it('sums modulation and aftertouch values across tracks', () => {
+      model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 1;
+      model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 1;
+      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 2;
+      model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[95]]);
+    });
+
+    it('respects the tracks max modulation and aftertouch settings', () => {
+      model.tracks[0].maxModulation = 10;
+      model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 4;
+      model.tracks[2].maxModulation = 33;
+      model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 4;
+
+      model.tracks[0].maxAftertouch = 100;
+      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3; // should be 75
+      model.tracks[3].maxAftertouch = 40;
+      model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1; // should be 10
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 43]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[85]]);
     });
   });
 

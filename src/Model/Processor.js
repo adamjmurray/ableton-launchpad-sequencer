@@ -16,8 +16,8 @@ const processors = {
   'duration x': (note, value) => { note.duration *= (value + 1); },
   'duration /': (note, value) => { note.duration /= (value + 1); },
 
-  'modulation': (note, value) => { note.modulation = STEP_VALUE.MIDI_CC[value]; },
-  'aftertouch': (note, value) => { note.aftertouch = STEP_VALUE.MIDI_CC[value]; },
+  'modulation': (note, value) => { note.modulation = 127 * value / 4; },
+  'aftertouch': (note, value) => { note.aftertouch = 127 * value / 4; },
 
   'random mute': (note, value) => { if (Math.random() <= (value / 4)) { note.mute = true; } },
 };

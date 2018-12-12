@@ -11,6 +11,9 @@ const {
   VELOCITY,
   GATE,
   MULTIPLIER,
+  GATE_SUMMING_MODE,
+  MAX_AFTERTOUCH,
+  MAX_MODULATION,
   MUTE,
   PATTERNS,
   STEPS,
@@ -66,6 +69,9 @@ export default class Controller {
           case VELOCITY: return this.setTrackVelocity(data[3], trackIndex, false);
           case GATE: return this.setTrackGate(data[3], trackIndex, false);
           case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
+          case GATE_SUMMING_MODE: return this.setTrackGateSummingMode(data[3], trackIndex, false);
+          case MAX_AFTERTOUCH: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
+          case MAX_MODULATION: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
           case MUTE: return this.setTrackMute(data[3], trackIndex, false);
           case PATTERNS:
             const patternIndex = data[3];
@@ -79,12 +85,30 @@ export default class Controller {
     }
   }
 
+  handleTransportStop() {
+    this.handleClockTick(-1);
+    // Make modulation and aftertouch values output on the first step when the transport starts again:
+    this._prevAftertouch = null;
+    this._prevModulation = null;
+    // this._view.render(); // was this actually necessary?
+  }
+
+
+  handleTrackNote(pitch, velocity) {
+    // TODO
+  }
+
+  handleTrackCC(cc) {
+    if (cc === MIDI.TRANSPORT_STOP) {
+      this.handleTransportStop();
+    }
+  }
+
   handleLaunchpadCC(cc, value) {
-    if (cc !== MIDI.TRANSPORT_STOP) {
-      this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
+    if (cc === MIDI.TRANSPORT_STOP) {
+      this.handleTransportStop();
     } else {
-      this.handleClockTick(-1);
-      this._view.render(); // transport stop clears the launchpad grid
+      this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
     }
   }
 
@@ -211,30 +235,32 @@ export default class Controller {
     this._rightButtonGesture.reset();
   }
 
-  handleTrackNote(pitch, velocity) {
-    // TODO
-  }
-
   handleClockTick(clockIndex) {
     if (clockIndex !== this._model.clockIndex) {
       this._model.clockIndex = clockIndex;
       this._view.renderClock();
     }
     if (clockIndex >= 0) {
+      let aftertouch = 0;
+      let modulation = 0;
       this._model.tracks.forEach((track) => {
         const note = track.noteForClock(clockIndex);
         if (note.enabled) {
           if (note.duration > 0) {
             outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
           }
-          if (note.modulation != null) {
-            outlet(OUTLET.CC, 1, note.modulation);
-          }
-          if (note.aftertouch != null) {
-            outlet(OUTLET.AFTERTOUCH, note.aftertouch);
-          }
         }
+        aftertouch += note.aftertouch;
+        modulation += note.modulation;
       });
+      if (aftertouch !== this._prevAftertouch) {
+        outlet(OUTLET.AFTERTOUCH, Math.min(Math.round(aftertouch), 127));
+        this._prevAftertouch = aftertouch;
+      }
+      if (modulation !== this._prevModulation) {
+        outlet(OUTLET.CC, 1, Math.min(Math.round(modulation), 127));
+        this._prevModulation = modulation;
+      }
     }
   }
 
@@ -334,6 +360,26 @@ export default class Controller {
     }
     if (store) {
       this._storage.storeTrackGateSummingMode(trackIndex, mode);
+    }
+  }
+
+  setTrackMaxAftertouch(max, trackIndex = this._model.selectedTrackIndex, store = true) {
+    this._model.tracks[trackIndex].maxAftertouch = max;
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._view.renderTrackMaxAftertouch(max);
+    }
+    if (store) {
+      this._storage.storeTrackMaxAftertouch(trackIndex, max);
+    }
+  }
+
+  setTrackMaxModulation(max, trackIndex = this._model.selectedTrackIndex, store = true) {
+    this._model.tracks[trackIndex].maxModulation = max;
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._view.renderTrackMaxModulation(max);
+    }
+    if (store) {
+      this._storage.storeTrackMaxModulation(trackIndex, max);
     }
   }
 

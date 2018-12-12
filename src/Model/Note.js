@@ -20,8 +20,8 @@ export default class Note {
     }
     // Modulation and aftertouch aren't relly part of a "note"
     // but it's makes this a convenient model for evaluating a sequencer step:
-    this.modulation = null;
-    this.aftertouch = null;
+    this.modulation = 0;
+    this.aftertouch = 0;
   }
 
   gateValue(gateSummingMode) {

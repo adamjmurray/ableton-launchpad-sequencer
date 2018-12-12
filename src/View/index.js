@@ -53,6 +53,14 @@ export default class View {
     this._guiView.renderTrackGateSummingMode(mode);
   }
 
+  renderTrackMaxAftertouch(max) {
+    this._guiView.renderTrackMaxAftertouch(max);
+  }
+
+  renderTrackMaxModulation(max) {
+    this._guiView.renderTrackMaxModulation(max);
+  }
+
   renderTrackMultiplier() {
     this._guiView.renderTrackMultiplier(this._model.selectedTrack.durationMultiplier);
   }

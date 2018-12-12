@@ -9,6 +9,8 @@ const {
   GATE,
   MULTIPLIER,
   GATE_SUMMING_MODE,
+  MAX_AFTERTOUCH,
+  MAX_MODULATION,
   MUTE,
   PATTERNS,
   STEPS,
@@ -45,6 +47,14 @@ export default class StorageView {
 
   storeTrackGateSummingMode(trackIndex, mode) {
     outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE_SUMMING_MODE, mode);
+  }
+
+  storeTrackMaxAftertouch(trackIndex, max) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MAX_AFTERTOUCH, max);
+  }
+
+  storeTrackMaxModulation(trackIndex, max) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MAX_MODULATION, max);
   }
 
   storeTrackMute(trackIndex, mute) {
@@ -87,8 +97,10 @@ export default class StorageView {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);
       this.storeTrackGate(trackIndex, track.gate);
-      this.storeTrackGateSummingMode(trackIndex, track.gateSummingMode);
       this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
+      this.storeTrackGateSummingMode(trackIndex, track.gateSummingMode);
+      this.storeTrackMaxAftertouch(trackIndex, track.maxAftertouch);
+      this.storeTrackMaxModulation(trackIndex, track.maxModulation);
       this.storeTrackMute(trackIndex, track.mute);
       track.patterns.forEach((pattern, patternIndex) => {
         this.storePatternSteps(trackIndex, patternIndex, pattern.steps);

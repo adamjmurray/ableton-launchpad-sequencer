@@ -23,6 +23,8 @@ export default class Track {
     this.gateSummingMode = DEFAULT.GATE_SUMMING_MODE;
     this.patterns.forEach(pattern => pattern.reset());
     this.durationMultiplier = 1;
+    this.maxAftertouch = 127;
+    this.maxModulation = 127;
     this.mute = false;
     this._note = new Note();
   }
@@ -46,6 +48,8 @@ export default class Track {
       note.pitch = this.scale.map(note.pitch, gateValue);
       note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
     }
+    note.aftertouch *= this.maxAftertouch / 127;
+    note.modulation *= this.maxModulation / 127;
     return note;
   }
 

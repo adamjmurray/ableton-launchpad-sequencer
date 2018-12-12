@@ -128,8 +128,8 @@ export const OUTLET = Object.freeze({
 export const PATTERN = Object.freeze({ // maps pattern types to pattern indexes
   VELOCITY: 0,
   DURATION: 1,
-  MODULATION: 2,
-  OCTAVE: 3,
+  AFTERTOUCH: 2,
+  MODULATION: 3,
   MUTE: 4,
   GATE1: 5,
   GATE2: 6,
@@ -142,7 +142,6 @@ export const STEP_VALUE = Object.freeze({
   GATE_DURATION: Object.freeze([null, 1, 2, 4, 8]),
   DURATION: Object.freeze([1, 2, 4, 8, 16]),
   OCTAVES: Object.freeze([null, 12, 24, -12, -24]),
-  MIDI_CC: Object.freeze([null, 0, 42, 85, 127]),
 });
 
 export const STORAGE = Object.freeze({
@@ -154,6 +153,8 @@ export const STORAGE = Object.freeze({
   GATE: 'gate',
   MULTIPLIER: 'multiplier',
   GATE_SUMMING_MODE: 'gatesumming',
+  MAX_AFTERTOUCH: 'aftertouch',
+  MAX_MODULATION: 'modulation',
   MUTE: 'mute',
   PATTERNS: 'patterns',
   STEPS: 'steps',

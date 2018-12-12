@@ -4,25 +4,25 @@
 - Redoing a change to pattern steps doesn't work
 
 ## 1.1
-- Global Modulation and Aftertouch latch option (add an "L" button next to the pattern descriptions)
+- Track-level option for gate pattern type (affecting all 3 gate patterns in the track):
+  - pitch (good for arps, melodies, and multi-drum patterns)
+  - velocity (good for single drum patterns or repetitive bass notes or sound FX)
+    - Note: "Gate Summing" will operate on the note property corresponding to the type of gate
+    - What should we do with the velocity pattern, leave it?
+- add a new summing mode ('add/3'? or 'add/4' if we keep the velocity pattern) to scale the values so a max value on all tracks is needed to hit max velocity. Acts like add for pitch gates.
+- Gate summing mode 'multi' to play multiple notes when not duplicate pitches. Can act like add for velocity, or it could control flams (maybe build that feature later)
 - Fix playhead only starts at time 0 bug
+- Add version number to UI
 
 ## 1.2
 - Constrain all notes to scale pitches so arpeggiations work as expected
 - Per-track ignore scale option for drum tracks or sound FX
   - Provide an example Live set with a combination of arpeggios and drums by using an instrument rack
-- Track-level option for gate pattern type (affecting all 3 gate patterns in the track):
-  - pitch (good for arps, melodies, and multi-drum patterns)
-  - velocity (good for single drum patterns or repetitive bass notes or sound FX)
-    - Note: "Gate Summing" will operate on the note property corresponding to the type of gate
-    - add a new summing mode ('/add'? or 'sc.add'?) to scale the values so a max  value on all tracks is needed to hit max velocity
 - Allow scale UI to select the root and change track pitch to octave + scale offset
   - When the scale is being overriden, this will remain a pitch input
     - It's probably easiest to use the track pitch model either way, and get the scale offset from pitch % 12
   - The point of this feature is if you have a pattern that's playing the lowest note in the chord, and you set the chord via MIDI, it will continue to play the lowest note and not be pseudo-randomly mapped the chord note closest to the base pitch
 - Set the scale from MIDI input
-
-## 1.3
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:

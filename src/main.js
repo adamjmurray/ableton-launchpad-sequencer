@@ -24,6 +24,8 @@ export function velocity(velocity) { controller.setTrackVelocity(velocity); }
 export function gate(gate) { controller.setTrackGate(gate); }
 export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
 export function gatesumming(mode) { controller.setTrackGateSummingMode(mode); }
+export function aftertouch(max) { controller.setTrackMaxAftertouch(max); }
+export function modulation(max) { controller.setTrackMaxModulation(max); }
 export function trackmute(mute) { controller.setTrackMute(mute); }
 
 export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }
@@ -38,6 +40,7 @@ export function value(value) { controller.selectOrToggleValue(value); }
 export function lpnote(pitch, velocity) { controller.handleLaunchpadNote(pitch, velocity); }
 export function lpcc(cc, value) { controller.handleLaunchpadCC(cc, value); }
 export function note(pitch, velocity) { controller.handleTrackNote(pitch, velocity); }
+export function cc(cc, value) { controller.handleTrackCC(cc, value); }
 export function clock(index) { controller.handleClockTick(index); }
 
 export function shiftleft() { controller.shiftPatternLeft(); }
