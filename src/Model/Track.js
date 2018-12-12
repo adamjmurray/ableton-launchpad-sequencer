@@ -1,4 +1,4 @@
-import { DEFAULT, NUMBER_OF } from '../config';
+import { DEFAULT, MODE, NUMBER_OF } from '../config';
 import Note from './Note';
 import Pattern from './Pattern';
 
@@ -30,11 +30,11 @@ export default class Track {
   }
 
   noteForClock(rawClock) {
-    if (this.mute && !this.pitchOverride) return; // pitch override also overrides mute
+    if (this.mute) return;
     const clock = this.clockForMultiplier(rawClock);
     if (clock == null || clock < 0) return;
 
-    const note = this._note; // avoids creating and garbage collecting objects each clock tick
+    const note = this._note; // avoid creating and garbage collecting objects each clock tick
     note.reset();
     note.pitch = this.pitch;
     note.velocity = this.velocity;
@@ -44,9 +44,18 @@ export default class Track {
     const gateValue = note.gateValue(this.gateSummingMode);
     if (gateValue >= 0 && !note.mute) {
       note.enabled = true;
-      // TODO: handle pitch vs velocity gate mode (assuming pitch for now):
-      note.pitch = this.scale.map(note.pitch, gateValue);
       note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
+
+      switch (this.gateMode) {
+        case MODE.GATE.PITCH:
+          note.pitch = this.scale.map(note.pitch, gateValue);
+          break;
+
+        case MODE.GATE.VELOCITY:
+          // It takes all 3 gates with max value to hit max velocity. Or accent notes with the velocity pattern.
+          note.velocity += ((127 - note.velocity) * gateValue) / 12;
+          break;
+      }
     }
     note.aftertouch *= this.maxAftertouch / 127;
     note.modulation *= this.maxModulation / 127;

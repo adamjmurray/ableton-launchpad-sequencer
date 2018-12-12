@@ -4,13 +4,13 @@
 - Redoing a change to pattern steps doesn't work
 
 ## 1.1
-- Track-level option for gate pattern type (affecting all 3 gate patterns in the track):
-  - pitch (good for arps, melodies, and multi-drum patterns)
-  - velocity (good for single drum patterns or repetitive bass notes or sound FX)
-    - Note: "Gate Summing" will operate on the note property corresponding to the type of gate
-    - What should we do with the velocity pattern, leave it?
-- add a new summing mode ('add/3'? or 'add/4' if we keep the velocity pattern) to scale the values so a max value on all tracks is needed to hit max velocity. Acts like add for pitch gates.
-- Gate summing mode 'multi' to play multiple notes when not duplicate pitches. Can act like add for velocity, or it could control flams (maybe build that feature later)
+Still TODO:
+- Gate summing mode 'multi'
+  - Pitch gates will play multiple notes for each distinct pitch
+    - Combine duplicate pitches and increase their velocity (and this should happen regardless across tracks)
+  - Velocity gate patterns will use the track pitch, +1 semitone, and +2 semitones (from bottom to top) for sequencing multiple drums
+- Example Live set that demonstrates the different gate settings (with one track for an arpeggio, one track for a
+  bass line, and 2 for drums) by using an instrument rack.
 
 ## 1.2
 - Constrain all notes to scale pitches so arpeggiations work as expected
