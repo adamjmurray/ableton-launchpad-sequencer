@@ -23,6 +23,7 @@
     - It's probably easiest to use the track pitch model either way, and get the scale offset from pitch % 12
   - The point of this feature is if you have a pattern that's playing the lowest note in the chord, and you set the chord via MIDI, it will continue to play the lowest note and not be pseudo-randomly mapped the chord note closest to the base pitch
 - Set the scale from MIDI input
+- Randomize start and end steps
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
