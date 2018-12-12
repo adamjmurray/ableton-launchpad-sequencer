@@ -7,6 +7,7 @@ const {
   PITCH,
   VELOCITY,
   GATE,
+  GATE_MODE,
   MULTIPLIER,
   GATE_SUMMING_MODE,
   MAX_AFTERTOUCH,
@@ -39,6 +40,10 @@ export default class StorageView {
 
   storeTrackGate(trackIndex, gate) {
     outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE, gate);
+  }
+
+  storeTrackGateMode(trackIndex, mode) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE_MODE, mode);
   }
 
   storeTrackMultiplier(trackIndex, multiplier) {
@@ -97,6 +102,7 @@ export default class StorageView {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);
       this.storeTrackGate(trackIndex, track.gate);
+      this.storeTrackGateMode(trackIndex, track.gateMode);
       this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
       this.storeTrackGateSummingMode(trackIndex, track.gateSummingMode);
       this.storeTrackMaxAftertouch(trackIndex, track.maxAftertouch);

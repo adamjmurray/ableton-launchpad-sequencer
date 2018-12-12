@@ -10,6 +10,7 @@ const {
   PITCH,
   VELOCITY,
   GATE,
+  GATE_MODE,
   MULTIPLIER,
   GATE_SUMMING_MODE,
   MAX_AFTERTOUCH,
@@ -68,6 +69,7 @@ export default class Controller {
           case PITCH: return this.setTrackPitch(data[3], trackIndex, false);
           case VELOCITY: return this.setTrackVelocity(data[3], trackIndex, false);
           case GATE: return this.setTrackGate(data[3], trackIndex, false);
+          case GATE_MODE: return this.setTrackGateMode(data[3], trackIndex, false);
           case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
           case GATE_SUMMING_MODE: return this.setTrackGateSummingMode(data[3], trackIndex, false);
           case MAX_AFTERTOUCH: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
@@ -340,6 +342,16 @@ export default class Controller {
     }
     if (store) {
       this._storage.storeTrackGate(trackIndex, gate);
+    }
+  }
+
+  setTrackGateMode(mode, trackIndex = this._model.selectedTrackIndex, store = true) {
+    this._model.tracks[trackIndex].gateMode = mode;
+    if (trackIndex === this._model.selectedTrackIndex) {
+      this._view.renderTrackGateMode(mode);
+    }
+    if (store) {
+      this._storage.storeTrackGateMode(trackIndex, mode);
     }
   }
 

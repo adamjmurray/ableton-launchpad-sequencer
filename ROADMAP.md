@@ -11,7 +11,6 @@
     - What should we do with the velocity pattern, leave it?
 - add a new summing mode ('add/3'? or 'add/4' if we keep the velocity pattern) to scale the values so a max value on all tracks is needed to hit max velocity. Acts like add for pitch gates.
 - Gate summing mode 'multi' to play multiple notes when not duplicate pitches. Can act like add for velocity, or it could control flams (maybe build that feature later)
-- Add version number to UI
 
 ## 1.2
 - Constrain all notes to scale pitches so arpeggiations work as expected

@@ -13,6 +13,7 @@ const INDEX = 'index';
 const PITCH = 'pitch';
 const VELOCITY = 'velocity';
 const GATE = 'gate';
+const GATE_MODE = 'gatemode';
 const GATE_SUMMING_MODE = 'gatesumming';
 const MAX_AFTERTOUCH = 'aftertouch';
 const MAX_MODULATION = 'modulation';
@@ -57,6 +58,7 @@ export default class GuiView {
     this.renderTrackPitch(track.pitch);
     this.renderTrackVelocity(track.velocity);
     this.renderTrackGate(track.gate);
+    this.renderTrackGateMode(track.gateMode);
     this.renderTrackGateSummingMode(track.gateSummingMode);
     this.renderTrackMaxAftertouch(track.maxAftertouch);
     this.renderTrackMaxModulation(track.maxModulation);
@@ -80,6 +82,10 @@ export default class GuiView {
 
   renderTrackGate(gate) {
     outlet(OUTLET.GUI, TRACK, GATE, gate);
+  }
+
+  renderTrackGateMode(mode) {
+    outlet(OUTLET.GUI, TRACK, GATE_MODE, mode);
   }
 
   renderTrackGateSummingMode(mode) {

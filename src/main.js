@@ -22,6 +22,7 @@ export function duration(duration) { controller.setDuration(duration); }
 export function pitch(pitch) { controller.setTrackPitch(pitch); }
 export function velocity(velocity) { controller.setTrackVelocity(velocity); }
 export function gate(gate) { controller.setTrackGate(gate); }
+export function gatemode(mode) { controller.setTrackGateMode(mode) }
 export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
 export function gatesumming(mode) { controller.setTrackGateSummingMode(mode); }
 export function aftertouch(max) { controller.setTrackMaxAftertouch(max); }

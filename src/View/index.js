@@ -49,6 +49,10 @@ export default class View {
     this._guiView.renderTrackGate(this._model.selectedTrack.gate);
   }
 
+  renderTrackGateMode(mode) {
+    this._guiView.renderTrackGateMode(mode);
+  }
+
   renderTrackGateSummingMode(mode = this._model.selectedTrack.gateSummingMode) {
     this._guiView.renderTrackGateSummingMode(mode);
   }

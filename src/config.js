@@ -151,6 +151,7 @@ export const STORAGE = Object.freeze({
   PITCH: 'pitch',
   VELOCITY: 'velocity',
   GATE: 'gate',
+  GATE_MODE: 'gatemode',
   MULTIPLIER: 'multiplier',
   GATE_SUMMING_MODE: 'gatesumming',
   MAX_AFTERTOUCH: 'aftertouch',
