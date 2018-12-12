@@ -1,5 +1,5 @@
 ## Known Issues
-- The first time you start Live's transport, if the playhead is not at the beginning (time 0) the sequencer will not start
+- The first time you start Live's transport, if the playhead is not at the beginning (time 0) the sequencer will not start (fixed for upcoming v1.1).
 - Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
 - Redoing a change to pattern steps doesn't work
 
@@ -11,7 +11,6 @@
     - What should we do with the velocity pattern, leave it?
 - add a new summing mode ('add/3'? or 'add/4' if we keep the velocity pattern) to scale the values so a max value on all tracks is needed to hit max velocity. Acts like add for pitch gates.
 - Gate summing mode 'multi' to play multiple notes when not duplicate pitches. Can act like add for velocity, or it could control flams (maybe build that feature later)
-- Fix playhead only starts at time 0 bug
 - Add version number to UI
 
 ## 1.2
