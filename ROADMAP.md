@@ -5,9 +5,7 @@
 
 ## 1.1
 - Combine duplicate pitches and increase their velocity (and this should happen regardless across tracks)
-- Set the scale from MIDI input
-- Example Live set that demonstrates the different gate settings (with one track for an arpeggio, one track for a
-  bass line, and 2 for drums) by using an instrument rack.
+- Example Live set that demonstrates the different gate settings (with one track for an arpeggio, one track for a bass line, and 2 for drums) by using an instrument rack. And uses incoming MIDI to control the scale.
 
 ## 1.2
 - Easier way to delete steps in the GUI: Shift + click
@@ -16,6 +14,7 @@
   - When the scale is being overriden, this will remain a pitch input
     - It's probably easiest to use the track pitch model either way, and get the scale offset from pitch % 12
   - The point of this feature is if you have a pattern that's playing the lowest note in the chord, and you set the chord via MIDI, it will continue to play the lowest note and not be pseudo-randomly mapped the chord note closest to the base pitch
+- Option to mute tracks with pitch gates when no midi notes are playing
 - Randomize start and end steps
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings

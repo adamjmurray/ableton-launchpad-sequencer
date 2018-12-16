@@ -17,7 +17,8 @@ export default class Scale {
     this._memo = {}; // memoize for performance
   }
 
-  override(pitchClass, enabled) {
+  override(pitch, enabled) {
+    const pitchClass = pitch % 12;
     if (enabled) {
       if (!this._original) { //backup the original scale on the first override
         this._original = this._pitchClasses.slice();

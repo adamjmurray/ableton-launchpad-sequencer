@@ -97,7 +97,8 @@ export default class Controller {
 
 
   handleTrackNote(pitch, velocity) {
-    // TODO
+    this._model.scale.override(pitch, velocity)
+    this._view.renderScale(this._model.scale.pitchClasses);
   }
 
   handleTrackCC(cc) {
