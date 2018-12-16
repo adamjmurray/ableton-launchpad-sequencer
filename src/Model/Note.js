@@ -11,7 +11,11 @@ export default class Note {
 
   reset() {
     this.pitch = 0;
+    this.pitch2 = null;
+    this.pitch3 = null;
     this.velocity = 0;
+    this.velocity2 = null;
+    this.velocity3 = null;
     this.duration = 1;
     this.mute = false;
     this.enabled = false;
@@ -40,13 +44,15 @@ export default class Note {
         value = nonZeroValues[Math.floor(Math.random() * nonZeroValues.length)];
         break;
 
-      default: // GATE_SUMMING.ADD:
+      default:
+        // GATE_SUMMING.ADD
+        // and GATE_SUMMING.MULTI so we produce a note if any of them have a step value. Track will handle the behavior.
         for (var i = 0; i < NUMBER_OF.GATES; i++) {
           value += this.gateValues[i];
         }
         break;
     }
-    // The first value just enables the note and uses the base pitch/velocity, so subtract 1:
+    // The first value just enables the note and uses the track pitch/velocity, so subtract 1:
     return value - 1;
   }
 

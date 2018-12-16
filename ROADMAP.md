@@ -4,23 +4,18 @@
 - Redoing a change to pattern steps doesn't work
 
 ## 1.1
-Still TODO:
-- Gate summing mode 'multi'
-  - Pitch gates will play multiple notes for each distinct pitch
-    - Combine duplicate pitches and increase their velocity (and this should happen regardless across tracks)
-  - Velocity gate patterns will use the track pitch, +1 semitone, and +2 semitones (from bottom to top) for sequencing multiple drums
+- Combine duplicate pitches and increase their velocity (and this should happen regardless across tracks)
+- Set the scale from MIDI input
 - Example Live set that demonstrates the different gate settings (with one track for an arpeggio, one track for a
   bass line, and 2 for drums) by using an instrument rack.
 
 ## 1.2
-- Constrain all notes to scale pitches so arpeggiations work as expected
-- Per-track ignore scale option for drum tracks or sound FX
-  - Provide an example Live set with a combination of arpeggios and drums by using an instrument rack
+- Easier way to delete steps in the GUI: Shift + click
+- Global aftertouch/modulation summing mode
 - Allow scale UI to select the root and change track pitch to octave + scale offset
   - When the scale is being overriden, this will remain a pitch input
     - It's probably easiest to use the track pitch model either way, and get the scale offset from pitch % 12
   - The point of this feature is if you have a pattern that's playing the lowest note in the chord, and you set the chord via MIDI, it will continue to play the lowest note and not be pseudo-randomly mapped the chord note closest to the base pitch
-- Set the scale from MIDI input
 - Randomize start and end steps
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings

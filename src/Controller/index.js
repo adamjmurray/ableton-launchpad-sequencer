@@ -248,8 +248,17 @@ export default class Controller {
       this._model.tracks.forEach((track) => {
         const note = track.noteForClock(clockIndex);
         if (note.enabled) {
+          // TODO: dedupe notes
           if (note.duration > 0) {
-            outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
+            if (note.pitch != null) {
+              outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
+            }
+            if (note.pitch2 != null) {
+              outlet(OUTLET.NOTE, note.pitch2, note.velocity2, note.duration);
+            }
+            if (note.pitch3 != null) {
+              outlet(OUTLET.NOTE, note.pitch3, note.velocity3, note.duration);
+            }
           }
         }
         aftertouch += note.aftertouch;

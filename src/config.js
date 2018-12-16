@@ -100,7 +100,7 @@ export const MODE = Object.freeze({
     LOWEST: 'low',
     HIGHEST: 'high',
     RANDOM: 'rand',
-    SCALED_ADD: 'sc.add',
+    MULTI: 'multi',
   }),
 });
 
