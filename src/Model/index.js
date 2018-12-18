@@ -38,18 +38,4 @@ export default class Model {
       return notes;
     }, []);
   }
-
-  fromJSON({ scale, stepLength, tracks }) {
-    if (scale != null) {
-      this.scale.pitchClasses = scale;
-    }
-    if (stepLength != null) {
-      this.globalStepDuration = stepLength;
-    }
-    if (tracks != null) {
-      tracks.forEach((track, index) =>
-        this.tracks[index].fromJSON(track)
-      );
-    }
-  }
 }

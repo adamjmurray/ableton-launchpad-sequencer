@@ -55,8 +55,4 @@ export default class Note {
     // The first value just enables the note and uses the track pitch/velocity, so subtract 1:
     return value - 1;
   }
-
-  toString() {
-    return JSON.stringify(this);
-  }
 }

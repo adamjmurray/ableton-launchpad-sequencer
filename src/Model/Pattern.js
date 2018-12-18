@@ -129,22 +129,4 @@ export default class Pattern {
       this._processor.process(note, value, scale, gateIndex);
     }
   }
-
-  toJSON() {
-    return {
-      type: this.type,
-      startStepIndex: this.startStepIndex,
-      endStepIndex: this.endStepIndex,
-      mute: this.mute,
-      sequence: this.steps
-    };
-  }
-
-  fromJSON({ type, start, end, mute, sequence }) {
-    if (type != null) this.type = type;
-    if (start != null) this.startStepIndex = start;
-    if (end != null) this.endStepIndex = end;
-    if (mute != null) this.mute = mute;
-    if (sequence != null) this.sequence = sequence;
-  }
 }

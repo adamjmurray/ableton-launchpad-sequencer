@@ -104,26 +104,4 @@ export default class Track {
     const pattern = this.patterns[patternIndex];
     return pattern.startStepIndex + trackClock.mod(pattern.length);
   }
-
-  toJSON() {
-    return {
-      pitch: this.pitch,
-      velocity: this.velocity,
-      gate: this.gate,
-      durationMultiplier: this.durationMultiplier,
-      mute: this.mute,
-      patterns: this.patterns
-    };
-  }
-
-  fromJSON({ pitch, velocity, gate, durationMultiplier, mute, patterns }) {
-    if (pitch != null) { this.pitch = pitch; }
-    if (velocity != null) { this.velocity = velocity; }
-    if (gate != null) { this.gate = gate; }
-    if (durationMultiplier != null) { this.durationMultiplier = durationMultiplier; }
-    if (mute != null) { this.mute = mute; }
-    if (patterns != null) {
-      patterns.forEach((pattern, index) => this.patterns[index].fromJSON(pattern));
-    }
-  }
 }
