@@ -176,8 +176,8 @@ export default class GuiView {
   }
 
   get _stepIndexForClock() {
-    const { clockIndex, selectedPattern } = this._model;
-    return clockIndex < 0 ? -1 : selectedPattern.stepIndexForClock(clockIndex);
+    const { clockIndex, selectedTrack, selectedPatternIndex } = this._model;
+    return clockIndex < 0 ? -1 : selectedTrack.patternStepIndexForClock(clockIndex, selectedPatternIndex);
   }
 
   renderStep(stepIndex, sequencerStepIndex = this._stepIndexForClock) {

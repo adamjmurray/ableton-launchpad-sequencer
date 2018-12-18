@@ -31,17 +31,19 @@ export default class Track {
     this._note = new Note();
   }
 
-  noteForClock(rawClock) {
-    if (this.mute) return;
-    const clock = this.clockForMultiplier(rawClock);
-    if (clock == null || clock < 0) return;
-
+  noteForClock(clock) {
     const note = this._note; // avoid creating and garbage collecting objects each clock tick
+    note.enabled = false;
+    if (this.mute || clock < 0 || clock % this.durationMultiplier !== 0) {
+      // return the previous note to maintain the modulation and aftertouch value when we're in between track steps
+      return note;
+    }
+    const trackClock = clock / this.durationMultiplier
     note.reset();
     note.pitch = this.pitch;
     note.velocity = this.velocity;
 
-    this.patterns.forEach(pattern => pattern.processNote(note, clock, this.scale));
+    this.patterns.forEach(pattern => pattern.processNote(note, trackClock, this.scale));
 
     const gateValue = note.gateValue(this.gateSummingMode);
     if (gateValue >= 0 && !note.mute) {
@@ -96,9 +98,11 @@ export default class Track {
     return note;
   }
 
-  clockForMultiplier(clock) {
-    // step lengths are longer, so we only trigger every few clock ticks
-    if (clock % this.durationMultiplier === 0) return clock /= this.durationMultiplier;
+  patternStepIndexForClock(clock, patternIndex) {
+    if (clock < 0) return -1;
+    const trackClock = Math.floor(clock / this.durationMultiplier);
+    const pattern = this.patterns[patternIndex];
+    return pattern.startStepIndex + trackClock.mod(pattern.length);
   }
 
   toJSON() {

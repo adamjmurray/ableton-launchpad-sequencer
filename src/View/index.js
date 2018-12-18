@@ -127,17 +127,21 @@ export default class View {
   }
 
   renderClock() {
-    const previousClockIndex = this._clockIndex;
-    const newClockIndex = this._model.clockIndex;
-    if (newClockIndex !== previousClockIndex) {
-      const pattern = this._model.selectedPattern;
-      const previousStepIndex = pattern.stepIndexForClock(previousClockIndex);
-      const newStepIndex = pattern.stepIndexForClock(newClockIndex);
-      this._launchpadView.renderStepButton(previousStepIndex);
-      this._launchpadView.renderStepButton(newStepIndex);
-      this._guiView.renderStep(previousStepIndex);
-      this._guiView.renderStep(newStepIndex);
-      this._clockIndex = newClockIndex;
+    const clock = this._model.clockIndex;
+    const track = this._model.selectedTrack;
+    const patternIndex = this._model.selectedPatternIndex;
+    const previousStepIndex = this._clockIndex;
+    const newStepIndex = track.patternStepIndexForClock(clock, patternIndex);
+    if (previousStepIndex !== newStepIndex) {
+      if (previousStepIndex >= 0) {
+        this._launchpadView.renderStepButton(previousStepIndex);
+        this._guiView.renderStep(previousStepIndex);
+      }
+      if (newStepIndex >= 0) {
+        this._launchpadView.renderStepButton(newStepIndex);
+        this._guiView.renderStep(newStepIndex);
+      }
+      this._clockIndex = newStepIndex;
     }
   }
 }

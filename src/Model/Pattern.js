@@ -118,27 +118,11 @@ export default class Pattern {
     const after = steps.slice(end + 1);
     this.steps = before.concat(right, left, after);
   }
-  // Given a clock index (in steps) return the active step in this pattern,
-  // taking into account the start and end step.
-  stepIndexForClock(clockIndex) {
-    return this.startStepIndex + clockIndex.mod(this.length);
-  }
 
-  stepForClock(clockIndex) {
-    return this.steps[this.stepIndexForClock(clockIndex)];
-  }
-
-  // Given a note in the form of a JS object:
-  // {
-  //   pitch: <MIDI pitch (0-127)>,
-  //   velocity: <MIDI velocity (0-127)>,
-  //   duration: <pulses/quarter note beats (float)>
-  // }
-  // modify the note for this pattern's value at the given clock index.
-  //
   processNote(note, clock, scale) {
     if (this.mute) return;
-    const value = this.stepForClock(clock);
+    const stepIndex = this.startStepIndex + clock.mod(this.length);
+    const value = this.steps[stepIndex];
     if (value > 0) { // Assumption: 0 is always a NOOP
       // Assumption: pattern indexes 5-7 are the gate types:
       const gateIndex = this.index - 5;

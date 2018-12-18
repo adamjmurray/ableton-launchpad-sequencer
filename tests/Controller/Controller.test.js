@@ -1,5 +1,5 @@
 import { Config, Controller, Model, View } from '../../src';
-const { LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF, OUTLET, PATTERN } = Config;
+const { GUI_COLOR, LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF, OUTLET, PATTERN } = Config;
 
 const MOD_CC = 1;
 const PRESS = 127;
@@ -223,6 +223,36 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[95]]);
     });
 
+
+    it('outputs correct modulation and aftertouch values when using the track step duration multiplier', () => {
+      const [track1, track2] = model.tracks;
+      const pattern1 = track1.patterns[PATTERN.MODULATION];
+      const pattern2 = track2.patterns[PATTERN.MODULATION];
+
+      track1.durationMultiplier = 2;
+      pattern1.steps[0] = 1;
+      pattern1.steps[1] = 2;
+      pattern2.steps[0] = 1; // + 1
+      pattern2.steps[1] = 2; // + 1
+      pattern2.steps[2] = 2; // + 2
+      pattern2.steps[3] = 0; // + 2
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
+
+      mockOutlet.reset();
+      controller.handleClockTick(1);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 95]]);
+
+      mockOutlet.reset();
+      controller.handleClockTick(2);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127]]);
+
+      mockOutlet.reset();
+      controller.handleClockTick(3);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
+    });
+
     it('respects the tracks max modulation and aftertouch settings', () => {
       model.tracks[0].maxModulation = 10;
       model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 4;
@@ -237,6 +267,68 @@ describe('Controller', () => {
       controller.handleClockTick(0);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 43]]);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[85]]);
+    });
+
+    describe('rendering', () => {
+      const firstStepPosition = [2, 2, 14, 14];
+      const secondStepPosition = [20, 2, 32, 14];
+
+      it('renders the current step on the grids', () => {
+        controller.handleClockTick(0);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.GUI), [
+          ['grid', 'frgb', GUI_COLOR.SEQUENCER_STEP],
+          ['grid', 'paintrect', ...firstStepPosition],
+        ]);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.LAUNCHPAD_NOTE), [
+          [0, LAUNCHPAD_COLOR.SEQUENCER_STEP],
+        ]);
+      });
+
+      it('updates the previous step when rendering a new step', () => {
+        controller.handleClockTick(0);
+        mockOutlet.reset();
+        controller.handleClockTick(1);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.GUI), [
+          ['grid', 'frgb', GUI_COLOR.STEP_VALUE[0]],
+          ['grid', 'paintrect', ...firstStepPosition],
+          ['grid', 'frgb', GUI_COLOR.SEQUENCER_STEP],
+          ['grid', 'paintrect', ...secondStepPosition],
+        ]);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.LAUNCHPAD_NOTE), [
+          [0, LAUNCHPAD_COLOR.STEP_VALUES[0]],
+          [1, LAUNCHPAD_COLOR.SEQUENCER_STEP],
+        ]);
+      });
+
+      it('respects the track step duration multiplier', () => {
+        model.selectedTrack.durationMultiplier = 2;
+
+        controller.handleClockTick(0);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.GUI), [
+          ['grid', 'frgb', GUI_COLOR.SEQUENCER_STEP],
+          ['grid', 'paintrect', ...firstStepPosition],
+        ]);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.LAUNCHPAD_NOTE), [
+          [0, LAUNCHPAD_COLOR.SEQUENCER_STEP],
+        ]);
+        mockOutlet.reset();
+
+        controller.handleClockTick(1);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.GUI), []);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.LAUNCHPAD_NOTE), []);
+
+        controller.handleClockTick(2);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.GUI), [
+          ['grid', 'frgb', GUI_COLOR.STEP_VALUE[0]],
+          ['grid', 'paintrect', ...firstStepPosition],
+          ['grid', 'frgb', GUI_COLOR.SEQUENCER_STEP],
+          ['grid', 'paintrect', ...secondStepPosition],
+        ]);
+        assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.LAUNCHPAD_NOTE), [
+          [0, LAUNCHPAD_COLOR.STEP_VALUES[0]],
+          [1, LAUNCHPAD_COLOR.SEQUENCER_STEP],
+        ]);
+      });
     });
 
     describe('pitch gates', () => {
