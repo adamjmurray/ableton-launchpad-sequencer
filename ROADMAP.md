@@ -1,10 +1,9 @@
 ## Known Issues
-- The first time you start Live's transport, if the playhead is not at the beginning (time 0) the sequencer will not start (fixed for upcoming v1.1).
 - Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
-- Redoing a change to pattern steps doesn't work
+- Undo/Redo: Redoing a change to pattern steps doesn't work
+- Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.1
-- Combine duplicate pitches and increase their velocity (and this should happen regardless across tracks)
 - Example Live set that demonstrates the different gate settings (with one track for an arpeggio, one track for a bass line, and 2 for drums) by using an instrument rack. And uses incoming MIDI to control the scale.
 
 ## 1.2

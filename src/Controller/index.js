@@ -244,21 +244,24 @@ export default class Controller {
       this._view.renderClock();
     }
     if (clockIndex >= 0) {
+      const outputtedPitches = {};
       let aftertouch = 0;
       let modulation = 0;
       this._model.tracks.forEach((track) => {
         const note = track.noteForClock(clockIndex);
         if (note.enabled) {
-          // TODO: dedupe notes
           if (note.duration > 0) {
-            if (note.pitch != null) {
+            if (note.pitch != null && !outputtedPitches[note.pitch]) {
               outlet(OUTLET.NOTE, note.pitch, note.velocity, note.duration);
+              outputtedPitches[note.pitch] = true;
             }
-            if (note.pitch2 != null) {
+            if (note.pitch2 != null && !outputtedPitches[note.pitch2]) {
               outlet(OUTLET.NOTE, note.pitch2, note.velocity2, note.duration);
+              outputtedPitches[note.pitch2] = true;
             }
-            if (note.pitch3 != null) {
+            if (note.pitch3 != null && !outputtedPitches[note.pitch3]) {
               outlet(OUTLET.NOTE, note.pitch3, note.velocity3, note.duration);
+              outputtedPitches[note.pitch3] = true;
             }
           }
         }

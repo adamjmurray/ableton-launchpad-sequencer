@@ -194,6 +194,19 @@ describe('Controller', () => {
       ]);
     });
 
+    it("doesn't output duplicate pitches", () => {
+      model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
+      model.tracks[1].patterns[PATTERN.GATE1].steps[0] = 1;
+      model.tracks[2].patterns[PATTERN.GATE2].steps[0] = 2;
+      model.tracks[3].patterns[PATTERN.GATE3].steps[0] = 2;
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.NOTE), [
+        [60, 70, 0.9],
+        [61, 70, 0.9],
+      ]);
+    });
+
     it('can set velocity and duration', () => {
       model.tracks[0].gate = 1;
       model.tracks[0].patterns[PATTERN.GATE1].steps[0] = 1;
