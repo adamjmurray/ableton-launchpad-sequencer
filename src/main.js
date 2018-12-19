@@ -32,7 +32,7 @@ export function trackmute(mute) { controller.setTrackMute(mute); }
 export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }
 export function end(stepNumber) { controller.setPatternEnd(stepNumber - 1); }
 export function patternmute(mute) { controller.setPatternMute(mute); }
-export function grid(x, y) { controller.handleGridClick(x, y); }
+export function grid(x, y, enabled) { controller.handleGridClick(x, y, enabled); }
 
 export function track(trackIndex) { controller.selectTrack(trackIndex); }
 export function pattern(patternIndex) { controller.selectPattern(patternIndex); }

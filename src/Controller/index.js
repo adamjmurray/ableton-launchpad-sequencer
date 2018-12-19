@@ -232,7 +232,7 @@ export default class Controller {
       }
     }
     else if (isPressed) {
-      this.setStepToSelectedValue(stepIndex);
+      this.setStepToValue(stepIndex, this._model.selectedValue);
     }
     this._topButtonGesture.reset();
     this._rightButtonGesture.reset();
@@ -316,14 +316,14 @@ export default class Controller {
     this._view.renderValue();
   }
 
-  handleGridClick(x, y) {
-    this.setStepToSelectedValue(xyToIndex(x, y));
+  handleGridClick(x, y, enabled) {
+    this.setStepToValue(xyToIndex(x, y), enabled ? this._model.selectedValue : 0);
   }
 
-  setStepToSelectedValue(stepIndex) {
+  setStepToValue(stepIndex, value) {
     const model = this._model;
     const steps = model.selectedPattern.steps;
-    steps[stepIndex] = model.selectedValue;
+    steps[stepIndex] = value;
     this._view.renderStep(stepIndex);
     this._storage.storePatternStepsAfterDelay(model.selectedTrackIndex, model.selectedPatternIndex, steps);
   }

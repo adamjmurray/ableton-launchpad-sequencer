@@ -9,7 +9,6 @@
   - Change track pitch to octave + scale offset (for pitch gates only)
   - Pitch gate step value 1 plays the root of the scale
   - When setting the scale from MIDI allow arbitrary notes that don't repeat at the octave
-- Easier way to delete steps in the GUI: Shift + click
 - Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
 - Global aftertouch, modulation summing modes, instead of track level settings
 - Track edit mode for the Launchpad
