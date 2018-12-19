@@ -22,7 +22,10 @@ Built with [Max/MSP](http://cycling74.com/products/max), [Max for Live](http://a
 
 ## Downloads
 
-* [Launchpad Squencer 1.0](https://github.com/adamjmurray/m4l-launchpad-sequencer/raw/release/1.0/launchpad-sequencer.zip)
+### [Launchpad Sequencer 1.1](https://github.com/adamjmurray/m4l-launchpad-sequencer/raw/release/1.1/launchpad-sequencer.zip)
+
+Older versions
+* [Launchpad Sqeuencer 1.0](https://github.com/adamjmurray/m4l-launchpad-sequencer/raw/release/1.0/launchpad-sequencer.zip)
 
 
 ## Getting Started
