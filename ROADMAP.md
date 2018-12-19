@@ -4,24 +4,26 @@
 - Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.2
-- Allow scale UI to select the root and change track pitch to octave + scale offset
-  - For velocity gates, this will remain a pitch input
-    - Use the track pitch model either way, and get the scale offset from pitch % 12
-  - The point of this feature is if you have a pattern that's playing the lowest note in the chord, and you set the chord via MIDI, it will continue to play the lowest note and not be pseudo-randomly mapped the chord note closest to the base pitch
-- Option to mute tracks with pitch gates when no midi notes are playing
+- Improved arpeggiation:
+  - Allow scale UI to select the root
+  - Change track pitch to octave + scale offset (for pitch gates only)
+  - Pitch gate step value 1 plays the root of the scale
+  - When setting the scale from MIDI allow arbitrary notes that don't repeat at the octave
 - Easier way to delete steps in the GUI: Shift + click
+- Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
+- Global aftertouch, modulation summing modes, instead of track level settings
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
     - track pitch
       - Re-tap the pattern button to toggle between 2 pages to access all 128 values
     - track velocity
-    - modulation max value
-    - aftertouch max value
     - gate type / gate summing mode
     - gate duration
     - step duration multiplier
     - global step length
+    - global aftertouch / modulation summing mode
+    - global MIDI latch option
   - Use the value buttons to do track operations (same as pattern edit mode):
     - track reverse
     - track randomize (every other tap reverts)
@@ -32,13 +34,6 @@
   - Help tab in the device
 
 ## Future
-- Reassignable modulation/aftertouch patterns, to change the behavior to things like:
-  - octave up/down,
-  - pitch/velocity/duration down
-  - accidentals (non-scale pitches)
-  - more random behaviors
-  - other CC values
-- Subdivide pattern type
 - Expandable GUI view to show all patterns in a track, 1 row per pattern
 - Ableton Push support
 - Preset/"Scene" system (within the device)
