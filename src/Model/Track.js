@@ -1,4 +1,4 @@
-import { DEFAULT, MODE, NUMBER_OF } from '../config';
+import { DEFAULT, MODE, NUMBER_OF, PATTERN } from '../config';
 import Note from './Note';
 import Pattern from './Pattern';
 
@@ -6,9 +6,8 @@ const { GATE, GATE_SUMMING } = MODE;
 
 export default class Track {
 
-  constructor(index, scale) {
+  constructor(index) {
     this.index = index;
-    this.scale = scale; // TODO: pass this into noteForClock() instead
     this.patterns = [...Array(NUMBER_OF.PATTERNS)].map((_, patternIndex) => new Pattern({
       trackIndex: index,
       index: patternIndex,
@@ -28,7 +27,7 @@ export default class Track {
     this.maxAftertouch = 127;
     this.maxModulation = 127;
     this.mute = false;
-    this._note = new Note();
+    this._notes = [new Note, new Note, new Note]; // multi sum mode can output up to 3 notes
   }
 
   get pitch() {
@@ -41,73 +40,113 @@ export default class Track {
     this._offset = pitch % 12;
   }
 
-  noteForClock(clock) {
-    const note = this._note; // avoid creating and garbage collecting objects each clock tick
-    note.enabled = false;
+  notesForClock(clock, scale) {
+    const [note, note2, note3] = this._notes; // avoid creating and garbage collecting objects each clock tick
     if (this.mute || clock < 0 || clock % this.durationMultiplier !== 0) {
       // return the previous note to maintain the modulation and aftertouch value when we're in between track steps
-      return note;
+      note.enabled = false;
+      return [note];
     }
-    const trackClock = clock / this.durationMultiplier
-    note.reset();
+    const trackClock = clock / this.durationMultiplier;
+
+    this._notes.forEach(note => note.reset());
     note.pitch = this._pitch;
     note.velocity = this.velocity;
 
-    this.patterns.forEach(pattern => pattern.processNote(note, trackClock, this.scale));
+    this.patterns.forEach((pattern, index) => {
+      switch (index) {
+        case PATTERN.GATE2:
+          pattern.processNote(note2, trackClock, scale);
+          break;
+        case PATTERN.GATE3:
+          pattern.processNote(note3, trackClock, scale);
+          break;
+        default:
+          pattern.processNote(note, trackClock, scale);
+      }
+    });
 
-    const gateValue = note.gateValue(this.gateSummingMode);
+    const gateValue = this._gateValue();
     if (gateValue >= 0 && !note.mute) {
       note.enabled = true;
       note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
-      const basePitch = note.pitch;
-      const baseVelocity = note.velocity;
+
+      const pitch = note.pitch;
+      const velocity = note.velocity;
+      const duration = note.duration;
       const octave = this._octave;
-      const baseOffset = this._offset;
+      const offset = this._offset;
 
       switch (this.gateMode) {
         case GATE.PITCH:
-          // the first value maps to the track pitch, so subtract 1 and apply the scale
           if (this.gateSummingMode === GATE_SUMMING.MULTI) {
-            const gateValue1 = note.gateValues[0] - 1;
-            const gateValue2 = note.gateValues[1] - 1;
-            const gateValue3 = note.gateValues[2] - 1;
-            note.pitch = gateValue1 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue1) : null;
-            note.pitch2 = gateValue2 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue2) : null;
-            note.pitch3 = gateValue3 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue3) : null;
-            note.velocity2 = baseVelocity;
-            note.velocity3 = baseVelocity;
+            // the first value maps to the track pitch, so subtract 1 and apply the scale
+            const gateValue1 = note.gateValue - 1;
+            const gateValue2 = note2.gateValue - 1;
+            const gateValue3 = note3.gateValue - 1;
+            if (gateValue1 >= 0) {
+              note.pitch = scale.pitchAt(octave, offset + gateValue1);
+            } else {
+              note.enabled = false;
+            }
+            if (gateValue2 >= 0) {
+              note2.enabled = true;
+              note2.pitch = scale.pitchAt(octave, offset + gateValue2);
+              note2.velocity = velocity;
+              note2.duration = duration;
+            }
+            if (gateValue3 >= 0) {
+              note3.enabled = true;
+              note3.pitch = scale.pitchAt(octave, offset + gateValue3);
+              note3.velocity = velocity;
+              note3.duration = duration;
+            }
           } else {
-            note.pitch = this.scale.pitchAt(octave, baseOffset + gateValue);
+            note.pitch = scale.pitchAt(octave, offset + gateValue);
           }
           break;
 
         case GATE.VELOCITY:
-          const deltaToMax = 127 - baseVelocity;
+          const deltaToMax = 127 - velocity;
           if (this.gateSummingMode === GATE_SUMMING.MULTI) {
-            const gateValue1 = note.gateValues[0] - 1;
-            const gateValue2 = note.gateValues[1] - 1;
-            const gateValue3 = note.gateValues[2] - 1;
-            note.pitch = gateValue1 >= 0 ? basePitch + 2 : null; // Pitches are not constrained to scale in for velocity gates.
-            note.pitch2 = gateValue2 >= 0 ? basePitch + 1 : null; // Start with the highest pitch and
-            note.pitch3 = gateValue3 >= 0 ? basePitch : null; // go down to the track pitch on the last pattern.
-            note.velocity = baseVelocity + (deltaToMax * gateValue1 / 3);
-            note.velocity2 = baseVelocity + (deltaToMax * gateValue2 / 3);
-            note.velocity3 = baseVelocity + (deltaToMax * gateValue3 / 3);
+            const gateValue1 = note.gateValue - 1;
+            const gateValue2 = note2.gateValue - 1;
+            const gateValue3 = note3.gateValue - 1;
+            if (gateValue1 >= 0) {
+              // Pitches are not constrained to scale in for velocity gates.
+              // Start with the highest pitch and go down to the track pitch on the last pattern.
+              note.pitch = pitch + 2;
+              note.velocity = velocity + (deltaToMax * gateValue1 / 3);
+            } else {
+              note.enabled = false;
+            }
+            if (gateValue2 >= 0) {
+              note2.enabled = true;
+              note2.pitch = pitch + 1;
+              note2.velocity = velocity + (deltaToMax * gateValue2 / 3);
+              note2.duration = duration;
+            }
+            if (gateValue3 >= 0) {
+              note3.enabled = true;
+              note3.pitch = pitch;
+              note3.velocity = velocity + (deltaToMax * gateValue3 / 3);
+              note3.duration = duration;
+            }
           } else
             if (this.gateSummingMode === GATE_SUMMING.ADD) {
               // It takes all 3 gates with max value (i.e. 12) to hit max velocity in ADD mode.
-              // Since the value 1 plays a note with the baseVelocity, there's 11 steps until the max:
-              note.velocity = baseVelocity + (deltaToMax * gateValue / 11);
+              // Since the step value 1 plays a note with the baseVelocity, there's 11 steps until the max:
+              note.velocity = velocity + (deltaToMax * gateValue / 11);
             }
             else {
-              note.velocity = baseVelocity + (deltaToMax * gateValue / 3);
+              note.velocity = velocity + (deltaToMax * gateValue / 3);
             }
           break;
       }
     }
     note.aftertouch *= this.maxAftertouch / 127;
     note.modulation *= this.maxModulation / 127;
-    return note;
+    return this._notes;
   }
 
   patternStepIndexForClock(clock, patternIndex) {
@@ -115,5 +154,33 @@ export default class Track {
     const trackClock = Math.floor(clock / this.durationMultiplier);
     const pattern = this.patterns[patternIndex];
     return pattern.startStepIndex + trackClock.mod(pattern.length);
+  }
+
+  _gateValue() {
+    let value = 0;
+    const gateValues = this._notes.map(n => n.gateValue);
+    switch (this.gateSummingMode) {
+      case GATE_SUMMING.LOWEST:
+        value = Math.min.apply(this, gateValues.filter(value => value > 0));
+        break;
+
+      case GATE_SUMMING.HIGHEST:
+        value = Math.max.apply(this, gateValues);
+        break;
+
+      case GATE_SUMMING.RANDOM:
+        const nonZeroValues = gateValues.filter(value => value > 0);
+        value = nonZeroValues[Math.floor(Math.random() * nonZeroValues.length)];
+        break;
+
+      default:
+        // GATE_SUMMING.ADD
+        // and GATE_SUMMING.MULTI so we produce a note if any of them have a step value. Track will handle the behavior.
+        for (var i = 0; i < NUMBER_OF.GATES; i++) {
+          value += gateValues[i];
+        }
+    }
+    // The first value just enables the note and uses the track pitch/velocity, so subtract 1:
+    return value - 1;
   }
 }

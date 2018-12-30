@@ -6,7 +6,7 @@ export default class Model {
 
   constructor() {
     this.scale = new Scale;
-    this.tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index, this.scale));
+    this.tracks = [...Array(NUMBER_OF.TRACKS)].map((_, index) => new Track(index));
     this.reset();
   }
 
@@ -29,13 +29,28 @@ export default class Model {
     return this.selectedTrack.patterns[this.selectedPatternIndex];
   }
 
-  notesForCurrentClockIndex() {
-    const notes = this.tracks.map((track) => track.noteForClock(this.clockIndex));
-    return notes.reduce((dedupedNotes, note) => {
-      if (note && !dedupedNotes.find(n => n.pitch === note.pitch)) {
-        dedupedNotes.push(note);
-      }
-      return notes;
-    }, []);
+  notesAndModsForCurrentClockIndex() {
+    const clockIndex = this.clockIndex;
+    if (clockIndex < 0) {
+      return {};
+    }
+    let aftertouch = 0;
+    let modulation = 0;
+    const pitches = {};
+    let notes = [];
+    this.tracks.forEach((track) => {
+      const rawNotes = track.notesForClock(this.clockIndex, this.scale);
+      rawNotes.forEach((note) => {
+        if (note && note.enabled) {
+          if (note.pitch != null && !pitches[note.pitch]) {
+            notes.push(note);
+            pitches[note.pitch] = true;
+          }
+        }
+        aftertouch += note.aftertouch;
+        modulation += note.modulation;
+      });
+    });
+    return { notes, aftertouch, modulation };
   }
 }

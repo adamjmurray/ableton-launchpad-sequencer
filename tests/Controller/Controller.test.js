@@ -232,8 +232,8 @@ describe('Controller', () => {
       model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[95]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[95.25]]);
     });
 
 
@@ -251,11 +251,11 @@ describe('Controller', () => {
       pattern2.steps[3] = 0; // + 2
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
 
       mockOutlet.reset();
       controller.handleClockTick(1);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 95]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 95.25]]);
 
       mockOutlet.reset();
       controller.handleClockTick(2);
@@ -263,7 +263,7 @@ describe('Controller', () => {
 
       mockOutlet.reset();
       controller.handleClockTick(3);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 64]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
     });
 
     it('respects the tracks max modulation and aftertouch settings', () => {

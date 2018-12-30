@@ -136,8 +136,7 @@ export default class Pattern {
           }
           break;
         case 'gate':
-          // Assumption: pattern indexes 5-7 are the gate types:
-          note.gateValues[this.index - 5] = value;
+          note.gateValue = value;
           break;
       }
     }
