@@ -1,4 +1,4 @@
-import { Config, Pattern } from '../../src';
+import { Config, Note, Pattern } from '../../src';
 const { NUMBER_OF } = Config;
 
 describe('Pattern', () => {
@@ -77,6 +77,50 @@ describe('Pattern', () => {
       for (let value = 0; value < NUMBER_OF.STEP_VALUES; value++) {
         assert(counts[value] >= 2);
       }
+    });
+  });
+
+  describe('processNote(note, clock)', () => {
+
+    describe('pattern.type = "random mute"', () => {
+
+      const expectRandomlyMuted = ({ stepValue, expectPercentMuted }) => {
+        const pattern = new Pattern;
+        pattern.type = 'random mute'
+        pattern.steps[0] = stepValue;
+
+        const iterations = 500;
+        let count = 0;
+        for (let i = 0; i < iterations; i++) {
+          const note = new Note;
+          pattern.processNote(note, 0);
+          if (note.mute) count++;
+        }
+
+        if (expectPercentMuted === 100) {
+          assert.equal(count, iterations);
+        } else {
+          // we'll assume the randomness shouldn't diverge more than 20% away from the expected average
+          assert(count > iterations * (expectPercentMuted - 20) / 100);
+          assert(count < iterations * (expectPercentMuted + 20) / 100);
+        }
+      }
+
+      it("sets note.mute to true with a 25% chance, when the step value is 1", () => {
+        expectRandomlyMuted({ stepValue: 1, expectPercentMuted: 25 });
+      });
+
+      it("sets note.mute to true with a 50% chance, when the step value is 2", () => {
+        expectRandomlyMuted({ stepValue: 2, expectPercentMuted: 50 });
+      });
+
+      it("sets note.mute to true with a 75% chance, when the step value is 3", () => {
+        expectRandomlyMuted({ stepValue: 3, expectPercentMuted: 75 });
+      });
+
+      it("sets note.mute to true with a 100% chance, when the step value is 3", () => {
+        expectRandomlyMuted({ stepValue: 4, expectPercentMuted: 100 });
+      });
     });
   });
 });

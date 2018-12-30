@@ -31,6 +31,16 @@ export default class Track {
     this._note = new Note();
   }
 
+  get pitch() {
+    return this._pitch;
+  }
+
+  set pitch(pitch) {
+    this._pitch = pitch;
+    this._octave = Math.floor(pitch / 12);
+    this._offset = pitch % 12;
+  }
+
   noteForClock(clock) {
     const note = this._note; // avoid creating and garbage collecting objects each clock tick
     note.enabled = false;
@@ -40,7 +50,7 @@ export default class Track {
     }
     const trackClock = clock / this.durationMultiplier
     note.reset();
-    note.pitch = this.pitch;
+    note.pitch = this._pitch;
     note.velocity = this.velocity;
 
     this.patterns.forEach(pattern => pattern.processNote(note, trackClock, this.scale));
@@ -51,6 +61,8 @@ export default class Track {
       note.duration *= this.gate * this.durationMultiplier; // track.gate and durationMultiplier scales the note's duration
       const basePitch = note.pitch;
       const baseVelocity = note.velocity;
+      const octave = this._octave;
+      const baseOffset = this._offset;
 
       switch (this.gateMode) {
         case GATE.PITCH:
@@ -59,13 +71,13 @@ export default class Track {
             const gateValue1 = note.gateValues[0] - 1;
             const gateValue2 = note.gateValues[1] - 1;
             const gateValue3 = note.gateValues[2] - 1;
-            note.pitch = gateValue1 >= 0 ? this.scale.map(basePitch, gateValue1) : null;
-            note.pitch2 = gateValue2 >= 0 ? this.scale.map(basePitch, gateValue2) : null;
-            note.pitch3 = gateValue3 >= 0 ? this.scale.map(basePitch, gateValue3) : null;
+            note.pitch = gateValue1 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue1) : null;
+            note.pitch2 = gateValue2 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue2) : null;
+            note.pitch3 = gateValue3 >= 0 ? this.scale.pitchAt(octave, baseOffset + gateValue3) : null;
             note.velocity2 = baseVelocity;
             note.velocity3 = baseVelocity;
           } else {
-            note.pitch = this.scale.map(basePitch, gateValue);
+            note.pitch = this.scale.pitchAt(octave, baseOffset + gateValue);
           }
           break;
 

@@ -1,5 +1,4 @@
-import Processor from './Processor';
-import { NUMBER_OF } from '../config';
+import { NUMBER_OF, STEP_VALUE } from '../config';
 
 // A pattern corresponds to the 8x8 grid of buttons on the Launchpad.
 //
@@ -11,7 +10,7 @@ export default class Pattern {
   constructor({ trackIndex, index, type } = {}) {
     this.trackIndex = trackIndex;
     this.index = index;
-    this._processor = new Processor(type);
+    this.type = type;
     this.reset();
   }
 
@@ -31,13 +30,6 @@ export default class Pattern {
     for (var i = 0; i < NUMBER_OF.STEPS; i++) {
       this._steps[i] = steps[i] || 0;
     }
-  }
-
-  get type() {
-    return this._processor.type;
-  }
-  set type(type) {
-    this._processor.type = type;
   }
 
   setRange(index1, index2) {
@@ -119,14 +111,35 @@ export default class Pattern {
     this.steps = before.concat(right, left, after);
   }
 
-  processNote(note, clock, scale) {
+  processNote(note, clock) {
     if (this.mute) return;
+
     const stepIndex = this.startStepIndex + clock.mod(this.length);
     const value = this.steps[stepIndex];
     if (value > 0) { // Assumption: 0 is always a NOOP
-      // Assumption: pattern indexes 5-7 are the gate types:
-      const gateIndex = this.index - 5;
-      this._processor.process(note, value, scale, gateIndex);
+      switch (this.type) {
+        case 'velocity':
+          note.velocity += (127 - note.velocity) * value / 4;
+          break;
+        case 'duration':
+          note.duration = STEP_VALUE.DURATION[value];
+          break;
+        case 'aftertouch':
+          note.aftertouch = 127 * value / 4;
+          break;
+        case 'modulation':
+          note.modulation = 127 * value / 4;
+          break;
+        case 'random mute':
+          if (Math.random() <= (value / 4)) {
+            note.mute = true;
+          }
+          break;
+        case 'gate':
+          // Assumption: pattern indexes 5-7 are the gate types:
+          note.gateValues[this.index - 5] = value;
+          break;
+      }
     }
   }
 }

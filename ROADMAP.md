@@ -7,10 +7,26 @@
 - Improved arpeggiation:
   - Allow scale UI to select the root
   - Change track pitch to octave + scale offset (for pitch gates only)
+    - Track "offset" needs a better name / label (interval? use semitons unit style?)
   - Pitch gate step value 1 plays the root of the scale
   - When setting the scale from MIDI allow arbitrary notes that don't repeat at the octave
-- Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
+  - When changing the root in the UI, use the offsets to update the scale UI
 - Global aftertouch, modulation summing modes, instead of track level settings
+- Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
+  - When notes are latched, any notes _not_ played legato will reset the offsets, legato playing will build up chords
+- Adjust randomization to only randomize a fraction (25%?) of the steps
+  - On the Laucnhpad, where every other press undoes the change, you might want to randomize multiple times in a row. In this case, tapping on another button, like a grid button, should reset the double-press gesture.
+- Consider switching velocity pattern to pitch when the gate type is changed (and update labels accordingly)
+
+## 1.3
+- UI buttons for setting major, minor, etc scales / chords
+- Improved UI
+  - "Gate" labels for patterns should update to say P.Gate or V.Gate
+  - With the velocity gate type, show the pitches next to the V.Gate label (at least in multi sum mode)
+- Documentation
+  - Thorough annotations for Live's Info view
+
+## 1.4
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
@@ -28,9 +44,6 @@
     - track randomize (every other tap reverts)
     - track copy (every other tap clears)
     - track paste  (every other tap reverts)
-- Documentation
-  - Thorough annotations for Live's Info view
-  - Help tab in the device
 
 ## Future
 - Expandable GUI view to show all patterns in a track, 1 row per pattern

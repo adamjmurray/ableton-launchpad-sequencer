@@ -9,8 +9,8 @@ import PressGesture from './Controller/PressGesture';
 import RangeSelectionGesture from './Controller/RangeSelectionGesture';
 import StorageController from './Controller/StorageController';
 
+import Note from './Model/Note';
 import Pattern from './Model/Pattern';
-import Processor from './Model/Processor';
 import Scale from './Model/Scale';
 import Track from './Model/Track';
 
@@ -28,8 +28,8 @@ export {
   RangeSelectionGesture,
   StorageController,
 
+  Note,
   Pattern,
-  Processor,
   Scale,
   Track,
 

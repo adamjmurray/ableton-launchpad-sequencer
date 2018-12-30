@@ -97,7 +97,7 @@ export default class Controller {
 
 
   handleTrackNote(pitch, velocity) {
-    this._model.scale.override(pitch, velocity)
+    this._model.scale.toggle(pitch, velocity)
     this._view.renderScale(this._model.scale.pitchClasses);
   }
 

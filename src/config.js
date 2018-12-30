@@ -50,8 +50,8 @@ export const LAUNCHPAD_COLOR = Object.freeze({
 export const DEFAULT = Object.freeze({
   STEP_DURATION: '16th',
   PATTERN_TYPES: Object.freeze([ // maps pattern index to the default type for that pattern
-    'velocity +',
-    'duration =',
+    'velocity',
+    'duration',
     'aftertouch',
     'modulation',
     'random mute',
@@ -59,7 +59,6 @@ export const DEFAULT = Object.freeze({
     'gate',
     'gate',
   ]),
-  PITCH_CLASSES: Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), // full chromatic scale
   PITCH: 60,
   VELOCITY: 70,
   GATE: 0.9,
@@ -67,6 +66,8 @@ export const DEFAULT = Object.freeze({
   GATE_SUMMING_MODE: 'add',
   VALUE: 1,
   SAVE_DELAY: 2000,
+  SCALE_ROOT: 0,
+  SCALE_OFFSETS: Object.freeze([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), // full chromatic scale
 });
 
 export const GESTURE = Object.freeze({
