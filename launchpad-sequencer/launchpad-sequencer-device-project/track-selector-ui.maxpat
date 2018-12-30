@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 1404.0, 612.0, 802.0, 607.0 ],
+		"rect" : [ 409.0, 494.0, 802.0, 607.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,14 +39,13 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"comment" : "color",
-					"id" : "obj-19",
-					"index" : 0,
-					"maxclass" : "inlet",
+					"id" : "obj-1",
+					"maxclass" : "newobj",
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 20.0, 36.0, 30.0, 30.0 ]
+					"patching_rect" : [ 145.79998779296875, 104.5, 71.0, 22.0 ],
+					"text" : "r ---tabcolor"
 				}
 
 			}
@@ -221,12 +220,12 @@
 					"presentation_rect" : [ -2.5, -1.75, 74.0, 20.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_longname" : "track selector",
-							"parameter_invisible" : 2,
-							"parameter_shortname" : "live.tab",
 							"parameter_enum" : [ "T", "R", "A", "X" ],
 							"parameter_type" : 2,
-							"parameter_unitstyle" : 0
+							"parameter_unitstyle" : 0,
+							"parameter_longname" : "track selector",
+							"parameter_invisible" : 2,
+							"parameter_shortname" : "live.tab"
 						}
 
 					}
@@ -237,6 +236,13 @@
 			}
  ],
 		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-29", 0 ],
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
 				"patchline" : 				{
 					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-11", 0 ]
@@ -275,13 +281,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-77", 0 ],
 					"source" : [ "obj-13", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-29", 0 ],
-					"source" : [ "obj-19", 0 ]
 				}
 
 			}
