@@ -161,11 +161,11 @@
 					"presentation_rect" : [ 34.0, 64.0, 33.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_enum" : [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
-							"parameter_type" : 2,
 							"parameter_longname" : "live.menu",
 							"parameter_invisible" : 2,
-							"parameter_shortname" : "live.menu"
+							"parameter_shortname" : "live.menu",
+							"parameter_enum" : [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
+							"parameter_type" : 2
 						}
 
 					}
@@ -485,6 +485,16 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-20", 0 ],
+					"order" : 1,
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-4", 0 ],
+					"midpoints" : [ 540.5, 111.75, 603.4554443359375, 111.75 ],
+					"order" : 0,
 					"source" : [ "obj-5", 0 ]
 				}
 

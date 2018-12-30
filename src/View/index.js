@@ -28,8 +28,12 @@ export default class View {
     this._guiView.renderDuration(duration);
   }
 
-  renderScale(pitchClasses) {
-    this._guiView.renderScale(pitchClasses);
+  renderScale(scale) {
+    this._guiView.renderScale(scale);
+  }
+
+  renderModulationSummingMode(mode) {
+    this._guiView.renderModulationSummingMode(mode);
   }
 
   renderTrackIndex() {
@@ -55,14 +59,6 @@ export default class View {
 
   renderTrackGateSummingMode(mode = this._model.selectedTrack.gateSummingMode) {
     this._guiView.renderTrackGateSummingMode(mode);
-  }
-
-  renderTrackMaxAftertouch(max) {
-    this._guiView.renderTrackMaxAftertouch(max);
-  }
-
-  renderTrackMaxModulation(max) {
-    this._guiView.renderTrackMaxModulation(max);
   }
 
   renderTrackMultiplier() {

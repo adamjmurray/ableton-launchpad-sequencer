@@ -24,8 +24,6 @@ export default class Track {
     this.gateSummingMode = DEFAULT.GATE_SUMMING_MODE;
     this.patterns.forEach(pattern => pattern.reset());
     this.durationMultiplier = 1;
-    this.maxAftertouch = 127;
-    this.maxModulation = 127;
     this.mute = false;
     this._notes = [new Note, new Note, new Note]; // multi sum mode can output up to 3 notes
   }
@@ -144,8 +142,6 @@ export default class Track {
           break;
       }
     }
-    note.aftertouch *= this.maxAftertouch / 127;
-    note.modulation *= this.maxModulation / 127;
     return this._notes;
   }
 

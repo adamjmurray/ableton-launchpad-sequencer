@@ -16,17 +16,17 @@ export function bang() { controller.refreshViews(); }
 export function reset() { controller.reset(); }
 export function setmodel(...data) { controller.setModel(data); }
 
-export function scale(...pitchClasses) { controller.setScale(pitchClasses); }
+export function scale(...offsets) { controller.setScaleOffsetsRelativeToC(offsets); }
+export function root(root) { controller.setScaleRoot(root); }
 export function duration(duration) { controller.setDuration(duration); }
+export function modsum(root) { controller.setModulationSummingMode(root); }
 
 export function pitch(pitch) { controller.setTrackPitch(pitch); }
 export function velocity(velocity) { controller.setTrackVelocity(velocity); }
 export function gate(gate) { controller.setTrackGate(gate); }
 export function gatemode(mode) { controller.setTrackGateMode(mode) }
+export function gatesum(mode) { controller.setTrackGateSummingMode(mode); }
 export function multiplier(multiplier) { controller.setTrackMultiplier(multiplier); }
-export function gatesumming(mode) { controller.setTrackGateSummingMode(mode); }
-export function aftertouch(max) { controller.setTrackMaxAftertouch(max); }
-export function modulation(max) { controller.setTrackMaxModulation(max); }
 export function trackmute(mute) { controller.setTrackMute(mute); }
 
 export function start(stepNumber) { controller.setPatternStart(stepNumber - 1); }

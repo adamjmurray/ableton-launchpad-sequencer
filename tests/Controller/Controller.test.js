@@ -266,22 +266,6 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
     });
 
-    it('respects the tracks max modulation and aftertouch settings', () => {
-      model.tracks[0].maxModulation = 10;
-      model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 4;
-      model.tracks[2].maxModulation = 33;
-      model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 4;
-
-      model.tracks[0].maxAftertouch = 100;
-      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3; // should be 75
-      model.tracks[3].maxAftertouch = 40;
-      model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1; // should be 10
-
-      controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 43]]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[85]]);
-    });
-
     describe('rendering', () => {
       const firstStepPosition = [2, 2, 14, 14];
       const secondStepPosition = [20, 2, 32, 14];

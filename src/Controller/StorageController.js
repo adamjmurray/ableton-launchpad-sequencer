@@ -2,16 +2,16 @@ import { DEFAULT, OUTLET, STORAGE } from '../config';
 
 const {
   DURATION,
-  SCALE,
+  SCALE_OFFSETS,
+  SCALE_ROOT,
+  MODULATION_SUMMING_MODE,
   TRACKS,
   PITCH,
   VELOCITY,
   GATE,
   GATE_MODE,
-  MULTIPLIER,
   GATE_SUMMING_MODE,
-  MAX_AFTERTOUCH,
-  MAX_MODULATION,
+  MULTIPLIER,
   MUTE,
   PATTERNS,
   STEPS,
@@ -26,8 +26,16 @@ export default class StorageView {
     outlet(OUTLET.STORAGE, DURATION, duration);
   }
 
-  storeScale(scale) {
-    outlet(OUTLET.STORAGE, SCALE, scale);
+  storeScaleOffsets(offsets) {
+    outlet(OUTLET.STORAGE, SCALE_OFFSETS, offsets);
+  }
+
+  storeScaleRoot(root) {
+    outlet(OUTLET.STORAGE, SCALE_ROOT, root);
+  }
+
+  storeModulationSummingMode(mode) {
+    outlet(OUTLET.STORAGE, MODULATION_SUMMING_MODE, mode);
   }
 
   storeTrackPitch(trackIndex, pitch) {
@@ -46,20 +54,12 @@ export default class StorageView {
     outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE_MODE, mode);
   }
 
-  storeTrackMultiplier(trackIndex, multiplier) {
-    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MULTIPLIER, multiplier);
-  }
-
   storeTrackGateSummingMode(trackIndex, mode) {
     outlet(OUTLET.STORAGE, TRACKS, trackIndex, GATE_SUMMING_MODE, mode);
   }
 
-  storeTrackMaxAftertouch(trackIndex, max) {
-    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MAX_AFTERTOUCH, max);
-  }
-
-  storeTrackMaxModulation(trackIndex, max) {
-    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MAX_MODULATION, max);
+  storeTrackMultiplier(trackIndex, multiplier) {
+    outlet(OUTLET.STORAGE, TRACKS, trackIndex, MULTIPLIER, multiplier);
   }
 
   storeTrackMute(trackIndex, mute) {
@@ -97,16 +97,16 @@ export default class StorageView {
 
   storeAll(model) {
     this.storeDuration(model.globalStepDuration);
-    this.storeScale(model.scale.pitchClasses);
+    this.storeScaleOffsets(model.scale.offsets);
+    this.storeScaleRoot(model.scale.root);
+    this.storeModulationSummingMode(model.modulationSummingMode);
     model.tracks.forEach((track, trackIndex) => {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);
       this.storeTrackGate(trackIndex, track.gate);
       this.storeTrackGateMode(trackIndex, track.gateMode);
-      this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
       this.storeTrackGateSummingMode(trackIndex, track.gateSummingMode);
-      this.storeTrackMaxAftertouch(trackIndex, track.maxAftertouch);
-      this.storeTrackMaxModulation(trackIndex, track.maxModulation);
+      this.storeTrackMultiplier(trackIndex, track.durationMultiplier);
       this.storeTrackMute(trackIndex, track.mute);
       track.patterns.forEach((pattern, patternIndex) => {
         this.storePatternSteps(trackIndex, patternIndex, pattern.steps);

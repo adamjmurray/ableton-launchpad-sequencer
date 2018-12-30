@@ -5,14 +5,10 @@
 
 ## 1.2
 - Improved arpeggiation:
-  - Wire up root to GUI and storage (is that the ony thing that changed in the Max<=>JS interface?).
-    - When changing the root in the UI, use the offsets to update the scale UI
+  - Test esp MIDI & non-repeating scales
   - Track "offset" needs a better name / label (interval? use semitons unit style in the UI?)
-  - Test MIDI, esp non-repeating scales
 - Global aftertouch, modulation summing modes
-  - Model it in the code
-  - Remove track level settings
-  - Hook up to GUI and storage
+  - Implement the behavior in Model.notesAndModsForCurrentClockIndex()
 - Introduce an "add**" ("add++", "addX"?) sum mode that doesn't normalize
   - Support both gate and AT/mod summing
 - Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing

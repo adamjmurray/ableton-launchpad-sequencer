@@ -4,7 +4,12 @@ export default class Scale {
 
   constructor({ root = DEFAULT.SCALE_ROOT, offsets = DEFAULT.SCALE_OFFSETS } = {}) {
     this.root = root;
-    this.offsets = offsets.slice();
+    this.offsets = offsets;
+  }
+
+  reset() {
+    this.root = DEFAULT.SCALE_ROOT;
+    this.offsets = DEFAULT.SCALE_OFFSETS;
   }
 
   get offsets() {
@@ -12,7 +17,7 @@ export default class Scale {
   }
 
   set offsets(offsets) {
-    this._offsets = offsets;
+    this._offsets = offsets.slice();
     this._didSetOffsetsSinceLastToggle = true;
   }
 

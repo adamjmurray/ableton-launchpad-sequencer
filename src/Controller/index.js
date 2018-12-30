@@ -5,16 +5,16 @@ import RangeSelectionGesture from './RangeSelectionGesture';
 
 const {
   DURATION,
-  SCALE,
+  SCALE_OFFSETS,
+  SCALE_ROOT,
+  MODULATION_SUMMING_MODE,
   TRACKS,
   PITCH,
   VELOCITY,
   GATE,
   GATE_MODE,
-  MULTIPLIER,
   GATE_SUMMING_MODE,
-  MAX_AFTERTOUCH,
-  MAX_MODULATION,
+  MULTIPLIER,
   MUTE,
   PATTERNS,
   STEPS,
@@ -62,7 +62,9 @@ export default class Controller {
   setModel(data) {
     switch (data[0]) {
       case DURATION: return this.setDuration(data[1], false);
-      case SCALE: return this.setScale(data.slice(1), false);
+      case SCALE_OFFSETS: return this.setScaleOffsets(data.slice(1), false);
+      case SCALE_ROOT: return this.setScaleRoot(data[1], false);
+      case MODULATION_SUMMING_MODE: return this.setModulationSummingMode(data.slice(1), false);
       case TRACKS:
         const trackIndex = data[1];
         switch (data[2]) {
@@ -72,8 +74,6 @@ export default class Controller {
           case GATE_MODE: return this.setTrackGateMode(data[3], trackIndex, false);
           case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
           case GATE_SUMMING_MODE: return this.setTrackGateSummingMode(data[3], trackIndex, false);
-          case MAX_AFTERTOUCH: return this.setTrackMaxAftertouch(data[3], trackIndex, false);
-          case MAX_MODULATION: return this.setTrackMaxModulation(data[3], trackIndex, false);
           case MUTE: return this.setTrackMute(data[3], trackIndex, false);
           case PATTERNS:
             const patternIndex = data[3];
@@ -265,11 +265,40 @@ export default class Controller {
     }
   }
 
-  setScale(pitchClasses, store = true) {
-    this._model.scale.pitchClasses = pitchClasses;
-    this._view.renderScale(pitchClasses);
+  setScaleOffsets(offsets, store = true) {
+    this._model.scale.offsets = offsets;
+    this._view.renderScale(this._model.scale);
     if (store) {
-      this._storage.storeScale(pitchClasses)
+      this._storage.storeScaleOffsets(offsets)
+    }
+  }
+
+  setScaleOffsetsRelativeToC(offsetsRelativeToC, store = true) {
+    const root = this._model.scale.root;
+    const offsets = offsetsRelativeToC
+      .map(offset => (offset - root).mod(12))
+      .sort((a, b) => a - b);
+
+    this._model.scale.offsets = offsets;
+    this._view.renderScale(this._model.scale);
+    if (store) {
+      this._storage.storeScaleOffsets(offsets)
+    }
+  }
+
+  setScaleRoot(root, store = true) {
+    this._model.scale.root = root;
+    this._view.renderScale(this._model.scale);
+    if (store) {
+      this._storage.storeScaleRoot(root)
+    }
+  }
+
+  setModulationSummingMode(mode, store = true) {
+    this._model.modulationSummingMode = mode;
+    this._view.renderModulationSummingMode(mode);
+    if (store) {
+      this._storage.storeModulationSummingMode(mode);
     }
   }
 
@@ -361,26 +390,6 @@ export default class Controller {
     }
     if (store) {
       this._storage.storeTrackGateSummingMode(trackIndex, mode);
-    }
-  }
-
-  setTrackMaxAftertouch(max, trackIndex = this._model.selectedTrackIndex, store = true) {
-    this._model.tracks[trackIndex].maxAftertouch = max;
-    if (trackIndex === this._model.selectedTrackIndex) {
-      this._view.renderTrackMaxAftertouch(max);
-    }
-    if (store) {
-      this._storage.storeTrackMaxAftertouch(trackIndex, max);
-    }
-  }
-
-  setTrackMaxModulation(max, trackIndex = this._model.selectedTrackIndex, store = true) {
-    this._model.tracks[trackIndex].maxModulation = max;
-    if (trackIndex === this._model.selectedTrackIndex) {
-      this._view.renderTrackMaxModulation(max);
-    }
-    if (store) {
-      this._storage.storeTrackMaxModulation(trackIndex, max);
     }
   }
 

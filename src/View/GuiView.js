@@ -5,7 +5,9 @@ const { STEP_WIDTH, BUTTON_WIDTH } = GUI;
 // These need to match the [route] objects connected to the GUI outlet in the Max patch.
 const GRID = 'grid';
 const DURATION = 'duration';
-const SCALE = 'scale';
+const SCALE_OFFSETS = 'scale';
+const SCALE_ROOT = 'root';
+const MODULATION_SUMMING_MODE = 'modsum';
 const TRACK = 'track';
 const PATTERN = 'pattern';
 const VALUE = 'value';
@@ -14,9 +16,7 @@ const PITCH = 'pitch';
 const VELOCITY = 'velocity';
 const GATE = 'gate';
 const GATE_MODE = 'gatemode';
-const GATE_SUMMING_MODE = 'gatesumming';
-const MAX_AFTERTOUCH = 'aftertouch';
-const MAX_MODULATION = 'modulation';
+const GATE_SUMMING_MODE = 'gatesum';
 const MULTIPLIER = 'multiplier';
 const MUTE = 'mute';
 const INDEX_MUTE = 'index-mute';
@@ -32,7 +32,8 @@ export default class GuiView {
 
   render() {
     this.renderDuration(this._model.globalStepDuration);
-    this.renderScale(this._model.scale.pitchClasses);
+    this.renderScale(this._model.scale);
+    this.renderModulationSummingMode(this._model.modulationSummingMode);
     this.renderTrack(this._model.selectedTrack);
     this.renderValueButton(this._model.selectedValue);
     this.renderPattern(this._model.selectedPattern);
@@ -49,9 +50,15 @@ export default class GuiView {
     outlet(OUTLET.GUI, DURATION, duration);
   }
 
-  renderScale(pitchClasses) {
-    // TODO: re-implement
-    // outlet(OUTLET.GUI, SCALE, pitchClasses.length ? pitchClasses : -1);
+  renderScale(scale) {
+    const root = scale.root;
+    const offsetsRelativeToC = scale.offsets.map(offset => (root + offset).mod(12));
+    outlet(OUTLET.GUI, SCALE_ROOT, root);
+    outlet(OUTLET.GUI, SCALE_OFFSETS, offsetsRelativeToC);
+  }
+
+  renderModulationSummingMode(mode) {
+    outlet(OUTLET.GUI, MODULATION_SUMMING_MODE, mode);
   }
 
   renderTrack(track) {
@@ -61,8 +68,6 @@ export default class GuiView {
     this.renderTrackGate(track.gate);
     this.renderTrackGateMode(track.gateMode);
     this.renderTrackGateSummingMode(track.gateSummingMode);
-    this.renderTrackMaxAftertouch(track.maxAftertouch);
-    this.renderTrackMaxModulation(track.maxModulation);
     this.renderTrackMultiplier(track.durationMultiplier);
     this.renderTrackMute(track.mute);
     this._model.selectedTrack.patterns.forEach((pattern) =>
@@ -95,14 +100,6 @@ export default class GuiView {
 
   renderTrackMultiplier(multiplier) {
     outlet(OUTLET.GUI, TRACK, MULTIPLIER, multiplier);
-  }
-
-  renderTrackMaxAftertouch(max) {
-    outlet(OUTLET.GUI, TRACK, MAX_AFTERTOUCH, max);
-  }
-
-  renderTrackMaxModulation(max) {
-    outlet(OUTLET.GUI, TRACK, MAX_MODULATION, max);
   }
 
   renderTrackMute(mute) {
