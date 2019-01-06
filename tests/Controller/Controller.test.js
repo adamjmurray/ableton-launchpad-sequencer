@@ -228,12 +228,12 @@ describe('Controller', () => {
     it('sums modulation and aftertouch values across tracks', () => {
       model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 1;
       model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 1;
-      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 2;
+      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3;
       model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[95.25]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 8]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127 / 4]]);
     });
 
 
@@ -243,27 +243,27 @@ describe('Controller', () => {
       const pattern2 = track2.patterns[PATTERN.MODULATION];
 
       track1.durationMultiplier = 2;
-      pattern1.steps[0] = 1;
-      pattern1.steps[1] = 2;
-      pattern2.steps[0] = 1; // + 1
-      pattern2.steps[1] = 2; // + 1
-      pattern2.steps[2] = 2; // + 2
-      pattern2.steps[3] = 0; // + 2
+      pattern1.steps[0] = 2;
+      pattern1.steps[1] = 4;
+      pattern2.steps[0] = 0; // + 2
+      pattern2.steps[1] = 2; // + 2
+      pattern2.steps[2] = 4; // + 4
+      pattern2.steps[3] = 0; // + 4
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 8]]);
 
       mockOutlet.reset();
       controller.handleClockTick(1);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 95.25]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 4]]);
 
       mockOutlet.reset();
       controller.handleClockTick(2);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 2]]);
 
       mockOutlet.reset();
       controller.handleClockTick(3);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 63.5]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 4]]);
     });
 
     describe('rendering', () => {

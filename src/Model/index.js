@@ -2,6 +2,8 @@ import { DEFAULT, MODE, NUMBER_OF } from '../config';
 import Scale from './Scale';
 import Track from './Track';
 
+const { GATE_SUMMING } = MODE;
+
 export default class Model {
 
   constructor() {
@@ -20,6 +22,8 @@ export default class Model {
     this.selectedValue = DEFAULT.VALUE;
     this.clockIndex = -1;
     this.mode = MODE.SEQUENCER;
+    this._aftertouchValues = [];
+    this._modulationValues = [];
   }
 
   get selectedTrack() {
@@ -35,23 +39,45 @@ export default class Model {
     if (clockIndex < 0) {
       return {};
     }
-    let aftertouch = 0;
-    let modulation = 0;
-    const pitches = {};
-    let notes = [];
-    this.tracks.forEach((track) => {
-      const rawNotes = track.notesForClock(this.clockIndex, this.scale);
-      rawNotes.forEach((note) => {
+    const atValues = this._aftertouchValues;
+    const modValues = this._modulationValues;
+    const hasPitch = {};
+    const dedupedNotes = [];
+    this.tracks.forEach((track, trackIndex) => {
+      const notes = track.notesForClock(this.clockIndex, this.scale);
+      notes.forEach((note) => {
         if (note && note.enabled) {
-          if (note.pitch != null && !pitches[note.pitch]) {
-            notes.push(note);
-            pitches[note.pitch] = true;
+          if (note.pitch != null && !hasPitch[note.pitch]) {
+            dedupedNotes.push(note);
+            hasPitch[note.pitch] = true;
           }
         }
-        aftertouch += note.aftertouch;
-        modulation += note.modulation;
       });
+      // We only use the first note to store aftertouch and modulation:
+      // (TODO: track.notesForClock() could return dedicated aftertouch and modulation values like below)
+      atValues[trackIndex] = track.mute ? 0 : notes[0].aftertouch;
+      modValues[trackIndex] = track.mute ? 0 : notes[0].modulation;
     });
-    return { notes, aftertouch, modulation };
+    return {
+      notes: dedupedNotes,
+      aftertouch: this._modValue(atValues),
+      modulation: this._modValue(modValues),
+    };
+  }
+
+  _modValue(values) {
+    switch (this.modulationSummingMode) {
+      case GATE_SUMMING.LOWEST:
+        return Math.min(...values);
+
+      case GATE_SUMMING.HIGHEST:
+        return Math.max(...values);
+
+      case GATE_SUMMING.RANDOM:
+        return values[Math.floor(Math.random() * values.length)];
+
+      default: // ADD:
+        return values.reduce((x, y) => x + y) / 4;
+    }
   }
 }

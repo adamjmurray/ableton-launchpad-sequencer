@@ -7,12 +7,9 @@
 - Improved arpeggiation:
   - Test esp MIDI & non-repeating scales
   - Track "offset" needs a better name / label (interval? use semitons unit style in the UI?)
-- Global aftertouch, modulation summing modes
-  - Implement the behavior in Model.notesAndModsForCurrentClockIndex()
-- Introduce an "add**" ("add++", "addX"?) sum mode that doesn't normalize
-  - Support both gate and AT/mod summing
 - Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
-  - When notes are latched, any notes _not_ played legato will reset the offsets, legato playing will build up chords
+  - Shouldn't need this. If we lift all keyboard keys, the scale should have no notes, in which case nothing plays on pitch gate tracks
+  - If you want to latch just use the GUI
 
 ## 1.3
 - Adjust randomization to only randomize a fraction (25%?) of the steps
@@ -26,6 +23,7 @@
   - Thorough annotations for Live's Info view
 
 ## 1.4
+- Double tap Launchpad grid button to unset note
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
