@@ -5,11 +5,7 @@
 
 ## 1.2
 - Improved arpeggiation:
-  - Test esp MIDI & non-repeating scales
   - Track "offset" needs a better name / label (interval? use semitons unit style in the UI?)
-- Global "MIDI latch" option that, when disabled, will mute tracks with pitch gates when no midi notes are playing
-  - Shouldn't need this. If we lift all keyboard keys, the scale should have no notes, in which case nothing plays on pitch gate tracks
-  - If you want to latch just use the GUI
 
 ## 1.3
 - Adjust randomization to only randomize a fraction (25%?) of the steps

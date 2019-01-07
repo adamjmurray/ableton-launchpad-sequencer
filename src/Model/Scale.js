@@ -18,26 +18,26 @@ export default class Scale {
 
   set offsets(offsets) {
     this._offsets = offsets.slice();
-    this._didSetOffsetsSinceLastToggle = true;
+    this._didSetOffsetsSinceLastToggle = true; // this indicates the GUI changed the offsets
   }
 
   toggle(pitch, enabled) {
-    if (this._offsetsSetSinceLastToggle) {
-      this._offsets = [];
-      this.root = pitch;
-      this._didSetOffsetsSinceLastToggle = false;
-      // TODO: the view will need to update the root too (maybe just do it every time, the view code can filter out when it doesn't change)
-    }
-    const offset = pitch - 60; // relative to middle C
     if (enabled) {
-      this._offsets.push(offset);
+      if (this._didSetOffsetsSinceLastToggle) {
+        this._offsets = []; // override what was set in the GUI
+        this._didSetOffsetsSinceLastToggle = false;
+      }
+      if (!this._offsets.length) {
+        this.root = pitch.mod(12);
+      }
+      this._offsets.push(pitch - 60 - this.root); // relative to middle octave
     } else {
+      const offset = pitch - 60 - this.root;
       const index = this._offsets.indexOf(offset);
       if (index >= 0) {
         this._offsets.splice(index, 1);
       }
     }
-    // TODO: The GUI view will need to mod() all the offset values to draw them properly
   }
 
   pitchAt(octave, interval) {

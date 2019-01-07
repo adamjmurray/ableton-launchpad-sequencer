@@ -92,13 +92,12 @@ export default class Controller {
     // Make modulation and aftertouch values output on the first step when the transport starts again:
     this._prevAftertouch = null;
     this._prevModulation = null;
-    // this._view.render(); // was this actually necessary?
   }
 
 
   handleTrackNote(pitch, velocity) {
     this._model.scale.toggle(pitch, velocity)
-    this._view.renderScale(this._model.scale.pitchClasses);
+    this._view.renderScale(this._model.scale);
   }
 
   handleTrackCC(cc) {
