@@ -4,22 +4,19 @@
 - Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.2
-- Improved arpeggiation:
-  - Track "offset" needs a better name / label (interval? use semitons unit style in the UI?)
+- Finish testing and ship
 
 ## 1.3
 - Adjust randomization to only randomize a fraction (25%?) of the steps
-  - On the Laucnhpad, where every other press undoes the change, you might want to randomize multiple times in a row. In this case, tapping on another button, like a grid button, should reset the double-press gesture.
-- UI buttons for setting major, minor, etc scales / chords
 - Improved UI
   - "Gate" labels for patterns should update to say P.Gate or V.Gate
-  - With the velocity gate type, show the pitches next to the V.Gate label (at least in multi sum mode)
-- Consider switching velocity pattern to pitch when the gate type is changed (and update labels accordingly)
+  - With the velocity gate type in multi-sum mode, show +1 and +2 labels next to the V.Gate to indicate the pitches are higher
+- Switch the velocity pattern to a pitch pattern when using velocity gates (and update labels accordingly)
 - Documentation
   - Thorough annotations for Live's Info view
 
 ## 1.4
-- Double tap Launchpad grid button to unset note
+- Double tap Launchpad grid button or GUI button to unset note
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:

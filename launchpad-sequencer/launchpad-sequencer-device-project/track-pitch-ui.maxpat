@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 230.0, 233.0, 531.0, 556.0 ],
+		"rect" : [ 831.0, 533.0, 531.0, 556.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -280,13 +280,13 @@
 					"presentation_rect" : [ 63.0, 16.000003814697266, 36.0, 14.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_longname" : "track pitch",
-							"parameter_initial_enable" : 1,
-							"parameter_invisible" : 2,
 							"parameter_initial" : [ 60.0 ],
 							"parameter_shortname" : "pitch",
 							"parameter_type" : 1,
-							"parameter_unitstyle" : 8
+							"parameter_unitstyle" : 8,
+							"parameter_longname" : "track pitch",
+							"parameter_initial_enable" : 1,
+							"parameter_invisible" : 2
 						}
 
 					}
@@ -306,8 +306,8 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 216.0, 255.0, 52.0, 17.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 3.0, 36.0, 36.0, 17.0 ],
-					"text" : "Offset",
+					"presentation_rect" : [ 0.0, 36.0, 43.0, 17.0 ],
+					"text" : "Interval",
 					"textcolor" : [ 0.823529422283173, 0.823529422283173, 0.823529422283173, 1.0 ],
 					"textjustification" : 1
 				}
@@ -346,12 +346,12 @@
 					"presentation_rect" : [ 3.0, 51.0, 36.0, 14.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_longname" : "live.numbox[9]",
-							"parameter_invisible" : 2,
-							"parameter_mmax" : 11.0,
 							"parameter_shortname" : "live.numbox[8]",
 							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
+							"parameter_unitstyle" : 7,
+							"parameter_longname" : "live.numbox[9]",
+							"parameter_invisible" : 2,
+							"parameter_mmax" : 11.0
 						}
 
 					}
@@ -375,12 +375,12 @@
 					"presentation_rect" : [ 3.0, 16.0, 36.0, 14.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_longname" : "live.numbox[8]",
-							"parameter_invisible" : 2,
-							"parameter_mmax" : 10.0,
 							"parameter_shortname" : "live.numbox[8]",
 							"parameter_type" : 1,
-							"parameter_unitstyle" : 0
+							"parameter_unitstyle" : 0,
+							"parameter_longname" : "live.numbox[8]",
+							"parameter_invisible" : 2,
+							"parameter_mmax" : 10.0
 						}
 
 					}
