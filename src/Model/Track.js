@@ -169,8 +169,12 @@ export default class Track {
         value = nonZeroValues[Math.floor(Math.random() * nonZeroValues.length)];
         break;
 
+      case GATE_SUMMING.RANDOM_WITH_0:
+        value = gateValues[Math.floor(Math.random() * gateValues.length)];
+        break;
+
       default:
-        // GATE_SUMMING.ADD
+        // GATE_SUMMING.ADD, ADD_x3,
         // and GATE_SUMMING.MULTI so we produce a note if any of them have a step value. Track will handle the behavior.
         for (var i = 0; i < NUMBER_OF.GATES; i++) {
           value += gateValues[i];

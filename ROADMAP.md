@@ -4,19 +4,20 @@
 - Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.2
-- Finish testing and ship
+- A slider for the AT/mod slew: 0% is an immediate step to the value, 100% transitions over the step duration
 
 ## 1.3
-- Adjust randomization to only randomize a fraction (25%?) of the steps
 - Improved UI
   - "Gate" labels for patterns should update to say P.Gate or V.Gate
   - With the velocity gate type in multi-sum mode, show +1 and +2 labels next to the V.Gate to indicate the pitches are higher
 - Switch the velocity pattern to a pitch pattern when using velocity gates (and update labels accordingly)
-- Documentation
-  - Thorough annotations for Live's Info view
-
-## 1.4
 - Double tap Launchpad grid button or GUI button to unset note
+- Documentation - thorough annotations for Live's Info view
+
+## Future
+- Expandable GUI view to show all patterns in a track, 1 row per pattern
+- Ableton Push support
+- Preset/"Scene" system (within the device)
 - Track edit mode for the Launchpad
   - Hold a pattern button and tap a track 3 times to edit track settings
   - Use pattern buttons to select an option and grid buttons set the value:
@@ -34,8 +35,3 @@
     - track randomize (every other tap reverts)
     - track copy (every other tap clears)
     - track paste  (every other tap reverts)
-
-## Future
-- Expandable GUI view to show all patterns in a track, 1 row per pattern
-- Ableton Push support
-- Preset/"Scene" system (within the device)

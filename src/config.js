@@ -99,9 +99,12 @@ export const MODE = Object.freeze({
   }),
   GATE_SUMMING: Object.freeze({
     ADD: 'add',
+    ADD_x3: 'add x3',
+    ADD_x4: 'add x4',
     LOWEST: 'low',
     HIGHEST: 'high',
     RANDOM: 'rand',
+    RANDOM_WITH_0: 'rand+0',
     MULTI: 'multi',
   }),
 });

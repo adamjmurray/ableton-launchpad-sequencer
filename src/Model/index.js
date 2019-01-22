@@ -76,6 +76,9 @@ export default class Model {
       case GATE_SUMMING.RANDOM:
         return values[Math.floor(Math.random() * values.length)];
 
+      case GATE_SUMMING.ADD_x4:
+        return values.reduce((x, y) => x + y);
+
       default: // ADD:
         return values.reduce((x, y) => x + y) / 4;
     }
