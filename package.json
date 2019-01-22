@@ -20,7 +20,7 @@
     "test": "npx mocha -c -r @babel/register tests/setup 'tests/**/*.test.js'",
     "test-strict": "npx mocha --forbid-only -c -r @babel/register tests/setup 'tests/**/*.test.js'",
     "tdd": "npx mocha -c -w -R min -r @babel/register tests/setup 'tests/**/*.test.js'",
-    "release": "npm run build && zip -r launchpad-sequencer.zip launchpad-sequencer/*.amxd example-project -x */Backup/*"
+    "release": "npm run build && zip -r releases/launchpad-sequencer-1.2.zip launchpad-sequencer/*.amxd example-project -x */Backup/*"
   },
   "repository": {
     "type": "git",
