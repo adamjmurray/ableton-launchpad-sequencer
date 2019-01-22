@@ -3,10 +3,12 @@ import { GUI_COLOR as COLOR, GUI, NUMBER_OF, OUTLET } from '../config';
 const { STEP_WIDTH, BUTTON_WIDTH } = GUI;
 
 // These need to match the [route] objects connected to the GUI outlet in the Max patch.
+// TODO: Is there a reason these don't reuse the storage constants?
 const GRID = 'grid';
 const DURATION = 'duration';
 const SCALE_OFFSETS = 'scale';
 const SCALE_ROOT = 'root';
+const MODULATION_SLEW = 'modslew';
 const MODULATION_SUMMING_MODE = 'modsum';
 const TRACK = 'track';
 const PATTERN = 'pattern';
@@ -34,6 +36,7 @@ export default class GuiView {
     this.renderDuration(this._model.globalStepDuration);
     this.renderScale(this._model.scale);
     this.renderModulationSummingMode(this._model.modulationSummingMode);
+    this.renderModulationSlew(this._model.modulationSlew);
     this.renderTrack(this._model.selectedTrack);
     this.renderValueButton(this._model.selectedValue);
     this.renderPattern(this._model.selectedPattern);
@@ -59,6 +62,10 @@ export default class GuiView {
 
   renderModulationSummingMode(mode) {
     outlet(OUTLET.GUI, MODULATION_SUMMING_MODE, mode);
+  }
+
+  renderModulationSlew(slew) {
+    outlet(OUTLET.GUI, MODULATION_SLEW, slew);
   }
 
   renderTrack(track) {

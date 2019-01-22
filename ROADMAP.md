@@ -4,7 +4,7 @@
 - Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.2
-- A slider for the AT/mod slew: 0% is an immediate step to the value, 100% transitions over the step duration
+- Test and release
 
 ## 1.3
 - Improved UI

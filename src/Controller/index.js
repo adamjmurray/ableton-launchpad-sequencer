@@ -8,6 +8,7 @@ const {
   SCALE_OFFSETS,
   SCALE_ROOT,
   MODULATION_SUMMING_MODE,
+  MODULATION_SLEW,
   TRACKS,
   PITCH,
   VELOCITY,
@@ -65,6 +66,7 @@ export default class Controller {
       case SCALE_OFFSETS: return this.setScaleOffsets(data.slice(1), false);
       case SCALE_ROOT: return this.setScaleRoot(data[1], false);
       case MODULATION_SUMMING_MODE: return this.setModulationSummingMode(data.slice(1), false);
+      case MODULATION_SLEW: return this.setModulationSlew(data.slice(1), false);
       case TRACKS:
         const trackIndex = data[1];
         switch (data[2]) {
@@ -249,7 +251,9 @@ export default class Controller {
       this._prevAftertouch = aftertouch;
     }
     if (modulation != null && modulation !== this._prevModulation) {
-      outlet(OUTLET.CC, 1, modulation);
+      // outlet(OUTLET.CC, 1, modulation);
+      // TODO: Rename this to OUTLET.MOD
+      outlet(OUTLET.CC, modulation);
       this._prevModulation = modulation;
     }
   }
@@ -298,6 +302,14 @@ export default class Controller {
     this._view.renderModulationSummingMode(mode);
     if (store) {
       this._storage.storeModulationSummingMode(mode);
+    }
+  }
+
+  setModulationSlew(slew, store = true) {
+    this._model.modulationSlew = slew;
+    this._view.renderModulationSlew(slew);
+    if (store) {
+      this._storage.storeModulationSlew(slew);
     }
   }
 

@@ -36,6 +36,10 @@ export default class View {
     this._guiView.renderModulationSummingMode(mode);
   }
 
+  renderModulationSlew(slew) {
+    this._guiView.renderModulationSlew(slew);
+  }
+
   renderTrackIndex() {
     this._guiView.renderTrackIndex(this._model.selectedTrackIndex);
     this._launchpadView.renderTrackButton(this._model.selectedTrackIndex);

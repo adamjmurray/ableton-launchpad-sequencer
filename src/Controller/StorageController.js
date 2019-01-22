@@ -5,6 +5,7 @@ const {
   SCALE_OFFSETS,
   SCALE_ROOT,
   MODULATION_SUMMING_MODE,
+  MODULATION_SLEW,
   TRACKS,
   PITCH,
   VELOCITY,
@@ -36,6 +37,10 @@ export default class StorageView {
 
   storeModulationSummingMode(mode) {
     outlet(OUTLET.STORAGE, MODULATION_SUMMING_MODE, mode);
+  }
+
+  storeModulationSlew(slew) {
+    outlet(OUTLET.STORAGE, MODULATION_SLEW, slew);
   }
 
   storeTrackPitch(trackIndex, pitch) {
@@ -100,6 +105,7 @@ export default class StorageView {
     this.storeScaleOffsets(model.scale.offsets);
     this.storeScaleRoot(model.scale.root);
     this.storeModulationSummingMode(model.modulationSummingMode);
+    this.storeModulationSlew(model.modulationSlew);
     model.tracks.forEach((track, trackIndex) => {
       this.storeTrackPitch(trackIndex, track.pitch);
       this.storeTrackVelocity(trackIndex, track.velocity);

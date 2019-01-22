@@ -1,7 +1,6 @@
 import { Config, Controller, Model, View } from '../../src';
 const { GUI_COLOR, LAUNCHPAD, LAUNCHPAD_COLOR, MODE, NUMBER_OF, OUTLET, PATTERN } = Config;
 
-const MOD_CC = 1;
 const PRESS = 127;
 const LIFT = 0;
 
@@ -220,7 +219,7 @@ describe('Controller', () => {
 
     it('generates modulation and aftertouch values of 0 for empty steps', () => {
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 0]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[0]]);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[0]]);
     });
 
@@ -232,7 +231,7 @@ describe('Controller', () => {
       model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 8]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 8]]);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127 / 4]]);
     });
 
@@ -244,7 +243,7 @@ describe('Controller', () => {
       model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 2]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 2]]);
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127]]);
     });
 
@@ -264,19 +263,19 @@ describe('Controller', () => {
       pattern2.steps[3] = 0; // + 4
 
       controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 8]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 8]]);
 
       mockOutlet.reset();
       controller.handleClockTick(1);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 4]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 4]]);
 
       mockOutlet.reset();
       controller.handleClockTick(2);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 2]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 2]]);
 
       mockOutlet.reset();
       controller.handleClockTick(3);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[MOD_CC, 127 / 4]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 4]]);
     });
 
     describe('rendering', () => {

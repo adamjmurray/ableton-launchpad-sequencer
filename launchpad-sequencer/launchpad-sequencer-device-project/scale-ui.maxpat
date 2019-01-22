@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 0,
-			"revision" : 2,
+			"revision" : 4,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -121,7 +121,7 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 371.4554443359375, 77.5, 38.0, 17.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 1.0, 63.0, 38.0, 17.0 ],
+					"presentation_rect" : [ 1.0, 62.0, 38.0, 17.0 ],
 					"text" : "Root",
 					"textcolor" : [ 0.823529422283173, 0.823529422283173, 0.823529422283173, 1.0 ],
 					"textjustification" : 1
@@ -194,14 +194,14 @@
 					"parameter_enable" : 1,
 					"patching_rect" : [ 487.9554443359375, 238.5, 33.0, 15.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 34.0, 64.0, 33.0, 15.0 ],
+					"presentation_rect" : [ 34.0, 63.0, 33.0, 15.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
+							"parameter_longname" : "live.menu",
+							"parameter_invisible" : 2,
 							"parameter_shortname" : "live.menu",
 							"parameter_enum" : [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" ],
-							"parameter_type" : 2,
-							"parameter_longname" : "live.menu",
-							"parameter_invisible" : 2
+							"parameter_type" : 2
 						}
 
 					}
@@ -225,7 +225,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 551.0, 416.0, 84.0, 53.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 0.0, 14.0, 77.0, 49.0 ],
+					"presentation_rect" : [ 0.0, 13.0, 77.0, 49.0 ],
 					"range" : 12,
 					"selectioncolor" : [ 0.929411764705882, 0.929411764705882, 0.352941176470588, 1.0 ],
 					"whitekeycolor" : [ 0.92156862745098, 0.917647058823529, 0.933333333333333, 0.0 ]
@@ -377,7 +377,7 @@
 					"parameter_enable" : 0,
 					"patching_rect" : [ 220.0, 306.0, 84.0, 53.0 ],
 					"presentation" : 1,
-					"presentation_rect" : [ 0.0, 14.0, 77.0, 49.0 ],
+					"presentation_rect" : [ 0.0, 13.0, 77.0, 49.0 ],
 					"range" : 12,
 					"selectioncolor" : [ 0.52156862745098, 0.96078431372549, 0.843137254901961, 1.0 ],
 					"varname" : "kslider"

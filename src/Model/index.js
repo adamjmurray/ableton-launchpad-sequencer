@@ -13,9 +13,10 @@ export default class Model {
   }
 
   reset() {
-    this.globalStepDuration = DEFAULT.STEP_DURATION;
+    this.globalStepDuration = DEFAULT.STEP_DURATION; // behavior handled by Max, only for storage and rendering
     this.scale.reset();
     this.modulationSummingMode = DEFAULT.MODULATION_SUMMING_MODE;
+    this.modulationSlew = DEFAULT.MODULATION_SLEW; // behavior handled by Max, only for storage and rendering
     this.tracks.forEach(track => track.reset());
     this.selectedTrackIndex = 0;
     this.selectedPatternIndex = NUMBER_OF.PATTERNS - 1; // The last pattern is a note-producing pattern (and the first is not)

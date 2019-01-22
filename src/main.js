@@ -20,6 +20,7 @@ export function scale(...offsets) { controller.setScaleOffsetsRelativeToC(offset
 export function root(root) { controller.setScaleRoot(root); }
 export function duration(duration) { controller.setDuration(duration); }
 export function modsum(root) { controller.setModulationSummingMode(root); }
+export function modslew(slew) { controller.setModulationSlew(slew); }
 
 export function pitch(pitch) { controller.setTrackPitch(pitch); }
 export function velocity(velocity) { controller.setTrackVelocity(velocity); }

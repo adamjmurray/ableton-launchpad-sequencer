@@ -48,8 +48,9 @@ export const LAUNCHPAD_COLOR = Object.freeze({
 });
 
 export const DEFAULT = Object.freeze({
-  STEP_DURATION: '16th',
+  STEP_DURATION: '1/16',
   MODULATION_SUMMING_MODE: 'add',
+  MODULATION_SLEW: 0,
   PATTERN_TYPES: Object.freeze([ // maps pattern index to the default type for that pattern
     'velocity',
     'duration',
@@ -99,8 +100,8 @@ export const MODE = Object.freeze({
   }),
   GATE_SUMMING: Object.freeze({
     ADD: 'add',
-    ADD_x3: 'add x3',
-    ADD_x4: 'add x4',
+    ADD_x3: 'addx3',
+    ADD_x4: 'addx4',
     LOWEST: 'low',
     HIGHEST: 'high',
     RANDOM: 'rand',
@@ -154,6 +155,7 @@ export const STORAGE = Object.freeze({
   SCALE_OFFSETS: 'scale',
   SCALE_ROOT: 'root',
   MODULATION_SUMMING_MODE: 'modsum',
+  MODULATION_SLEW: 'modslew',
   TRACKS: 'tracks',
   PITCH: 'pitch',
   VELOCITY: 'velocity',
