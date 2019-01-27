@@ -379,6 +379,9 @@ describe('Controller', () => {
           controller.setTrackGateSummingMode(MODE.GATE_SUMMING.LOWEST, 0, false);
           const { pitch, velocity, gate } = track;
 
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
+
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
           setGateSteps(0, 1, 0);

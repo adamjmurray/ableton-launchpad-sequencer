@@ -80,8 +80,12 @@ export default class Model {
       case GATE_SUMMING.ADD_x4:
         return values.reduce((x, y) => x + y);
 
-      default: // ADD:
+      case GATE_SUMMING.ADD:
         return values.reduce((x, y) => x + y) / 4;
+
+      default:
+        console.error(`Unsupported modulation summing mode: ${this.modulationSummingMode}`)
+        return 0;
     }
   }
 }
