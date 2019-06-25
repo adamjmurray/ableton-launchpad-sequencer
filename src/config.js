@@ -100,13 +100,12 @@ export const MODE = Object.freeze({
   }),
   GATE_SUMMING: Object.freeze({
     ADD: 'add',
-    ADD_x3: 'addx3',
-    ADD_x4: 'addx4',
-    LOWEST: 'low',
+    AVERAGE: 'avg',
     HIGHEST: 'high',
+    LOWEST: 'low',
+    MULTI: 'multi',
     RANDOM: 'rand',
     RANDOM_WITH_0: 'rand+0',
-    MULTI: 'multi',
   }),
 });
 

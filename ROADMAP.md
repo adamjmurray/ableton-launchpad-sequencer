@@ -1,15 +1,20 @@
 ## Known Issues
 - Sometimes the Launchpad button LEDs get stuck when changing values or displaying the active step on the grid.
-- Undo/Redo: Redoing a change to pattern steps doesn't work
+- Undo/Redo: Redoing a change to pattern steps doesn't work.
+  This is because undoing creates a new entry in the undo history.
+  May not be easily fixable due to limitations in Max for Live.
 - Sometimes the first step doesn't output when starting playback from the beginning of the arrangement
 
 ## 1.2
 - Test and release
+  - Check if the example projects work when the path to the original source changes
+    - i.e. does it use absolute paths and we need to "Collect all and Save" when releasing - or copy the frozen amxd down into the project
+  - Ensure the git repo can be moved. May need to flatten the device folder (move the projects files to the parent folder)
 
 ## 1.3
 - Improved UI
   - "Gate" labels for patterns should update to say P.Gate or V.Gate
-  - With the velocity gate type in multi-sum mode, show +1 and +2 labels next to the V.Gate to indicate the pitches are higher
+  - With the velocity gate type in multi mode, show +1 and +2 labels next to the V.Gate to indicate the pitches are higher
 - Switch the velocity pattern to a pitch pattern when using velocity gates (and update labels accordingly)
 - Double tap Launchpad grid button or GUI button to unset note
 - Documentation - thorough annotations for Live's Info view

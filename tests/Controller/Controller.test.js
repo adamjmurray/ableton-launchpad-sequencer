@@ -223,20 +223,8 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[0]]);
     });
 
-    it('sums modulation and aftertouch values across tracks', () => {
+    it('sums modulation and aftertouch values across tracks, reaching the max value as soon as the total value is 4 in ADD mode', () => {
       controller.setModulationSummingMode(MODE.GATE_SUMMING.ADD, false);
-      model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 1;
-      model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 1;
-      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3;
-      model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
-
-      controller.handleClockTick(0);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 8]]);
-      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127 / 4]]);
-    });
-
-    it('sums modulation and aftertouch values across tracks ("add x4") mode', () => {
-      controller.setModulationSummingMode(MODE.GATE_SUMMING.ADD_x4, false);
       model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 1;
       model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 1;
       model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3;
@@ -247,9 +235,22 @@ describe('Controller', () => {
       assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127]]);
     });
 
+    it('averages modulation and aftertouch values across tracks in AVERAGE mode', () => {
+      controller.setModulationSummingMode(MODE.GATE_SUMMING.AVERAGE, false);
+      model.tracks[0].patterns[PATTERN.MODULATION].steps[0] = 1;
+      model.tracks[2].patterns[PATTERN.MODULATION].steps[0] = 1;
+      model.tracks[0].patterns[PATTERN.AFTERTOUCH].steps[0] = 3;
+      model.tracks[3].patterns[PATTERN.AFTERTOUCH].steps[0] = 1;
+
+      controller.handleClockTick(0);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.CC), [[127 / 8]]);
+      assert.deepStrictEqual(mockOutlet.callsFor(OUTLET.AFTERTOUCH), [[127 / 4]]);
+    });
+
     // TODO aftertouch / modulation summing tests for high, low, and rand
 
     it('outputs correct modulation and aftertouch values when using the track step duration multiplier', () => {
+      controller.setModulationSummingMode(MODE.GATE_SUMMING.AVERAGE, false);
       const [track1, track2] = model.tracks;
       const pattern1 = track1.patterns[PATTERN.MODULATION];
       const pattern2 = track2.patterns[PATTERN.MODULATION];
@@ -350,6 +351,9 @@ describe('Controller', () => {
           controller.setTrackGateSummingMode(MODE.GATE_SUMMING.ADD, 0, false);
           const { pitch, velocity, gate } = track;
 
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
+
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
           setGateSteps(0, 1, 0);
@@ -371,6 +375,48 @@ describe('Controller', () => {
           assertClockTickNotes([[pitch + 10, velocity, gate]])
           setGateSteps(4, 4, 4);
           assertClockTickNotes([[pitch + 11, velocity, gate]]);
+        });
+      });
+
+      describe('avg summing mode', () => {
+        it('starts from the track pitch and averages the track values together, rounding to the nearest integer pitch value', () => {
+          controller.setTrackGateSummingMode(MODE.GATE_SUMMING.AVERAGE, 0, false);
+          const { pitch, velocity, gate } = track;
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
+
+          setGateSteps(0, 0, 1);
+          assertClockTickNotes([[pitch, velocity, gate]]);
+          setGateSteps(0, 1, 1);
+          assertClockTickNotes([[pitch, velocity, gate]]);
+          setGateSteps(1, 1, 1);
+          assertClockTickNotes([[pitch, velocity, gate]]);
+          setGateSteps(1, 2, 1);
+          assertClockTickNotes([[pitch, velocity, gate]]);
+
+          setGateSteps(1, 2, 2);
+          assertClockTickNotes([[pitch + 1, velocity, gate]]);
+          setGateSteps(2, 2, 2);
+          assertClockTickNotes([[pitch + 1, velocity, gate]]);
+          setGateSteps(2, 3, 2);
+          assertClockTickNotes([[pitch + 1, velocity, gate]]);
+          setGateSteps(1, 1, 4);
+          assertClockTickNotes([[pitch + 1, velocity, gate]]);
+
+          setGateSteps(3, 2, 3);
+          assertClockTickNotes([[pitch + 2, velocity, gate]]);
+          setGateSteps(3, 3, 3);
+          assertClockTickNotes([[pitch + 2, velocity, gate]]);
+          setGateSteps(4, 3, 3);
+          assertClockTickNotes([[pitch + 2, velocity, gate]]);
+          setGateSteps(0, 4, 4);
+          assertClockTickNotes([[pitch + 2, velocity, gate]]);
+
+          setGateSteps(4, 4, 3);
+          assertClockTickNotes([[pitch + 3, velocity, gate]]);
+          setGateSteps(4, 4, 4);
+          assertClockTickNotes([[pitch + 3, velocity, gate]]);
         });
       });
 
@@ -410,6 +456,9 @@ describe('Controller', () => {
         it('starts from the track pitch and adds the highest track value', () => {
           controller.setTrackGateSummingMode(MODE.GATE_SUMMING.HIGHEST, 0, false);
           const { pitch, velocity, gate } = track;
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
@@ -537,6 +586,9 @@ describe('Controller', () => {
           controller.setTrackGateSummingMode(MODE.GATE_SUMMING.MULTI, 0, false);
           const { pitch, velocity, gate } = track;
 
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
+
           setGateSteps(1, 0, 0);
           assertClockTickNotes([[pitch, velocity, gate]]);
           setGateSteps(0, 1, 0);
@@ -546,7 +598,6 @@ describe('Controller', () => {
           setGateSteps(0, 4, 0);
           assertClockTickNotes([[pitch + 3, velocity, gate]]);
 
-          // TODO: test notes get deduped
           setGateSteps(0, 1, 2);
           assertClockTickNotes([
             [pitch, velocity, gate],
@@ -570,6 +621,21 @@ describe('Controller', () => {
             [pitch, velocity, gate],
           ]);
         });
+
+        it('does not duplicate notes', () => {
+          controller.setTrackGateSummingMode(MODE.GATE_SUMMING.MULTI, 0, false);
+          const { pitch, velocity, gate } = track;
+
+          setGateSteps(1, 1, 1);
+          assertClockTickNotes([
+            [pitch, velocity, gate],
+          ]);
+          setGateSteps(2, 2, 3);
+          assertClockTickNotes([
+            [pitch + 1, velocity, gate],
+            [pitch + 2, velocity, gate],
+          ]);
+        });
       });
     });
 
@@ -579,12 +645,15 @@ describe('Controller', () => {
       });
 
       describe('add summing mode', () => {
-        it('starts from the track velocity, and reaches the max velocity when all 3 tracks have the max value simulatenously', () => {
+        it('starts from the track velocity, and reaches the max velocity when any track has the max value simulatenously', () => {
           controller.setTrackGateSummingMode(MODE.GATE_SUMMING.ADD, 0, false);
 
           const { pitch, velocity, gate } = track;
-          const increment = (127 - velocity) / 11;
+          const increment = (127 - velocity) / 3;
           assert(increment > 0);
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
@@ -595,29 +664,45 @@ describe('Controller', () => {
 
           setGateSteps(0, 1, 1);
           assertClockTickNotes([[pitch, velocity + increment, gate]]);
+          setGateSteps(0, 2, 0);
+          assertClockTickNotes([[pitch, velocity + increment, gate]]);
+
           setGateSteps(1, 1, 1);
           assertClockTickNotes([[pitch, velocity + 2 * increment, gate]]);
-          setGateSteps(1, 2, 1);
-          assertClockTickNotes([[pitch, velocity + 3 * increment, gate]]);
-          setGateSteps(2, 2, 2);
-          assertClockTickNotes([[pitch, velocity + 5 * increment, gate]]);
-          setGateSteps(4, 3, 2);
-          assertClockTickNotes([[pitch, velocity + 8 * increment, gate]]);
-          setGateSteps(3, 4, 4);
-          assertClockTickNotes([[pitch, velocity + 10 * increment, gate]]);
+          setGateSteps(2, 0, 1);
+          assertClockTickNotes([[pitch, velocity + 2 * increment, gate]]);
+          setGateSteps(3, 0, 0);
+          assertClockTickNotes([[pitch, velocity + 2 * increment, gate]]);
 
+          setGateSteps(4, 0, 0);
+          assertClockTickNotes([[pitch, 127, gate]])
+          setGateSteps(0, 4, 0);
+          assertClockTickNotes([[pitch, 127, gate]]);
+          setGateSteps(0, 0, 4);
+          assertClockTickNotes([[pitch, 127, gate]]);
+          setGateSteps(1, 2, 1);
+          assertClockTickNotes([[pitch, 127, gate]]);
+          setGateSteps(2, 2, 2);
+          assertClockTickNotes([[pitch, 127, gate]]);
+          setGateSteps(4, 3, 2);
+          assertClockTickNotes([[pitch, 127, gate]]);
+          setGateSteps(3, 4, 4);
+          assertClockTickNotes([[pitch, 127, gate]]);
           setGateSteps(4, 4, 4);
           assertClockTickNotes([[pitch, 127, gate]]);
         });
       });
 
-      describe('"add x" summing mode', () => {
+      describe('average summing mode', () => {
         it('starts from the track velocity, and reaches the max velocity when all 3 tracks have the max value simulatenously', () => {
-          controller.setTrackGateSummingMode(MODE.GATE_SUMMING.ADD_x3, 0, false);
+          controller.setTrackGateSummingMode(MODE.GATE_SUMMING.AVERAGE, 0, false);
 
           const { pitch, velocity, gate } = track;
-          const increment = (127 - velocity) / 3; // same as add except each of the 3 tracks goes to the Max value
+          const increment = (127 - velocity) / 9;
           assert(increment > 0);
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
@@ -625,23 +710,29 @@ describe('Controller', () => {
           assertClockTickNotes([[pitch, velocity, gate]]);
           setGateSteps(1, 0, 0);
           assertClockTickNotes([[pitch, velocity, gate]]);
-
-          setGateSteps(0, 1, 1);
-          assertClockTickNotes([[pitch, velocity + increment, gate]]);
+          setGateSteps(1, 1, 0);
+          assertClockTickNotes([[pitch, velocity, gate]]);
           setGateSteps(1, 1, 1);
-          assertClockTickNotes([[pitch, velocity + 2 * increment, gate]]);
-          setGateSteps(1, 2, 1);
-          assertClockTickNotes([[pitch, velocity + 3 * increment, gate]]);
-          setGateSteps(2, 2, 2);
+          assertClockTickNotes([[pitch, velocity, gate]]);
 
-          // These values exceed the max velocity of 127, but Max will constrain the value to 127 so it's fine
+          setGateSteps(2, 1, 1);
+          assertClockTickNotes([[pitch, velocity + increment, gate]]);
+          setGateSteps(0, 3, 1);
+          assertClockTickNotes([[pitch, velocity + increment, gate]]);
+          setGateSteps(4, 0, 0);
+          assertClockTickNotes([[pitch, velocity + increment, gate]]);
+
+          setGateSteps(2, 2, 1);
+          assertClockTickNotes([[pitch, velocity + 2 * increment, gate]]);
+          setGateSteps(2, 2, 4);
           assertClockTickNotes([[pitch, velocity + 5 * increment, gate]]);
-          setGateSteps(4, 3, 2);
+          setGateSteps(2, 3, 4);
+          assertClockTickNotes([[pitch, velocity + 6 * increment, gate]]);
+          setGateSteps(4, 3, 4);
           assertClockTickNotes([[pitch, velocity + 8 * increment, gate]]);
-          setGateSteps(3, 4, 4);
-          assertClockTickNotes([[pitch, velocity + 10 * increment, gate]]);
+
           setGateSteps(4, 4, 4);
-          assertClockTickNotes([[pitch, velocity + 11 * increment, gate]]);
+          assertClockTickNotes([[pitch, 127, gate]]);
         });
       });
 
@@ -652,6 +743,9 @@ describe('Controller', () => {
           const { pitch, velocity, gate } = track;
           const increment = (127 - velocity) / 3;
           assert(increment > 0);
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
@@ -683,6 +777,9 @@ describe('Controller', () => {
           const { pitch, velocity, gate } = track;
           const increment = (127 - velocity) / 3;
           assert(increment > 0);
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(0, 0, 1);
           assertClockTickNotes([[pitch, velocity, gate]]);
@@ -822,6 +919,9 @@ describe('Controller', () => {
           const pitch1 = pitch + 2;
           const pitch2 = pitch + 1;
           const pitch3 = pitch;
+
+          setGateSteps(0, 0, 0);
+          assertClockTickNotes([]);
 
           setGateSteps(1, 0, 0);
           assertClockTickNotes([[pitch1, velocity, gate]]);

@@ -45,7 +45,7 @@ export default class Track {
     if (this.mute || clock < 0 || clock % this.durationMultiplier !== 0) {
       // return the previous note to maintain the modulation and aftertouch value when we're in between track steps
       note.enabled = false;
-      return [note];
+      return [note]; // TODO: Can we avoid constructing an array here?
     }
     const trackClock = clock / this.durationMultiplier;
 
@@ -98,7 +98,8 @@ export default class Track {
               note3.duration = duration;
             }
           } else {
-            note.pitch = scale.pitchAt(octave, offset + (gateValue - 1));
+            // AVERAGE mode can result in fractional values so we round() first to ensure we end up with a scale pitch
+            note.pitch = scale.pitchAt(octave, offset + Math.round(gateValue) - 1);
           }
           break;
 
@@ -126,15 +127,10 @@ export default class Track {
               note3.velocity = velocity + (deltaToMax * (note3.gateValue - 1) / 3);
               note3.duration = duration;
             }
-          } else
-            if (this.gateSummingMode === GATE_SUMMING.ADD) {
-              // It takes all 3 gates with max value (i.e. 12) to hit max velocity in ADD mode.
-              // Since the step value 1 plays a note with the baseVelocity, there's 11 steps until the max:
-              note.velocity = velocity + (deltaToMax * (gateValue - 1) / 11);
-            }
-            else {
-              note.velocity = velocity + (deltaToMax * (gateValue - 1) / 3);
-            }
+          } else {
+            // With ADD mode, the velocity can exceed 127
+            note.velocity = Math.min(127, velocity + (deltaToMax * (gateValue - 1) / 3));
+          }
           break;
       }
     }
@@ -151,24 +147,32 @@ export default class Track {
   _gateValue() {
     const values = this._notes.map(n => n.gateValue);
     switch (this.gateSummingMode) {
+      case GATE_SUMMING.ADD:
+        return values.reduce((a, b) => a + b);
+
+      case GATE_SUMMING.AVERAGE:
+        const average = values.reduce((a, b) => a + b) / values.length;
+        // The minimum value for a gate needs to be 1 so we don't go below the track's pitch/velocity
+        // See the `- 1` logic in notesForClock().
+        return (average > 0 && average < 1) ? 1 : average;
+
+      case GATE_SUMMING.HIGHEST:
+        return Math.max(...values);
+
       case GATE_SUMMING.LOWEST:
         const nonZeros = values.filter(v => v > 0);
         return nonZeros.length ? Math.min(...nonZeros) : 0;
 
-      case GATE_SUMMING.HIGHEST:
-        return Math.max(...values);
+      case GATE_SUMMING.MULTI:
+        // notesForClock() handles the multi-note behavior.
+        // We only need to attempt to process this step if there's a non-zero value:
+        return values.reduce((a, b) => a + b);
 
       case GATE_SUMMING.RANDOM:
         return randomItem(values.filter(v => v > 0)) || 0;
 
       case GATE_SUMMING.RANDOM_WITH_0:
         return randomItem(values);
-
-      case GATE_SUMMING.ADD:
-      case GATE_SUMMING.ADD_x3:
-      case GATE_SUMMING.MULTI:
-        // These modes produce a note if any gate has a step value. notesForClock() handles the behavior.
-        return values.reduce((a, b) => a + b);
 
       default:
         console.error(`Unsupported gate summing mode: ${this.gateSummingMode}`);

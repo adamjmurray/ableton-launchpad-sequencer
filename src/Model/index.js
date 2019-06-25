@@ -68,20 +68,20 @@ export default class Model {
 
   _modValue(values) {
     switch (this.modulationSummingMode) {
-      case GATE_SUMMING.LOWEST:
-        return Math.min(...values);
+      case GATE_SUMMING.ADD:
+        return values.reduce((x, y) => x + y);
+
+      case GATE_SUMMING.AVERAGE:
+        return values.reduce((x, y) => x + y) / values.length;
 
       case GATE_SUMMING.HIGHEST:
         return Math.max(...values);
 
+      case GATE_SUMMING.LOWEST:
+        return Math.min(...values);
+
       case GATE_SUMMING.RANDOM:
         return values[Math.floor(Math.random() * values.length)];
-
-      case GATE_SUMMING.ADD_x4:
-        return values.reduce((x, y) => x + y);
-
-      case GATE_SUMMING.ADD:
-        return values.reduce((x, y) => x + y) / 4;
 
       default:
         console.error(`Unsupported modulation summing mode: ${this.modulationSummingMode}`)
