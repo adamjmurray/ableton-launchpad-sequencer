@@ -55,7 +55,7 @@ Each track's "gate summing mode" determines what happens when simultaneous steps
   * rand: one of the values is randomly selected
   * multi: multiple notes will be output for each distinct pitch (if 2 gates trigger the the same value, only the first will play)
 * Velocity gate summing modes:
-  * add: velocity values are added across all three gate patterns. Three simulatenous steps with a value of 4 must occur to reach the maximum velocity (127)
+  * add: velocity values are added across all three gate patterns. Three simultaneous steps with a value of 4 must occur to reach the maximum velocity (127)
   * low: the lowest value is used
   * high: the highest value is used
   * rand: one of the values is randomly selected
