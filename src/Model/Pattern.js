@@ -138,6 +138,7 @@ export default class Pattern {
         case 'gate':
           note.gateValue = value;
           break;
+        default: console.log(`ERROR in processNote(). Unexpected type "${this.type}"`);
       }
     }
   }

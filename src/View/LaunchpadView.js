@@ -140,6 +140,9 @@ export default class LaunchpadView {
           return COLOR.STEP_VALUES[value];
         }
         return COLOR.OFF;
+
+      default: console.log(`ERROR in _colorForGridButton(). Unexpected mode "${model.mode}"`);
+
     }
   };
 

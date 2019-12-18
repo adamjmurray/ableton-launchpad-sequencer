@@ -132,6 +132,9 @@ export default class Track {
             note.velocity = Math.min(127, velocity + (deltaToMax * (gateValue - 1) / 3));
           }
           break;
+
+        default: console.log(`ERROR in notesForClock(). Unexpected gate mode "${this.gateMode}"`);
+
       }
     }
     return this._notes;
@@ -175,7 +178,7 @@ export default class Track {
         return randomItem(values);
 
       default:
-        console.error(`Unsupported gate summing mode: ${this.gateSummingMode}`);
+        console.error(`Error in _gateValue(). Unexpected gate summing mode "${this.gateSummingMode}"`);
         return 0;
     }
   }

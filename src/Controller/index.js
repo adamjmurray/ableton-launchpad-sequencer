@@ -84,8 +84,14 @@ export default class Controller {
               case START: return this.setPatternStart(data[5], trackIndex, patternIndex, false);
               case END: return this.setPatternEnd(data[5], trackIndex, patternIndex, false);
               case MUTE: return this.setPatternMute(data[5], trackIndex, patternIndex, false);
+              default: console.log(`ERROR in setModel(). Unexpected data[4] "${data[4]}"`);
             }
+            return;
+          default: console.log(`ERROR in setModel(). Unexpected data[4] "${data[2]}"`);
         }
+        return;
+      default: console.log(`ERROR in setModel(). Unexpected data[0] "${data[0]}"`);
+
     }
   }
 

@@ -84,7 +84,7 @@ export default class Model {
         return values[Math.floor(Math.random() * values.length)];
 
       default:
-        console.error(`Unsupported modulation summing mode: ${this.modulationSummingMode}`)
+        console.error(`Error in _modValue(). Unexpected modulation summing mode "${this.modulationSummingMode}"`)
         return 0;
     }
   }
