@@ -4,7 +4,7 @@
 [![Max for Live](https://img.shields.io/badge/Max_for_Live-cc5500.svg)](http://ableton.com/maxforlive)
 [![Novation Launchpad MK1 / Mini](https://img.shields.io/badge/Novation_Launchpad_MK1_%2F%20Mini-aa2222.svg)](https://novationmusic.com/launch/launchpad-mini)
 
-[![Build Status](https://img.shields.io/travis/adamjmurray/m4l-launchpad-sequencer.svg)](http://travis-ci.org/adamjmurray/m4l-launchpad-sequencer)
+[![Build Status](https://img.shields.io/travis/adamjmurray/ableton-launchpad-sequencer.svg)](http://travis-ci.org/adamjmurray/ableton-launchpad-sequencer)
 
 An [Ableton Live 10 Suite](http://www.ableton.com/live/) MIDI device for flexible step sequencing with a [Novation Launchpad](https://novationmusic.com/launch/launchpad-mini).
 
