@@ -65,8 +65,8 @@ export default class Controller {
       case DURATION: return this.setDuration(data[1], false);
       case SCALE_OFFSETS: return this.setScaleOffsets(data.slice(1), false);
       case SCALE_ROOT: return this.setScaleRoot(data[1], false);
-      case MODULATION_SUMMING_MODE: return this.setModulationSummingMode(data.slice(1), false);
-      case MODULATION_SLEW: return this.setModulationSlew(data.slice(1), false);
+      case MODULATION_SUMMING_MODE: return this.setModulationSummingMode(data[1], false);
+      case MODULATION_SLEW: return this.setModulationSlew(data[1], false);
       case TRACKS:
         const trackIndex = data[1];
         switch (data[2]) {
