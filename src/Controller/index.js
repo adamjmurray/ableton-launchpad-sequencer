@@ -97,6 +97,10 @@ export default class Controller {
 
   handleTransportStop() {
     this.handleClockTick(-1);
+
+    // this avoids grid lights turning off that should stay on when "all notes off" happens:
+    this._view.renderGrid();
+
     // Make modulation and aftertouch values output on the first step when the transport starts again:
     this._prevAftertouch = null;
     this._prevModulation = null;
