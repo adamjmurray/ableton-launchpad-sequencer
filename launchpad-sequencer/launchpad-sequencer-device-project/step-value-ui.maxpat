@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 0,
-			"revision" : 2,
+			"minor" : 1,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 744.0, 539.0, 502.0, 609.0 ],
+		"rect" : [ 744.0, 539.0, 415.0, 609.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -174,7 +174,8 @@
 				"box" : 				{
 					"activebgcolor" : [ 0.333333333333333, 0.333333333333333, 0.333333333333333, 1.0 ],
 					"activebgoncolor" : [ 0.68, 0.7, 0.72, 1.0 ],
-					"annotation" : "Selects the active step value. Pressing buttons in the pattern grid will toggle between off and the active step value. You can also toggle this selector to off, and then any grid buttons pressed with turn off.",
+					"annotation" : "Selects a step value. Pressing a button in the pattern grid sets the selected value on that step. \n\nYou can toggle the selected step value off to turn off steps in the pattern grid.",
+					"annotation_name" : "step value selector",
 					"bgoncolor" : [ 0.572549, 0.615686, 0.658824, 1.0 ],
 					"bordercolor" : [ 0.27451, 0.32549, 0.4, 0.0 ],
 					"focusbordercolor" : [ 0.0, 0.019608, 0.078431, 0.0 ],
@@ -196,15 +197,17 @@
 							"parameter_enum" : [ "0", "1", "2", "3", "4" ],
 							"parameter_type" : 2,
 							"parameter_unitstyle" : 0,
-							"parameter_longname" : "step value selector[1]",
+							"parameter_annotation_name" : "step value selector",
+							"parameter_longname" : "step value",
 							"parameter_invisible" : 2,
-							"parameter_shortname" : "live.tab"
+							"parameter_mmax" : 4,
+							"parameter_shortname" : "step value"
 						}
 
 					}
 ,
 					"textcolor" : [ 0.823529411764706, 0.823529411764706, 0.823529411764706, 1.0 ],
-					"varname" : "live.tab[2]"
+					"varname" : "step-value-selector"
 				}
 
 			}
@@ -359,7 +362,7 @@
 			}
  ],
 		"parameters" : 		{
-			"obj-8" : [ "step value selector[1]", "live.tab", 0 ],
+			"obj-8" : [ "step value", "step value", 0 ],
 			"parameterbanks" : 			{
 
 			}
