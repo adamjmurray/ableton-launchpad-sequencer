@@ -8,7 +8,6 @@
   Live's transport is stopped?
 
 ## 1.2 TODOs
-- Fix advanced example project
 - Test and release
 
 ## 1.3
