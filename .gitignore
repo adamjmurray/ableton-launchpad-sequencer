@@ -1,3 +1,7 @@
 launchpad-sequencer.js
 node_modules
 Backup
+examples/**/*.amxd
+examples/**/*.js
+examples/**/*.maxpat
+examples/**/*.png

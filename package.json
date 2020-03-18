@@ -1,6 +1,6 @@
 {
   "name": "m4l-launchpad-sequencer",
-  "version": "0.6.0",
+  "version": "1.2.0",
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
   "dependencies": {},
   "devDependencies": {
@@ -15,12 +15,13 @@
   "scripts": {
     "build": "npx rollup -c",
     "ci": "npm run test-strict && npm run build",
-    "clean": "rm -f launchpad-sequencer/launchpad-sequencer-device-project/launchpad-sequencer.js",
+    "clean": "rm -f device/launchpad-sequencer.js",
     "dev": "npx rollup -c -w",
     "test": "npx mocha -c -r @babel/register tests/setup 'tests/**/*.test.js'",
     "test-strict": "npx mocha --forbid-only -c -r @babel/register tests/setup 'tests/**/*.test.js'",
     "tdd": "npx mocha -c -w -R min -r @babel/register tests/setup 'tests/**/*.test.js'",
-    "release": "npm run build && zip -r releases/launchpad-sequencer-1.2.zip launchpad-sequencer/*.amxd example-project -x */Backup/*"
+    "sync-examples": "cp device/* 'examples/Template Project/Presets/MIDI Effects/Max MIDI Effect/Imported' && cp device/* 'examples/Advanced Example Project/Presets/MIDI Effects/Max MIDI Effect/Imported'",
+    "release": "npm run build && npm run sync-examples && zip -r releases/launchpad-sequencer-1.2.zip device examples -x */Backup/*"
   },
   "repository": {
     "type": "git",

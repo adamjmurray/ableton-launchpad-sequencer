@@ -7,11 +7,9 @@
   This seems to happen when you start and stop repeatedly. Might have something to do with "all notes off" MIDI when
   Live's transport is stopped?
 
-## 1.2
+## 1.2 TODOs
+- Fix advanced example project
 - Test and release
-  - Check if the example projects work when the path to the original source changes
-    - i.e. does it use absolute paths and we need to "Collect all and Save" when releasing - or copy the frozen amxd down into the project
-  - Ensure the git repo can be moved. May need to flatten the device folder (move the projects files to the parent folder)
 
 ## 1.3
 - Improved UI
