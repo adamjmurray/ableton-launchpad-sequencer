@@ -1,27 +1,23 @@
 {
   "name": "m4l-launchpad-sequencer",
+  "type": "module",
   "version": "1.2.0",
   "description": "A step sequencer for the Novation Launchpad, for use with Ableton Live and Max for Live.",
-  "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/register": "^7.8.6",
-    "@rollup/plugin-node-resolve": "^7.1.1",
-    "mocha": "^7.1.0",
-    "rollup": "^2.0.6",
-    "rollup-plugin-babel": "^4.3.3"
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "mocha": "^10.8.2",
+    "rollup": "^4.25.0"
   },
   "scripts": {
-    "build": "npx rollup -c",
+    "build": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npx rollup -c",
     "ci": "npm run test-strict && npm run build",
     "clean": "rm -f device/launchpad-sequencer.js",
-    "dev": "npx rollup -c -w",
-    "test": "npx mocha -c -r @babel/register tests/setup 'tests/**/*.test.js'",
-    "test-strict": "npx mocha --forbid-only -c -r @babel/register tests/setup 'tests/**/*.test.js'",
-    "tdd": "npx mocha -c -w -R min -r @babel/register tests/setup 'tests/**/*.test.js'",
+    "dev": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npx rollup -c -w",
+    "test": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npx mocha -c -r @babel/register tests/setup 'tests/**/*.test.js'",
+    "test-strict": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npx mocha --forbid-only -c -r @babel/register tests/setup 'tests/**/*.test.js'",
+    "tdd": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npx mocha -c -w -R min -r @babel/register tests/setup 'tests/**/*.test.js'",
     "sync-examples": "cp device/* 'examples/Template Project/Presets/MIDI Effects/Max MIDI Effect/Imported' && cp device/* 'examples/Advanced Example Project/Presets/MIDI Effects/Max MIDI Effect/Imported'",
-    "release": "npm run build && npm run sync-examples && zip -r releases/launchpad-sequencer-1.2.zip device examples -x */Backup/*"
+    "release": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' npm run build && npm run sync-examples && zip -r releases/launchpad-sequencer-1.2.zip device examples -x */Backup/*"
   },
   "repository": {
     "type": "git",

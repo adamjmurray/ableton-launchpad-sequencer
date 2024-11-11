@@ -5,3 +5,4 @@ examples/**/*.amxd
 examples/**/*.js
 examples/**/*.maxpat
 examples/**/*.png
+.DS_Store

@@ -1,19 +1,19 @@
 // modulo function that always returns a positive number
-Number.prototype.mod = function(divisor) {
+Number.prototype.mod = function (divisor) {
   const value = this % divisor;
   return value >= 0 ? value : value + divisor;
 };
 
-Array.prototype.fill = function(value) {
-  for (var i = 0; i < this.length; i++) {
-    this[i] = value;
-  }
-  return this;
-}
+// Array.prototype.fill = function(value) {
+//   for (var i = 0; i < this.length; i++) {
+//     this[i] = value;
+//   }
+//   return this;
+// }
 
-Array.prototype.includes = function(value) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] === value) return true;
-  }
-  return false;
-}
+// Array.prototype.includes = function(value) {
+//   for (var i = 0; i < this.length; i++) {
+//     if (this[i] === value) return true;
+//   }
+//   return false;
+// }
