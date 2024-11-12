@@ -1,32 +1,35 @@
-export const GUI_COLOR = Object.freeze({ // Max's LCD object uses the format [R,G,B] in 0-255 range
+export const GUI_COLOR = Object.freeze({
+  // Max's LCD object uses the format [R,G,B] in 0-255 range
   BACKGROUND: Object.freeze([27, 27, 27]),
   PATTERN_START_END: Object.freeze([200, 200, 255]), // the color of the bracket marking the first and last step in the pattern:
-  STEP_VALUE: Object.freeze([ // maps step values to GUI colors
+  STEP_VALUE: Object.freeze([
+    // maps step values to GUI colors
     Object.freeze([150, 150, 150]), // off
-    Object.freeze([0, 255, 0]),     // green
-    Object.freeze([255, 255, 0]),   // yellow
-    Object.freeze([255, 127, 0]),   // orange
-    Object.freeze([255, 0, 0]),     // red
-    Object.freeze([80, 130, 200]),   // current step (TODO: why doesn't the launchpad colors use this format i.e. put this at end of array?)
+    Object.freeze([0, 255, 0]), // green
+    Object.freeze([255, 255, 0]), // yellow
+    Object.freeze([255, 127, 0]), // orange
+    Object.freeze([255, 0, 0]), // red
+    Object.freeze([80, 130, 200]), // current step (TODO: why doesn't the launchpad colors use this format i.e. put this at end of array?)
   ]),
-  SEQUENCER_STEP: Object.freeze([80, 130, 200]),  // TODO: can we replace the last item in STEP_VALUE above?
+  SEQUENCER_STEP: Object.freeze([80, 130, 200]), // TODO: can we replace the last item in STEP_VALUE above?
 });
 
-const lpColor = (green, red) => (16 * green) + red + 4; // + 4 ensures writes to both buffers in case the Launchpad is in double buffering mode
-const LP_OFF = lpColor(0, 0);
-const LP_GREEN = lpColor(3, 0);
-const LP_YELLOW = lpColor(3, 2);
-const LP_ORANGE = lpColor(2, 3);
-const LP_RED = lpColor(0, 3);
-const LP_INACTIVE_GREEN = lpColor(2, 0);
-const LP_INACTIVE_YELLOW = lpColor(2, 1);
-const LP_INACTIVE_ORANGE = lpColor(1, 2);
-const LP_INACTIVE_RED = lpColor(0, 2);
-const LP_SEQUENCER_STEP = lpColor(1, 1);
-const LP_TRACK_COLOR = lpColor(1, 2);
-const LP_PATTERN_COLOR = lpColor(2, 0);
-const LP_MUTE_COLOR = lpColor(0, 3);
-const LP_INACTIVE_MUTE_COLOR = lpColor(0, 1);
+const lpColor = (r, g, b) => (r << 16) | (g << 8) | b;
+const LP_OFF = lpColor(0, 0, 0);
+const LP_GREEN = lpColor(0, 255, 0);
+const LP_YELLOW = lpColor(255, 255, 0);
+const LP_ORANGE = lpColor(255, 127, 0);
+const LP_RED = lpColor(255, 0, 0);
+const LP_INACTIVE_GREEN = lpColor(0, 20, 0);
+const LP_INACTIVE_YELLOW = lpColor(20, 20, 0);
+const LP_INACTIVE_ORANGE = lpColor(30, 5, 0);
+const LP_INACTIVE_RED = lpColor(20, 0, 0);
+
+const LP_SEQUENCER_STEP = lpColor(255, 255, 255);
+const LP_TRACK_COLOR = lpColor(0, 0, 255);
+const LP_PATTERN_COLOR = lpColor(0, 255, 255);
+const LP_MUTE_COLOR = lpColor(255, 0, 255);
+const LP_INACTIVE_MUTE_COLOR = lpColor(20, 0, 20);
 
 export const LAUNCHPAD_COLOR = Object.freeze({
   OFF: LP_OFF,
@@ -48,24 +51,25 @@ export const LAUNCHPAD_COLOR = Object.freeze({
 });
 
 export const DEFAULT = Object.freeze({
-  STEP_DURATION: '1/16',
-  MODULATION_SUMMING_MODE: 'add',
+  STEP_DURATION: "1/16",
+  MODULATION_SUMMING_MODE: "add",
   MODULATION_SLEW: 0,
-  PATTERN_TYPES: Object.freeze([ // maps pattern index to the default type for that pattern
-    'velocity',
-    'duration',
-    'aftertouch',
-    'modulation',
-    'random mute',
-    'gate',
-    'gate',
-    'gate',
+  PATTERN_TYPES: Object.freeze([
+    // maps pattern index to the default type for that pattern
+    "velocity",
+    "duration",
+    "aftertouch",
+    "modulation",
+    "random mute",
+    "gate",
+    "gate",
+    "gate",
   ]),
   PITCH: 60,
   VELOCITY: 70,
   GATE: 0.9,
-  GATE_MODE: 'pitch',
-  GATE_SUMMING_MODE: 'add',
+  GATE_MODE: "pitch",
+  GATE_SUMMING_MODE: "add",
   VALUE: 1,
   SAVE_DELAY: 2000,
   SCALE_ROOT: 0,
@@ -73,9 +77,9 @@ export const DEFAULT = Object.freeze({
 });
 
 export const GESTURE = Object.freeze({
-  SELECT: 'select',
-  DOUBLE_PRESS: 'double press',
-  TRIPLE_PRESS: 'triple press',
+  SELECT: "select",
+  DOUBLE_PRESS: "double press",
+  TRIPLE_PRESS: "triple press",
 });
 
 export const GUI = Object.freeze({
@@ -84,7 +88,7 @@ export const GUI = Object.freeze({
 });
 
 export const LAUNCHPAD = Object.freeze({
-  TOP_ROW_CC: 104
+  TOP_ROW_CC: 104,
 });
 
 export const MIDI = Object.freeze({
@@ -92,27 +96,27 @@ export const MIDI = Object.freeze({
 });
 
 export const MODE = Object.freeze({
-  SEQUENCER: 'SEQUENCER',
-  PATTERN_EDIT: 'PATTERN_EDIT',
+  SEQUENCER: "SEQUENCER",
+  PATTERN_EDIT: "PATTERN_EDIT",
   GATE: Object.freeze({
-    PITCH: 'pitch',
-    VELOCITY: 'velocity',
+    PITCH: "pitch",
+    VELOCITY: "velocity",
   }),
   GATE_SUMMING: Object.freeze({
-    ADD: 'add',
-    AVERAGE: 'avg',
-    HIGHEST: 'high',
-    LOWEST: 'low',
-    MULTI: 'multi',
-    RANDOM: 'rand',
-    RANDOM_WITH_0: 'rand+0',
+    ADD: "add",
+    AVERAGE: "avg",
+    HIGHEST: "high",
+    LOWEST: "low",
+    MULTI: "multi",
+    RANDOM: "rand",
+    RANDOM_WITH_0: "rand+0",
   }),
 });
 
 export const NUMBER_OF = Object.freeze({
   GATES: 3, // number of gate-type patterns in a track
   TRACKS: 4, // number of tracks in the device
-  PATTERNS: 8,  // number of patterns per track
+  PATTERNS: 8, // number of patterns per track
   STEPS: 64, // number of sequencer steps per pattern
   ROWS: 8, // number of steps per row in the pattern grid
   COLUMNS: 8, // number of steps per column in the pattern grid
@@ -130,7 +134,8 @@ export const OUTLET = Object.freeze({
   STORAGE: 7,
 });
 
-export const PATTERN = Object.freeze({ // maps pattern types to pattern indexes
+export const PATTERN = Object.freeze({
+  // maps pattern types to pattern indexes
   VELOCITY: 0,
   DURATION: 1,
   AFTERTOUCH: 2,
@@ -150,21 +155,21 @@ export const STEP_VALUE = Object.freeze({
 });
 
 export const STORAGE = Object.freeze({
-  DURATION: 'duration',
-  SCALE_OFFSETS: 'scale',
-  SCALE_ROOT: 'root',
-  MODULATION_SUMMING_MODE: 'modsum',
-  MODULATION_SLEW: 'modslew',
-  TRACKS: 'tracks',
-  PITCH: 'pitch',
-  VELOCITY: 'velocity',
-  GATE: 'gate',
-  GATE_MODE: 'gatemode',
-  MULTIPLIER: 'multiplier',
-  GATE_SUMMING_MODE: 'gatesum',
-  MUTE: 'mute',
-  PATTERNS: 'patterns',
-  STEPS: 'steps',
-  START: 'start',
-  END: 'end',
+  DURATION: "duration",
+  SCALE_OFFSETS: "scale",
+  SCALE_ROOT: "root",
+  MODULATION_SUMMING_MODE: "modsum",
+  MODULATION_SLEW: "modslew",
+  TRACKS: "tracks",
+  PITCH: "pitch",
+  VELOCITY: "velocity",
+  GATE: "gate",
+  GATE_MODE: "gatemode",
+  MULTIPLIER: "multiplier",
+  GATE_SUMMING_MODE: "gatesum",
+  MUTE: "mute",
+  PATTERNS: "patterns",
+  STEPS: "steps",
+  START: "start",
+  END: "end",
 });

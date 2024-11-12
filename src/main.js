@@ -85,11 +85,8 @@ export function value(value) {
   controller.selectOrToggleValue(value);
 }
 
-export function lpnote(pitch, velocity) {
-  controller.handleLaunchpadNote(pitch, velocity);
-}
-export function lpcc(cc, value) {
-  controller.handleLaunchpadCC(cc, value);
+export function lpin(ledIndex, value) {
+  controller.handleLaunchpadButtonPress(ledIndex, value);
 }
 export function note(pitch, velocity) {
   controller.handleTrackNote(pitch, velocity);

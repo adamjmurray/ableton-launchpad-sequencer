@@ -24,5 +24,11 @@
     "url": "git://github.com/adamjmurray/m4l-launchpad-sequencer.git"
   },
   "author": "Adam Murray",
-  "license": "BSD"
+  "license": "BSD",
+  "prettier": {
+    "printWidth": 120,
+    "bracketSameLine": true,
+    "arrowParens": "avoid",
+    "proseWrap": "always"
+  }
 }

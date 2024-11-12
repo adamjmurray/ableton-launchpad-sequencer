@@ -1,7 +1,8 @@
-import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE, STORAGE } from '../config';
-import StorageController from './StorageController';
-import PressGesture from './PressGesture';
-import RangeSelectionGesture from './RangeSelectionGesture';
+import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE, STORAGE } from "../config";
+import StorageController from "./StorageController";
+import PressGesture from "./PressGesture";
+import RangeSelectionGesture from "./RangeSelectionGesture";
+import { ledIndexToX, ledIndexToY, xyToStepIndex } from "../converters";
 
 const {
   DURATION,
@@ -23,21 +24,19 @@ const {
   END,
 } = STORAGE;
 
-const xyToIndex = (x, y) => x + (y * NUMBER_OF.COLUMNS);
+// const xyToIndex = (x, y) => x + y * NUMBER_OF.COLUMNS;
 
 export default class Controller {
-
   constructor(model, view) {
     this._model = model;
     this._view = view;
-    this._storage = new StorageController;
-    this._topButtonGesture = new PressGesture;
-    this._rightButtonGesture = new PressGesture;
-    this._gridButtonGesture = new RangeSelectionGesture;
+    this._storage = new StorageController();
+    this._topButtonGesture = new PressGesture();
+    this._rightButtonGesture = new PressGesture();
+    this._gridButtonGesture = new RangeSelectionGesture();
     this._patternStepsClipboard = null;
     this._patternStepsUndo = null;
   }
-
 
   // Render any transient view states that are not persisted and won't be restored by setModel()
   initViews() {
@@ -62,36 +61,54 @@ export default class Controller {
 
   setModel(data) {
     switch (data[0]) {
-      case DURATION: return this.setDuration(data[1], false);
-      case SCALE_OFFSETS: return this.setScaleOffsets(data.slice(1), false);
-      case SCALE_ROOT: return this.setScaleRoot(data[1], false);
-      case MODULATION_SUMMING_MODE: return this.setModulationSummingMode(data[1], false);
-      case MODULATION_SLEW: return this.setModulationSlew(data[1], false);
+      case DURATION:
+        return this.setDuration(data[1], false);
+      case SCALE_OFFSETS:
+        return this.setScaleOffsets(data.slice(1), false);
+      case SCALE_ROOT:
+        return this.setScaleRoot(data[1], false);
+      case MODULATION_SUMMING_MODE:
+        return this.setModulationSummingMode(data[1], false);
+      case MODULATION_SLEW:
+        return this.setModulationSlew(data[1], false);
       case TRACKS:
         const trackIndex = data[1];
         switch (data[2]) {
-          case PITCH: return this.setTrackPitch(data[3], trackIndex, false);
-          case VELOCITY: return this.setTrackVelocity(data[3], trackIndex, false);
-          case GATE: return this.setTrackGate(data[3], trackIndex, false);
-          case GATE_MODE: return this.setTrackGateMode(data[3], trackIndex, false);
-          case MULTIPLIER: return this.setTrackMultiplier(data[3], trackIndex, false);
-          case GATE_SUMMING_MODE: return this.setTrackGateSummingMode(data[3], trackIndex, false);
-          case MUTE: return this.setTrackMute(data[3], trackIndex, false);
+          case PITCH:
+            return this.setTrackPitch(data[3], trackIndex, false);
+          case VELOCITY:
+            return this.setTrackVelocity(data[3], trackIndex, false);
+          case GATE:
+            return this.setTrackGate(data[3], trackIndex, false);
+          case GATE_MODE:
+            return this.setTrackGateMode(data[3], trackIndex, false);
+          case MULTIPLIER:
+            return this.setTrackMultiplier(data[3], trackIndex, false);
+          case GATE_SUMMING_MODE:
+            return this.setTrackGateSummingMode(data[3], trackIndex, false);
+          case MUTE:
+            return this.setTrackMute(data[3], trackIndex, false);
           case PATTERNS:
             const patternIndex = data[3];
             switch (data[4]) {
-              case STEPS: return this.setPatternSteps(data.slice(5), trackIndex, patternIndex, false);
-              case START: return this.setPatternStart(data[5], trackIndex, patternIndex, false);
-              case END: return this.setPatternEnd(data[5], trackIndex, patternIndex, false);
-              case MUTE: return this.setPatternMute(data[5], trackIndex, patternIndex, false);
-              default: console.log(`ERROR in setModel(). Unexpected data[4] "${data[4]}"`);
+              case STEPS:
+                return this.setPatternSteps(data.slice(5), trackIndex, patternIndex, false);
+              case START:
+                return this.setPatternStart(data[5], trackIndex, patternIndex, false);
+              case END:
+                return this.setPatternEnd(data[5], trackIndex, patternIndex, false);
+              case MUTE:
+                return this.setPatternMute(data[5], trackIndex, patternIndex, false);
+              default:
+                console.log(`ERROR in setModel(). Unexpected data[4] "${data[4]}"`);
             }
             return;
-          default: console.log(`ERROR in setModel(). Unexpected data[4] "${data[2]}"`);
+          default:
+            console.log(`ERROR in setModel(). Unexpected data[4] "${data[2]}"`);
         }
         return;
-      default: console.log(`ERROR in setModel(). Unexpected data[0] "${data[0]}"`);
-
+      default:
+        console.log(`ERROR in setModel(). Unexpected data[0] "${data[0]}"`);
     }
   }
 
@@ -106,9 +123,8 @@ export default class Controller {
     this._prevModulation = null;
   }
 
-
   handleTrackNote(pitch, velocity) {
-    this._model.scale.toggle(pitch, velocity)
+    this._model.scale.toggle(pitch, velocity);
     this._view.renderScale(this._model.scale);
   }
 
@@ -118,21 +134,22 @@ export default class Controller {
     }
   }
 
-  handleLaunchpadCC(cc, value) {
-    if (cc === MIDI.TRANSPORT_STOP) {
-      this.handleTransportStop();
-    } else {
-      this._handleLaunchpadTopButton(cc - LAUNCHPAD.TOP_ROW_CC, value > 0);
-    }
-  }
+  handleLaunchpadButtonPress(ledIndex, value) {
+    const x = ledIndexToX(ledIndex);
+    const y = ledIndexToY(ledIndex);
 
-  handleLaunchpadNote(pitch, velocity) {
-    const x = pitch % 16;
-    const y = Math.floor(pitch / 16);
-    if (x > 7) {
-      this._handleLaunchpadRightButton(y, velocity > 0);
+    console.log("handleLaunchpadNote:", { ledIndex, value, x, y });
+    // TODO: interpret top row
+    if (x === NUMBER_OF.COLUMNS) {
+      console.log("right");
+      this._handleLaunchpadRightButton(y, value > 0);
+    } else if (y === NUMBER_OF.ROWS) {
+      console.log("top");
+      this._handleLaunchpadTopButton(x, value > 0);
     } else {
-      this._handleLaunchpadGridButton(x, y, velocity > 0);
+      console.log("grid");
+
+      this._handleLaunchpadGridButton(x, y, value > 0);
     }
   }
 
@@ -211,8 +228,7 @@ export default class Controller {
           model.mode = MODE.SEQUENCER;
           this.selectPattern(index, { forceRender: true });
         }
-      }
-      else {
+      } else {
         switch (this._rightButtonGesture.interpretPress(index)) {
           case GESTURE.SELECT:
             this.selectPattern(index);
@@ -234,15 +250,14 @@ export default class Controller {
   }
 
   _handleLaunchpadGridButton(x, y, isPressed) {
-    const stepIndex = xyToIndex(x, y);
+    const stepIndex = xyToStepIndex(x, y);
     if (this._model.mode === MODE.PATTERN_EDIT) {
       const range = this._gridButtonGesture.interpretRangeSelection(stepIndex, isPressed);
       if (range) {
         this._model.selectedPattern.setRange(...range);
         this._view.renderGrid();
       }
-    }
-    else if (isPressed) {
+    } else if (isPressed) {
       this.setStepToValue(stepIndex, this._model.selectedValue);
     }
     this._topButtonGesture.reset();
@@ -282,20 +297,18 @@ export default class Controller {
     this._model.scale.offsets = offsets;
     this._view.renderScale(this._model.scale);
     if (store) {
-      this._storage.storeScaleOffsets(offsets)
+      this._storage.storeScaleOffsets(offsets);
     }
   }
 
   setScaleOffsetsRelativeToC(offsetsRelativeToC, store = true) {
     const root = this._model.scale.root;
-    const offsets = offsetsRelativeToC
-      .map(offset => (offset - root).mod(12))
-      .sort((a, b) => a - b);
+    const offsets = offsetsRelativeToC.map(offset => (offset - root).mod(12)).sort((a, b) => a - b);
 
     this._model.scale.offsets = offsets;
     this._view.renderScale(this._model.scale);
     if (store) {
-      this._storage.storeScaleOffsets(offsets)
+      this._storage.storeScaleOffsets(offsets);
     }
   }
 
@@ -303,7 +316,7 @@ export default class Controller {
     this._model.scale.root = root;
     this._view.renderScale(this._model.scale);
     if (store) {
-      this._storage.storeScaleRoot(root)
+      this._storage.storeScaleRoot(root);
     }
   }
 
@@ -338,12 +351,12 @@ export default class Controller {
   }
 
   selectOrToggleValue(value) {
-    this._model.selectedValue = (this._model.selectedValue === value) ? STEP_VALUE.OFF : value;
+    this._model.selectedValue = this._model.selectedValue === value ? STEP_VALUE.OFF : value;
     this._view.renderValue();
   }
 
   handleGridClick(x, y, enabled) {
-    this.setStepToValue(xyToIndex(x, y), enabled ? this._model.selectedValue : 0);
+    this.setStepToValue(xyToStepIndex(x, y), enabled ? this._model.selectedValue : 0);
   }
 
   setStepToValue(stepIndex, value) {
@@ -422,7 +435,12 @@ export default class Controller {
     }
   }
 
-  setPatternSteps(steps, trackIndex = this._model.selectedTrackIndex, patternIndex = this._model.selectedPatternIndex, store = true) {
+  setPatternSteps(
+    steps,
+    trackIndex = this._model.selectedTrackIndex,
+    patternIndex = this._model.selectedPatternIndex,
+    store = true
+  ) {
     const pattern = this._model.tracks[trackIndex].patterns[patternIndex];
     pattern.steps = steps;
     if (trackIndex === this._model.selectedTrackIndex && patternIndex === this._model.selectedPatternIndex) {
@@ -433,7 +451,12 @@ export default class Controller {
     }
   }
 
-  setPatternStart(stepIndex, trackIndex = this._model.selectedTrackIndex, patternIndex = this._model.selectedPatternIndex, store = true) {
+  setPatternStart(
+    stepIndex,
+    trackIndex = this._model.selectedTrackIndex,
+    patternIndex = this._model.selectedPatternIndex,
+    store = true
+  ) {
     this._model.tracks[trackIndex].patterns[patternIndex].startStepIndex = stepIndex;
     if (trackIndex === this._model.selectedTrackIndex && patternIndex === this._model.selectedPatternIndex) {
       this._view.renderPatternStart();
@@ -443,7 +466,12 @@ export default class Controller {
     }
   }
 
-  setPatternEnd(stepIndex, trackIndex = this._model.selectedTrackIndex, patternIndex = this._model.selectedPatternIndex, store = true) {
+  setPatternEnd(
+    stepIndex,
+    trackIndex = this._model.selectedTrackIndex,
+    patternIndex = this._model.selectedPatternIndex,
+    store = true
+  ) {
     this._model.tracks[trackIndex].patterns[patternIndex].endStepIndex = stepIndex;
     if (trackIndex === this._model.selectedTrackIndex && patternIndex === this._model.selectedPatternIndex) {
       this._view.renderPatternEnd();
@@ -453,7 +481,12 @@ export default class Controller {
     }
   }
 
-  setPatternMute(mute, trackIndex = this._model.selectedTrackIndex, patternIndex = this._model.selectedPatternIndex, store = true) {
+  setPatternMute(
+    mute,
+    trackIndex = this._model.selectedTrackIndex,
+    patternIndex = this._model.selectedPatternIndex,
+    store = true
+  ) {
     this._model.tracks[trackIndex].patterns[patternIndex].mute = mute;
     if (trackIndex === this._model.selectedTrackIndex) {
       this._view.renderPatternMute(patternIndex, mute);
@@ -470,51 +503,35 @@ export default class Controller {
   }
 
   reversePattern(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.reverse()
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.reverse());
   }
 
   randomizePattern(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.randomize()
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.randomize());
   }
 
   invertPattern(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.invert()
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.invert());
   }
 
   clearPattern(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.clear()
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.clear());
   }
 
   shiftPatternLeft(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.shift(1)
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.shift(1));
   }
 
   shiftPatternRight(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.shift(-1)
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.shift(-1));
   }
 
   shiftPatternUp(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.shift(NUMBER_OF.COLUMNS)
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.shift(NUMBER_OF.COLUMNS));
   }
 
   shiftPatternDown(pattern = this._model.selectedPattern) {
-    this._modifyPatternSteps(pattern,
-      pattern => pattern.shift(-NUMBER_OF.COLUMNS)
-    );
+    this._modifyPatternSteps(pattern, pattern => pattern.shift(-NUMBER_OF.COLUMNS));
   }
 
   copyPatternSteps(pattern = this._model.selectedPattern) {
@@ -523,8 +540,9 @@ export default class Controller {
 
   pastePatternSteps(pattern = this._model.selectedPattern) {
     if (this._patternStepsClipboard) {
-      this._modifyPatternSteps(pattern,
-        pattern => pattern.steps = this._patternStepsClipboard.slice() // slice to prevent a shared steps array between patterns
+      this._modifyPatternSteps(
+        pattern,
+        pattern => (pattern.steps = this._patternStepsClipboard.slice()) // slice to prevent a shared steps array between patterns
       );
     }
   }
@@ -535,26 +553,21 @@ export default class Controller {
 
   _undoPatternStepsChange(pattern = this._model.selectedPattern) {
     if (this._patternStepsUndo) {
-      this._modifyPatternSteps(pattern,
-        pattern => pattern.steps = this._patternStepsUndo
-      );
+      this._modifyPatternSteps(pattern, pattern => (pattern.steps = this._patternStepsUndo));
       this._patternStepsUndo = null;
     }
   }
 
   reverseTrack(track = this._model.selectedTrack) {
-    track.patterns.forEach(pattern =>
-      this.reversePattern(pattern));
+    track.patterns.forEach(pattern => this.reversePattern(pattern));
   }
 
   randomizeTrack(track = this._model.selectedTrack) {
-    track.patterns.forEach(pattern =>
-      this.randomizePattern(pattern));
+    track.patterns.forEach(pattern => this.randomizePattern(pattern));
   }
 
   clearTrack(track = this._model.selectedTrack) {
-    track.patterns.forEach(pattern =>
-      this.clearPattern(pattern));
+    track.patterns.forEach(pattern => this.clearPattern(pattern));
   }
 
   copyTrackSteps(track = this._model.selectedTrack) {
@@ -564,8 +577,9 @@ export default class Controller {
   pasteTrackSteps(track = this._model.selectedTrack) {
     if (this._trackStepsClipboard) {
       this._trackStepsClipboard.forEach((patternSteps, patternIndex) =>
-        this._modifyPatternSteps(track.patterns[patternIndex],
-          pattern => pattern.steps = patternSteps.slice() // slice to prevent a shared steps array between patterns
+        this._modifyPatternSteps(
+          track.patterns[patternIndex],
+          pattern => (pattern.steps = patternSteps.slice()) // slice to prevent a shared steps array between patterns
         )
       );
     }
