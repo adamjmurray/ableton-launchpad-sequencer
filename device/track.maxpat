@@ -2,7 +2,7 @@
 	"patcher" : 	{
 		"fileversion" : 1,
 		"appversion" : 		{
-			"major" : 8,
+			"major" : 9,
 			"minor" : 0,
 			"revision" : 2,
 			"architecture" : "x64",
@@ -10,33 +10,8 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 105.0, 85.0, 1295.0, 688.0 ],
-		"bglocked" : 0,
-		"openinpresentation" : 0,
-		"default_fontsize" : 12.0,
-		"default_fontface" : 0,
-		"default_fontname" : "Arial",
-		"gridonopen" : 1,
+		"rect" : [ 134.0, 172.0, 1020.0, 688.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
-		"gridsnaponopen" : 1,
-		"objectsnaponopen" : 1,
-		"statusbarvisible" : 2,
-		"toolbarvisible" : 1,
-		"lefttoolbarpinned" : 0,
-		"toptoolbarpinned" : 0,
-		"righttoolbarpinned" : 0,
-		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
-		"tallnewobj" : 0,
-		"boxanimatetime" : 200,
-		"enablehscroll" : 1,
-		"enablevscroll" : 1,
-		"devicewidth" : 0.0,
-		"description" : "",
-		"digest" : "",
-		"tags" : "",
-		"style" : "",
-		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
 					"id" : "obj-41",
@@ -63,6 +38,8 @@
 							"parameter_initial_enable" : 1,
 							"parameter_invisible" : 1,
 							"parameter_longname" : "gatemode",
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "gatemode",
 							"parameter_type" : 3
 						}
@@ -130,6 +107,8 @@
 							"parameter_initial_enable" : 1,
 							"parameter_invisible" : 1,
 							"parameter_longname" : "gatesum",
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "gatesum",
 							"parameter_type" : 3
 						}
@@ -305,6 +284,8 @@
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "mute[33]",
 							"parameter_mmax" : 1.0,
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "mute",
 							"parameter_type" : 1
 						}
@@ -337,6 +318,8 @@
 							"parameter_longname" : "multiplier",
 							"parameter_mmax" : 128.0,
 							"parameter_mmin" : 1.0,
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "multiplier",
 							"parameter_type" : 1
 						}
@@ -368,6 +351,8 @@
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "gate",
 							"parameter_mmax" : 16.0,
+							"parameter_modmode" : 3,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "gate",
 							"parameter_type" : 0
 						}
@@ -398,6 +383,8 @@
 							"parameter_initial" : [ 70 ],
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "velocity",
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "velocity",
 							"parameter_type" : 1
 						}
@@ -428,6 +415,8 @@
 							"parameter_initial" : [ 60 ],
 							"parameter_initial_enable" : 1,
 							"parameter_longname" : "pitch",
+							"parameter_modmode" : 0,
+							"parameter_osc_name" : "<default>",
 							"parameter_shortname" : "pitch",
 							"parameter_type" : 1
 						}
@@ -524,7 +513,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 159.309402465820313, 450.585784912109375, 109.0, 22.0 ],
+					"patching_rect" : [ 159.309402465820312, 450.585784912109375, 109.0, 22.0 ],
 					"text" : "prepend patterns 1"
 				}
 
@@ -561,7 +550,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1174.355224609375, 604.0, 30.0, 30.0 ]
+					"patching_rect" : [ 1168.0, 605.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -663,7 +652,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 159.309402465820313, 405.898590087890625, 90.0, 22.0 ],
+					"patching_rect" : [ 159.309402465820312, 405.898590087890625, 90.0, 22.0 ],
 					"text" : "pattern 1",
 					"varname" : "patterns[1]"
 				}
@@ -684,13 +673,6 @@
 			}
  ],
 		"lines" : [ 			{
-				"patchline" : 				{
-					"destination" : [ "obj-14", 0 ],
-					"source" : [ "", -1 ]
-				}
-
-			}
-, 			{
 				"patchline" : 				{
 					"destination" : [ "obj-16", 0 ],
 					"source" : [ "obj-1", 0 ]
@@ -868,7 +850,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 685.83331298828125, 312.292892456054688, 1183.855224609375, 312.292892456054688 ],
+					"midpoints" : [ 685.83331298828125, 312.292892456054688, 1177.5, 312.292892456054688 ],
 					"source" : [ "obj-28", 0 ]
 				}
 
@@ -876,7 +858,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 934.92486572265625, 311.792892456054688, 1183.855224609375, 311.792892456054688 ],
+					"midpoints" : [ 934.92486572265625, 311.792892456054688, 1177.5, 311.792892456054688 ],
 					"source" : [ "obj-29", 0 ]
 				}
 
@@ -891,7 +873,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 809.65740966796875, 313.792892456054688, 1183.855224609375, 313.792892456054688 ],
+					"midpoints" : [ 809.65740966796875, 313.792892456054688, 1177.5, 313.792892456054688 ],
 					"source" : [ "obj-30", 0 ]
 				}
 
@@ -899,7 +881,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 435.5, 312.792892456054688, 1183.855224609375, 312.792892456054688 ],
+					"midpoints" : [ 435.5, 312.792892456054688, 1177.5, 312.792892456054688 ],
 					"source" : [ "obj-31", 0 ]
 				}
 
@@ -907,7 +889,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 310.833343505859375, 312.792892456054688, 1183.855224609375, 312.792892456054688 ],
+					"midpoints" : [ 310.833343505859375, 312.792892456054688, 1177.5, 312.792892456054688 ],
 					"source" : [ "obj-32", 0 ]
 				}
 
@@ -922,7 +904,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 185.166671752929688, 311.792892456054688, 1183.855224609375, 311.792892456054688 ],
+					"midpoints" : [ 185.166671752929688, 311.792892456054688, 1177.5, 311.792892456054688 ],
 					"source" : [ "obj-34", 0 ]
 				}
 
@@ -951,7 +933,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-14", 0 ],
-					"midpoints" : [ 560.1922607421875, 312.792892456054688, 1183.855224609375, 312.792892456054688 ],
+					"midpoints" : [ 560.1922607421875, 312.792892456054688, 1177.5, 312.792892456054688 ],
 					"source" : [ "obj-41", 0 ]
 				}
 
@@ -1188,55 +1170,57 @@
 
 			}
  ],
+		"originid" : "pat-832",
 		"parameters" : 		{
-			"obj-1::obj-24" : [ "end", "end", 0 ],
-			"obj-2::obj-24" : [ "end[11]", "end", 0 ],
-			"obj-1::obj-2" : [ "steps", "steps", 0 ],
-			"obj-9::obj-2" : [ "steps[15]", "steps", 0 ],
-			"obj-10::obj-24" : [ "end[14]", "end", 0 ],
-			"obj-11::obj-22" : [ "start[21]", "start", 0 ],
-			"obj-55" : [ "velocity", "velocity", 0 ],
-			"obj-1::obj-22" : [ "start", "start", 0 ],
-			"obj-12::obj-2" : [ "steps[12]", "steps", 0 ],
-			"obj-11::obj-33" : [ "mute[1]", "mute", 0 ],
-			"obj-3::obj-22" : [ "start[25]", "start", 0 ],
-			"obj-10::obj-33" : [ "mute[2]", "mute", 0 ],
-			"obj-4::obj-24" : [ "end[16]", "end", 0 ],
-			"obj-9::obj-33" : [ "mute[3]", "mute", 0 ],
-			"obj-2::obj-33" : [ "mute[6]", "mute", 0 ],
-			"obj-11::obj-2" : [ "steps[13]", "steps", 0 ],
-			"obj-12::obj-22" : [ "start[16]", "start", 0 ],
-			"obj-4::obj-33" : [ "mute[4]", "mute", 0 ],
-			"obj-2::obj-22" : [ "start[20]", "start", 0 ],
-			"obj-33" : [ "gatesum", "gatesum", 0 ],
-			"obj-4::obj-22" : [ "start[24]", "start", 0 ],
-			"obj-9::obj-24" : [ "end[15]", "end", 0 ],
-			"obj-52" : [ "mute[33]", "mute", 0 ],
 			"obj-10::obj-2" : [ "steps[14]", "steps", 0 ],
-			"obj-54" : [ "gate", "gate", 0 ],
-			"obj-2::obj-2" : [ "steps[17]", "steps", 0 ],
-			"obj-56" : [ "pitch", "pitch", 0 ],
-			"obj-3::obj-24" : [ "end[10]", "end", 0 ],
-			"obj-3::obj-2" : [ "steps[10]", "steps", 0 ],
 			"obj-10::obj-22" : [ "start[22]", "start", 0 ],
+			"obj-10::obj-24" : [ "end[14]", "end", 0 ],
+			"obj-10::obj-33" : [ "mute[2]", "mute", 0 ],
+			"obj-11::obj-2" : [ "steps[13]", "steps", 0 ],
+			"obj-11::obj-22" : [ "start[21]", "start", 0 ],
 			"obj-11::obj-24" : [ "end[13]", "end", 0 ],
-			"obj-12::obj-33" : [ "mute[38]", "mute", 0 ],
-			"obj-3::obj-33" : [ "mute[5]", "mute", 0 ],
-			"obj-4::obj-2" : [ "steps[16]", "steps", 0 ],
-			"obj-9::obj-22" : [ "start[23]", "start", 0 ],
-			"obj-53" : [ "multiplier", "multiplier", 0 ],
-			"obj-1::obj-33" : [ "mute", "mute", 0 ],
+			"obj-11::obj-33" : [ "mute[1]", "mute", 0 ],
+			"obj-12::obj-2" : [ "steps[12]", "steps", 0 ],
+			"obj-12::obj-22" : [ "start[16]", "start", 0 ],
 			"obj-12::obj-24" : [ "end[12]", "end", 0 ],
+			"obj-12::obj-33" : [ "mute[38]", "mute", 0 ],
+			"obj-1::obj-2" : [ "steps", "steps", 0 ],
+			"obj-1::obj-22" : [ "start", "start", 0 ],
+			"obj-1::obj-24" : [ "end", "end", 0 ],
+			"obj-1::obj-33" : [ "mute", "mute", 0 ],
+			"obj-2::obj-2" : [ "steps[17]", "steps", 0 ],
+			"obj-2::obj-22" : [ "start[20]", "start", 0 ],
+			"obj-2::obj-24" : [ "end[11]", "end", 0 ],
+			"obj-2::obj-33" : [ "mute[6]", "mute", 0 ],
+			"obj-33" : [ "gatesum", "gatesum", 0 ],
+			"obj-3::obj-2" : [ "steps[10]", "steps", 0 ],
+			"obj-3::obj-22" : [ "start[25]", "start", 0 ],
+			"obj-3::obj-24" : [ "end[10]", "end", 0 ],
+			"obj-3::obj-33" : [ "mute[5]", "mute", 0 ],
 			"obj-40" : [ "gatemode", "gatemode", 0 ],
+			"obj-4::obj-2" : [ "steps[16]", "steps", 0 ],
+			"obj-4::obj-22" : [ "start[24]", "start", 0 ],
+			"obj-4::obj-24" : [ "end[16]", "end", 0 ],
+			"obj-4::obj-33" : [ "mute[4]", "mute", 0 ],
+			"obj-52" : [ "mute[33]", "mute", 0 ],
+			"obj-53" : [ "multiplier", "multiplier", 0 ],
+			"obj-54" : [ "gate", "gate", 0 ],
+			"obj-55" : [ "velocity", "velocity", 0 ],
+			"obj-56" : [ "pitch", "pitch", 0 ],
+			"obj-9::obj-2" : [ "steps[15]", "steps", 0 ],
+			"obj-9::obj-22" : [ "start[23]", "start", 0 ],
+			"obj-9::obj-24" : [ "end[15]", "end", 0 ],
+			"obj-9::obj-33" : [ "mute[3]", "mute", 0 ],
 			"parameterbanks" : 			{
 
 			}
-
+,
+			"inherited_shortname" : 1
 		}
 ,
 		"dependency_cache" : [ 			{
 				"name" : "pattern.maxpat",
-				"bootpath" : "D:/workspace/Max/Max-for-Live/m4l-launchpad-sequencer/launchpad-sequencer/launchpad-sequencer-device-project",
+				"bootpath" : "~/workspace/ableton-launchpad-sequencer/device",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
