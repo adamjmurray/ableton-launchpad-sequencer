@@ -37,7 +37,7 @@ export default class LaunchpadView {
   }
 
   renderStepButton(stepIndex) {
-    console.log("renderStepButton():", stepIndex);
+    // console.log("renderStepButton():", stepIndex);
     this.#renderStep(stepIndex);
   }
 
@@ -195,20 +195,20 @@ export default class LaunchpadView {
     if (x >= 0 && x < NUMBER_OF.COLUMNS && y >= 0 && y < NUMBER_OF.ROWS) {
       this.#setStepColor(xyToStepIndex(x, y), color);
     }
+    // TODO: handle top row and right column
   }
 
   #setStepColor(stepIndex, color) {
-    color ??= this._model.selectedPattern.steps[stepIndex] ?? 0;
+    color ??= this.#colorForGridButton(stepIndex, this.#stepIndexForClock);
     this.#setGridColor(stepIndexToX(stepIndex), stepIndexToY(stepIndex), color);
   }
 
   #setGridColor(x, y, color) {
-    color = COLOR.STEP_VALUES[color];
     const r = (color >> 16) & 0xff;
     const g = (color >> 8) & 0xff;
     const b = color & 0xff;
     // color rgb is 0-255 range (inclusive), launchpad wants 0-127 range
-    console.log("setGridColor", { x, y, color, r, g, b });
+    // console.log("setGridColor", { x, y, color: color.toString(16), r, g, b });
 
     outlet(
       OUTLET.LAUNCHPAD_RAPID_UPDATE,
