@@ -211,7 +211,8 @@ export default class Controller {
     this._rightButtonGesture.reset();
   }
 
-  _handleLaunchpadRightButton(index, isPressed) {
+  _handleLaunchpadRightButton(y, isPressed) {
+    var index = 7 - y;
     const model = this._model;
     if (isPressed) {
       if (model.mode === MODE.PATTERN_EDIT) {

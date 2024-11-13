@@ -61,7 +61,7 @@ export default class LaunchpadView {
     for (let patternIndex = 0; patternIndex < 8; patternIndex++) {
       this.#setCellColor(
         NUMBER_OF.COLUMNS,
-        patternIndex,
+        7 - patternIndex,
         patternIndex == selectedPatternIndex ? this.#colorForPatternButton(patternIndex) : 0
       );
     }
@@ -96,7 +96,8 @@ export default class LaunchpadView {
   #setRightButtonColor(index, color) {
     if (0 <= index && index <= 7) {
       outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
-      this.#setCellColor(NUMBER_OF.COLUMNS, index, color);
+      // these are indexed from top to bottom in the UI, but bottom to top on the hardware
+      this.#setCellColor(NUMBER_OF.COLUMNS, 7 - index, color);
       outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
     }
   }
