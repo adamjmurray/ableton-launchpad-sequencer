@@ -9,3 +9,6 @@ export const stepIndexToX = stepIndex => stepIndex % NUMBER_OF.COLUMNS;
 export const stepIndexToY = stepIndex => NUMBER_OF.ROWS - Math.floor(stepIndex / NUMBER_OF.COLUMNS) - 1;
 export const xyToStepIndex = (x, y) => (NUMBER_OF.ROWS - y - 1) * NUMBER_OF.COLUMNS + x;
 export const stepToLedIndex = stepIndex => xyToLedIndex(stepIndexToX(stepIndex), stepIndexToY(stepIndex));
+
+// all the xy above refer to the launchpad hardware
+export const guiXyToStepIndex = (x, y) => x + y * NUMBER_OF.COLUMNS;

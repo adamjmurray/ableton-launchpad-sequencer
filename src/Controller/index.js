@@ -2,7 +2,7 @@ import { GESTURE, LAUNCHPAD, MIDI, MODE, NUMBER_OF, OUTLET, STEP_VALUE, STORAGE 
 import StorageController from "./StorageController";
 import PressGesture from "./PressGesture";
 import RangeSelectionGesture from "./RangeSelectionGesture";
-import { ledIndexToX, ledIndexToY, xyToStepIndex } from "../converters";
+import { ledIndexToX, ledIndexToY, xyToStepIndex, guiXyToStepIndex } from "../converters";
 
 const {
   DURATION,
@@ -23,8 +23,6 @@ const {
   START,
   END,
 } = STORAGE;
-
-// const xyToIndex = (x, y) => x + y * NUMBER_OF.COLUMNS;
 
 export default class Controller {
   constructor(model, view) {
@@ -356,7 +354,7 @@ export default class Controller {
   }
 
   handleGridClick(x, y, enabled) {
-    this.setStepToValue(xyToStepIndex(x, y), enabled ? this._model.selectedValue : 0);
+    this.setStepToValue(guiXyToStepIndex(x, y), enabled ? this._model.selectedValue : 0);
   }
 
   setStepToValue(stepIndex, value) {
