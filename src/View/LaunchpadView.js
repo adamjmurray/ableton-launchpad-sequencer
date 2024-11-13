@@ -37,53 +37,43 @@ export default class LaunchpadView {
   }
 
   renderStepButton(stepIndex) {
-    // console.log("renderStepButton():", stepIndex);
-    this.#renderStep(stepIndex);
+    this.#setGridColor(stepIndex, this.#colorForGridButton(stepIndex));
   }
 
   render() {
-    const model = this._model;
-    // Color order: grid from left-to-right/top-to-bottom, right column (patterns) top-to-bottom, top row left-to-right
-    // let colors = [
-    //   ...this.#colorsForGridButtons(),
-    //   ...model.selectedTrack.patterns.map((_, patternIndex) => this.#colorForPatternButton(patternIndex)),
-    // ];
-    // if (model.mode === MODE.PATTERN_EDIT) {
-    //   colors.push(
-    //     COLOR.YELLOW,
-    //     COLOR.YELLOW,
-    //     COLOR.YELLOW,
-    //     COLOR.YELLOW,
-    //     // Next 2 are for reverse and invert
-    //     COLOR.YELLOW,
-    //     COLOR.YELLOW,
-    //     // Last 2 are copy & paste
-    //     COLOR.GREEN,
-    //     COLOR.RED
-    //   );
-    // } else {
-    //   model.tracks.forEach((_, trackIndex) => {
-    //     colors.push(this.#colorForTrackButton(trackIndex));
-    //   });
-    //   for (let value = 1; value < 5; value++) {
-    //     colors.push(this.#colorForValueButton(value));
-    //   }
-    // }
-    // if (colors.length !== 80) {
-    //   console.error(
-    //     `Error in LaunchpadView.render(): Expected colors.length to be 80, but was ${colors.length}.`,
-    //     colors
-    //   );
-    //   return;
-    // }
-    // outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, colors);
+    const { selectedTrackIndex, selectedPattern, selectedPatternIndex, selectedValue } = this._model;
+    const sequencerStepIndex = this.#stepIndexForClock;
 
     outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
-    for (let x = 0; x < 9; x++) {
-      for (let y = 0; y < 9; y++) {
-        this.#setCellColor(x, y);
-      }
+
+    for (let trackIndex = 0; trackIndex < 4; trackIndex++) {
+      this.#setCellColor(
+        trackIndex,
+        NUMBER_OF.ROWS,
+        trackIndex == selectedTrackIndex ? this.#colorForTrackButton(trackIndex) : 0
+      );
     }
+
+    for (let value = 1; value <= 4; value++) {
+      this.#setCellColor(value + 3, NUMBER_OF.ROWS, value == selectedValue ? this.#colorForValueButton(value) : 0);
+    }
+
+    for (let patternIndex = 0; patternIndex < 8; patternIndex++) {
+      this.#setCellColor(
+        NUMBER_OF.COLUMNS,
+        patternIndex,
+        patternIndex == selectedPatternIndex ? this.#colorForPatternButton(patternIndex) : 0
+      );
+    }
+
+    selectedPattern.steps.forEach((_, stepIndex) => {
+      this.#setCellColor(
+        stepIndexToX(stepIndex),
+        stepIndexToY(stepIndex),
+        this.#colorForGridButton(stepIndex, sequencerStepIndex)
+      );
+    });
+
     outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
   }
 
@@ -97,23 +87,25 @@ export default class LaunchpadView {
 
   #setTopButtonColor(index, color) {
     if (0 <= index && index <= 7) {
-      outlet(OUTLET.LAUNCHPAD_CC, LAUNCHPAD.TOP_ROW_CC + index, color);
+      outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
+      this.#setCellColor(index, NUMBER_OF.ROWS, color);
+      outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
     }
   }
 
   #setRightButtonColor(index, color) {
     if (0 <= index && index <= 7) {
-      outlet(OUTLET.LAUNCHPAD_NOTE, 16 * index + 8, color);
+      outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
+      this.#setCellColor(NUMBER_OF.COLUMNS, index, color);
+      outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
     }
   }
 
-  // #setGridColor(stepIndex, color) {
-  //   const x = stepIndex % NUMBER_OF.COLUMNS;
-  //   const y = Math.floor(stepIndex / NUMBER_OF.COLUMNS);
-  //   if (0 <= x && x <= 7 && 0 <= y && y <= 7) {
-  //     outlet(OUTLET.LAUNCHPAD_NOTE, 16 * y + x, color);
-  //   }
-  // }
+  #setGridColor(stepIndex, color) {
+    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
+    this.#setCellColor(stepIndexToX(stepIndex), stepIndexToY(stepIndex), color);
+    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
+  }
 
   #colorForTrackButton(trackIndex) {
     const model = this._model;
@@ -141,7 +133,7 @@ export default class LaunchpadView {
     }
   }
 
-  // TODO: this is duplciated in GuiView. Can we refactor?
+  // TODO: this is duplicated in GuiView. Can we refactor?
   get #stepIndexForClock() {
     const { clockIndex, selectedTrack, selectedPatternIndex } = this._model;
     return clockIndex < 0 ? -1 : selectedTrack.patternStepIndexForClock(clockIndex, selectedPatternIndex);
@@ -172,38 +164,7 @@ export default class LaunchpadView {
     }
   }
 
-  #colorsForGridButtons() {
-    const sequencerStepIndex = this.#stepIndexForClock;
-    return this._model.selectedPattern.steps.map((_, stepIndex) =>
-      this.#colorForGridButton(stepIndex, sequencerStepIndex)
-    );
-  }
-
-  #renderGrid(x, y) {
-    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
-    this.#setCellColor(x, y);
-    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
-  }
-
-  #renderStep(stepIndex) {
-    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_PREAMBLE);
-    this.#setStepColor(stepIndex);
-    outlet(OUTLET.LAUNCHPAD_RAPID_UPDATE, SYSEX_END);
-  }
-
   #setCellColor(x, y, color) {
-    if (x >= 0 && x < NUMBER_OF.COLUMNS && y >= 0 && y < NUMBER_OF.ROWS) {
-      this.#setStepColor(xyToStepIndex(x, y), color);
-    }
-    // TODO: handle top row and right column
-  }
-
-  #setStepColor(stepIndex, color) {
-    color ??= this.#colorForGridButton(stepIndex, this.#stepIndexForClock);
-    this.#setGridColor(stepIndexToX(stepIndex), stepIndexToY(stepIndex), color);
-  }
-
-  #setGridColor(x, y, color) {
     const r = (color >> 16) & 0xff;
     const g = (color >> 8) & 0xff;
     const b = color & 0xff;

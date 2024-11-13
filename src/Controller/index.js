@@ -135,18 +135,11 @@ export default class Controller {
   handleLaunchpadButtonPress(ledIndex, value) {
     const x = ledIndexToX(ledIndex);
     const y = ledIndexToY(ledIndex);
-
-    console.log("handleLaunchpadNote:", { ledIndex, value, x, y });
-    // TODO: interpret top row
     if (x === NUMBER_OF.COLUMNS) {
-      console.log("right");
       this._handleLaunchpadRightButton(y, value > 0);
     } else if (y === NUMBER_OF.ROWS) {
-      console.log("top");
       this._handleLaunchpadTopButton(x, value > 0);
     } else {
-      console.log("grid");
-
       this._handleLaunchpadGridButton(x, y, value > 0);
     }
   }
